@@ -30,14 +30,14 @@
 typedef enum 
 {
     CMD,
-    OPTION,
-    ARG,
-    OPERATOR
+	INPOUT,
+	OUTPUT,
+	APPEN,
 } Token_type;
 
 typedef struct	s_token
 {
-	char			**content;
+	char			*content;
 	Token_type		type;
 	struct s_token	*next;
 } t_token;
@@ -68,6 +68,11 @@ typedef struct s_minishell
 
 // MANDATORY PART
 char	*read_input();
+t_token	*extract_cmd(t_token **token, char *cmd_line);
+t_token	*init_node(char *content);
+t_token	*lst_last(t_token *token);
+void	add_back(t_token **token, t_token *new);
+char	*ft_strndup(const char *s, size_t n);
 
 
 #endif
