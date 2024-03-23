@@ -57,13 +57,24 @@ char	*read_input()
 	return (input);
 }
 
+void	print_new_env(char **env)
+{
+	int	i;
+
+	i = 0;
+	while(env[i])
+	{
+		printf("Voici mon new env. : %s\n", env[i]);
+		i++;
+	}
+}
+
 int		main(int argc, char **argv, char **env)
 {
 	char	*input;
 	t_token	*token;
 	(void)argc;
 	(void)argv;
-	(void)env;
 
 	token = NULL;
 	if (argc != 1 || argv[1])
@@ -77,6 +88,8 @@ int		main(int argc, char **argv, char **env)
 			exit(0) ;
 		}
 		// printf("Vous avez saisi : %s\n", input);
+		env = change_shell_level(env);
+		print_new_env(env);
 		token = extract_cmd(&token, input);
 		if (!token)
 			return(perror("Extract cmd failed\n"), free(input), 1);
@@ -84,7 +97,6 @@ int		main(int argc, char **argv, char **env)
 	}
 	return (0);
 }
-
 
 //  cmd -l < file1 | cmd|cmd -a > file2
 //  1. Boucle tant que je vois pas de pipe (puis boucle ext. tant que pas fini puis pipe)
@@ -110,6 +122,7 @@ int		main(int argc, char **argv, char **env)
 // Gérer les erreurs avec les tokens. > Transformer ma liste chaînée en
 // string qui sera modifée pour convenir à pipex (cf. ci-dessous) et la modifier
 // pour convenir à l'entrée attendue par pipex.
+// Récupèrer env., modifier le shell level & envoyer à pipex.
 // Identifier mes redirections (tokeniser avec input/output) pour derrière pouvoir
 // bien former ma string pour pipex (au niveau des redirections).
 

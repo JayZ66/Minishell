@@ -73,6 +73,9 @@ t_token	*init_node(char *content);
 t_token	*lst_last(t_token *token);
 void	add_back(t_token **token, t_token *new);
 char	*ft_strndup(const char *s, size_t n);
+char	**change_shell_level(char **env);
 
+void	execute_pipe(int nb_args, char **cmd_line, char **env);
+void	do_pipes(char *cmd, char **env);
 
 #endif
