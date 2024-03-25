@@ -21,6 +21,11 @@
 #include <string.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <time.h>
+#include <errno.h> // perror - strerror
+#include <unistd.h> // access - dup2 - execve - fork - pipe - waitpid
+#include <sys/wait.h> // Wait
+#include <fcntl.h>
 
 // Une structure token
 // token cmd;
@@ -77,5 +82,20 @@ char	**change_shell_level(char **env);
 
 void	execute_pipe(int nb_args, char **cmd_line, char **env);
 void	do_pipes(char *cmd, char **env);
+
+char	**lst_to_tab(t_token *token);
+void	print_tab(char **cmd_line);
+int		lst_size(t_token *token);
+void	free_tab(char **tab);
+
+void	exec_cmd(char *cmd, char **env);
+char	*select_path(char *cmd, char **env);
+char	**get_path(char **env);
+int		manage_file(int nb_args, char **cmd_line, int flag);
+int		ft_strlen_tab(char **cmd_line);
+int		ft_lstsize_content(t_token *token);
+char	*check_line_cmd(t_token *token);
+char	*ft_strcat(char *dst, const char *src, size_t size);
+void	print_lst(t_token *token);
 
 #endif

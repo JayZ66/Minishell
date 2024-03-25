@@ -73,12 +73,13 @@ int		main(int argc, char **argv, char **env)
 {
 	char	*input;
 	t_token	*token;
+	char	*cmd_line;
 	(void)argc;
 	(void)argv;
 
 	token = NULL;
-	if (argc != 1 || argv[1])
-		return (perror("Wrong nb of args\n"), 1);
+	// if (argc != 1 || argv[1])
+	// 	return (perror("Wrong nb of args\n"), 1);
 	while (1)
 	{
 		input = read_input();
@@ -89,10 +90,14 @@ int		main(int argc, char **argv, char **env)
 		}
 		// printf("Vous avez saisi : %s\n", input);
 		env = change_shell_level(env);
-		print_new_env(env);
+		// print_new_env(env);
 		token = extract_cmd(&token, input);
 		if (!token)
 			return(perror("Extract cmd failed\n"), free(input), 1);
+		cmd_line = check_line_cmd(token);
+		char	**final_str;
+		final_str = ft_split(cmd_line, ' ');
+		execute_pipe(ft_strlen(cmd_line), final_str, env); // Wrong because 
 		free(input);
 	}
 	return (0);
