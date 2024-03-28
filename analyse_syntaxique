@@ -1,0 +1,40 @@
+
+<Expression> := <Command>
+				| <Command> <Options>
+				| <Expression> '|' <Expression>
+				| <Expression> '>' <File>
+				| <Expression> '>>' <File>
+				| <Expression> '<' <File>
+				| '(' <Expression> ')'
+
+- <Expression> représente une expression dans Minishell, qui peut être soit une commande simple, soit une combinaison de commandes avec des opérateurs tels que les pipes, les redirections, etc.
+- <Command> représente une commande simple, qui peut être suivie ou non d'options.
+- <Options> représente les options d'une commande.
+- Les autres symboles tels que |, >, >>, <, (, ) sont des opérateurs utilisés pour combiner des expressions.
+
+Ainsi, lorsque nous utilisons <Expression>, cela peut représenter à la fois une commande simple et une combinaison de commandes avec des opérateurs.
+
+<Command> := <Executable>
+			| <Executable> <Options> <Arguments>
+			| <Executable> <Options>
+			| <Executable> <Arguments>
+
+<Executable> := <CommandName>
+
+- L'exécutable est le nom de la commande ou du programme à exécuter.
+
+<Options> := <Option>
+			| <Options> <Option>
+
+<Option> := '-' <Character>
+			| '--' <Word>
+
+- Les options peuvent être des caractères individuels précédés d'un tiret (-) ou des mots entiers précédés de deux tirets (--), conformément à la convention des options de ligne de commande.
+- Les options peuvent être combinées dans une même commande et être suivies des arguments de la commande.
+
+<Arguments> := <Argument>
+			| <Arguments> <Argument>
+
+<Argument> := <String>
+
+<String> := Any sequence of characters (excluding special characters)
