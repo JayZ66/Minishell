@@ -105,5 +105,7 @@ void	print_lst(t_token *token);
 // tokenisation
 int	tokenize_separator(t_token **token, char *input, int i, char **env);
 int	tokenize_arg(t_token **token, char *input, int i);
+int	tokenize_double_quote(t_token **token, char *input, int i, char **env);
+int	tokenize_simple_quote(t_token **token, char *input, int i);
 
 #endif

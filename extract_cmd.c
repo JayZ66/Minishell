@@ -63,17 +63,17 @@ t_token	*extract_cmd(t_token **token, char *input, char **env)
 	// cmd = NULL;
 	while (input[i])
 	{
-		// while (input[i] == ' ' || input[i] == '\t')
+		// while (input[i] == ' ' || input[i] == '\t') (à voir si utile plus tard car i différent)
 		// 	i++;
 		printf("emplacement du i: %zu\n", i);
 		if (input[i] == ' ' || input[i] == '\t')
 			i++;
-		// else if (input[i] == '"')
-		//		tokenize_double_quote(cmd, i, env);
-		// else if (input[i] == '\'')
-		// 	tokenize_simple_quote( cmd, i);
+		else if (input[i] == '"')
+			i = tokenize_double_quote(token, input, i, env);
+		else if (input[i] == '\'')
+			i = tokenize_simple_quote(token, input, i);
 		else if (input[i] == '|' || input[i] == '<' || input[i] == '>')
-			i = tokenize_separator(token, input + i, i, env);
+			i = tokenize_separator(token, input, i, env);
 		else
 			i = tokenize_arg(token, input, i);
 		i++;
@@ -81,7 +81,7 @@ t_token	*extract_cmd(t_token **token, char *input, char **env)
 	return (*token);
 }
 
-// on recupere pas le pipe et le premier char de la seconde cmd
+// // on recupere pas le pipe et le premier char de la seconde cmd
 int	tokenize_separator(t_token **token, char *input, int i, char **env)
 {
 	char *sep;
@@ -92,14 +92,14 @@ int	tokenize_separator(t_token **token, char *input, int i, char **env)
 	if (input[i] == '<')
 		if (input[i] + 1 == '<')
 		{
-			sep = ft_strndup(input, 3);
+			sep = ft_strndup(input + i, 2);
 			new = init_node(sep, HERE_DOC);
 			add_back(token, new);
 			i += 2;
 		}
 		else
 		{
-			sep = ft_strndup(input, 2);
+			sep = ft_strndup(input + i, 1);
 			new = init_node(sep, INPUT);
 			add_back(token, new);
 			i++;
@@ -108,21 +108,21 @@ int	tokenize_separator(t_token **token, char *input, int i, char **env)
 	else if (input[i] == '>')
 		if (input[i] + 1 == '>')
 		{
-			sep = ft_strndup(input, 3);
+			sep = ft_strndup(input + i, 2);
 			new = init_node(sep, APPEND);
 			add_back(token, new);
 			i += 2;
 		}
 		else
 		{
-			sep = ft_strndup(input, 2);
+			sep = ft_strndup(input + i, 1);
 			new = init_node(sep, OUTPUT);
 			add_back(token, new);
 			i++;
 		}
 	else if (input[i] == '|')
 	{
-		sep = ft_strndup(input, 2);
+		sep = ft_strndup(input + i, 1);
 		new = init_node(sep, PIPE);
 		add_back(token, new);
 		free(sep);
@@ -130,6 +130,7 @@ int	tokenize_separator(t_token **token, char *input, int i, char **env)
 	}
 	return (i);
 }
+
 
 int tokenize_arg(t_token **token, char *input, int i)
 {
@@ -148,6 +149,65 @@ int tokenize_arg(t_token **token, char *input, int i)
 	add_back(token, new);
 	free(arg);
 	return (end);
+}
+
+int	tokenize_double_quote(t_token **token, char *input, int i, char **env)
+{
+	int		start;
+	int		end;
+	int		count_quote;
+	(void)	env;
+	char	*arg;
+	t_token	*new;
+
+	start = i;
+	end = i;
+	count_quote = 0;
+	while(input[end] && count_quote < 2)
+	{
+		if (input[end] == '"')
+			count_quote++;
+		end++;
+	}
+	if (count_quote != 2)
+	{
+		perror("pas de seconde double quote\n");
+		exit(EXIT_FAILURE);
+	}
+	arg = ft_strndup(input + start, end - start);
+	new = init_node(arg, ARG);
+	add_back(token, new);
+	free(arg);
+	return (end + 1);
+}
+
+int	tokenize_simple_quote(t_token **token, char *input, int i)
+{
+	int		start;
+	int		end;
+	int		count_quote;
+	char	*arg;
+	t_token	*new;
+
+	start = i;
+	end = i;
+	count_quote = 0;
+	while(input[end] && count_quote < 2)
+	{
+		if (input[end] == '\'')
+			count_quote++;
+		end++;
+	}
+	if (count_quote != 2)
+	{
+		perror("pas de seconde simple quote\n");
+		exit(EXIT_FAILURE);
+	}
+	arg = ft_strndup(input + start, end - start);
+	new = init_node(arg, ARG);
+	add_back(token, new);
+	free(arg);
+	return (end + 1);
 }
 
 // Je crée une str, avec strdup, où je récupère jusqu'au pipe.
