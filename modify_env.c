@@ -16,40 +16,65 @@
 Here, we're going to take the path from the env. 
 We have to find the shell level "SHLVL" & change it from 1 to 2.
 Then we'll send this modified env. to pipex.
+
+No need to do a copy of env because we use the one from our main.
+And we don't use getenv() who get env. var. from the "real" env.
 */
 
-char	**change_shell_level(char **env)
+//strcmp de SHLVL=
+// atoi, puis itoa puis strcpy.
+void	shell_level(char **env)
 {
 	size_t	i;
-	size_t	j;
-	char	*str;
+	// size_t	j;
+	char	*level;
 
 	i = 0;
-	while (env[i])
+	while(env[i])
 	{
-		j = 0;
-		while (env[i][j])
+		if (ft_strncmp(env[i], "SHLVL=", 6) == 0)
 		{
-			if (env[i][j] == '=')
-			{
-				str = ft_substr(env[i], 0, j);
-				if (ft_strcmp(str, "SHLVL") == 0)
-				{
-					j++;
-					if (env[i][j] == '1')
-					{
-						env[i][j] = '2';
-						return (free(str), env);
-					}
-				}
-				free(str);
-			}
-			j++;
+			level = ft_itoa(ft_atoi(env[i] + 6) + 1);
+			ft_string_cpy(env[i] + 6, level);
+			print_new_env(env);
+			break ;
 		}
 		i++;
 	}
-	return (perror("Can't modify shell level in env.\n"), NULL);
 }
+
+// char	**change_shell_level(char **env)
+// {
+// 	size_t	i;
+// 	size_t	j;
+// 	char	*str;
+
+// 	i = 0;
+// 	while (env[i])
+// 	{
+// 		j = 0;
+// 		while (env[i][j])
+// 		{
+// 			if (env[i][j] == '=')
+// 			{
+// 				str = ft_substr(env[i], 0, j);
+// 				if (ft_strcmp(str, "SHLVL") == 0)
+// 				{
+// 					j++;
+// 					if (env[i][j] == '1')
+// 					{
+// 						j++;
+// 						return (free(str), env);
+// 					}
+// 				}
+// 				free(str);
+// 			}
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// 	return (perror("Can't modify shell level in env.\n"), NULL);
+// }
 
 /*
 La variable d'environnement "SHLVL" est utilisée pour suivre le niveau de profondeur des shells 

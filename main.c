@@ -73,7 +73,7 @@ int		main(int argc, char **argv, char **env)
 {
 	char	*input;
 	t_token	*token;
-	char	*cmd_line;
+	// char	*cmd_line;
 	(void)argc;
 	(void)argv;
 
@@ -89,16 +89,15 @@ int		main(int argc, char **argv, char **env)
 			exit(0) ;
 		}
 		// printf("Vous avez saisi : %s\n", input);
-		env = change_shell_level(env);
-		// print_new_env(env);
+		// shell_level(env); // => To put at the right place for not having diff. SHLVL
 		token = extract_cmd(&token, input, env);
 		if (!token)
 			return(perror("Extract cmd failed\n"), free(input), 1);
 		print_lst(token);
 		// cmd_line = check_line_cmd(token);
-		char	**final_str;
-		final_str = ft_split(cmd_line, ' ');
-		execute_pipe(ft_strlen(cmd_line), final_str, env); // Wrong because
+		// char	**final_str;
+		// final_str = ft_split(cmd_line, ' ');
+		// execute_pipe(ft_strlen(cmd_line), final_str, env); // Wrong because
 		free(input);
 	}
 	return (0);

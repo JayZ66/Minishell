@@ -90,7 +90,7 @@ int	tokenize_separator(t_token **token, char *input, int i, char **env)
 
 	new = NULL;
 	if (input[i] == '<')
-		if (input[i] + 1 == '<')
+		if (input[i + 1] == '<')
 		{
 			sep = ft_strndup(input + i, 2);
 			new = init_node(sep, HERE_DOC);
@@ -106,7 +106,7 @@ int	tokenize_separator(t_token **token, char *input, int i, char **env)
 		}
 
 	else if (input[i] == '>')
-		if (input[i] + 1 == '>')
+		if (input[i + 1] == '>')
 		{
 			sep = ft_strndup(input + i, 2);
 			new = init_node(sep, APPEND);
@@ -214,3 +214,8 @@ int	tokenize_simple_quote(t_token **token, char *input, int i)
 // Une fois que j'ai récupéré mon bout de str. je l'envoie pour créer un new node.
 // Ensuite je l'envoie dans add_back pour l'ajouter au bout de ma liste chaînée.
 
+// Node rafinné : char * avec dedans cmd et arg (en retirant un niveau de quote) + pipe.
+// Une seule structure avec pipe & cmd. sans stocker le char étoile du pipe. pour faire redirection.
+// Type à pipe et le reste à null.
+// A la fin de mon parser je free tout mon lexer.
+// Expanser tout mettre au chemin absolu !!

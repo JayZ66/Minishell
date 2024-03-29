@@ -81,7 +81,7 @@ t_token	*init_node(char *content, Token_type type);
 t_token	*lst_last(t_token *token);
 void	add_back(t_token **token, t_token *new);
 char	*ft_strndup(const char *s, size_t n);
-char	**change_shell_level(char **env);
+void	shell_level(char **env);
 
 void	execute_pipe(int nb_args, char **cmd_line, char **env);
 void	do_pipes(char *cmd, char **env);
@@ -100,6 +100,7 @@ int		ft_lstsize_content(t_token *token);
 char	*check_line_cmd(t_token *token);
 char	*ft_strcat(char *dst, const char *src, size_t size);
 void	print_lst(t_token *token);
+void	print_new_env(char **env);
 
 
 // tokenisation
