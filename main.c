@@ -26,7 +26,7 @@ Fonction commande : Liste de toutes les commandes
 */
 
 /*
-TOKENISATION : 
+TOKENISATION :
 - Il faut split notre ligne de commande.
 - Fonction pour créer un new node.
 - Ajouter dans le contenu du noeud
@@ -73,7 +73,8 @@ int		main(int argc, char **argv, char **env)
 {
 	char	*input;
 	t_token	*token;
-	char	*cmd_line;
+	// char	*cmd_line;
+	char	*var;
 	(void)argc;
 	(void)argv;
 
@@ -88,16 +89,17 @@ int		main(int argc, char **argv, char **env)
 			free(input);
 			exit(0) ;
 		}
-		// printf("Vous avez saisi : %s\n", input);
-		env = change_shell_level(env);
-		// print_new_env(env);
-		token = extract_cmd(&token, input);
+		// shell_level(env); // => To put at the right place for not having diff. SHLVL
+		token = extract_cmd(&token, input, env);
 		if (!token)
 			return(perror("Extract cmd failed\n"), free(input), 1);
-		cmd_line = check_line_cmd(token);
-		char	**final_str;
-		final_str = ft_split(cmd_line, ' ');
-		execute_pipe(ft_strlen(cmd_line), final_str, env); // Wrong because 
+		 var = get_the_var_of_env(token);
+		 printf("Variable d'env. : %s\n", var);
+		// print_lst(token);
+		// cmd_line = check_line_cmd(token);
+		// char	**final_str;
+		// final_str = ft_split(cmd_line, ' ');
+		// execute_pipe(ft_strlen(cmd_line), final_str, env); // Wrong because
 		free(input);
 	}
 	return (0);
@@ -105,7 +107,7 @@ int		main(int argc, char **argv, char **env)
 
 //  cmd -l < file1 | cmd|cmd -a > file2
 //  1. Boucle tant que je vois pas de pipe (puis boucle ext. tant que pas fini puis pipe)
-//  2. Si redirection : cmd -l (en token cmd) < file1 (token input) => Garder cmd -l dans une string. 
+//  2. Si redirection : cmd -l (en token cmd) < file1 (token input) => Garder cmd -l dans une string.
 //  que l'on met dans un noeud
 //  3. Token : Faire tous les cas (arbre) puis token avec conditions
 
@@ -113,16 +115,16 @@ int		main(int argc, char **argv, char **env)
 
 //  Pipe aussi dans un node.
 
-//  Lexer : 
+//  Lexer :
 //  Extrait les redirections puis envoie à pipex
 //  1. Check erreur avec tokenisation puis 2ème prog. pour transformer la string et l'envoyer à pipex.
-//  $? (donne erreur 0/1) => Récupèrer le result de la cmd d'avant. 
-//  => Donc à voir comment faire. + voir si pls cmd. 
+//  $? (donne erreur 0/1) => Récupèrer le result de la cmd d'avant.
+//  => Donc à voir comment faire. + voir si pls cmd.
 //  => Execve renvoie 1/0 donc voir comment le récupérer.
- 
+
 // FIRST TO DO.
 // Check la correction pour voir si rien de bad pour use pipex.
-// LIGNE A SUIVRE : 
+// LIGNE A SUIVRE :
 // Mettre dans une liste chaînée ma str de départ. > Faire les tokens.
 // Gérer les erreurs avec les tokens. > Transformer ma liste chaînée en
 // string qui sera modifée pour convenir à pipex (cf. ci-dessous) et la modifier
@@ -131,7 +133,7 @@ int		main(int argc, char **argv, char **env)
 // Identifier mes redirections (tokeniser avec input/output) pour derrière pouvoir
 // bien former ma string pour pipex (au niveau des redirections).
 
-// Tenter pipex (interne à minishell) 
+// Tenter pipex (interne à minishell)
 // Faire getenv() => Tab. de tab. je cherche shell level de 1 à 2. (SHLVL) like path (pipex)
 // Dans mon minishell j'ai un tab. de tab. de env. => J'envoie ça dans mon pipex
 // => Modifier la fonction get_env dans pipex.
@@ -145,7 +147,7 @@ int		main(int argc, char **argv, char **env)
 // On gère le $? Check comment l'extraire.
 // Gérer les erreurs (en checkant et testant tout à la main).
 
-// Questions à vérifier : 
+// Questions à vérifier :
 // Imaginons qu'il y ait 3 inputs et 1 output comment le gérer avec pipex ?
-// Bien passer l'env. à qu'on crée dans un main à pipex. 
+// Bien passer l'env. à qu'on crée dans un main à pipex.
 // Est-ce qu'on peut bien récupérer de pipex le $?

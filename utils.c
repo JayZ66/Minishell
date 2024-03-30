@@ -12,24 +12,28 @@
 
 #include "minishell.h"
 
-t_token	*init_node(char *content)
-{
-	t_token	*token;
+// TO DO : Function that free the entire list !
 
-	token = (t_token *)malloc(sizeof(t_token));
-	if (token == NULL)
-	{
-		perror("List has not been created\n");
-		exit(EXIT_FAILURE);
-	}
-	token->content = ft_strdup(content); // Add token function here !
-	if (token->content == NULL)
-	{
-		perror("Memory allocation failde\n");
-		exit(EXIT_FAILURE);
-	}
-	token->next = NULL;
-	return (token);
+
+t_token    *init_node(char *content, Token_type type)
+{
+    t_token    *token;
+
+    token = (t_token *)malloc(sizeof(t_token));
+    if (token == NULL)
+    {
+        perror("List has not been created\n");
+        exit(EXIT_FAILURE);
+    }
+    token->content = ft_strdup(content); // Add token function here !
+    if (token->content == NULL)
+    {
+        perror("Memory allocation failde\n");
+        exit(EXIT_FAILURE);
+    }
+    token->type = type;
+    token->next = NULL;
+    return (token);
 }
 
 t_token	*lst_last(t_token *token)
@@ -59,7 +63,7 @@ void	add_back(t_token **token, t_token *new)
 	{
 		last = lst_last(*token);
 		last->next = new;
-	}	
+	}
 }
 
 char	*ft_strndup(const char *s, size_t n)
@@ -121,6 +125,8 @@ int	manage_file(int nb_args, char **cmd_line, int flag)
 	int	first_file;
 	int	last_file;
 
+	first_file = 0;
+	last_file = 0;
 	if (flag == 2)
 		last_file = open(cmd_line[nb_args - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (flag == 1)
@@ -193,6 +199,7 @@ void	print_lst(t_token *token)
 	while (tmp)
 	{
 		printf("Chaque node content : %s\n", tmp->content);
+		printf("Chaque node type content : %u\n", tmp->type);
 		tmp = tmp->next;
 	}
 }

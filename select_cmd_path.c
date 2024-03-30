@@ -19,6 +19,7 @@ char	*select_path(char *cmd, char **env)
 	char	*final_path;
 	size_t	i;
 
+	i = 0;
 	all_path = get_path(env);
 	while (all_path[i])
 	{

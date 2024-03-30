@@ -1,0 +1,3 @@
+1. On garde les pipes dans les noeuds, donc noeud avec cmd et arg et noeud avec sep. (pas à compter)
+2. Ensuite on va check avec notre liste chaînée les pipes, et on gère les redirections.
+3. Puis on met dans un tab. de tab. ce qui nous interesse donc sans pipe et va l'exécuter.
