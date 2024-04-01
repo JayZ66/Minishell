@@ -14,8 +14,6 @@
 # define MINISHELL_H
 
 # include "Libft/libft.h"
-// # include "get_next_line/get_next_line.h"
-// # include "printf/ft_printf.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -77,10 +75,6 @@ typedef struct s_minishell
 // MANDATORY PART
 char	*read_input();
 t_token	*extract_cmd(t_token **token, char *cmd_line, char **env);
-t_token	*init_node(char *content, Token_type type);
-t_token	*lst_last(t_token *token);
-void	add_back(t_token **token, t_token *new);
-char	*ft_strndup(const char *s, size_t n);
 void	shell_level(char **env);
 
 void	execute_pipe(int nb_args, char **cmd_line, char **env);
@@ -95,12 +89,8 @@ void	exec_cmd(char *cmd, char **env);
 char	*select_path(char *cmd, char **env);
 char	**get_path(char **env);
 int		manage_file(int nb_args, char **cmd_line, int flag);
-int		ft_strlen_tab(char **cmd_line);
-int		ft_lstsize_content(t_token *token);
 char	*check_line_cmd(t_token *token);
-char	*ft_strcat(char *dst, const char *src, size_t size);
-void	print_lst(t_token *token);
-void	print_new_env(char **env);
+
 
 
 // tokenisation
@@ -113,5 +103,23 @@ int	tokenize_simple_quote(t_token **token, char *input, int i);
 // Var. env.
 char	*get_the_var_of_env(t_token *node);
 
+
+// Utils
+t_token	*init_node(char *content, Token_type type);
+t_token	*lst_last(t_token *token);
+void	add_back(t_token **token, t_token *new);
+char	*ft_strndup(const char *s, size_t n);
+char	*ft_strcat(char *dst, const char *src, size_t size);
+void	print_lst(t_token *token);
+void	print_new_env(char **env);
+int		ft_strlen_tab(char **cmd_line);
+int		ft_lstsize_content(t_token *token);
+void	free_that_lst(t_token **token);
+
+
+// Built_in
+void	builtin_exit(char **args);
+void	builtin_pwd();
+char	**builtin_unset(char *var, char **new_env);
 
 #endif

@@ -12,8 +12,30 @@
 
 #include "minishell.h"
 
-// TO DO : Function that free the entire list !
+/*
+En résumé, l'utilisation d'un pointeur double vous permet de modifier le 
+pointeur lui-même, pas seulement la valeur à laquelle il pointe. Cela vous 
+permet de réinitialiser correctement le pointeur token à NULL après avoir 
+libéré la mémoire de la liste chaînée.
+*/
+void	free_that_lst(t_token **token)
+{
+	t_token	*tmp;
 
+	if (!(*token))
+	{
+		perror("Lst is empty, can't free\n");
+		exit(EXIT_FAILURE);
+	}
+	while (*token)
+	{
+		tmp = (*token)->next;
+		free((*token)->content);
+		free(*token);
+		*token = tmp;
+	}
+	*token = NULL;
+}
 
 t_token    *init_node(char *content, Token_type type)
 {

@@ -89,7 +89,15 @@ int		main(int argc, char **argv, char **env)
 			free(input);
 			exit(0) ;
 		}
+		// else if (ft_strcmp(input, "debug_exit") == 0) 
+		// {
+		// 	char *args[] = {"debug_exit", "142", NULL};
+		// 	builtin_exit(args);
+		// 	free(input);
+    	// }
 		// shell_level(env); // => To put at the right place for not having diff. SHLVL
+		// if (ft_strcmp(input, "pwd") == 0) // To test with "cd" built-in !
+		// 	builtin_pwd();
 		token = extract_cmd(&token, input, env);
 		if (!token)
 			return(perror("Extract cmd failed\n"), free(input), 1);
@@ -101,9 +109,14 @@ int		main(int argc, char **argv, char **env)
 		// final_str = ft_split(cmd_line, ' ');
 		// execute_pipe(ft_strlen(cmd_line), final_str, env); // Wrong because
 		free(input);
+		free_that_lst(&token);
 	}
 	return (0);
 }
+
+
+
+
 
 //  cmd -l < file1 | cmd|cmd -a > file2
 //  1. Boucle tant que je vois pas de pipe (puis boucle ext. tant que pas fini puis pipe)
@@ -111,25 +124,14 @@ int		main(int argc, char **argv, char **env)
 //  que l'on met dans un noeud
 //  3. Token : Faire tous les cas (arbre) puis token avec conditions
 
-// Envoyer dans mon pipex (simuler sur argc/argv, et envoyer env. de mon minishell avec getenv).
-
-//  Pipe aussi dans un node.
-
 //  Lexer :
 //  Extrait les redirections puis envoie à pipex
 //  1. Check erreur avec tokenisation puis 2ème prog. pour transformer la string et l'envoyer à pipex.
-//  $? (donne erreur 0/1) => Récupèrer le result de la cmd d'avant.
+//  $? (donne erreur 0/1) => Récupèrer le result de la cmd d'avant. ==> FAIRE VAR. STRUCTURE !
 //  => Donc à voir comment faire. + voir si pls cmd.
-//  => Execve renvoie 1/0 donc voir comment le récupérer.
+//  => Execve renvoie 1/0 donc voir comment le récupérer. ==> AU MOMENT DE L'EXEC. ON RECUP RESULT.
 
-// FIRST TO DO.
-// Check la correction pour voir si rien de bad pour use pipex.
-// LIGNE A SUIVRE :
-// Mettre dans une liste chaînée ma str de départ. > Faire les tokens.
-// Gérer les erreurs avec les tokens. > Transformer ma liste chaînée en
-// string qui sera modifée pour convenir à pipex (cf. ci-dessous) et la modifier
-// pour convenir à l'entrée attendue par pipex.
-// Récupèrer env., modifier le shell level & envoyer à pipex.
+
 // Identifier mes redirections (tokeniser avec input/output) pour derrière pouvoir
 // bien former ma string pour pipex (au niveau des redirections).
 
@@ -147,7 +149,4 @@ int		main(int argc, char **argv, char **env)
 // On gère le $? Check comment l'extraire.
 // Gérer les erreurs (en checkant et testant tout à la main).
 
-// Questions à vérifier :
-// Imaginons qu'il y ait 3 inputs et 1 output comment le gérer avec pipex ?
-// Bien passer l'env. à qu'on crée dans un main à pipex.
-// Est-ce qu'on peut bien récupérer de pipex le $?
+
