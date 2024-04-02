@@ -33,6 +33,22 @@ t_token    *init_node(char *content, Token_type type)
     return (token);
 }
 
+t_token    *init_node_separator(Token_type type)
+{
+    t_token    *token;
+
+    token = (t_token *)malloc(sizeof(t_token));
+    if (token == NULL)
+    {
+        perror("List has not been created\n");
+        exit(EXIT_FAILURE);
+    }
+    token->content = NULL;
+    token->type = type;
+    token->next = NULL;
+    return (token);
+}
+
 t_token	*lst_last(t_token *token)
 {
 	if (token == NULL)
