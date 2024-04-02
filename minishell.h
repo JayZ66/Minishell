@@ -111,8 +111,9 @@ int	tokenize_simple_quote(t_token **token, char *input, int i);
 
 t_token    *init_node_separator(Token_type type);
 
-t_token	*clean_arg(t_token **token, Token_type type);
+t_token	*clean_arg(t_token **token);
 char	*ft_clean_space(char *content);
+
 
 
 #endif

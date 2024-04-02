@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: romlambe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/03/25 19:56:52 by marvin           ###   ########.fr        #
+#    Updated: 2024/04/02 23:14:17 by romlambe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ CFLAGS := -Wall -Wextra -Werror -Iheaders/ -g
 
 #Liste des fichiers source.
 SRCS = main.c utils.c extract_cmd.c modify_env.c executing_cmds.c \
-		cmd_line_to_run.c select_cmd_path.c
+		cmd_line_to_run.c select_cmd_path.c parsing_cmd.c
 
 LIBFT = Libft/libft.a
 # PRINTF = printf/libftprintf.a

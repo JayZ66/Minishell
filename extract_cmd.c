@@ -38,7 +38,7 @@ t_token	*extract_cmd(t_token **token, char *input, char **env)
 			i = tokenize_arg(token, input, i);
 		// i++;
 	}
-	// *token = clean_arg(token, ARG);
+	*token = clean_arg(token);
 	return (*token);
 }
 
@@ -110,109 +110,109 @@ int tokenize_arg(t_token **token, char *input, int i)
 		return (end + 1);
 }
 
-t_token	*clean_arg(t_token **token, Token_type type)
-{
-	t_token	*temp;
+// t_token	*clean_arg(t_token **token, Token_type type)
+// {
+// 	t_token	*temp;
 
-	temp = *token;
-	while (temp != NULL)
-	{
-		if(temp->type == type)
-		{
-			temp->content = ft_clean_space(temp->content);
-		}
-		temp = temp->next;
-	}
-	return(temp);
-}
+// 	temp = *token;
+// 	while (temp != NULL)
+// 	{
+// 		if(temp->type == type)
+// 		{
+// 			temp->content = ft_clean_space(temp->content);
+// 		}
+// 		temp = temp->next;
+// 	}
+// 	return(temp);
+// }
 
-char	*ft_clean_space(char *content)
-{
-	int		i;
-	int		flag;
-	char	*temp;
+// char	*ft_clean_space(char *content)
+// {
+// 	int		i;
+// 	int		flag;
+// 	char	*temp;
 
-	i = 0;
-	flag = 0;
-	temp = (char *)malloc(sizeof(char) * (ft_strlen(content) + 1));
-	while(content[i] == ' ' || content[i] == '\t')
-		i++;
-	while (content[i])
-	{
-		if (content[i] == ' ' || content[i] == '\t')
-			flag = 1;
-		if (!(content[i] == ' ' || content[i] == '\t'))
-		{
-			if (flag == 1)
-				temp[i] = ' ';
-			flag = 0;
-			temp[i] = content[i];
-		}
-		i++;
-	}
-	temp[i] = 0;
-	return (temp);
-}
+// 	i = 0;
+// 	flag = 0;
+// 	temp = (char *)malloc(sizeof(char) * (ft_strlen(content) + 1));
+// 	while(content[i] == ' ' || content[i] == '\t')
+// 		i++;
+// 	while (content[i])
+// 	{
+// 		if (content[i] == ' ' || content[i] == '\t')
+// 			flag = 1;
+// 		if (!(content[i] == ' ' || content[i] == '\t'))
+// 		{
+// 			if (flag == 1)
+// 				temp[i] = ' ';
+// 			flag = 0;
+// 			temp[i] = content[i];
+// 		}
+// 		i++;
+// 	}
+// 	temp[i] = 0;
+// 	return (temp);
+// }
 
-int	tokenize_double_quote(t_token **token, char *input, int i, char **env)
-{
-	int		start;
-	int		end;
-	int		count_quote;
-	(void)	env;
-	char	*arg;
-	t_token	*new;
+// int	tokenize_double_quote(t_token **token, char *input, int i, char **env)
+// {
+// 	int		start;
+// 	int		end;
+// 	int		count_quote;
+// 	(void)	env;
+// 	char	*arg;
+// 	t_token	*new;
 
-	start = i;
-	end = i;
-	count_quote = 0;
-	while(input[end])
-	{
-		if (input[end] == '"')
-			count_quote++;
-		end++;
-	}
-	if (count_quote % 2 != 0)
-	{
-		perror("pas de seconde double quote\n");
-		exit(EXIT_FAILURE);
-	}
-	printf("end: %d \n", end);
-	arg = ft_strndup(input + start, end - start);
-	new = init_node(arg, ARG);
-	add_back(token, new);
-	free(arg);
-	return (end + 1);
-}
+// 	start = i;
+// 	end = i;
+// 	count_quote = 0;
+// 	while(input[end])
+// 	{
+// 		if (input[end] == '"')
+// 			count_quote++;
+// 		end++;
+// 	}
+// 	if (count_quote % 2 != 0)
+// 	{
+// 		perror("pas de seconde double quote\n");
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	printf("end: %d \n", end);
+// 	arg = ft_strndup(input + start, end - start);
+// 	new = init_node(arg, ARG);
+// 	add_back(token, new);
+// 	free(arg);
+// 	return (end + 1);
+// }
 
-int	tokenize_simple_quote(t_token **token, char *input, int i)
-{
-	int		start;
-	int		end;
-	int		count_quote;
-	char	*arg;
-	t_token	*new;
+// int	tokenize_simple_quote(t_token **token, char *input, int i)
+// {
+// 	int		start;
+// 	int		end;
+// 	int		count_quote;
+// 	char	*arg;
+// 	t_token	*new;
 
-	start = i;
-	end = i;
-	count_quote = 0;
-	while(input[end])
-	{
-		if (input[end] == '\'')
-			count_quote++;
-		end++;
-	}
-	if (count_quote % 2 != 0)
-	{
-		perror("pas de seconde simple quote\n");
-		exit(EXIT_FAILURE);
-	}
-	arg = ft_strndup(input + start, end - start);
-	new = init_node(arg, ARG);
-	add_back(token, new);
-	free(arg);
-	return (end + 1);
-}
+// 	start = i;
+// 	end = i;
+// 	count_quote = 0;
+// 	while(input[end])
+// 	{
+// 		if (input[end] == '\'')
+// 			count_quote++;
+// 		end++;
+// 	}
+// 	if (count_quote % 2 != 0)
+// 	{
+// 		perror("pas de seconde simple quote\n");
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	arg = ft_strndup(input + start, end - start);
+// 	new = init_node(arg, ARG);
+// 	add_back(token, new);
+// 	free(arg);
+// 	return (end + 1);
+// }
 
 // Je crée une str, avec strdup, où je récupère jusqu'au pipe.
 // Une fois que j'ai récupéré mon bout de str. je l'envoie pour créer un new node.
