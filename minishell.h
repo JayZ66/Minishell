@@ -121,5 +121,13 @@ void	free_that_lst(t_token **token);
 void	builtin_exit(char **args);
 void	builtin_pwd();
 char	**builtin_unset(char *var, char **new_env);
+void	builtin_env(char **env);
+char	**builtin_export(char **args, char **env);
+char	**create_var_env(char **env, char *var);
+size_t	ft_size_env(char **env);
+void	modify_value_env(char **env, char *var, char *new_value);
+int		is_var_in_env(char *var, char **env);
+void	update_env(char **env, char *var);
+void	sort_tab(char **env);
 
 #endif

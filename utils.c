@@ -225,3 +225,15 @@ void	print_lst(t_token *token)
 		tmp = tmp->next;
 	}
 }
+
+void	print_new_env(char **env)
+{
+	int	i;
+
+	i = 0;
+	while(env[i])
+	{
+		printf("Voici mon new env. : %s\n", env[i]);
+		i++;
+	}
+}

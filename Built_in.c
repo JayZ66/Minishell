@@ -13,7 +13,6 @@
 
 #include "minishell.h"
 
-
 /*
 This function will mimic the exit cmd.
 It'll exit the prog. based on the given output code.
@@ -73,7 +72,7 @@ This function mimic the unset cmd.
 It allows us to delete one or more
 environment var.
 */
-char	**builtin_unset(char *var, char **new_env) // ASK JB : Puis-je utiliser getenv() ailleurs une fois le SHLVL modifié ?
+char	**builtin_unset(char *var, char **new_env) // TO TEST.
 { // Check what kind of var. we need ($ ou pas). + how we can get our modify env.
 	char	*path;
 	size_t	i;
@@ -98,3 +97,20 @@ char	**builtin_unset(char *var, char **new_env) // ASK JB : Puis-je utiliser get
 	perror("Can't find the var. to remove from the env.\n");
 	return (NULL);
 }
+
+void	builtin_env(char **env)
+{
+	size_t	i;
+
+	i = 0;
+	while (env[i])
+	{
+		printf("%s\n", env[i]);
+		i++;
+	}
+}
+
+/*
+cd : Il faut use change directory & ensuite update le
+path dans l'env.
+*/

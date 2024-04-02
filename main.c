@@ -42,31 +42,20 @@ char	*read_input()
 {
 	char	*input;
 
-	input = readline(">$");
+	input = readline("Minishell>$");
 	if (input == NULL)
 	{
-		perror("Input is null\n");
-		EXIT_FAILURE;
+		free(input);
+		exit(EXIT_FAILURE);
 	}
 	if (ft_strlen(input) <= 0)
 	{
 		perror("Input is empty\n");
+		free(input);
 		exit(0);
 	}
 	add_history(input);
 	return (input);
-}
-
-void	print_new_env(char **env)
-{
-	int	i;
-
-	i = 0;
-	while(env[i])
-	{
-		printf("Voici mon new env. : %s\n", env[i]);
-		i++;
-	}
 }
 
 int		main(int argc, char **argv, char **env)
@@ -74,7 +63,7 @@ int		main(int argc, char **argv, char **env)
 	char	*input;
 	t_token	*token;
 	// char	*cmd_line;
-	char	*var;
+	// char	*var;
 	(void)argc;
 	(void)argv;
 
@@ -89,6 +78,14 @@ int		main(int argc, char **argv, char **env)
 			free(input);
 			exit(0) ;
 		}
+		else if (ft_strcmp(input, "export") == 0)
+		{
+			// char *args[] = {"export", "LS_COLORS=Trop de truc à écrire", NULL};
+			// char *args[] = {"export", "LOL=osef", NULL};
+			char *args[] = {"export", NULL};
+			env = builtin_export(args, env);
+			// print_new_env(env);
+		}
 		// else if (ft_strcmp(input, "debug_exit") == 0) 
 		// {
 		// 	char *args[] = {"debug_exit", "142", NULL};
@@ -101,14 +98,17 @@ int		main(int argc, char **argv, char **env)
 		token = extract_cmd(&token, input, env);
 		if (!token)
 			return(perror("Extract cmd failed\n"), free(input), 1);
-		 var = get_the_var_of_env(token);
-		 printf("Variable d'env. : %s\n", var);
+		//  var = get_the_var_of_env(token);
 		// print_lst(token);
+		
+		
+		
 		// cmd_line = check_line_cmd(token);
 		// char	**final_str;
 		// final_str = ft_split(cmd_line, ' ');
 		// execute_pipe(ft_strlen(cmd_line), final_str, env); // Wrong because
 		free(input);
+		// free_tab(env);
 		free_that_lst(&token);
 	}
 	return (0);
