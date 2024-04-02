@@ -28,6 +28,8 @@ t_token	*extract_cmd(t_token **token, char *input, char **env)
 	{
 		while (input[i] == ' ' || input[i] == '\t')
 			i++;
+		if (!input[i])
+			break;
 		if (input[i] == ' ' || input[i] == '\t')
 			i++;
 		else if (input[i] == '|' || input[i] == '<' || input[i] == '>')
@@ -36,7 +38,7 @@ t_token	*extract_cmd(t_token **token, char *input, char **env)
 			i = tokenize_arg(token, input, i);
 		// i++;
 	}
-	*token = clean_arg(token, ARG);
+	// *token = clean_arg(token, ARG);
 	return (*token);
 }
 
@@ -93,15 +95,19 @@ int tokenize_arg(t_token **token, char *input, int i)
 	t_token *new;
 	start = i;
 	end = i;
-	// printf("taille de start %d\n", start);
-	// printf("taille de end avant: %d\n", end);
-	while(input[end] && input[end] != '|' && input[end] != '<' && input[end] != '>')
+	printf("taille de start %d\n", start);
+	printf("taille de end avant: %d\n", end);
+	while(input[end] && input[end] != ' '&& input[end] != '\t' && input[end] != '|' && input[end] != '<' && input[end] != '>')
 		end++;
 	arg = ft_strndup(input + start, end - start);
+	printf("arg: %s\n", arg);
 	new = init_node(arg, ARG);
 	add_back(token, new);
 	free(arg);
-	return (end);
+	if (input[end] == 0)
+		return (end);
+	else
+		return (end + 1);
 }
 
 t_token	*clean_arg(t_token **token, Token_type type)
