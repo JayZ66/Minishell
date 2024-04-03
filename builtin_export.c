@@ -36,23 +36,40 @@ Will modify the value of the identified
 var. in the environment.
 */
 
-void	modify_value_env(char **env, char *var, char *new_value)
+char	**modify_value_env(char **env, char *var, char *new_value)
 {
 	size_t	i;
 	size_t	var_len;
+	size_t	size_env;
+	char	**new_env;
 
 	i = 0;
+	// new_env = NULL;
 	var_len = ft_strlen(var);
+	size_env = ft_size_env(env);
+	new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
+	if (!new_env)
+	{
+		perror("Can't create the new env.\n");
+		exit(EXIT_FAILURE);
+	}
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], var, var_len) == 0 && env[i][var_len] == '=')
-		{
-			ft_string_cpy(env[i] + var_len, new_value);
-		}
+			env[i] = ft_string_cpy(env[i] + var_len, new_value);
+		new_env[i] = ft_strdup(env[i]);
 		i++;
 	}
-	perror("Can't modify the existing var. in the envt\n");
-	return ;
+	// i = 0;
+	// while (env[i])
+	// {
+	// 	new_env[i] = ft_strdup(env[i]);
+	// 	// free(env[i]);
+	// 	i++;
+	// }
+	free(env);
+	new_env[size_env] = NULL;
+	return (new_env);
 }
 
 size_t	ft_size_env(char **env)
@@ -82,11 +99,11 @@ char	**create_var_env(char **env, char *var)
 	}
 	while (i < size_env)
 	{
-		new_env[i] = ft_strdup(env[i]); // LEAK, HOW TO MANAGE IT ?
-		// free(env[i]);
+		new_env[i] = ft_strdup(env[i]);
+		free(env[i]);
 		i++;
 	}
-	// free(env);
+	free(env);
 	new_env[size_env] = ft_strdup(var);
 	new_env[size_env + 1] = NULL;
 	return (new_env);
@@ -103,14 +120,15 @@ char	**create_var_env(char **env, char *var)
 void	sort_tab(char **env)
 {
 	size_t	i;
-	size_t	j;
+	// size_t	j;
 	char	*temp;
 
 	i = 0;
-	j = 0;
+	// j = 0;
 	while (env[i + 1])
 	{
-		if (env[i][j] > env[i + 1][j])
+		if (env[i][0] > env[i + 1][0] || 
+               (env[i][0] == env[i + 1][0] && env[i][1] > env[i + 1][1]))
 		{
 			temp = env[i];
 			env[i] = env[i + 1];
@@ -140,9 +158,9 @@ char	**builtin_export(char **args, char **env)
 				var = ft_substr(args[1], 0, i);
 				if (is_var_in_env(var, env) == 1)
 				{
-					modify_value_env(env, var, args[1] + i);
+					new_env = modify_value_env(env, var, args[1] + i);
 					free(var);
-					return (env); // CHECK HOW TO MANAGE LEAKS WITH ENV.
+					return (new_env); // CHECK HOW TO MANAGE LEAKS WITH ENV.
 					// Modification de la valeur de la var.
 				}
 				else

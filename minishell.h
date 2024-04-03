@@ -115,17 +115,18 @@ void	print_new_env(char **env);
 int		ft_strlen_tab(char **cmd_line);
 int		ft_lstsize_content(t_token *token);
 void	free_that_lst(t_token **token);
+char	**realloc_env(char **env);
+size_t	ft_size_env(char **env);
 
 
 // Built_in
 void	builtin_exit(char **args);
 void	builtin_pwd();
-char	**builtin_unset(char *var, char **new_env);
+char	**builtin_unset(char **var, char **new_env);
 void	builtin_env(char **env);
 char	**builtin_export(char **args, char **env);
 char	**create_var_env(char **env, char *var);
-size_t	ft_size_env(char **env);
-void	modify_value_env(char **env, char *var, char *new_value);
+char	**modify_value_env(char **env, char *var, char *new_value);
 int		is_var_in_env(char *var, char **env);
 void	update_env(char **env, char *var);
 void	sort_tab(char **env);

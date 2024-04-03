@@ -72,18 +72,16 @@ This function mimic the unset cmd.
 It allows us to delete one or more
 environment var.
 */
-char	**builtin_unset(char *var, char **new_env) // TO TEST.
-{ // Check what kind of var. we need ($ ou pas). + how we can get our modify env.
-	char	*path;
+char	**builtin_unset(char **var, char **new_env) // Check later if we need to send **char ou *char
+{ // Check how we can get our modify env.
 	size_t	i;
 
 	i = 0;
 	while (new_env[i])
 	{
-		path = new_env[i];
-		if (ft_strncmp(path, var, ft_strlen(var)) == 0 && path[ft_strlen(var)] == '=')
+		if (ft_strncmp(new_env[i], var[1], ft_strlen(var[1])) == 0 && new_env[i][ft_strlen(var[1])] == '=')
 		{
-			free(new_env[i]);
+			// free(new_env[i]); // Can't free bce i've an invalid pointer. So, maybe send it to the new_env ?
 			while (new_env[i + 1])
 			{
 				new_env[i] = new_env[i + 1];
@@ -114,3 +112,42 @@ void	builtin_env(char **env)
 cd : Il faut use change directory & ensuite update le
 path dans l'env.
 */
+
+void	builtin_cd(char **env, char **cmd)
+{
+	size_t	i;
+
+	i = 0;
+	if (cmd[1] != NULL)
+	{
+		if (chdir(cmd[1]) != 0)
+		{
+			perror("Can't moove to the new directory\n");
+			return ;
+		}
+		char cwd[1024]; // To change & alloc the right size.
+		if (getcwd(cwd, sizeof(cwd)) == NULL) // Récupérer le new path où on est.
+		{
+			perror("getcwd");
+			return;
+		}
+
+		char *new_pwd = malloc(strlen("PWD=") + strlen(cwd) + 1);
+		if (new_pwd == NULL) {
+			perror("malloc");
+			return;
+		}
+
+		sprintf(new_pwd, "PWD=%s", cwd);
+	}
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], "PWD=", 4) == 0)
+		{
+			free(env[i]);
+			env[i] = new_pwd;
+			break ;
+		}
+		i++;
+	}
+}

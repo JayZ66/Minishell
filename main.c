@@ -61,15 +61,16 @@ char	*read_input()
 int		main(int argc, char **argv, char **env)
 {
 	char	*input;
-	t_token	*token;
-	// char	*cmd_line;
-	// char	*var;
+	// t_token	*token;
 	(void)argc;
 	(void)argv;
 
-	token = NULL;
+	// token = NULL;
 	// if (argc != 1 || argv[1])
 	// 	return (perror("Wrong nb of args\n"), 1);
+	env = realloc_env(env);
+	if (env == NULL)
+		return (perror("Realloc env. failed\n"), 1);
 	while (1)
 	{
 		input = read_input();
@@ -81,42 +82,24 @@ int		main(int argc, char **argv, char **env)
 		else if (ft_strcmp(input, "export") == 0)
 		{
 			// char *args[] = {"export", "LS_COLORS=Trop de truc à écrire", NULL};
-			// char *args[] = {"export", "LOL=osef", NULL};
-			char *args[] = {"export", NULL};
-			env = builtin_export(args, env);
+			// char *args[] = {"export", "LOL=osef", NULL}; // OK
+			// char *args[] = {"export", NULL}; // OK
+			// env = builtin_export(args, env); // Trouver le moyen si env. copie ou pas
 			// print_new_env(env);
+			break ;
 		}
-		// else if (ft_strcmp(input, "debug_exit") == 0) 
-		// {
-		// 	char *args[] = {"debug_exit", "142", NULL};
-		// 	builtin_exit(args);
-		// 	free(input);
-    	// }
-		// shell_level(env); // => To put at the right place for not having diff. SHLVL
-		// if (ft_strcmp(input, "pwd") == 0) // To test with "cd" built-in !
-		// 	builtin_pwd();
-		token = extract_cmd(&token, input, env);
-		if (!token)
-			return(perror("Extract cmd failed\n"), free(input), 1);
-		//  var = get_the_var_of_env(token);
-		// print_lst(token);
-		
-		
-		
-		// cmd_line = check_line_cmd(token);
-		// char	**final_str;
-		// final_str = ft_split(cmd_line, ' ');
-		// execute_pipe(ft_strlen(cmd_line), final_str, env); // Wrong because
-		free(input);
-		// free_tab(env);
-		free_that_lst(&token);
+		// token = extract_cmd(&token, input, env);
+		// if (!token)
+		// 	return(perror("Extract cmd failed\n"), free(input), 1);
 	}
+	char *args[] = {"export", "LOL=osef", NULL};	env = builtin_export(args, env); // Trouver le moyen si env. copie ou pas
+	print_new_env(env);
+	free(input);
+	// free_that_lst(&token);
+	free_tab(env);
+	// if (env != NULL)
 	return (0);
 }
-
-
-
-
 
 //  cmd -l < file1 | cmd|cmd -a > file2
 //  1. Boucle tant que je vois pas de pipe (puis boucle ext. tant que pas fini puis pipe)
@@ -149,4 +132,90 @@ int		main(int argc, char **argv, char **env)
 // On gère le $? Check comment l'extraire.
 // Gérer les erreurs (en checkant et testant tout à la main).
 
+char	**realloc_env(char **env)
+{
+	char	**new_env;
+	size_t	size_env;
+	size_t	i;
 
+	size_env = ft_size_env(env);
+	i = 0;
+	new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
+	if (!new_env)
+	{
+		perror("Can't create the new env.\n");
+		exit(EXIT_FAILURE);
+	}
+	while (env[i])
+	{
+		new_env[i] = ft_strdup(env[i]); // LEAK, HOW TO MANAGE IT ?
+		i++;
+	}
+	new_env[size_env] = NULL;
+	return (new_env);
+}
+
+// Main test fonctions built_in et env !!
+
+// int		main(int argc, char **argv, char **env)
+// {
+// 	char	*input;
+// 	t_token	*token;
+// 	// char	*cmd_line;
+// 	// char	*var;
+// 	char	**new_env;
+// 	(void)argc;
+// 	(void)argv;
+
+// 	token = NULL;
+// 	// if (argc != 1 || argv[1])
+// 	// 	return (perror("Wrong nb of args\n"), 1);
+// 	while (1)
+// 	{
+// 		input = read_input();
+// 		if (ft_strcmp(input, "exit") == 0)
+// 		{
+// 			free(input);
+// 			exit(0) ;
+// 		}
+// 		else if (ft_strcmp(input, "unset") == 0)
+// 		{
+// 			char	*args[] = {"unset", "USER", NULL};
+// 			new_env = builtin_unset(args, env);
+// 			print_new_env(new_env);
+// 		}
+// 		// else if (ft_strcmp(input, "export") == 0)
+// 		// {
+// 		// 	// char *args[] = {"export", "LS_COLORS=Trop de truc à écrire", NULL};
+// 		// 	char *args[] = {"export", "LOL=osef", NULL};
+// 		// 	// char *args[] = {"export", NULL};
+// 		// 	new_env = builtin_export(args, env);
+// 		// 	print_new_env(new_env);
+// 		// }
+// 		// else if (ft_strcmp(input, "debug_exit") == 0) 
+// 		// {
+// 		// 	char *args[] = {"debug_exit", "142", NULL};
+// 		// 	builtin_exit(args);
+// 		// 	free(input);
+//     	// }
+// 		// shell_level(env); // => To put at the right place for not having diff. SHLVL
+// 		// if (ft_strcmp(input, "pwd") == 0) // To test with "cd" built-in !
+// 		// 	builtin_pwd();
+// 		token = extract_cmd(&token, input, env);
+// 		if (!token)
+// 			return(perror("Extract cmd failed\n"), free(input), 1);
+// 		//  var = get_the_var_of_env(token);
+// 		// print_lst(token);
+		
+		
+		
+// 		// cmd_line = check_line_cmd(token);
+// 		// char	**final_str;
+// 		// final_str = ft_split(cmd_line, ' ');
+// 		// execute_pipe(ft_strlen(cmd_line), final_str, env); // Wrong because
+// 		free(input);
+// 		// free_tab(new_env);
+// 		free_that_lst(&token);
+// 	}
+// 	return (0);
+// }

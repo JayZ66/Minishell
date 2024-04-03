@@ -228,7 +228,7 @@ void	print_lst(t_token *token)
 
 void	print_new_env(char **env)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while(env[i])
