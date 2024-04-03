@@ -106,10 +106,10 @@ int tokenize_arg(t_token **token, char *input, int i)
 	new = init_node(arg, ARG);
 	add_back(token, new);
 	free(arg);
-	if (input[end] == 0)
-		return (end);
-	else
-		return (end + 1);
+	// if (input[end] == 0)
+	// 	return (end);
+	// else
+	return (end);
 }
 
 // t_token	*clean_arg(t_token **token, Token_type type)

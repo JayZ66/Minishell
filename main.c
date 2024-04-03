@@ -79,7 +79,7 @@ int		main(int argc, char **argv, char **env)
 	(void)argv;
 
 	token = NULL;
-	clean_token = NULL;
+	// clean_token = NULL;
 	// if (argc != 1 || argv[1])
 	// 	return (perror("Wrong nb of args\n"), 1);
 	while (1)
@@ -94,7 +94,7 @@ int		main(int argc, char **argv, char **env)
 		// shell_level(env); // => To put at the right place for not having diff. SHLVL
 		token = extract_cmd(&token, input, env);
 
-		// print_lst(token);
+		print_lst(token);
 		clean_token = clean_arg(&token);
 		print_clean_lst(clean_token);
 		// cmd_line = check_line_cmd(token);
