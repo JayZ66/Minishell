@@ -63,6 +63,12 @@ typedef struct s_minishell
 	t_exec	exec;
 } t_minishell;
 
+typedef struct s_clean_token
+{
+	char					*content;
+	Token_type				type;
+	struct s_clean_token	*next;
+} t_clean_token;
 
 // Une structure outils
 // path
@@ -78,8 +84,17 @@ typedef struct s_minishell
 char	*read_input();
 t_token	*extract_cmd(t_token **token, char *cmd_line, char **env);
 t_token	*init_node(char *content, Token_type type);
+
+t_clean_token    *init_clean_node(char *content);
+
 t_token	*lst_last(t_token *token);
+
+t_clean_token	*lst_clean_last(t_clean_token *token);
+
 void	add_back(t_token **token, t_token *new);
+
+void	add_clean_back(t_clean_token **token, t_clean_token *new);
+
 char	*ft_strndup(const char *s, size_t n);
 void	shell_level(char **env);
 
@@ -100,6 +115,9 @@ int		ft_lstsize_content(t_token *token);
 char	*check_line_cmd(t_token *token);
 char	*ft_strcat(char *dst, const char *src, size_t size);
 void	print_lst(t_token *token);
+
+void	print_clean_lst(t_clean_token *token);
+
 void	print_new_env(char **env);
 
 
@@ -111,7 +129,7 @@ int	tokenize_simple_quote(t_token **token, char *input, int i);
 
 t_token    *init_node_separator(Token_type type);
 
-t_token	*clean_arg(t_token **token);
+t_clean_token	*clean_arg(t_token **token);
 char	*ft_clean_space(char *content);
 
 

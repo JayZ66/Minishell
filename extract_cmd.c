@@ -22,8 +22,10 @@ t_token	*extract_cmd(t_token **token, char *input, char **env)
 {
 	size_t	i;
 	(void)	env;
+	// t_clean_token *clean_token;
 
 	i = 0;
+	// clean_token = NULL;
 	while (input[i])
 	{
 		while (input[i] == ' ' || input[i] == '\t')
@@ -38,7 +40,7 @@ t_token	*extract_cmd(t_token **token, char *input, char **env)
 			i = tokenize_arg(token, input, i);
 		// i++;
 	}
-	*token = clean_arg(token);
+	// clean_token = clean_arg(token);
 	return (*token);
 }
 

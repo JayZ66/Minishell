@@ -33,6 +33,26 @@ t_token    *init_node(char *content, Token_type type)
     return (token);
 }
 
+t_clean_token    *init_clean_node(char *content)
+{
+    t_clean_token    *token;
+
+    token = (t_clean_token *)malloc(sizeof(t_clean_token));
+    if (token == NULL)
+    {
+        perror("List has not been created\n");
+        exit(EXIT_FAILURE);
+    }
+    token->content = ft_strdup(content); // Add token function here !
+    if (token->content == NULL)
+    {
+        perror("Memory allocation failde\n");
+        exit(EXIT_FAILURE);
+    }
+    token->next = NULL;
+    return (token);
+}
+
 t_token    *init_node_separator(Token_type type)
 {
     t_token    *token;
@@ -75,6 +95,36 @@ void	add_back(t_token **token, t_token *new)
 	else
 	{
 		last = lst_last(*token);
+		last->next = new;
+	}
+}
+
+t_clean_token	*lst_clean_last(t_clean_token *token)
+{
+	if (token == NULL)
+	{
+		perror("Token node is empty\n");
+		exit(EXIT_FAILURE);
+	}
+	while (token->next)
+		token = token->next;
+	return (token);
+}
+
+void	add_clean_back(t_clean_token **token, t_clean_token *new)
+{
+	t_clean_token	*last;
+
+	if (!token)
+	{
+		perror("List is empty\n");
+		EXIT_FAILURE;
+	}
+	if (!(*token)) // To check !
+		*token = new;
+	else
+	{
+		last = lst_clean_last(*token);
 		last->next = new;
 	}
 }
@@ -213,6 +263,18 @@ void	print_lst(t_token *token)
 	{
 		printf("Chaque node content : %s\n", tmp->content);
 		printf("Chaque node type content : %u\n", tmp->type);
+		tmp = tmp->next;
+	}
+}
+
+void	print_clean_lst(t_clean_token *token)
+{
+	t_clean_token	*tmp;
+
+	tmp = token;
+	while (tmp)
+	{
+		printf("Chaque node clean content : %s\n", tmp->content);
 		tmp = tmp->next;
 	}
 }

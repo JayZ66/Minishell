@@ -6,7 +6,7 @@
 /*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 23:02:21 by romlambe          #+#    #+#             */
-/*   Updated: 2024/04/02 23:49:21 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/04/03 14:30:01 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,118 +40,36 @@
 // 	return (result);
 // }
 
-// t_token *clean_arg(t_token **token)
-// {
-//     t_token *current = *token; // Pointeur vers le début de la liste
-//     t_token *result = NULL; // Pointeur vers le début de la nouvelle liste
-//     t_token *arg_node = NULL; // Pointeur vers le début des noeuds d'argument
-//     char *arg_str = NULL; // Chaîne pour stocker l'argument complet
-
-//     while (current != NULL)
-//     {
-//         if (current->type == ARG)
-//         {
-//             // Si on commence un nouvel argument, initialiser la chaîne et le noeud d'argument
-//             if (arg_node == NULL)
-//             {
-//                 arg_node = current;
-//                 arg_str = ft_strdup(current->content);
-//             }
-//             else
-//             {
-//                 // Concaténer le contenu de l'argument au string complet
-//                 char *temp = ft_strjoin(arg_str, " ");
-//                 free(arg_str);
-//                 arg_str = ft_strjoin(temp, current->content);
-//                 free(temp);
-//             }
-//         }
-//         else
-//         {
-//             // Si on rencontre un autre type de noeud, ajouter l'argument complet à la nouvelle liste
-//             if (arg_node != NULL)
-//             {
-//                 t_token *new_arg_node = init_node(arg_str, ARG);
-//                 add_back(&result, new_arg_node);
-//                 arg_node = NULL; // Réinitialiser le noeud d'argument
-//                 free(arg_str);
-//                 arg_str = NULL;
-//             }
-//             add_back(&result, current); // Ajouter le noeud actuel à la nouvelle liste
-//         }
-//         current = current->next; // Passer au prochain noeud
-//     }
-
-//     // Ajouter le dernier argument complet à la nouvelle liste
-//     if (arg_node != NULL)
-//     {
-//         t_token *new_arg_node = init_node(arg_str, ARG);
-//         add_back(&result, new_arg_node);
-//         free(arg_str);
-//     }
-
-//     // Libérer l'ancienne liste
-
-//     *token = NULL; // Réinitialiser le pointeur de l'ancienne liste à NULL
-
-//     return result; // Retourner le début de la nouvelle liste
-// }
-
-
-t_token *clean_arg(t_token **token)
+t_clean_token	*clean_arg(t_token **token)
 {
-    t_token *current = *token; // Pointeur vers le début de la liste
-    t_token *result = NULL; // Pointeur vers le début de la nouvelle liste
-    t_token *arg_node = NULL; // Pointeur vers le début des noeuds d'argument
-    char *arg_str = NULL; // Chaîne pour stocker l'argument complet
-
-    while (current != NULL)
-    {
-        if (current->type == ARG)
-        {
-            // Si on commence un nouvel argument, initialiser la chaîne et le noeud d'argument
-            if (arg_node == NULL)
-            {
-                arg_node = current;
-                arg_str = ft_strdup(current->content);
-            }
-            else
-            {
-                // Concaténer le contenu de l'argument au string complet
-                char *temp = ft_strjoin(arg_str, " ");
-                free(arg_str);
-                arg_str = ft_strjoin(temp, current->content);
-                free(temp);
-            }
-        }
-        else
-        {
-            // Si on rencontre un autre type de noeud, ajouter l'argument complet à la nouvelle liste
-            if (arg_node != NULL)
-            {
-                t_token *new_arg_node = init_node(arg_str, ARG);
-                add_back(&result, new_arg_node);
-                arg_node = NULL; // Réinitialiser le noeud d'argument
-                free(arg_str);
-                arg_str = NULL;
-            }
-            add_back(&result, current); // Ajouter le noeud actuel à la nouvelle liste
-        }
-        current = current->next; // Passer au prochain noeud
-    }
-
-    // Ajouter le dernier argument complet à la nouvelle liste
-    if (arg_node != NULL)
-    {
-        t_token *new_arg_node = init_node(arg_str, ARG);
-        add_back(&result, new_arg_node);
-        free(arg_str);
-        arg_node = NULL; // Réinitialiser le noeud d'argument
-    }
-
-    // Libérer l'ancienne liste
-
-    *token = NULL; // Réinitialiser le pointeur de l'ancienne liste à NULL
-
-    return result; // Retourner le début de la nouvelle liste
+	t_clean_token	*new;
+	t_clean_token	*clean_token;
+	// char			*arg;
+	// char			*temp;
+	new = NULL;
+	clean_token = NULL;
+	while(*token)
+	{
+		if ((*token)->type == ARG)
+		{
+			if (clean_token == NULL)
+			{
+				// arg = ft_strdup((*token)->content);
+				clean_token = init_clean_node((*token)->content);
+				// add_clean_back(clean_token, new);
+				new = clean_token;
+			}
+			else
+			{
+				// temp = ft_strjoin(arg, " ");
+				// free(arg);
+				// arg = ft_strjoin(temp, (*token)->content);
+				// free(temp);
+				new->next = init_clean_node((*token)->content);
+				new = new->next;
+			}
+		}
+		*token = (*token)->next;
+	}
+	return (clean_token);
 }
