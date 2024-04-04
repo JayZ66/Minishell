@@ -130,5 +130,6 @@ char	**modify_value_env(char **env, char *var, char *new_value);
 int		is_var_in_env(char *var, char **env);
 void	update_env(char **env, char *var);
 void	sort_tab(char **env);
+char	**builtin_cd(char **env, char **cmd);
 
 #endif

@@ -196,8 +196,7 @@ char	*ft_strcat(char *dst, const char *src, size_t size)
 
 	i = 0;
 	j = 0;
-	printf("Line previous cat dst : %s\n", dst);
-	printf("Line previous cat src : %s\n", src);
+	// printf("Line previous cat src : %s\n", src);
 	if (size <= 0)
 		return (perror("Can't concatenate\n"), NULL);
 	while (dst[i]) // Check if we need a strcopy at first ?
@@ -209,7 +208,7 @@ char	*ft_strcat(char *dst, const char *src, size_t size)
 		j++;
 	}
 	dst[i] = '\0';
-	printf("Line cat : %s\n", dst);
+	// printf("Line cat : %s\n", dst);
 	return (dst);
 }
 
@@ -234,6 +233,7 @@ void	print_new_env(char **env)
 	while(env[i])
 	{
 		printf("Voici mon new env. : %s\n", env[i]);
+		// fflush(stdout); // Print direct le buf. de printf.
 		i++;
 	}
 }

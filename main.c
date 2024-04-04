@@ -79,12 +79,8 @@ int		main(int argc, char **argv, char **env)
 			free(input);
 			exit(0) ;
 		}
-		else if (ft_strcmp(input, "export") == 0)
+		else if (ft_strcmp(input, "cd") == 0)
 		{
-			// char *args[] = {"export", "LS_COLORS=Trop de truc à écrire", NULL};
-			// char *args[] = {"export", "LOL=osef", NULL}; // OK
-			// char *args[] = {"export", NULL}; // OK
-			// env = builtin_export(args, env); // Trouver le moyen si env. copie ou pas
 			// print_new_env(env);
 			break ;
 		}
@@ -92,12 +88,13 @@ int		main(int argc, char **argv, char **env)
 		// if (!token)
 		// 	return(perror("Extract cmd failed\n"), free(input), 1);
 	}
-	char *args[] = {"export", "LOL=osef", NULL};	env = builtin_export(args, env); // Trouver le moyen si env. copie ou pas
+	char *args[] = {"cd", "Minishell1", NULL}; // Tester les 2 types de path !
+	env = builtin_cd(env, args);
 	print_new_env(env);
 	free(input);
 	// free_that_lst(&token);
-	free_tab(env);
 	// if (env != NULL)
+	free_tab(env);
 	return (0);
 }
 
