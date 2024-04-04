@@ -6,7 +6,7 @@
 /*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 23:02:21 by romlambe          #+#    #+#             */
-/*   Updated: 2024/04/03 15:58:20 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:09:01 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,40 +159,45 @@ t_clean_token	*clean_arg(t_token **token)
 // 	return (*clean_token);
 // }
 
-t_clean_token *clean_space(t_clean_token **clean_token)
+t_clean_token	*clean_space(t_clean_token **clean_token)
 {
-    while (*clean_token)
-    {
-        int i = 0;
-        int flag = 0;
-        char *temp = (char *)malloc(strlen((*clean_token)->content) + 1); // Allouer de la mémoire pour temp
+	size_t	i;
+	size_t	j;
+	int		flag;
+	char	*temp;
 
-        if (temp == NULL) {
-            // Gestion de l'erreur d'allocation mémoire
-            perror("Erreur d'allocation mémoire");
-            exit(EXIT_FAILURE);
-        }
-
-        memset(temp, 0, strlen((*clean_token)->content) + 1); // Initialiser temp à une chaîne vide
-
-        for (size_t j = 0; j < ft_strlen((*clean_token)->content); j++)
-        {
-            if ((*clean_token)->content[j] == ' ' || (*clean_token)->content[j] == '\t')
-                flag = 1;
-            if (!((*clean_token)->content[j] == ' ' || (*clean_token)->content[j] == '\t'))
-            {
-                if (flag == 1)
-                {
-                    temp[i++] = ' ';
-                    flag = 0;
-                }
-                temp[i++] = (*clean_token)->content[j];
-            }
-        }
-        temp[i] = '\0'; // Assurez-vous que la chaîne de caractères est terminée par un caractère nul
-        free((*clean_token)->content); // Libérer la mémoire de l'ancienne chaîne de caractères
-        (*clean_token)->content = temp; // Affecter la nouvelle chaîne de caractères à content
-        *clean_token = (*clean_token)->next;
-    }
-    return *clean_token;
+	i = 0;
+	j = 0;
+	flag = 0;
+	temp = (char *)malloc(ft_strlen((*clean_token)->content) + 1);
+	while (*clean_token)
+	{
+		if (temp == NULL)
+		{
+			perror("Erreur de memoire");
+			exit(EXIT_FAILURE);
+		}
+		ft_memset(temp, 0, ft_strlen((*clean_token)->content) + 1);
+		while (j < ft_strlen((*clean_token)->content))
+		{
+			if ((*clean_token)->content[j] == ' ' || (*clean_token)->content[j] == '\t')
+				flag = 1;
+			if (!((*clean_token)->content[j] == ' ' || (*clean_token)->content[j] == '\t'))
+			{
+				if (flag == 1)
+				{
+					temp[i++] = ' ';
+					flag = 0;
+				}
+				temp[i++] = (*clean_token)->content[j];
+			}
+		}
+		temp[i] = '\0';
+		free((*clean_token)->content);
+		(*clean_token)->content = temp;
+		(*clean_token) = (*clean_token)->next;
+	}
+	return (*clean_token);
 }
+
+
