@@ -133,6 +133,9 @@ t_clean_token	*clean_arg(t_token **token);
 t_clean_token	*clean_space(t_clean_token **clean_token);
 char	*ft_clean_space(char *content);
 
-
+//built-in
+void	builtin_or_not_builtin(char *str, char **env);
+void	builtin_pwd();
+void	builtin_env(char **env);
 
 #endif

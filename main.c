@@ -12,30 +12,41 @@
 
 #include "minishell.h"
 
-/*
-int	main()
-- Lire l'entrée utilisateur (chaîne vide ? New line)
-- Parsing
-- Execution
+void	builtin_or_not_builtin(char *str, char **env)
+{
+	if (ft_strcmp(str, "pwd") == 0)
+		builtin_pwd();
+	else if (ft_strcmp(str, "env") == 0)
+		builtin_env(env);
+}
 
-> Faire tests de chq commande et dès qu'on avance.
+void	builtin_env(char **env)
+{
+	size_t	i;
 
-Fonction commande : Liste de toutes les commandes
-- Déterminer toutes les possibilités de la commande
-- Tester toutes les commandes
-*/
+	i = 0;
+	while (env[i])
+	{
+		printf("%s\n", env[i]);
+		i++;
+	}
+}
 
-/*
-TOKENISATION :
-- Il faut split notre ligne de commande.
-- Fonction pour créer un new node.
-- Ajouter dans le contenu du noeud
-*/
+void	builtin_pwd()
+{
+	char	buffer[1024];
+	char	*absolute_path;
 
-/*
-1. Lexer
-2. Historique, signal, buildins, etc.
-*/
+	absolute_path = getcwd(buffer, sizeof(buffer));
+	if (absolute_path != NULL)
+		printf("The absolute path of the current directory is : %s\n", absolute_path);
+	else
+	{
+		perror("Can't get the absolute path\n");
+		exit(EXIT_FAILURE);
+	}
+}
+
 
 
 char	*read_input()
@@ -90,17 +101,18 @@ int		main(int argc, char **argv, char **env)
 			free(input);
 			exit(0) ;
 		}
-		// printf("Vous avez saisi : %s\n", input);
-		// shell_level(env); // => To put at the right place for not having diff. SHLVL
+
 		token = extract_cmd(&token, input, env);
 
-		print_lst(token);
+		// print_lst(token);
 		clean_token = clean_arg(&token);
+		while (clean_token)
+		{
+			builtin_or_not_builtin(clean_token->content, env);
+			clean_token = clean_token->next;
+		}
 		print_clean_lst(clean_token);
-		// cmd_line = check_line_cmd(token);
-		// char	**final_str;
-		// final_str = ft_split(cmd_line, ' ');
-		// execute_pipe(ft_strlen(cmd_line), final_str, env); // Wrong because
+
 		free(input);
 	}
 	return (0);
