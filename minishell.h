@@ -137,5 +137,6 @@ char	*ft_clean_space(char *content);
 void	builtin_or_not_builtin(char *str, char **env);
 void	builtin_pwd();
 void	builtin_env(char **env);
+void	builtin_exit(char *str);
 
 #endif

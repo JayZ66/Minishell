@@ -16,11 +16,103 @@ void	builtin_or_not_builtin(char *str, char **env)
 {
 	if (ft_strcmp(str, "pwd") == 0)
 		builtin_pwd();
-	else if (ft_strcmp(str, "env") == 0)
+	else if (ft_strncmp(str, "env", 4) == 0)
 		builtin_env(env);
+	else if (ft_strncmp(str, "exit", 4) == 0)
+		builtin_exit(str);
 }
 
-void	builtin_env(char **env)
+// void	builtin_exit(char *str)
+// {
+// 	size_t	i;
+// 	size_t	j;
+// 	size_t	len_num;
+// 	int		exit_status;
+// 	char	*dest;
+
+// 	i = 4;
+// 	exit_status = 0;
+// 	len_num = 0;
+// 	if (str[i] == 0)
+// 		exit(0);
+// 	i++;
+// 	while(str[i])
+// 	{
+// 		if (ft_isdigit(str[i]) == 1)
+// 			len_num++;
+// 		i++;
+// 	}
+// 	dest = (char *)malloc(sizeof(char) * len_num + 1);
+// 	if (!dest)
+// 		return ;
+// 	i = 5;
+// 	j = 0;
+// 	while (ft_isdigit(str[i]) == 1)
+// 		dest[j++] = str[i++];
+// 	dest[j] = 0;
+// 	printf("exit: %s\n", dest);
+// 	i = 5;
+// 	exit_status = ft_atoi(str + i);
+// 	if (exit_status >= 0 && exit_status <= 255)
+// 		{
+// 			printf("Exit_status : %d\n", exit_status);
+// 			exit(exit_status);
+// 		}
+// }
+
+char	*alloc_mem(char *str)
+{
+	size_t	i;
+	char	*dest;
+
+	i = 0;
+	dest = (char *)malloc(sizeof(char) * (ft_strlen(str + i - 1)));
+	if (!dest)
+		return (NULL);
+	ft_strlcpy(dest, str + i, ft_strlen(str + i - 1));
+	return (dest);
+}
+
+void	builtin_exit(char *str)
+{
+	size_t	i;
+	int		exit_status;
+	char	*dest;
+
+	i = 0;
+	dest = NULL;
+	exit_status = 0;
+	while (str[i])
+	{
+		if (str[i] >= '0' && str[i] <= '9')
+		{
+			dest = alloc_mem(str);
+			break;
+		}
+		i++;
+	}
+	printf("exit: %s", dest);
+	i = 0;
+	if (str != NULL)
+	{
+		while (str[i])
+		{
+			if (ft_isdigit(str[i]) == 1)
+				break;
+			i++;
+		}
+		exit_status = ft_atoi(str + i);
+		if (exit_status >= 0 && exit_status <= 255)
+		{
+			printf("Exit_status : %d\n", exit_status);
+			exit(exit_status);
+		}
+	} // Check if else is necessary for errors.
+	else
+		exit(0);
+}
+
+void	builtin_env(char **env) //(gerer les options de env)
 {
 	size_t	i;
 
@@ -32,7 +124,7 @@ void	builtin_env(char **env)
 	}
 }
 
-void	builtin_pwd()
+void	builtin_pwd() //gerer les erreurs (too many arguments)
 {
 	char	buffer[1024];
 	char	*absolute_path;
@@ -46,7 +138,6 @@ void	builtin_pwd()
 		exit(EXIT_FAILURE);
 	}
 }
-
 
 
 char	*read_input()
@@ -106,13 +197,12 @@ int		main(int argc, char **argv, char **env)
 
 		// print_lst(token);
 		clean_token = clean_arg(&token);
+		print_clean_lst(clean_token);
 		while (clean_token)
 		{
 			builtin_or_not_builtin(clean_token->content, env);
 			clean_token = clean_token->next;
 		}
-		print_clean_lst(clean_token);
-
 		free(input);
 	}
 	return (0);
