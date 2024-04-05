@@ -168,6 +168,47 @@ path dans l'env.
 // 	return ;
 // }
 
+int	is_relative_path(char **cmd)
+{
+	size_t	i;
+	size_t	is_absolute;
+
+	is_absolute = 0;
+	if (cmd[1] != NULL)
+	{
+		i = 0;
+		while(cmd[1][i])
+		{
+			if (cmd[1][0] == '/')
+			{
+				is_absolute = 1;
+				break ;
+			}
+			else
+				break ;
+			i++;
+		}
+	}
+	printf("Path : %ld", is_absolute);
+	return (is_absolute);
+}
+
+char	*relative_to_absolute_path(char **cmd)
+{
+	char	cwd[1024];
+	char	*partial_path;
+	char	*final_path;
+
+	if (getcwd(cwd, 1024) == NULL) // Check buffer size !
+	{
+		perror("Can't get the new path\n");
+		exit(EXIT_FAILURE);
+	}
+	partial_path = ft_strjoin(cwd, "/");
+	final_path = ft_strjoin(partial_path, cmd[1]);
+	free(partial_path);
+	return (final_path);
+}
 
 char	**builtin_cd(char **env, char **cmd) // Check if we need the all cmd ou just path.
 {
@@ -176,7 +217,11 @@ char	**builtin_cd(char **env, char **cmd) // Check if we need the all cmd ou jus
 	char	cwd[1024]; // To change & alloc the right size.
 	char	*new_pwd;
 	char	**new_env;
+
+	if (is_relative_path(cmd) == 0)
+		cmd[1] = relative_to_absolute_path(cmd);
 	i = 0;
+	printf("cmd[1] : %s\n", cmd[1]);
 	cwd_len = ft_strlen(cmd[1]);
 	new_env = (char **)malloc(sizeof(char *) * (ft_size_env(env) + 1));
 	if (!new_env)
@@ -221,10 +266,12 @@ char	**builtin_cd(char **env, char **cmd) // Check if we need the all cmd ou jus
 			new_env[i] = ft_strdup(env[i]);
 			free(env[i]);
 		}
-		// printf("Var. env : %s\n", new_env[i]);
 		i++;
 	}
 	free(env);
 	new_env[i] = NULL;
 	return (new_env);
 }
+
+// Coller le chemin relatif à l'absolute path du
+// dossier courant avant de l'utiliser pour cd

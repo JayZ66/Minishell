@@ -88,7 +88,7 @@ int		main(int argc, char **argv, char **env)
 		// if (!token)
 		// 	return(perror("Extract cmd failed\n"), free(input), 1);
 	}
-	char *args[] = {"cd", "Minishell1", NULL}; // Tester les 2 types de path !
+	char *args[] = {"cd", "/home/jeza/Projects/", NULL}; // Tester les 2 types de path !
 	env = builtin_cd(env, args);
 	print_new_env(env);
 	free(input);

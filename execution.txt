@@ -1,0 +1,58 @@
+Etapes : 
+1. Je reçois ma liste chaînée avec chaque cmd ou redirection/pipe dans un noeud.
+2. Je check d'abord s'il y a un type "file" au début. Si oui, j'ouvre le file et je redirige.
+3. Je check s'il y a un file à la fin (?) et j'ouvre le dernier fichier.
+4. Je check si c'est un here_doc et je gère les redirections.
+5. J'avance dans ma liste chaînée (je change de noeud), j'ai la commande.
+6. Je crée mon pipe, où je commence par le child process, je redirige la sortie
+pour la première cmd qui va être exécutée, s'il y a une autre cmd ensuite, sinon
+j'envoie dans le file ou sur la sortie. 
+7. J'envoie pour exécution la commande actuelle que je vais ajouter
+au path pour l'envoyer à execve. 
+8. Dans le process parent, je fais la redirection du pipe pour récupèrer la sortie
+de la dernière commande.
+
+
+void	check_line(t_exec *node, char **env) // Tu retires le type quand tu raffines ???
+{
+	int	first_file;
+
+	while (node->next)
+	{
+		if (node->type == 'FILE') // DO THE SAME FOR HERE_DOC.
+		{
+			first_file = open(node->content, RDONLY, 0644)
+			if (first_file == -1)
+				exit(EXIT_FAILURE);
+			dup2(first_file, STDIN_FILENO);
+			close(first_file);
+		}
+		else if (node->type == 'CMD')
+		{
+			execute_pipes(node->content, char **env);
+		}
+		etc...
+	}
+}
+
+void	execute_pipes(char *cmd, char **env)
+{
+	int	fd[2];
+	int	pid;
+
+	if (pipe(fd) == -1)
+	{
+		exit(EXIT_FAILURE);
+	}
+	pid = fork();
+	if (pid == -1)
+	{
+		exit(EXIT_FAILURE);
+	}
+	if (pid == 0)
+	{
+		child_process(fd, cmd, env);
+	}
+	else
+		parent_process(fd, cmd, env);
+}

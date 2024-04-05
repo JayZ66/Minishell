@@ -131,5 +131,8 @@ int		is_var_in_env(char *var, char **env);
 void	update_env(char **env, char *var);
 void	sort_tab(char **env);
 char	**builtin_cd(char **env, char **cmd);
+int		is_relative_path(char **cmd);
+char	*relative_to_absolute_path(char **cmd);
+
 
 #endif
