@@ -14,13 +14,16 @@
 
 void	builtin_or_not_builtin(char *str, char **env)
 {
-	if (ft_strcmp(str, "pwd") == 0)
-		builtin_pwd();
+	if (ft_strncmp(str, "pwd", 3) == 0)
+		builtin_pwd(str);
 	else if (ft_strncmp(str, "env", 4) == 0)
 		builtin_env(env);
 	else if (ft_strncmp(str, "exit", 4) == 0)
 		builtin_exit(str);
+	// else if (ft_strncmp(str, "unset", 5) == 0)
+	// 	builtin_unset(var, new_env);
 }
+
 
 // void	builtin_exit(char *str)
 // {
@@ -59,85 +62,6 @@ void	builtin_or_not_builtin(char *str, char **env)
 // 			exit(exit_status);
 // 		}
 // }
-
-char	*alloc_mem(char *str)
-{
-	size_t	i;
-	char	*dest;
-
-	i = 0;
-	dest = (char *)malloc(sizeof(char) * (ft_strlen(str + i - 1)));
-	if (!dest)
-		return (NULL);
-	ft_strlcpy(dest, str + i, ft_strlen(str + i - 1));
-	return (dest);
-}
-
-void	builtin_exit(char *str)
-{
-	size_t	i;
-	int		exit_status;
-	char	*dest;
-
-	i = 0;
-	dest = NULL;
-	exit_status = 0;
-	while (str[i])
-	{
-		if (str[i] >= '0' && str[i] <= '9')
-		{
-			dest = alloc_mem(str);
-			break;
-		}
-		i++;
-	}
-	printf("exit: %s", dest);
-	i = 0;
-	if (str != NULL)
-	{
-		while (str[i])
-		{
-			if (ft_isdigit(str[i]) == 1)
-				break;
-			i++;
-		}
-		exit_status = ft_atoi(str + i);
-		if (exit_status >= 0 && exit_status <= 255)
-		{
-			printf("Exit_status : %d\n", exit_status);
-			exit(exit_status);
-		}
-	} // Check if else is necessary for errors.
-	else
-		exit(0);
-}
-
-void	builtin_env(char **env) //(gerer les options de env)
-{
-	size_t	i;
-
-	i = 0;
-	while (env[i])
-	{
-		printf("%s\n", env[i]);
-		i++;
-	}
-}
-
-void	builtin_pwd() //gerer les erreurs (too many arguments)
-{
-	char	buffer[1024];
-	char	*absolute_path;
-
-	absolute_path = getcwd(buffer, sizeof(buffer));
-	if (absolute_path != NULL)
-		printf("The absolute path of the current directory is : %s\n", absolute_path);
-	else
-	{
-		perror("Can't get the absolute path\n");
-		exit(EXIT_FAILURE);
-	}
-}
 
 
 char	*read_input()
@@ -195,7 +119,7 @@ int		main(int argc, char **argv, char **env)
 
 		token = extract_cmd(&token, input, env);
 
-		// print_lst(token);
+		print_lst(token);
 		clean_token = clean_arg(&token);
 		print_clean_lst(clean_token);
 		while (clean_token)
