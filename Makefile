@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/04/03 18:35:50 by marvin           ###   ########.fr        #
+#    Updated: 2024/04/09 17:10:59 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,9 @@ CC := gcc
 CFLAGS := -Wall -Wextra -Werror -Iheaders/ -g
 
 #Liste des fichiers source.
-SRCS = main.c utils.c extract_cmd.c modify_env.c executing_cmds.c \
-		cmd_line_to_run.c select_cmd_path.c get_var_env.c Built_in.c \
-		builtin_export.c
+SRCS = main.c utils.c extract_cmd.c modify_env.c \
+		cmd_line_to_run.c get_var_env.c Built_in.c \
+		builtin_export.c execution.c main_test_exec.c
 
 LIBFT = Libft/libft.a
 # PRINTF = printf/libftprintf.a

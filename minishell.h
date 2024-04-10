@@ -86,8 +86,6 @@ int		lst_size(t_token *token);
 void	free_tab(char **tab);
 
 void	exec_cmd(char *cmd, char **env);
-char	*select_path(char *cmd, char **env);
-char	**get_path(char **env);
 int		manage_file(int nb_args, char **cmd_line, int flag);
 char	*check_line_cmd(t_token *token);
 
@@ -117,6 +115,7 @@ int		ft_lstsize_content(t_token *token);
 void	free_that_lst(t_token **token);
 char	**realloc_env(char **env);
 size_t	ft_size_env(char **env);
+int		ft_strncmp_limiter(const char *s1, const char *s2, size_t n);
 
 
 // Built_in
@@ -134,5 +133,20 @@ char	**builtin_cd(char **env, char **cmd);
 int		is_relative_path(char **cmd);
 char	*relative_to_absolute_path(char **cmd);
 
+// Execution
+char	**select_path(char **env);
+char	*get_path(char *cmd, char **env);
+void	exec_cmd(char *cmd, char **env);
+void	parent_process(int *pfd, char *cmd, char **env);
+void	child_process(int *pfd, char *cmd, char **env);
+void	create_pipes(char *cmd, char **env);
+void	parent_here_doc(int *pfd, char *cmd);
+void	child_here_doc(int *pfd, char *cmd);
+void	handle_here_doc(char *cmd);
+void	check_line(t_token **lst, char **env);
+void 	append_exec_node(t_token **head, char *content, Token_type type);
+t_token	*create_command_list();
+void 	print_exec_list(t_token *head);
+void	display_lst(t_token *line);
 
 #endif
