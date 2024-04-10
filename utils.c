@@ -91,7 +91,7 @@ void	add_back(t_token **token, t_token *new)
 char	*ft_strndup(const char *s, size_t n)
 {
 	char	*dest;
-	size_t	i;
+	size_t		i;
 
 	if (s == NULL || n == 0)
 		return (NULL);

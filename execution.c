@@ -76,11 +76,10 @@ void	check_line(t_token **lst, char **env)
 	t_token	*current;
 
 	// last = lst_last(node);
-	print_tab(env);
 	current = *lst;
 	while (current)
 	{
-		if (current->next && (current->type == INPUT && current->next->type == CMD)) // Check if cmd is necessary.
+		if (current->type == INPUT && (current->next && current->next->type == CMD)) // Check if cmd is necessary.
 		{
 			first_file = open(current->content, O_RDONLY, 0644);
 			// last_file = open(node->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -93,12 +92,12 @@ void	check_line(t_token **lst, char **env)
 			close(first_file);
 			current = current->next;
 		}
-		// else if (current->type == CMD && current->next->type == HERE_DOC) // CMD << LIMITER. ??
-		// {
-		// 	handle_here_doc(current->next->content); // How to exec. cmd.
-		// }
-		if ((current->next && (current->type == CMD && current->next->type == OUTPUT)) 
-			|| (current->next->next && (current->type == CMD && current->next->next->type == OUTPUT))) // Check if we need to check it at firt.
+		else if (current->type == CMD && (current->next && current->next->type == HERE_DOC)) // CMD << LIMITER. ??
+		{
+			handle_here_doc(current->next->content); // How to exec. cmd.
+		}
+		if ((current->type == CMD && ((current->next && current->next->type == OUTPUT) 
+			|| (current->next && current->next->next && current->next->next->type == OUTPUT)))) // Check if we need to check it at firt.
 		{
 			last_file = open(current->next->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (last_file == -1)
@@ -106,12 +105,12 @@ void	check_line(t_token **lst, char **env)
 				perror("Can't open last file\n");
 				exit(EXIT_FAILURE);
 			}
-			// display_lst(*lst);
 			dup2(last_file, STDOUT_FILENO);
+			printf("HELLO YOU\n");
 			close(last_file);
 		}
-		else if ((current->next && (current->type == CMD && current->next->type == APPEND))
-			|| (current->next->next && (current->type == CMD && current->next->next->type == APPEND)))
+		else if ((current->type == CMD && ((current->next && current->next->type == APPEND) 
+			|| (current->next && current->next->next && current->next->next->type == APPEND))))
 		{
 			last_file = open(current->next->content, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (last_file == -1)
@@ -122,8 +121,8 @@ void	check_line(t_token **lst, char **env)
 			dup2(last_file, STDOUT_FILENO);
 			close(last_file);
 		}
-		if ((current->next && (current->type == CMD && current->next->type == PIPE))
-			|| (current->next->next && (current->type == CMD && current->next->next->type == PIPE)))
+		if ((current->type == CMD && ((current->next && current->next->type == PIPE) 
+			|| (current->next && current->next->next && current->next->next->type == PIPE))))
 		{
 			create_pipes(current->content, env);
 			current = current->next;
@@ -138,7 +137,6 @@ void	check_line(t_token **lst, char **env)
 		// }
 		else
 		{
-			printf("Content : %s\n", current->content);
 			exec_cmd(current->content, env);
 		}
 		current = current->next;
@@ -152,67 +150,67 @@ void	check_line(t_token **lst, char **env)
 		// 	node = node->next;
 		// }
 
-// void	handle_here_doc(char *cmd) // CMD << LIMITER
-// {
-// 	int	pfd[2];
-// 	int	pid;
+void	handle_here_doc(char *cmd) // CMD << LIMITER
+{
+	int	pfd[2];
+	int	pid;
 
-// 	if (pipe(pfd) == -1)
-// 	{
-// 		perror("Pb while creating pipe\n");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	pid = fork();
-// 	if (pid == -1)
-// 	{
-// 		perror("Can't create processes\n");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	if (pid == 0)
-// 		child_here_doc(pfd, cmd);
-// 	else
-// 		parent_here_doc(pfd, cmd);
-// }
+	if (pipe(pfd) == -1)
+	{
+		perror("Pb while creating pipe\n");
+		exit(EXIT_FAILURE);
+	}
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("Can't create processes\n");
+		exit(EXIT_FAILURE);
+	}
+	if (pid == 0)
+		child_here_doc(pfd, cmd);
+	else
+		parent_here_doc(pfd, cmd);
+}
 
-// void	child_here_doc(int *pfd, char *cmd)
-// {
-// 	char	**limiter;
-// 	char	*line;
-// 	size_t	i;
+void	child_here_doc(int *pfd, char *cmd)
+{
+	char	**limiter;
+	char	*line;
+	size_t	i;
 
-// 	i = 0;
-// 	limiter = ft_split(cmd, ' '); // JE DOIS RECEVOIR LE NODE AVEC DES ESPACES !
-// 	close(pfd[0]);
-// 	dup2(pfd[1], STDOUT_FILENO);
-// 	close(pfd[1]);
-// 	while(limiter[i + 1] != NULL) // Check how to read here_doc !
-// 		i++;
-// 	while (1)
-// 	{
-// 		line = get_next_line(0); // Check if we need it.
-// 		if (ft_strncmp_limiter(line, limiter[i], ft_strlen(limiter[i])) == 0)
-// 		{
-// 			free(line);
-// 			exit(EXIT_SUCCESS);
-// 		}
-// 		ft_putstr_fd(line, 1);
-// 		free(line);
-// 	}
-// }
+	i = 0;
+	limiter = ft_split(cmd, ' '); // JE DOIS RECEVOIR LE NODE AVEC DES ESPACES !
+	close(pfd[0]);
+	dup2(pfd[1], STDOUT_FILENO);
+	close(pfd[1]);
+	while(limiter[i + 1] != NULL) // Check how to read here_doc !
+		i++;
+	while (1)
+	{
+		line = get_next_line(0); // Check if we need it.
+		if (ft_strncmp_limiter(line, limiter[i], ft_strlen(limiter[i])) == 0)
+		{
+			free(line);
+			exit(EXIT_SUCCESS);
+		}
+		ft_putstr_fd(line, 1);
+		free(line);
+	}
+}
 
-// void	parent_here_doc(int *pfd, char *cmd)
-// {
-// 	size_t	exit_status;
+void	parent_here_doc(int *pfd, char *cmd)
+{
+	int	exit_status;
 
-// 	exit_status = 0;
-// 	(void)cmd;
-// 	close(pfd[1]);
-// 	dup2(pfd[0], STDIN_FILENO);
-// 	close(pfd[0]);
-// 	wait(&exit_status);
-// 	if (WIFEXITED(exit_status)) // To put in a structure.
-//     	exit_status = WEXITSTATUS(exit_status); // Check if works.
-// }
+	exit_status = 0;
+	(void)cmd;
+	close(pfd[1]);
+	dup2(pfd[0], STDIN_FILENO);
+	close(pfd[0]);
+	wait(&exit_status);
+	if (WIFEXITED(exit_status)) // To put in a structure.
+    	exit_status = WEXITSTATUS(exit_status); // Check if works.
+}
 
 void	create_pipes(char *cmd, char **env)
 {
@@ -291,14 +289,13 @@ char	*get_path(char *cmd, char **env)
 	size_t	i;
 
 	path = select_path(env);
-	printf("CMD : %s\n", cmd);
 	i = 0;
 	if (!path)
 		exit(EXIT_FAILURE);
 	while (path[i])
 	{
 		tmp_path = ft_strjoin(path[i], "/");
-		final_path = ft_strjoin(path[i], cmd);
+		final_path = ft_strjoin(tmp_path, cmd);
 		free(tmp_path);
 		if (access(final_path, X_OK) == 0)
 		{

@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/04/09 17:10:59 by marvin           ###   ########.fr        #
+#    Updated: 2024/04/10 18:22:46 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,10 +24,12 @@ SRCS = main.c utils.c extract_cmd.c modify_env.c \
 		cmd_line_to_run.c get_var_env.c Built_in.c \
 		builtin_export.c execution.c main_test_exec.c
 
+GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 LIBFT = Libft/libft.a
 # PRINTF = printf/libftprintf.a
 
 OBJS = $(SRCS:.c=.o)
+GETNEXTLINE_OBJ := $(GETNEXTLINE:.c=.o)
 
 # Regle par defaut pour l'executable
 all: author project $(NAME)
@@ -48,12 +50,13 @@ $(LIBFT):
 # $(NAME): $(OBJS) $(LIBFT) $(PRINTF) $(GETNEXTLINE_OBJ)
 # 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(PRINTF) $(GETNEXTLINE_OBJ) -o $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) -lreadline
+$(NAME): $(OBJS) $(LIBFT) $(GETNEXTLINE_OBJ)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(GETNEXTLINE_OBJ) -o $(NAME) -lreadline
 
 # Regle pour nettoyer les fichiers objets.
 clean:
 	$(RM) $(OBJS)
+	$(RM) $(GETNEXTLINE_OBJ)
 	make clean -C Libft
 
 # Regle pour nettoyer les fichiers objets et l'executable.

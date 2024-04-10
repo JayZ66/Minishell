@@ -1,3 +1,29 @@
 1. On garde les pipes dans les noeuds, donc noeud avec cmd et arg et noeud avec sep. (pas à compter)
 2. Ensuite on va check avec notre liste chaînée les pipes, et on gère les redirections.
 3. Puis on met dans un tab. de tab. ce qui nous interesse donc sans pipe et va l'exécuter.
+
+
+TESTS : 
+- < input.txt ls | cat > output.txt => TEST OK
+input cmd pipe cmd output 
+- < input.txt ls | cat >> output.txt => TEST OK
+input cmd pipe cmd append 
+- ls | grep e | cat => TEST OK
+cmd pipe cmd option pipe cmd
+- ls > list.txt => TEST OK
+cmd output
+- echo "Hello, world!" > output.txt => TEST OK but handle quotes !
+cmd option output
+- grep "pattern" < input.txt > result.txt => TEST OK BUT sans quotes !!
+cmd option input output
+- sort > data.txt ==> OK but neet to manage ctrl + d
+cmd output
+- sort  < data.txt ==> TEST OK
+input cmd
+- cat file.txt | grep e | cat > output.txt => TEST OK without quotes
+cmd option pipe cmd pipe cmd output
+- cat << end | grep lol > output.txt => TEST OK
+cmd here_doc pipe cmd option output
+- cat << end | cat > output.txt => TEST OK
+- cat << end => TEST OK
+- ls => NOT GOOD => TEST OK

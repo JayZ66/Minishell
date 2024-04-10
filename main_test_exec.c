@@ -75,15 +75,16 @@ t_token	*create_command_list()
 	t_token	*head;
 
 	head = NULL;
-	append_exec_node(&head, "input.txt", INPUT);
+	// append_exec_node(&head, "data.txt", INPUT);
 	append_exec_node(&head, "ls", CMD);
-	append_exec_node(&head, "|", PIPE);
-    append_exec_node(&head, "cat", CMD);
-    append_exec_node(&head, "output.txt", OUTPUT);
+	// append_exec_node(&head, "<< end", HERE_DOC);
+    // append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+    // append_exec_node(&head, "output.txt", CMD);
+	// append_exec_node(&head, "output.txt", OUTPUT);
 
 	return (head);
 }
-
 
 void print_exec_list(t_token *head) 
 {

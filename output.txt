@@ -1,2 +1,9 @@
-Content : cat
-OKCMD : cat
+HELLO YOU
+salut
+toi
+c'est
+trop
+cool
+en
+fait
+minishell
