@@ -124,33 +124,109 @@ int tokenize_arg(t_token **token, char *input, int i)
 	int start;
 	int end;
 	char *arg;
-
 	t_token *new;
 	start = i;
 	end = i;
+	printf("taille de start %d\n", start);
+	printf("taille de end avant: %d\n", end);
+	while(input[end] && input[end] != ' '&& input[end] != '\t' && input[end] != '|' && input[end] != '<' && input[end] != '>')
+		end++;
+	arg = ft_strndup(input + start, end - start);
+	printf("arg: %s\n", arg);
+	new = init_node(arg, ARG);
+	add_back(token, new);
+	free(arg);
+	if (input[end] == 0)
+		return (end);
+	else
+		return (end);
+}
+
+
+// int tokenize_arg(t_token **token, char *input, int i)
+// {
+// 	int start;
+// 	int end;
+// 	char *arg;
+// 	int	processed_chevron;
+
+// 	t_token *new;
+// 	start = i;
+// 	end = i;
+// 	processed_chevron = 0;
 	// printf("taille de start %d\n", start);
 	// printf("taille de end avant: %d\n", end);
-	while(input[end] && input[end] != ' ' && input[end] != '\t' && input[end] != '|')
-	{
+	// while(input[end] && input[end] != ' ' && input[end] != '\t' && input[end] != '|')
+	// {
 		// if (input[end] = '<' && input[end + 1] == '<')
 		// 	here_doc;
-		if (input[end] == '<')
-		{
-			arg = ft_strndup(input + start, end - start + 1);
-			printf("arg: %s\n", arg);
-			new = init_node(arg, INPUT);
-			add_back(token, new);
-			free(arg);
-		}
+		// if (input[end] == '<')
+		// {
+		// 	if (!processed_chevron)
+		// 	{
+		// 		processed_chevron = 1;
+		// 		if (input[end + 1] == '<')
+		// 		{
+		// 			arg = ft_strndup(input + start, end - start + 2);
+		// 			printf("arg: %s\n", arg);
+		// 			new = init_node(arg, HERE_DOC);
+		// 			add_back(token, new);
+		// 			free(arg);
+		// 		}
+		// 		else
+		// 		{
+		// 			arg = ft_strndup(input + start, end - start + 1);
+		// 			printf("arg: %s\n", arg);
+		// 			new = init_node(arg, INPUT);
+		// 			add_back(token, new);
+		// 			free(arg);
+		// 		}
+		// 	}
+
+		// }
+		// else if (input[end] == '>')
+		// {
+		// 	if (!processed_chevron)
+		// 	{
+		// 		processed_chevron = 1;
+		// 		if (input[end + 1] == '>')
+		// 		{
+		// 			arg = ft_strndup(input + start, end - start + 2);
+		// 			printf("arg: %s\n", arg);
+		// 			new = init_node(arg, APPEND);
+		// 			add_back(token, new);
+		// 			free(arg);
+		// 		}
+		// 		else
+		// 		{
+		// 			arg = ft_strndup(input + start, end - start + 1);
+		// 			printf("arg: %s\n", arg);
+		// 			new = init_node(arg, OUTPUT);
+		// 			add_back(token, new);
+		// 			free(arg);
+		// 		}
+		// 	}
+		// }
+		// else
+		// {
+		// 	printf("input[end] : %c:\n", input[end]);
+		// 	arg = ft_strndup(input + start, end - start);
+		// 	printf("arg: %s\n", arg);
+		// 	new = init_node(arg, ARG);
+		// 	add_back(token, new);
+		// 	free(arg);
+		// }
+
+
 		// else if (input[end] = '>' && input[end + 1] == '>')
 		// 	append
 		// else if (input[end] = '>')
 		// 	outfile
-		end++;
-	}
-
+		// if (input[end] != 0)
+	// 	end++;
+	// }
 	// free(arg);
-	return(end);
+	// return(end);
 	// printf("input[end - 1]: %c\n", input[end - 1]);
 	// if (input[end - 1] == '<')
 	// {
@@ -168,7 +244,7 @@ int tokenize_arg(t_token **token, char *input, int i)
 	// }
 	// free(arg);
 	// return (end);
-}
+// }
 
 // t_token	*clean_arg(t_token **token, Token_type type)
 // {

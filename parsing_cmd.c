@@ -6,7 +6,7 @@
 /*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 23:02:21 by romlambe          #+#    #+#             */
-/*   Updated: 2024/04/04 15:48:38 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:54:21 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,36 @@ t_clean_token	*clean_arg(t_token **token)
 	}
 
 	return (clean_token);
+}
+
+t_clean_token	*clean_arg(t_token **token)
+{
+	t_clean_token	*clean_token = NULL;
+	t_clean_token	*new = NULL;
+	char			*arg = NULL;
+	char			*temp = NULL;
+	while(*token)
+	{
+		if((*token)->type == ARG && (*token)->next->type == INPUT)
+		{
+			if (arg == NULL)
+			{
+				arg = ft_strdup((*token)->content);
+
+				*token = (*token)->next;
+			}
+			else
+				temp = ft_strjoin(arg, " ");
+				free(arg);
+				arg = ft_strjoin(temp, (*token)->content);
+				free(temp);
+
+		}
+		else if ((*token)->type == INPUT && (*token)->next->type == ARG)
+		{
+			
+		}
+	}
 }
 
 
