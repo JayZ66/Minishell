@@ -43,8 +43,8 @@ char	*read_input()
 	char	*input;
 
 	input = readline("Minishell>$");
-	if (input == NULL)
-	{
+	if (input == NULL) // Manage ctrl + d bce this is not a signal.
+	{ // Ctrl + d = ascii code (null)
 		free(input);
 		exit(EXIT_FAILURE);
 	}
@@ -58,45 +58,46 @@ char	*read_input()
 	return (input);
 }
 
-// int		main(int argc, char **argv, char **env)
-// {
-// 	char	*input;
-// 	// t_token	*token;
-// 	(void)argc;
-// 	(void)argv;
+int		main(int argc, char **argv, char **env)
+{
+	char	*input;
+	// t_token	*token;
+	(void)argc;
+	(void)argv;
 
-// 	// token = NULL;
-// 	// if (argc != 1 || argv[1])
-// 	// 	return (perror("Wrong nb of args\n"), 1);
-// 	env = realloc_env(env);
-// 	if (env == NULL)
-// 		return (perror("Realloc env. failed\n"), 1);
-// 	while (1)
-// 	{
-// 		input = read_input();
-// 		if (ft_strcmp(input, "exit") == 0)
-// 		{
-// 			free(input);
-// 			exit(0) ;
-// 		}
-// 		else if (ft_strcmp(input, "cd") == 0)
-// 		{
-// 			// print_new_env(env);
-// 			break ;
-// 		}
-// 		token = extract_cmd(&token, input, env);
-// 		if (!token)
-// 			return(perror("Extract cmd failed\n"), free(input), 1);
-// 	}
-// 	// char *args[] = {"cd", "/home/jeza/Projects/", NULL}; // Tester les 2 types de path !
-// 	// env = builtin_cd(env, args);
-// 	// print_new_env(env);
-// 	free(input);
-// 	// free_that_lst(&token);
-// 	// if (env != NULL)
-// 	free_tab(env);
-// 	return (0);
-// }
+	manage_signals();
+	// token = NULL;
+	// if (argc != 1 || argv[1])
+	// 	return (perror("Wrong nb of args\n"), 1);
+	env = realloc_env(env);
+	if (env == NULL)
+		return (perror("Realloc env. failed\n"), 1);
+	while (1)
+	{
+		input = read_input();
+		if (ft_strcmp(input, "exit") == 0)
+		{
+			free(input);
+			exit(0) ;
+		}
+		else if (ft_strcmp(input, "cd") == 0)
+		{
+			// print_new_env(env);
+			break ;
+		}
+		// token = extract_cmd(&token, input, env);
+		// if (!token)
+		// 	return(perror("Extract cmd failed\n"), free(input), 1);
+	}
+	// char *args[] = {"cd", "/home/jeza/Projects/", NULL}; // Tester les 2 types de path !
+	// env = builtin_cd(env, args);
+	// print_new_env(env);
+	free(input);
+	// free_that_lst(&token);
+	// if (env != NULL)
+	free_tab(env);
+	return (0);
+}
 
 //  cmd -l < file1 | cmd|cmd -a > file2
 //  1. Boucle tant que je vois pas de pipe (puis boucle ext. tant que pas fini puis pipe)

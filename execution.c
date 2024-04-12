@@ -78,8 +78,8 @@ void	check_line(t_token **lst, char **env)
 	// last = lst_last(node);
 	current = *lst;
 	while (current)
-	{
-		if (current->type == INPUT && (current->next && current->next->type == CMD)) // Check if cmd is necessary.
+	{ // Need input/here_doc before cmd.
+		if (current->type == INPUT && (current->next && current->next->type == CMD))
 		{
 			first_file = open(current->content, O_RDONLY, 0644);
 			// last_file = open(node->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -92,12 +92,17 @@ void	check_line(t_token **lst, char **env)
 			close(first_file);
 			current = current->next;
 		}
-		else if (current->type == CMD && (current->next && current->next->type == HERE_DOC)) // CMD << LIMITER. ??
+		// else if (current->type == CMD && (current->next && current->next->type == HERE_DOC)) // CMD << LIMITER. ??
+		// {
+		// 	handle_here_doc(current->next->content); // How to exec. cmd.
+		// }
+		else if (current->type == HERE_DOC && (current->next->type == CMD))
 		{
-			handle_here_doc(current->next->content); // How to exec. cmd.
+			handle_here_doc(current->content);
+			current = current->next;
 		}
 		if ((current->type == CMD && ((current->next && current->next->type == OUTPUT) 
-			|| (current->next && current->next->next && current->next->next->type == OUTPUT)))) // Check if we need to check it at firt.
+			|| (current->next && current->next->next && current->next->next->type == OUTPUT)))) // Need after cmd.
 		{
 			last_file = open(current->next->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (last_file == -1)
@@ -106,7 +111,6 @@ void	check_line(t_token **lst, char **env)
 				exit(EXIT_FAILURE);
 			}
 			dup2(last_file, STDOUT_FILENO);
-			printf("HELLO YOU\n");
 			close(last_file);
 		}
 		else if ((current->type == CMD && ((current->next && current->next->type == APPEND) 
@@ -137,7 +141,7 @@ void	check_line(t_token **lst, char **env)
 		// }
 		else
 		{
-			exec_cmd(current->content, env);
+			exec_cmd(current->content, env); // Handle multiple pipes error.
 		}
 		current = current->next;
 	}

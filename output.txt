@@ -1,9 +1,0 @@
-HELLO YOU
-salut
-toi
-c'est
-trop
-cool
-en
-fait
-minishell

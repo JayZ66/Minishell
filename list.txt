@@ -1,3 +1,4 @@
+HELLO YOU
 Built_in.c
 Built_in.o
 Etapes execution.txt
@@ -8,6 +9,7 @@ builtin_export.c
 builtin_export.o
 cmd_line_to_run.c
 cmd_line_to_run.o
+data.txt
 executing_cmds.c
 executing_cmds.o
 execution.c
@@ -16,6 +18,8 @@ execution.txt
 extract_cmd.c
 extract_cmd.o
 file
+file.txt
+get_next_line
 get_var_env.c
 get_var_env.o
 input.txt
@@ -29,6 +33,7 @@ minishell.h
 modify_env.c
 modify_env.o
 output.txt
+result.txt
 select_cmd_path.c
 test_execution_tab.c
 tips.c

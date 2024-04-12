@@ -25,11 +25,7 @@
 #include <unistd.h> // access - dup2 - execve - fork - pipe - waitpid
 #include <sys/wait.h> // Wait
 #include <fcntl.h>
-
-// Une structure token
-// token cmd;
-// token arg;
-// token options;
+#include <signal.h>
 
 typedef enum
 {
@@ -149,5 +145,10 @@ void 	append_exec_node(t_token **head, char *content, Token_type type);
 t_token	*create_command_list();
 void 	print_exec_list(t_token *head);
 void	display_lst(t_token *line);
+
+// SIGNALS
+void 	sigint_handler(int sig);
+void	manage_signals();
+void	sigquit_handler(int sig);
 
 #endif

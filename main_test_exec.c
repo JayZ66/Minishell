@@ -12,40 +12,40 @@
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **env)
-{
-	// char	*input;
-	t_token	*token;
-	(void)argc;
-	(void)argv;
+// int	main(int argc, char **argv, char **env)
+// {
+// 	// char	*input;
+// 	t_token	*token;
+// 	(void)argc;
+// 	(void)argv;
 
-	token = NULL;
-	(void)argc;
-	(void)argv;
-	// if (argc != 1 || argv[1])
-	// 	return (perror("Wrong nb of args\n"), 1);
-	env = realloc_env(env);
-	if (env == NULL)
-		return (perror("Realloc env. failed\n"), 1);
-	// while (1)
-	// {
-		// input = read_input();
-		// if (ft_strcmp(input, "exit") == 0)
-		// {
-		// 	free(input);
-		// 	exit(0) ;
-		// }
-		token = create_command_list();
-		if (!token)
-			return(perror("Extract cmd failed\n"), 1);
-		display_lst(token);
-		check_line(&token, env);
-		free_that_lst(&token);
-	// }
-	// free(input);
-	free_tab(env);
-	return (0);
-}
+// 	token = NULL;
+// 	(void)argc;
+// 	(void)argv;
+// 	// if (argc != 1 || argv[1])
+// 	// 	return (perror("Wrong nb of args\n"), 1);
+// 	env = realloc_env(env);
+// 	if (env == NULL)
+// 		return (perror("Realloc env. failed\n"), 1);
+// 	// while (1)
+// 	// {
+// 		// input = read_input();
+// 		// if (ft_strcmp(input, "exit") == 0)
+// 		// {
+// 		// 	free(input);
+// 		// 	exit(0) ;
+// 		// }
+// 		token = create_command_list();
+// 		if (!token)
+// 			return(perror("Extract cmd failed\n"), 1);
+// 		display_lst(token);
+// 		check_line(&token, env);
+// 		free_that_lst(&token);
+// 	// }
+// 	// free(input);
+// 	free_tab(env);
+// 	return (0);
+// }
 
 void append_exec_node(t_token **head, char *content, Token_type type) 
 {
@@ -75,13 +75,21 @@ t_token	*create_command_list()
 	t_token	*head;
 
 	head = NULL;
-	// append_exec_node(&head, "data.txt", INPUT);
-	append_exec_node(&head, "ls", CMD);
-	// append_exec_node(&head, "<< end", HERE_DOC);
+	// append_exec_node(&head, "file.txt", INPUT);
+	append_exec_node(&head, "<< end", HERE_DOC);
+	append_exec_node(&head, "cat", CMD);
+	append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	append_exec_node(&head, "", PIPE);
+	append_exec_node(&head, "wc -l", CMD);
+	append_exec_node(&head, "", PIPE);
+	append_exec_node(&head, "cat", CMD);
     // append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "cat", CMD);
-    // append_exec_node(&head, "output.txt", CMD);
-	// append_exec_node(&head, "output.txt", OUTPUT);
+    append_exec_node(&head, "output.txt", APPEND);
+	// append_exec_node(&head, "gcc_version.txt", OUTPUT);
 
 	return (head);
 }
