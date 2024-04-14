@@ -1,47 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   slect_path_cmd.c                                   :+:      :+:    :+:   */
+/*   path_to_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/25 19:50:35 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/25 19:50:35 by marvin           ###   ########.fr       */
+/*   Created: 2024/04/14 18:41:47 by marvin            #+#    #+#             */
+/*   Updated: 2024/04/14 18:41:47 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*select_path(char *cmd, char **env)
+char	*get_path(char *cmd, char **env)
 {
-	char	**all_path;
-	char	*part_path;
+	char	*tmp_path;
 	char	*final_path;
+	char	**path;
 	size_t	i;
 
+	path = select_path(env);
 	i = 0;
-	all_path = get_path(env);
-	while (all_path[i])
+	if (!path)
+		exit(EXIT_FAILURE);
+	while (path[i])
 	{
-		part_path = ft_strjoin(all_path[i], "/");
-		final_path = ft_strjoin(part_path, cmd);
-		free(part_path);
-		if (access(final_path, X_OK | F_OK) == 0)
-			return (free_tab(all_path), final_path);
+		tmp_path = ft_strjoin(path[i], "/");
+		final_path = ft_strjoin(tmp_path, cmd);
+		free(tmp_path);
+		if (access(final_path, X_OK) == 0)
+		{
+			return (free_tab(path), final_path);
+		}
 		free(final_path);
 		i++;
 	}
-	free_tab(all_path);
-	perror("Can't execute the cmd\n");
+	free_tab(path);
+	perror("The executable doesn't exist in the repo\n");
 	return (NULL);
 }
 
-char	**get_path(char **env)
+char	**select_path(char **env)
 {
 	size_t	i;
 	size_t	j;
-	char	*str;
-	char	**path;
+	char	**all_path;
 
 	i = 0;
 	while (env[i])
@@ -51,19 +54,17 @@ char	**get_path(char **env)
 		{
 			if (env[i][j] == '=')
 			{
-				str = ft_substr(env[i], 0, j);
-				if (ft_strcmp(str, "PATH") == 0)
+				if (ft_strncmp(env[i], "PATH", 4) == 0)
 				{
 					j++;
-					path = ft_split(env[i] + j, ':');
-					free(str);
-					return (path);
+					all_path = ft_split(env[i] + j, ':');
+					return (all_path);
 				}
-				free(str);
 			}
 			j++;
 		}
 		i++;
 	}
-	return (perror("Can't get path\n"), NULL);
+	perror("Can't find the var. path in env.\n");
+	return (NULL);
 }

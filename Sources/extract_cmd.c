@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 /*
 Localiser les sep. (pipe & redirections) < > >> << |
@@ -56,15 +56,13 @@ On split ensuite
 t_token	*extract_cmd(t_token **token, char *input, char **env)
 {
 	size_t	i;
-	// char	*cmd;
-	(void)	env;
 
+	(void) env;
 	i = 0;
-	// cmd = NULL;
 	while (input[i])
 	{
-		// while (input[i] == ' ' || input[i] == '\t') (à voir si utile plus tard car i différent)
-		// 	i++;
+		while (input[i] == ' ' || input[i] == '\t')
+			i++;
 		printf("emplacement du i: %zu\n", i);
 		if (input[i] == ' ' || input[i] == '\t')
 			i++;
@@ -84,12 +82,13 @@ t_token	*extract_cmd(t_token **token, char *input, char **env)
 // // on recupere pas le pipe et le premier char de la seconde cmd
 int	tokenize_separator(t_token **token, char *input, int i, char **env)
 {
-	char *sep;
-	t_token *new;
-	(void)env;
+	char	*sep;
+	t_token	*new;
 
+	(void)env;
 	new = NULL;
 	if (input[i] == '<')
+	{
 		if (input[i + 1] == '<')
 		{
 			sep = ft_strndup(input + i, 2);
@@ -104,8 +103,9 @@ int	tokenize_separator(t_token **token, char *input, int i, char **env)
 			add_back(token, new);
 			i++;
 		}
-
+	}
 	else if (input[i] == '>')
+	{
 		if (input[i + 1] == '>')
 		{
 			sep = ft_strndup(input + i, 2);
@@ -120,6 +120,7 @@ int	tokenize_separator(t_token **token, char *input, int i, char **env)
 			add_back(token, new);
 			i++;
 		}
+	}
 	else if (input[i] == '|')
 	{
 		sep = ft_strndup(input + i, 1);
@@ -131,18 +132,17 @@ int	tokenize_separator(t_token **token, char *input, int i, char **env)
 	return (i);
 }
 
-
-int tokenize_arg(t_token **token, char *input, int i)
+int	tokenize_arg(t_token **token, char *input, int i)
 {
-	int start;
-	int end;
-	char *arg;
-	t_token *new;
+	int		start;
+	int		end;
+	char	*arg;
+	t_token	*new;
 
 	start = i;
 	end = i;
-	printf("taille de end avant: %d\n", end);
-	while(input[end] && input[end] != ' ')
+	printf ("taille de end avant: %d\n", end);
+	while (input[end] && input[end] != ' ')
 		end++;
 	arg = ft_strndup(input + start, end - start);
 	new = init_node(arg, ARG);
@@ -156,14 +156,14 @@ int	tokenize_double_quote(t_token **token, char *input, int i, char **env)
 	int		start;
 	int		end;
 	int		count_quote;
-	(void)	env;
 	char	*arg;
 	t_token	*new;
 
+	(void) env;
 	start = i;
 	end = i;
 	count_quote = 0;
-	while(input[end] && count_quote < 2)
+	while (input[end] && count_quote < 2)
 	{
 		if (input[end] == '"')
 			count_quote++;
@@ -177,8 +177,7 @@ int	tokenize_double_quote(t_token **token, char *input, int i, char **env)
 	arg = ft_strndup(input + start, end - start);
 	new = init_node(arg, ARG);
 	add_back(token, new);
-	free(arg);
-	return (end + 1);
+	return (free(arg), end + 1);
 }
 
 int	tokenize_simple_quote(t_token **token, char *input, int i)
@@ -192,7 +191,7 @@ int	tokenize_simple_quote(t_token **token, char *input, int i)
 	start = i;
 	end = i;
 	count_quote = 0;
-	while(input[end] && count_quote < 2)
+	while (input[end] && count_quote < 2)
 	{
 		if (input[end] == '\'')
 			count_quote++;
@@ -211,11 +210,15 @@ int	tokenize_simple_quote(t_token **token, char *input, int i)
 }
 
 // Je crée une str, avec strdup, où je récupère jusqu'au pipe.
-// Une fois que j'ai récupéré mon bout de str. je l'envoie pour créer un new node.
-// Ensuite je l'envoie dans add_back pour l'ajouter au bout de ma liste chaînée.
+// Une fois que j'ai récupéré mon bout de str. je l'envoie pour 
+// créer un new node.
+// Ensuite je l'envoie dans add_back pour l'ajouter au bout 
+// de ma liste chaînée.
 
-// Node rafinné : char * avec dedans cmd et arg (en retirant un niveau de quote) + pipe.
-// Une seule structure avec pipe & cmd. sans stocker le char étoile du pipe. pour faire redirection.
+// Node rafinné : char * avec dedans cmd et arg 
+// (en retirant un niveau de quote) + pipe.
+// Une seule structure avec pipe & cmd. sans stocker le 
+// char étoile du pipe. pour faire redirection.
 // Type à pipe et le reste à null.
 // A la fin de mon parser je free tout mon lexer.
 // Expanser tout mettre au chemin absolu !!

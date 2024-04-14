@@ -129,6 +129,7 @@ void	sort_tab(char **env);
 char	**builtin_cd(char **env, char **cmd);
 int		is_relative_path(char **cmd);
 char	*relative_to_absolute_path(char **cmd);
+char	**go_back_home(char **new_env, char **env);
 
 // Execution
 char	**select_path(char **env);

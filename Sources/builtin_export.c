@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 /*
 Check if the var. is in the
@@ -44,7 +44,6 @@ char	**modify_value_env(char **env, char *var, char *new_value)
 	char	**new_env;
 
 	i = 0;
-	// new_env = NULL;
 	var_len = ft_strlen(var);
 	size_env = ft_size_env(env);
 	new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
@@ -60,6 +59,11 @@ char	**modify_value_env(char **env, char *var, char *new_value)
 		new_env[i] = ft_strdup(env[i]);
 		i++;
 	}
+	free(env);
+	new_env[size_env] = NULL;
+	return (new_env);
+}
+
 	// i = 0;
 	// while (env[i])
 	// {
@@ -67,10 +71,6 @@ char	**modify_value_env(char **env, char *var, char *new_value)
 	// 	// free(env[i]);
 	// 	i++;
 	// }
-	free(env);
-	new_env[size_env] = NULL;
-	return (new_env);
-}
 
 size_t	ft_size_env(char **env)
 {
@@ -89,7 +89,6 @@ char	**create_var_env(char **env, char *var)
 	char	**new_env;
 
 	size_env = ft_size_env(env);
-	// printf("var. to add : %s\n", var);
 	i = 0;
 	new_env = (char **)malloc(sizeof(char *) * (size_env + 2));
 	if (!new_env)
@@ -120,15 +119,13 @@ char	**create_var_env(char **env, char *var)
 void	sort_tab(char **env)
 {
 	size_t	i;
-	// size_t	j;
 	char	*temp;
 
 	i = 0;
-	// j = 0;
 	while (env[i + 1])
 	{
-		if (env[i][0] > env[i + 1][0] || 
-               (env[i][0] == env[i + 1][0] && env[i][1] > env[i + 1][1]))
+		if (env[i][0] > env[i + 1][0]
+			|| (env[i][0] == env[i + 1][0] && env[i][1] > env[i + 1][1]))
 		{
 			temp = env[i];
 			env[i] = env[i + 1];
@@ -138,20 +135,20 @@ void	sort_tab(char **env)
 		else
 			i++;
 	}
-	// return (env);
 }
 
+// On check, first, si la variable, que l'on souhaite
+// modifier ou créer existe dans l'env. ou non.
 char	**builtin_export(char **args, char **env)
 {
 	size_t	i;
-	// size_t	j;
 	char	*var;
 	char	**new_env;
 
 	i = 0;
 	if (args[1] != NULL)
 	{
-		while(args[1][i]) // On check la forme de l'arg.
+		while (args[1][i])
 		{
 			if (args[1][i] == '=')
 			{
@@ -160,17 +157,14 @@ char	**builtin_export(char **args, char **env)
 				{
 					new_env = modify_value_env(env, var, args[1] + i);
 					free(var);
-					return (new_env); // CHECK HOW TO MANAGE LEAKS WITH ENV.
-					// Modification de la valeur de la var.
+					return (new_env);
 				}
 				else
 				{
 					new_env = create_var_env(env, args[1]);
 					free(var);
 					return (new_env);
-					// Création var. dans l'env.
 				}
-
 			}
 			i++;
 		}
@@ -178,13 +172,12 @@ char	**builtin_export(char **args, char **env)
 	else
 	{
 		sort_tab(env);
-		while(env[i])
+		while (env[i])
 		{
-			printf("declare -x %s\n", env[i]); // METTRE ORDRE ALPHA.
+			printf("declare -x %s\n", env[i]);
 			i++;
 		}
 		return (env);
-		// On affiche l'env.
 	}
 	perror("The cmd is not the export we're expected\n");
 	return (NULL);

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 // int	main(int argc, char **argv, char **env)
 // {
@@ -47,30 +47,32 @@
 // 	return (0);
 // }
 
-void append_exec_node(t_token **head, char *content, Token_type type) 
+void	append_exec_node(t_token **head, char *content, Token_type type)
 {
-    t_token *new_node = (t_token *)malloc(sizeof(t_token));
-    if (new_node == NULL) {
-        perror("Allocation de mémoire échouée");
-        exit(EXIT_FAILURE);
-    }
-    new_node->content = ft_strdup(content);
-    new_node->type = type;
-    new_node->next = NULL;
+	t_token	*new_node;
+	t_token	*last;
 
-    if (*head == NULL)
-        *head = new_node;
-    else 
+	new_node = (t_token *)malloc(sizeof(t_token));
+	if (new_node == NULL)
 	{
-        t_token *last = *head;
-        while (last->next != NULL) {
-            last = last->next;
-        }
-        last->next = new_node;
-    }
+		perror("Allocation de mémoire échouée");
+		exit(EXIT_FAILURE);
+	}
+	new_node->content = ft_strdup(content);
+	new_node->type = type;
+	new_node->next = NULL;
+	if (*head == NULL)
+		*head = new_node;
+	else
+	{
+		*last = *head;
+		while (last->next != NULL)
+			last = last->next;
+		last->next = new_node;
+	}
 }
 
-t_token	*create_command_list()
+t_token	*create_command_list(void)
 {
 	t_token	*head;
 
@@ -86,26 +88,27 @@ t_token	*create_command_list()
 	append_exec_node(&head, "wc -l", CMD);
 	append_exec_node(&head, "", PIPE);
 	append_exec_node(&head, "cat", CMD);
-    // append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "cat", CMD);
-    append_exec_node(&head, "output.txt", APPEND);
+	append_exec_node(&head, "output.txt", APPEND);
 	// append_exec_node(&head, "gcc_version.txt", OUTPUT);
-
 	return (head);
 }
 
-void print_exec_list(t_token *head) 
+void	print_exec_list(t_token *head)
 {
-    t_token *current = head;
-    while (current != NULL) 
+	t_token	*current;
+
+	current = head;
+	while (current != NULL)
 	{
-        printf("[%d] %s\n", current->type, current->content);
-        current = current->next;
-    }
+		printf("[%d] %s\n", current->type, current->content);
+		current = current->next;
+	}
 }
 
 void	display_lst(t_token *line)
 {
 	printf("Contenu de la liste chaînée :\n");
-    print_exec_list(line);
+	print_exec_list(line);
 }

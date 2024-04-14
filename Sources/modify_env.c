@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 /*
 Here, we're going to take the path from the env. 
@@ -26,17 +26,15 @@ And we don't use getenv() who get env. var. from the "real" env.
 void	shell_level(char **env)
 {
 	size_t	i;
-	// size_t	j;
 	char	*level;
 
 	i = 0;
-	while(env[i])
+	while (env[i])
 	{
 		if (ft_strncmp(env[i], "SHLVL=", 6) == 0)
 		{
 			level = ft_itoa(ft_atoi(env[i] + 6) + 1);
 			ft_string_cpy(env[i] + 6, level);
-			// print_new_env(env);
 			break ;
 		}
 		i++;
@@ -77,12 +75,18 @@ void	shell_level(char **env)
 // }
 
 /*
-La variable d'environnement "SHLVL" est utilisée pour suivre le niveau de profondeur des shells 
-(interpréteurs de commandes) dans un système UNIX. Lorsque vous exécutez un nouveau shell 
-(comme bash, zsh, etc.), la valeur de "SHLVL" est augmentée de 1. Cela permet de savoir combien 
+La variable d'environnement "SHLVL" est utilisée pour suivre 
+le niveau de profondeur des shells 
+(interpréteurs de commandes) dans un système UNIX. Lorsque vous 
+exécutez un nouveau shell 
+(comme bash, zsh, etc.), la valeur de "SHLVL" est augmentée de 
+1. Cela permet de savoir combien 
 de shells sont empilés les uns sur les autres.
 
-Maintenant, en modifiant "SHLVL" de 1 à 2 dans votre environnement, vous indiquez essentiellement 
-que vous avez lancé un nouveau shell à l'intérieur d'un shell existant. Cela peut se produire, 
-par exemple, lorsque vous lancez votre minishell depuis un autre shell déjà ouvert sur votre système.
+Maintenant, en modifiant "SHLVL" de 1 à 2 dans votre environnement, 
+vous indiquez essentiellement 
+que vous avez lancé un nouveau shell à l'intérieur d'un shell existant. 
+Cela peut se produire, 
+par exemple, lorsque vous lancez votre minishell depuis un autre shell 
+déjà ouvert sur votre système.
 */

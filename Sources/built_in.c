@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "minishell.h"
+#include "../minishell.h"
 
 /*
 This function will mimic the exit cmd.
@@ -41,25 +40,25 @@ void	builtin_exit(char **args)
 			printf("Exit_status : %d\n", exit_status);
 			exit(exit_status);
 		}
-	} // Check if else is necessary for errors.
+	}
 	else
 		exit(0);
 }
-
+// Check if else is necessary for errors.
 
 /*
 This function will mimic the pwd cmd.
 This cmd print the absolute path of
 our current working directory.
 */
-void	builtin_pwd()
+void	builtin_pwd(void)
 {
 	char	buffer[1024];
 	char	*absolute_path;
 
 	absolute_path = getcwd(buffer, sizeof(buffer));
 	if (absolute_path != NULL)
-		printf("The absolute path of the current directory is : %s\n", absolute_path);
+		printf("The absolute path is : %s\n", absolute_path);
 	else
 	{
 		perror("Can't get the absolute path\n");
@@ -72,16 +71,18 @@ This function mimic the unset cmd.
 It allows us to delete one or more
 environment var.
 */
-char	**builtin_unset(char **var, char **new_env) // Check later if we need to send **char ou *char
-{ // Check how we can get our modify env.
+// Check later if we need to send **char ou *char
+// Check how we can get our modify env.
+char	**builtin_unset(char **var, char **new_env)
+{
 	size_t	i;
 
 	i = 0;
 	while (new_env[i])
 	{
-		if (ft_strncmp(new_env[i], var[1], ft_strlen(var[1])) == 0 && new_env[i][ft_strlen(var[1])] == '=')
+		if (ft_strncmp(new_env[i], var[1], ft_strlen(var[1])) == 0
+			&& new_env[i][ft_strlen(var[1])] == '=')
 		{
-			// free(new_env[i]); // Can't free bce i've an invalid pointer. So, maybe send it to the new_env ?
 			while (new_env[i + 1])
 			{
 				new_env[i] = new_env[i + 1];
@@ -113,7 +114,8 @@ cd : Il faut use change directory & ensuite update le
 path dans l'env.
 */
 
-// void	builtin_cd(char **env, char **cmd) // Check if we need the all cmd ou just path.
+// void	builtin_cd(char **env, char **cmd) 
+// Check if we need the all cmd ou just path.
 // {
 // 	size_t	i;
 // 	size_t	cwd_len;
