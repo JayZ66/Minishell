@@ -129,9 +129,20 @@ int	tokenize_simple_quote(t_token **token, char *input, int i);
 
 t_token    *init_node_separator(Token_type type);
 
-t_clean_token	*clean_arg(t_token **token);
+//Clean Node
+t_token	*clean_arg(t_token **token);
+
+// t_clean_token	*clean_arg(t_token **token);
 t_clean_token	*clean_space(t_clean_token **clean_token);
 char	*ft_clean_space(char *content);
+
+//Tokenization
+int	tokenize_append(t_token **token, char *input, int i, char **env);
+int	tokenize_output(t_token **token, char *input, int i, char **env);
+int	tokenize_here_doc(t_token **token, char *input, int i, char **env);
+int	tokenize_input(t_token **token, char *input, int i, char **env);
+int	tokenize_pipe(t_token **token, int i);
+
 
 //built-in
 void	builtin_or_not_builtin(char *str, char **env);

@@ -99,6 +99,7 @@ void	add_back(t_token **token, t_token *new)
 	}
 }
 
+
 t_clean_token	*lst_clean_last(t_clean_token *token)
 {
 	if (token == NULL)

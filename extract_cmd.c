@@ -17,6 +17,7 @@ Localiser les sep. (pipe & redirections) < > >> << |
 Tout ce qui est entre on met dans le noeud (entiereté de la cmd)
 On split ensuite
 */
+// changer la ft pour qu'elle gere chaque type de separateur,
 
 t_token	*extract_cmd(t_token **token, char *input, char **env)
 {
@@ -24,68 +25,330 @@ t_token	*extract_cmd(t_token **token, char *input, char **env)
 	(void)	env;
 
 	i = 0;
+	// printf("input i:%c\n", input[i]);
 	while (input[i])
 	{
-		while (input[i] == ' ' || input[i] == '\t')
-			i++;
-		if (!input[i])
-			break;
+		// while(input[i] == ' ' || input[i] == '\t')
+		// 	i++;
+		// if (input[i])
+		// 	break;
 		if (input[i] == ' ' || input[i] == '\t')
 			i++;
-		else if (input[i] == '|' || input[i] == '<' || input[i] == '>')
-			i = tokenize_separator(token, input, i, env);
+		else if (ft_strncmp(input + i, ">>", 2) == 0)
+			i = tokenize_append(token, input , i, env);
+		else if (ft_strncmp(input + i, ">", 1) == 0)
+			i = tokenize_output(token, input, i, env);
+		else if (ft_strncmp(input + i, "<<", 2) == 0)
+			i = tokenize_here_doc(token, input, i, env);
+		else if (ft_strncmp(input + i, "<", 1) == 0)
+			i = tokenize_input(token, input, i, env);
+		else if (ft_strncmp(input + i, "|", 1) == 0)
+			i = tokenize_pipe(token, i);
 		else
 			i = tokenize_arg(token, input, i);
+		// else
+		// 	i++;
 	}
 	return (*token);
 }
 
-// // on recupere pas le pipe et le premier char de la seconde cmd
-int	tokenize_separator(t_token **token, char *input, int i, char **env)
+int	tokenize_append(t_token **token, char *input, int i, char **env)
 {
-	// char *sep;
-	// size_t	size;
-	t_token *new;
-	(void)env;
-	// char	*arg;
+	(void)	env;
+	t_token	*new;
+	int		start;
+	int		end;
+	char	*temp;
+	int		flag;
+
+	start = i;
+	end = i;
+	new = NULL;
+	temp = NULL;
+	flag = 0;
+	while (input[end]!= 0 && input[end] != '<' && input[end] != '|')
+	{
+		if (input[end] == '>')
+			flag++;
+		if (flag > 2)
+			break;
+		end++;
+	}
+	temp = ft_strndup(input + start, end - start);
+	new = init_node(temp, APPEND);
+	add_back(token, new);
+	return (end);
+}
+
+int	tokenize_output(t_token **token, char *input, int i, char **env)
+{
+	(void)	env;
+	t_token	*new;
+	int		start;
+	int		end;
+	char	*temp;
+	int		flag;
 
 	new = NULL;
-	// size = 0;
-	if (input[i] == '<')
-		if (input[i + 1] == '<')
-		{
-			new = init_node_separator(HERE_DOC);
-			add_back(token, new);
-			i += 2;
-		}
-		else
-		{
-			new = init_node_separator(INPUT);
-			add_back(token, new);
-			i++;
-		}
-	else if (input[i] == '>')
-		if (input[i + 1] == '>')
-		{
-			new = init_node_separator(APPEND);
-			add_back(token, new);
-			i += 2;
-		}
-		else
-		{
-			new = init_node_separator(OUTPUT);
-			add_back(token, new);
-			i++;
-		}
-	else if (input[i] == '|')
+	temp = NULL;
+	start = i;
+	end = i;
+	flag = 0;
+	while (input[end] && input[end] != '<' && input[end] != '|')
 	{
-		new = init_node_separator(PIPE);
-		add_back(token, new);
-		i++;
+		if (input[end] == '>')
+			flag++;
+		if (flag > 1)
+			break;
+		end++;
 	}
+	temp = ft_strndup(input + start, end - start);
+	new = init_node(temp, OUTPUT);
+	add_back(token, new);
+	return (end);
+}
+
+int	tokenize_here_doc(t_token **token, char *input, int i, char **env)
+{
+	(void)	env;
+	t_token	*new;
+	int		start;
+	int		end;
+	char	*temp;
+	int		flag;
+
+	new = NULL;
+	temp = NULL;
+	start = i;
+	end = i;
+	flag = 0;
+	while (input[end] && input[end] != '>' && input[end] != '|')
+	{
+		if (input[end] == '<')
+			flag++;
+		if (flag > 2)
+			break;
+		end++;
+	}
+	temp = ft_strndup(input + start, end - start);
+	new = init_node(temp, HERE_DOC);
+	add_back(token, new);
+	return (end);
+}
+
+int	tokenize_input(t_token **token, char *input, int i, char **env)
+{
+	(void)	env;
+	t_token	*new;
+	int		start;
+	int		end;
+	char	*temp;
+	int		flag;
+
+	new = NULL;
+	temp = NULL;
+	start = i;
+	end = i;
+	flag = 0;
+	while (input[end] && input[end] != '>' && input[end] != '|')
+	{
+		if (input[end] == '<')
+			flag++;
+		if (flag > 1)
+			break;
+		end++;
+	}
+	temp = ft_strndup(input + start, end - start);
+	new = init_node(temp, INPUT);
+	add_back(token, new);
+	i = end;
 	return (i);
 }
 
+int	tokenize_pipe(t_token **token, int i)
+{
+	t_token	*new;
+
+	new = init_node_separator(PIPE);
+	add_back(token, new);
+	i++;
+	return (i);
+}
+
+// t_token	*extract_cmd(t_token **token, char *input, char **env)
+// {
+// 	size_t	i;
+// 	(void)	env;
+
+// 	i = 0;
+// 	while (input[i])
+// 	{
+// 		while (input[i] == ' ' || input[i] == '\t')
+// 			i++;
+// 		if (!input[i])
+// 			break;
+// 		if (input[i] == ' ' || input[i] == '\t')
+// 			i++;
+// 		else if (input[i] == '|' || input[i] == '<' || input[i] == '>')
+// 			i = tokenize_separator(token, input, i, env);
+// 		else
+// 			i = tokenize_arg(token, input, i);
+// 	}
+// 	if (!*token)
+// 		return (NULL);
+// 	return (*token);
+// }
+
+// int	tokenize_separator(t_token **token, char *input, int i, char **env)
+// {
+// 	t_token	*new;
+// 	char	*temp;
+// 	int		start;
+// 	int		end;
+
+// 	(void)env;
+// 	new = NULL;
+// 	temp = NULL;
+// 	start = 0;
+// 	end = 0;
+// 	printf("index i: %d\n", i);
+// 	if (ft_strncmp(input + i, ">>", 2))
+// 	{
+
+// 		start = i;
+// 		end = i;
+// 		while (input[end]  && input[end] != '<' && input[end] != '|')
+// 			end++;
+// 		temp = ft_strndup(input + start, end - start);
+// 		new = init_node(temp, APPEND);
+// 		add_back(token, new);
+// 		i = end ;
+// 	}
+// 	else if (ft_strncmp(input + i, ">", 1))
+// 	{
+// 		start = i;
+// 		end = i;
+// 		while (input[end] && input[end] != '<' && input[end] != '|')
+// 			end++;
+// 		temp = ft_strndup(input + start, end - start);
+// 		new = init_node(temp, OUTPUT);
+// 		add_back(token, new);
+// 		i = end;
+// 	}
+	// else if (input[i] == '<')
+	// {
+	// 	if (input[i + 1] == '<')
+	// 	{
+	// 		new = init_node_separator(APPEND);
+	// 		add_back(token, new);
+	// 		i += 2;
+	// 	}
+	// 	else
+	// 	{
+	// 		new = init_node_separator(OUTPUT);
+	// 		add_back(token, new);
+	// 		i++;
+	// 	}
+	// }
+	// else if (input[i] == '|')
+	// {
+	// 	new = init_node_separator(PIPE);
+	// 	add_back(token, new);
+	// 	i++;
+	// }
+	// i++;
+// 	return (i);
+// }
+
+
+// // on recupere pas le pipe et le premier char de la seconde cmd
+// pb avec les types mis (ca doit venir de tokenize arg et de mon i qui doit mal etre implementer)
+// int	tokenize_separator(t_token **token, char *input, int i, char **env)
+// {
+// 	t_token	*new;
+// 	char	*temp;
+// 	int		start;
+// 	int		end;
+
+// 	(void)env;
+// 	new = NULL;
+// 	temp = NULL;
+// 	start = 0;
+// 	end = 0;
+// 	if (input[i] == '>')
+// 	{
+// 		if (input[i + 1] == '>')
+// 		{
+// 			start = i;
+// 			end = i;
+// 			while (input[end]  && input[end] != '<' && input[end] != '|')
+// 				end++;
+// 			temp = ft_strndup(input + start, end - start);
+// 			new = init_node(temp, APPEND);
+// 			add_back(token, new);
+// 			i = end ;
+// 		}
+// 		else
+// 		{
+// 			start = i;
+// 			end = i;
+// 			while (input[end] && input[end] != '<' && input[end] != '|')
+// 				end++;
+// 			temp = ft_strndup(input + start, end - start);
+// 			new = init_node(temp, OUTPUT);
+// 			add_back(token, new);
+// 			i = end;
+// 		}
+// 	}
+// 	else if (input[i] == '<')
+// 	{
+// 		if (input[i + 1] == '<')
+// 		{
+// 			new = init_node_separator(APPEND);
+// 			add_back(token, new);
+// 			i += 2;
+// 		}
+// 		else
+// 		{
+// 			new = init_node_separator(OUTPUT);
+// 			add_back(token, new);
+// 			i++;
+// 		}
+// 	}
+// 	else if (input[i] == '|')
+// 	{
+// 		new = init_node_separator(PIPE);
+// 		add_back(token, new);
+// 		i++;
+// 	}
+// 	i++;
+// 	return (i);
+// }
+
+
+//pb qui fait que j'ai 2 fois la derniere node
+int tokenize_arg(t_token **token, char *input, int i)
+{
+	int start;
+	int end;
+	char *arg;
+	t_token *new;
+	start = i;
+	end = i;
+	// printf("taille de start %d\n", start);
+	// printf("taille de end avant: %d\n", end);
+	while(input[end] && input[end] != '|' && input[end] != '<' && input[end] != '>')
+		end++;
+	arg = ft_strndup(input + start, end - start);
+	printf("arg: %s\n", arg);
+	new = init_node(arg, ARG);
+	add_back(token, new);
+	free(arg);
+	if (input[end] == 0)
+		return (end);
+	else
+		return (end);
+}
 
 // int tokenize_arg(t_token **token, char *input, int i)
 // {
@@ -98,7 +361,7 @@ int	tokenize_separator(t_token **token, char *input, int i, char **env)
 // 	end = i;
 // 	printf("taille de start %d\n", start);
 // 	printf("taille de end avant: %d\n", end);
-// 	while(input[end] && input[end] != ' ' && input[end] != '\t' && input[end] != '|' && input[end] != '>')
+// 	while(input[end] && input[end] != '|' && input[end] != '>')
 // 		end++;
 // 	printf("input[end - 1]: %c\n", input[end - 1]);
 // 	if (input[end - 1] == '<')
@@ -119,28 +382,7 @@ int	tokenize_separator(t_token **token, char *input, int i, char **env)
 // 	return (end);
 // }
 
-int tokenize_arg(t_token **token, char *input, int i)
-{
-	int start;
-	int end;
-	char *arg;
-	t_token *new;
-	start = i;
-	end = i;
-	printf("taille de start %d\n", start);
-	printf("taille de end avant: %d\n", end);
-	while(input[end] && input[end] != ' '&& input[end] != '\t' && input[end] != '|' && input[end] != '<' && input[end] != '>')
-		end++;
-	arg = ft_strndup(input + start, end - start);
-	printf("arg: %s\n", arg);
-	new = init_node(arg, ARG);
-	add_back(token, new);
-	free(arg);
-	if (input[end] == 0)
-		return (end);
-	else
-		return (end);
-}
+
 
 
 // int tokenize_arg(t_token **token, char *input, int i)

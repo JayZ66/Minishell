@@ -99,7 +99,7 @@ int		main(int argc, char **argv, char **env)
 {
 	char	*input;
 	t_token	*token;
-	t_clean_token *clean_token;
+	// t_token *clean_token;
 	// char	*cmd_line;
 	(void)argc;
 	(void)argv;
@@ -120,13 +120,14 @@ int		main(int argc, char **argv, char **env)
 		token = extract_cmd(&token, input, env);
 
 		print_lst(token);
-		clean_token = clean_arg(&token);
-		print_clean_lst(clean_token);
-		while (clean_token)
-		{
-			builtin_or_not_builtin(clean_token->content, env);
-			clean_token = clean_token->next;
-		}
+		// clean_token = clean_arg(&token);
+		// print_lst(clean_token);
+		// print_clean_lst(clean_token);
+		// while (clean_token)
+		// {
+		// 	builtin_or_not_builtin(clean_token->content, env);
+		// 	clean_token = clean_token->next;
+		// }
 		free(input);
 	}
 	return (0);
