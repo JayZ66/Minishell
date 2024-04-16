@@ -12,40 +12,49 @@
 
 #include "../minishell.h"
 
-// int	main(int argc, char **argv, char **env)
-// {
-// 	// char	*input;
-// 	t_token	*token;
-// 	(void)argc;
-// 	(void)argv;
+int	main(int argc, char **argv, char **env)
+{
+	t_minishell	exit_code;
+	// char	*input;
+	t_token	*token;
+	(void)argc;
+	(void)argv;
 
-// 	token = NULL;
-// 	(void)argc;
-// 	(void)argv;
-// 	// if (argc != 1 || argv[1])
-// 	// 	return (perror("Wrong nb of args\n"), 1);
-// 	env = realloc_env(env);
-// 	if (env == NULL)
-// 		return (perror("Realloc env. failed\n"), 1);
-// 	// while (1)
-// 	// {
-// 		// input = read_input();
-// 		// if (ft_strcmp(input, "exit") == 0)
-// 		// {
-// 		// 	free(input);
-// 		// 	exit(0) ;
-// 		// }
-// 		token = create_command_list();
-// 		if (!token)
-// 			return(perror("Extract cmd failed\n"), 1);
-// 		display_lst(token);
-// 		check_line(&token, env);
-// 		free_that_lst(&token);
-// 	// }
-// 	// free(input);
-// 	free_tab(env);
-// 	return (0);
-// }
+	token = NULL;
+	(void)argc;
+	(void)argv;
+	// if (argc != 1 || argv[1])
+	// 	return (perror("Wrong nb of args\n"), 1);
+	exit_code.last_exit_status = 0;
+	env = realloc_env(env);
+	if (env == NULL)
+		return (perror("Realloc env. failed\n"), 1);
+	// while (1)
+	// {
+		// input = read_input();
+		// if (ft_strcmp(input, "exit") == 0)
+		// {
+		// 	free(input);
+		// 	exit(0) ;
+		// }
+		token = create_command_list();
+		if (!token)
+			return(perror("Extract cmd failed\n"), 1);
+		display_lst(token);
+		check_line(&token, env, &exit_code);
+		free_that_lst(&token);
+		token = create_command_list2();
+		if (!token)
+			return(perror("Extract cmd failed\n"), 1);
+		display_lst(token);
+		check_line(&token, env, &exit_code); // PB qd on exec. la 2ème ligne de cmd => C'est dans l'output de l'ancienne ligne !!!
+		free_that_lst(&token);
+	// }
+	// free(input);
+	printf("Exit statut : %d\n", exit_code.last_exit_status);
+	free_tab(env);
+	return (0);
+}
 
 void	append_exec_node(t_token **head, char *content, Token_type type)
 {
@@ -65,7 +74,7 @@ void	append_exec_node(t_token **head, char *content, Token_type type)
 		*head = new_node;
 	else
 	{
-		*last = *head;
+		last = *head;
 		while (last->next != NULL)
 			last = last->next;
 		last->next = new_node;
@@ -77,20 +86,43 @@ t_token	*create_command_list(void)
 	t_token	*head;
 
 	head = NULL;
-	// append_exec_node(&head, "file.txt", INPUT);
-	append_exec_node(&head, "<< end", HERE_DOC);
+	append_exec_node(&head, "file.txt", INPUT);
+	// append_exec_node(&head, "<< end", HERE_DOC);
 	append_exec_node(&head, "cat", CMD);
 	append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "cat", CMD);
-	append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "cat", CMD);
-	append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "", PIPE);
 	append_exec_node(&head, "wc -l", CMD);
 	append_exec_node(&head, "", PIPE);
 	append_exec_node(&head, "cat", CMD);
 	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "cat", CMD);
-	append_exec_node(&head, "output.txt", APPEND);
+	append_exec_node(&head, "output.txt", OUTPUT);
+	// append_exec_node(&head, "gcc_version.txt", OUTPUT);
+	return (head);
+}
+
+t_token	*create_command_list2(void)
+{
+	t_token	*head;
+
+	head = NULL;
+	append_exec_node(&head, "file.txt", INPUT);
+	// append_exec_node(&head, "<< end", HERE_DOC);
+	append_exec_node(&head, "cat", CMD);
+	append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "wc -l", CMD);
+	// append_exec_node(&head, "", PIPE);
+	append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "end.txt", OUTPUT);
 	// append_exec_node(&head, "gcc_version.txt", OUTPUT);
 	return (head);
 }

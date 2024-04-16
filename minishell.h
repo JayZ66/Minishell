@@ -56,6 +56,7 @@ typedef struct s_minishell
 {
 	t_token	*token;
 	t_exec	exec;
+	int		last_exit_status;
 } t_minishell;
 
 
@@ -82,7 +83,6 @@ void	print_tab(char **cmd_line);
 int		lst_size(t_token *token);
 void	free_tab(char **tab);
 
-void	exec_cmd(char *cmd, char **env);
 int		manage_file(int nb_args, char **cmd_line, int flag);
 char	*check_line_cmd(t_token *token);
 
@@ -134,16 +134,18 @@ char	**go_back_home(char **new_env, char **env);
 // Execution
 char	**select_path(char **env);
 char	*get_path(char *cmd, char **env);
+void	exec_cmd_with_fork(char *cmd, char **env, t_minishell *exit_code);
 void	exec_cmd(char *cmd, char **env);
-void	parent_process(int *pfd, char *cmd, char **env);
+void	parent_process(int *pfd, char *cmd, char **env, t_minishell *exit_code);
 void	child_process(int *pfd, char *cmd, char **env);
-void	create_pipes(char *cmd, char **env);
-void	parent_here_doc(int *pfd, char *cmd);
+void	create_pipes(char *cmd, char **env, t_minishell *exit_code);
+void	parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code);
 void	child_here_doc(int *pfd, char *cmd);
-void	handle_here_doc(char *cmd);
-void	check_line(t_token **lst, char **env);
+void	handle_here_doc(char *cmd, t_minishell *exit_code);
+void	check_line(t_token **lst, char **env, t_minishell *exit_code);
 void 	append_exec_node(t_token **head, char *content, Token_type type);
 t_token	*create_command_list();
+t_token	*create_command_list2(void);
 void 	print_exec_list(t_token *head);
 void	display_lst(t_token *line);
 

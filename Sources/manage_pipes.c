@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void	create_pipes(char *cmd, char **env)
+void	create_pipes(char *cmd, char **env, t_minishell *exit_code)
 {
 	int	fd[2];
 	int	pid;
@@ -31,7 +31,7 @@ void	create_pipes(char *cmd, char **env)
 		child_process(fd, cmd, env);
 	}
 	else
-		parent_process(fd, cmd, env);
+		parent_process(fd, cmd, env, exit_code);
 }
 
 void	child_process(int *pfd, char *cmd, char **env)
@@ -44,17 +44,21 @@ void	child_process(int *pfd, char *cmd, char **env)
 	exec_cmd(cmd, env);
 }
 
-void	parent_process(int *pfd, char *cmd, char **env)
+void	parent_process(int *pfd, char *cmd, char **env, t_minishell *exit_code)
 {
 	int	exit_status;
 
 	(void)cmd;
 	(void)env;
+	(void)exit_code;
 	exit_status = 0;
 	close(pfd[1]);
 	dup2(pfd[0], STDIN_FILENO);
 	close(pfd[0]);
-	wait(&exit_status);
+	waitpid(-1, &exit_status, 0);
 	if (WIFEXITED(exit_status))
-		exit_status = WEXITSTATUS(exit_status);
+		exit_code->last_exit_status = WEXITSTATUS(exit_status);
 }
+
+// WIFEXITED : Maj de la variable qui stocke le code de
+// sortie de la cmd avec le code de sortie de la cmd.
