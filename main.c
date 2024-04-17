@@ -122,14 +122,17 @@ int		main(int argc, char **argv, char **env)
 		clean_spaces(token);
 		clean_arg(token);
 		print_lst(token);
-		// clean_token = clean_space(&token);
-		// print_lst(clean_token);
-		// print_clean_lst(clean_token);
-		// while (clean_token)
+
+		t_token *original = token;
+		// while (token)
 		// {
-		// 	builtin_or_not_builtin(clean_token->content, env);
-		// 	clean_token = clean_token->next;
+		// 	builtin_or_not_builtin(token->content, env);
+		// 	token = token->next;
 		// }
+		//gerer les builtins car si je mets un espace pb
+		//pb sur pwd pour le moment
+		token = original;
+
 		free(input);
 	}
 	return (0);

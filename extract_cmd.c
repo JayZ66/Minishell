@@ -326,7 +326,9 @@ int	tokenize_pipe(t_token **token, int i)
 // }
 
 
-//pb qui fait que j'ai 2 fois la derniere node
+// se gere en plusieurs fonctions, doit voir si on a des '"" ou '\''
+// si c'est le cas on prend pas en compte les separateurs dans les guillemets
+// on les prends en compte qu'à partir du moment ou les separateurs ne sont pas dans des guillemets
 int tokenize_arg(t_token **token, char *input, int i)
 {
 	int start;
@@ -335,10 +337,15 @@ int tokenize_arg(t_token **token, char *input, int i)
 	t_token *new;
 	start = i;
 	end = i;
+	// int flag = 0;
 	// printf("taille de start %d\n", start);
 	// printf("taille de end avant: %d\n", end);
-	while(input[end] && input[end] != '|' && input[end] != '<' && input[end] != '>')
+	while((input[end] && input[end] != '|' && input[end] != '<' && input[end] != '>'))
+	{
+		// if (input[end] == '"')
+		// 	flag ++;
 		end++;
+	}
 	arg = ft_strndup(input + start, end - start);
 	printf("arg: %s\n", arg);
 	new = init_node(arg, ARG);

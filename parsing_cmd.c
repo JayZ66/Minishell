@@ -205,25 +205,27 @@ void	clean_arg(t_token *token)
 	int	j;
 	while (token != NULL)
 	{
-		if (token->content)
+		if (token->type == INPUT || token->type == OUTPUT || token->type == APPEND || token->type == HERE_DOC)
 		{
-			i = 0;
-			j = 0;
-			while (token->content[i])
+			if (token->content)
 			{
-				if (token->content[i] == '<' || token->content[i] == '>' || token->content[i] == '|')
-					i++;
-				else
-					token->content[j++] = token->content[i];
-				i++;
+				i = 0;
+				j = 0;
+				while (token->content[i])
+				{
+					if (token->content[i] == '<' || token->content[i] == '>' || token->content[i] == '|')
+						i++;
+					else
+						token->content[j++] = token->content[i++];
+				}
+				token->content[j] = '\0';
 			}
-			token->content[j] = '\0';
 		}
-
 		token = token->next;
 	}
-
 }
+
+
 
 
 
