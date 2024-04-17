@@ -69,16 +69,16 @@ char	*read_input()
 	char	*input;
 
 	input = readline(">$");
-	if (input == NULL)
-	{
-		perror("Input is null\n");
-		EXIT_FAILURE;
-	}
-	if (ft_strlen(input) <= 0)
-	{
-		perror("Input is empty\n");
-		exit(0);
-	}
+	// if (input == NULL)
+	// {
+	// 	perror("Input is null\n");
+	// 	EXIT_FAILURE;
+	// }
+	// if (ft_strlen(input) <= 0)
+	// {
+	// 	perror("Input is empty\n");
+	// 	exit(0);
+	// }
 	add_history(input);
 	return (input);
 }
@@ -94,6 +94,7 @@ void	print_new_env(char **env)
 		i++;
 	}
 }
+
 
 int		main(int argc, char **argv, char **env)
 {
@@ -118,9 +119,10 @@ int		main(int argc, char **argv, char **env)
 		}
 
 		token = extract_cmd(&token, input, env);
-
+		clean_spaces(token);
+		clean_arg(token);
 		print_lst(token);
-		// clean_token = clean_arg(&token);
+		// clean_token = clean_space(&token);
 		// print_lst(clean_token);
 		// print_clean_lst(clean_token);
 		// while (clean_token)

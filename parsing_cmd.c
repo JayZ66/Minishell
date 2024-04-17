@@ -12,52 +12,52 @@
 
 #include "minishell.h"
 
-t_token *clean_arg(t_token **token)
-{
-	t_token *clean_token = NULL;
-	t_token *new = NULL;
-	char *arg = NULL;
+// t_token *clean_arg(t_token **token)
+// {
+// 	t_token *clean_token = NULL;
+// 	t_token *new = NULL;
+// 	char *arg = NULL;
 
-	while (*token)
-	{
-		if ((*token)->type == ARG)
-		{
-			arg = ft_strdup((*token)->content);
-			if ((*token)->next && (*token)->next->type == INPUT)
-			{
-                clean_token = init_node(arg, INPUT);
-                add_back(&new, clean_token);
-                (*token) = (*token)->next;
-            }
-            else
-            {
-                // Traitement pour d'autres types de nodes si nécessaire
-				clean_token = init_node(arg, ARG);
-                add_back(&new, clean_token);
-            }
-            free(arg); // Libérer la mémoire après utilisation
-        }
-		else if ((*token)-> type == INPUT)
-		{
-			if((*token)->next && (*token)->next->type == ARG)
-			{
-				arg = ft_strdup((*token)->next->content);
-				clean_token = init_node(arg, INPUT);
-				add_back(&new, clean_token);
-				free(arg);
-				(*token) = (*token)->next;
-			}
-		}
-        // else
-        // {
-        //     // Gestion des autres types de nodes
-        //     clean_token = init_node(ft_strdup((*token)->content), PIPE);
-        //     add_back(&new, clean_token);
-        // }
-        (*token) = (*token)->next;
-    }
-    return (new);
-}
+// 	while (*token)
+// 	{
+// 		if ((*token)->type == ARG)
+// 		{
+// 			arg = ft_strdup((*token)->content);
+// 			if ((*token)->next && (*token)->next->type == INPUT)
+// 			{
+//                 clean_token = init_node(arg, INPUT);
+//                 add_back(&new, clean_token);
+//                 (*token) = (*token)->next;
+//             }
+//             else
+//             {
+//                 // Traitement pour d'autres types de nodes si nécessaire
+// 				clean_token = init_node(arg, ARG);
+//                 add_back(&new, clean_token);
+//             }
+//             free(arg); // Libérer la mémoire après utilisation
+//         }
+// 		else if ((*token)-> type == INPUT)
+// 		{
+// 			if((*token)->next && (*token)->next->type == ARG)
+// 			{
+// 				arg = ft_strdup((*token)->next->content);
+// 				clean_token = init_node(arg, INPUT);
+// 				add_back(&new, clean_token);
+// 				free(arg);
+// 				(*token) = (*token)->next;
+// 			}
+// 		}
+//         // else
+//         // {
+//         //     // Gestion des autres types de nodes
+//         //     clean_token = init_node(ft_strdup((*token)->content), PIPE);
+//         //     add_back(&new, clean_token);
+//         // }
+//         (*token) = (*token)->next;
+//     }
+//     return (new);
+// }
 
 
 // t_token	*clean_arg(t_token **token)
@@ -172,46 +172,64 @@ t_token *clean_arg(t_token **token)
 // 	}
 // }
 
+void	clean_spaces(t_token *token)
+{
+	int	i;
+	int	j;
+	int prev_space;
+	while (token != NULL)
+	{
+		if (token->content != NULL)
+		{
+			i = 0;
+			j = 0;
+			prev_space = 0;
+			while (token->content[i] != '\0')
+			{
+				if (token->content[i] != ' ' || !prev_space)
+				{
+					token->content[j++] = token->content[i];
+					prev_space = (token->content[i] == ' ');
+				}
+				i++;
+			}
+			token->content[j] = '\0';
+		}
+		token = token->next;
+	}
+}
 
-// t_clean_token	*clean_space(t_clean_token **clean_token)
-// {
-// 	size_t	i;
-// 	size_t	j;
-// 	int		flag;
-// 	char	*temp;
+void	clean_arg(t_token *token)
+{
+	int	i;
+	int	j;
+	while (token != NULL)
+	{
+		if (token->content)
+		{
+			i = 0;
+			j = 0;
+			while (token->content[i])
+			{
+				if (token->content[i] == '<' || token->content[i] == '>' || token->content[i] == '|')
+					i++;
+				else
+					token->content[j++] = token->content[i];
+				i++;
+			}
+			token->content[j] = '\0';
+		}
 
-// 	i = 0;
-// 	j = 0;
-// 	flag = 0;
-// 	temp = (char *)malloc(ft_strlen((*clean_token)->content) + 1);
-// 	while (*clean_token)
-// 	{
-// 		if (temp == NULL)
-// 		{
-// 			perror("Erreur de memoire");
-// 			exit(EXIT_FAILURE);
-// 		}
-// 		ft_memset(temp, 0, ft_strlen((*clean_token)->content) + 1);
-// 		while (j < ft_strlen((*clean_token)->content))
-// 		{
-// 			if ((*clean_token)->content[j] == ' ' || (*clean_token)->content[j] == '\t')
-// 				flag = 1;
-// 			if (!((*clean_token)->content[j] == ' ' || (*clean_token)->content[j] == '\t'))
-// 			{
-// 				if (flag == 1)
-// 				{
-// 					temp[i++] = ' ';
-// 					flag = 0;
-// 				}
-// 				temp[i++] = (*clean_token)->content[j];
-// 			}
-// 		}
-// 		temp[i] = '\0';
-// 		free((*clean_token)->content);
-// 		(*clean_token)->content = temp;
-// 		(*clean_token) = (*clean_token)->next;
-// 	}
-// 	return (*clean_token);
-// }
+		token = token->next;
+	}
+
+}
+
+
+
+
+
+
+
 
 

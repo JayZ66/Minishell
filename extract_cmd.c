@@ -28,10 +28,10 @@ t_token	*extract_cmd(t_token **token, char *input, char **env)
 	// printf("input i:%c\n", input[i]);
 	while (input[i])
 	{
-		// while(input[i] == ' ' || input[i] == '\t')
-		// 	i++;
-		// if (input[i])
-		// 	break;
+		while(input[i] == ' ' || input[i] == '\t')
+			i++;
+		if (!input[i])
+			break;
 		if (input[i] == ' ' || input[i] == '\t')
 			i++;
 		else if (ft_strncmp(input + i, ">>", 2) == 0)
