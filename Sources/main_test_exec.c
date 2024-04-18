@@ -17,6 +17,7 @@ int	main(int argc, char **argv, char **env)
 	t_minishell	exit_code;
 	// char	*input;
 	t_token	*token;
+	// char	*result_env;
 	(void)argc;
 	(void)argv;
 
@@ -43,15 +44,40 @@ int	main(int argc, char **argv, char **env)
 		display_lst(token);
 		check_line(&token, env, &exit_code);
 		free_that_lst(&token);
-		token = create_command_list2();
-		if (!token)
-			return(perror("Extract cmd failed\n"), 1);
-		display_lst(token);
-		check_line(&token, env, &exit_code); // PB qd on exec. la 2ème ligne de cmd => C'est dans l'output de l'ancienne ligne !!!
-		free_that_lst(&token);
+		// token = create_command_list2();
+		// if (!token)
+		// 	return(perror("Extract cmd failed\n"), 1);
+		// display_lst(token);
+		// check_line(&token, env, &exit_code); // PB qd on exec. la 2ème ligne de cmd => C'est dans l'output de l'ancienne ligne !!!
+		// free_that_lst(&token);
+		// token = create_command_list3();
+		// if (!token)
+		// 	return(perror("Extract cmd failed\n"), 1);
+		// display_lst(token);
+		// check_line(&token, env, &exit_code); // PB qd on exec. la 2ème ligne de cmd => C'est dans l'output de l'ancienne ligne !!!
+		// free_that_lst(&token);
+		// token = create_command_list4();
+		// if (!token)
+		// 	return(perror("Extract cmd failed\n"), 1);
+		// display_lst(token);
+		// check_line(&token, env, &exit_code); // PB qd on exec. la 2ème ligne de cmd => C'est dans l'output de l'ancienne ligne !!!
+		// free_that_lst(&token);
+		// token = create_command_list5();
+		// if (!token)
+		// 	return(perror("Extract cmd failed\n"), 1);
+		// display_lst(token);
+		// check_line(&token, env, &exit_code); // PB qd on exec. la 2ème ligne de cmd => C'est dans l'output de l'ancienne ligne !!!
+		// free_that_lst(&token);
+		// token = create_command_list6();
+		// if (!token)
+		// 	return(perror("Extract cmd failed\n"), 1);
+		// display_lst(token);
+		// check_line(&token, env, &exit_code); // PB qd on exec. la 2ème ligne de cmd => C'est dans l'output de l'ancienne ligne !!!
+		// free_that_lst(&token);
 	// }
 	// free(input);
-	printf("Exit statut : %d\n", exit_code.last_exit_status);
+	// printf("Exit statut : %d\n", exit_code.last_exit_status);
+	// printf("Variable d'environnement : %s\n", result_env);
 	free_tab(env);
 	return (0);
 }
@@ -86,20 +112,34 @@ t_token	*create_command_list(void)
 	t_token	*head;
 
 	head = NULL;
-	append_exec_node(&head, "file.txt", INPUT);
+	append_exec_node(&head, "$PATH", CMD);
+	// append_exec_node(&head, "ls2", INPUT);
 	// append_exec_node(&head, "<< end", HERE_DOC);
-	append_exec_node(&head, "cat", CMD);
-	append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "echo hola", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "b.txt", INPUT);
 	// append_exec_node(&head, "cat", CMD);
 	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "cat", CMD);
 	// append_exec_node(&head, "", PIPE);
-	append_exec_node(&head, "wc -l", CMD);
-	append_exec_node(&head, "", PIPE);
-	append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "grep PROUT", CMD);
 	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "cat", CMD);
-	append_exec_node(&head, "output.txt", OUTPUT);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat -e", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "end.txt", INPUT);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "hello", APPEND);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "hello", APPEND);
+	// append_exec_node(&head, "../bonjour", OUTPUT);
 	// append_exec_node(&head, "gcc_version.txt", OUTPUT);
 	return (head);
 }
@@ -109,20 +149,125 @@ t_token	*create_command_list2(void)
 	t_token	*head;
 
 	head = NULL;
-	append_exec_node(&head, "file.txt", INPUT);
+	// append_exec_node(&head, "srcs/bonjour", INPUT);
 	// append_exec_node(&head, "<< end", HERE_DOC);
-	append_exec_node(&head, "cat", CMD);
-	append_exec_node(&head, "", PIPE);
+	append_exec_node(&head, "echo hey", CMD);
+	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "cat", CMD);
 	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "cat", CMD);
 	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "wc -l", CMD);
 	// append_exec_node(&head, "", PIPE);
-	append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "cat", CMD);
 	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "cat", CMD);
-	// append_exec_node(&head, "end.txt", OUTPUT);
+	append_exec_node(&head, "../hello", OUTPUT);
+	// append_exec_node(&head, "hello", APPEND);
+	// append_exec_node(&head, "bonjour", APPEND);
+	// append_exec_node(&head, "gcc_version.txt", OUTPUT);
+	return (head);
+}
+
+t_token	*create_command_list3(void)
+{
+	t_token	*head;
+
+	head = NULL;
+	// append_exec_node(&head, "prout", INPUT);
+	// append_exec_node(&head, "<< end", HERE_DOC);
+	// append_exec_node(&head, "cat bonjour", CMD);
+	// append_exec_node(&head, "rm srcs/bonjour srcs/hello", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "wc -l", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	append_exec_node(&head, "../bonjour", OUTPUT);
+	append_exec_node(&head, "../hello", OUTPUT);
+	// append_exec_node(&head, "bonjour", OUTPUT);
+	// append_exec_node(&head, "bonjour", APPEND);
+	// append_exec_node(&head, "gcc_version.txt", OUTPUT);
+	return (head);
+}
+
+t_token	*create_command_list4(void)
+{
+	t_token	*head;
+
+	head = NULL;
+	// append_exec_node(&head, "prout", INPUT);
+	// append_exec_node(&head, "<< end", HERE_DOC);
+	// append_exec_node(&head, "cat srcs/bonjour srcs/hello", CMD);
+	// append_exec_node(&head, "", PIPE);
+	append_exec_node(&head, "cat ../bonjour ../hello", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "wc -l", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "bonjour", APPEND);
+	// append_exec_node(&head, "hello", APPEND);
+	// append_exec_node(&head, "srcs/bonjour", OUTPUT);
+	// append_exec_node(&head, "srcs/hello", OUTPUT);
+	// append_exec_node(&head, "gcc_version.txt", OUTPUT);
+	return (head);
+}
+
+t_token	*create_command_list5(void)
+{
+	t_token	*head;
+
+	head = NULL;
+	// append_exec_node(&head, "hello", INPUT);
+	// append_exec_node(&head, "<< end", HERE_DOC);
+	append_exec_node(&head, "ls srcs", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "wc -l", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "bonjour", OUTPUT);
+	// append_exec_node(&head, "hello", OUTPUT);
+	// append_exec_node(&head, "bonjour", OUTPUT);
+	// append_exec_node(&head, "gcc_version.txt", OUTPUT);
+	return (head);
+}
+
+t_token	*create_command_list6(void)
+{
+	t_token	*head;
+
+	head = NULL;
+	// append_exec_node(&head, "hello", INPUT);
+	// append_exec_node(&head, "<< end", HERE_DOC);
+	append_exec_node(&head, "cat srcs/bonjour", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "wc -l", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "bonjour", OUTPUT);
+	// append_exec_node(&head, "hello", OUTPUT);
+	// append_exec_node(&head, "bonjour", OUTPUT);
 	// append_exec_node(&head, "gcc_version.txt", OUTPUT);
 	return (head);
 }

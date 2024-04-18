@@ -152,36 +152,70 @@ char	**builtin_export(char **args, char **env)
 		{
 			if (args[1][i] == '=')
 			{
-				var = ft_substr(args[1], 0, i);
-				if (is_var_in_env(var, env) == 1)
-				{
-					new_env = modify_value_env(env, var, args[1] + i);
-					free(var);
-					return (new_env);
-				}
-				else
-				{
-					new_env = create_var_env(env, args[1]);
-					free(var);
-					return (new_env);
-				}
+				new_env = modify_or_create_var_in_env(args, env, i, new_env);
+				return (new_env);
 			}
 			i++;
 		}
 	}
 	else
 	{
-		sort_tab(env);
-		while (env[i])
-		{
-			printf("declare -x %s\n", env[i]);
-			i++;
-		}
+		env = print_env(env); // To test.
 		return (env);
 	}
 	perror("The cmd is not the export we're expected\n");
 	return (NULL);
 }
+
+char	**modify_or_create_var_in_env(char **args, char **env, size_t i, char **new_env)
+{
+	char	*var;
+
+	var = ft_substr(args[1], 0, i);
+	if (is_var_in_env(var, env) == 1)
+	{
+		new_env = modify_value_env(env, var, args[1] + i);
+		free(var);
+		return (new_env);
+	}
+	else
+	{
+		new_env = create_var_env(env, args[1]);
+		free(var);
+		return (new_env);
+	}
+}
+
+char	**print_env(char **env)
+{
+	size_t	i;
+
+	i = 0;
+	sort_tab(env);
+	while(env[i])
+	{
+		printf("declare -x %s\n", env[i]);
+		i++;
+	}
+	return (env);
+}
+
+// if (args[1][i] == '=')
+// {
+// 	var = ft_substr(args[1], 0, i);
+// 	if (is_var_in_env(var, env) == 1)
+// 	{
+// 		new_env = modify_value_env(env, var, args[1] + i);
+// 		free(var);
+// 		return (new_env);
+// 	}
+// 	else
+// 	{
+// 		new_env = create_var_env(env, args[1]);
+// 		free(var);
+// 		return (new_env);
+// 	}
+// }
 
 /*
 1. Check s'il y a bien un argument. (nom var.)

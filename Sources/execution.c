@@ -147,8 +147,8 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 		else if (current->type == CMD)
 		{
 			exec_cmd_with_fork(current->content, env, exit_code);
-			// dup2(saved_stdin, STDIN_FILENO);
-			// dup2(saved_stdout, STDOUT_FILENO);
+			dup2(saved_stdin, STDIN_FILENO);
+			dup2(saved_stdout, STDOUT_FILENO);
 		}
 		current = current->next;
 	}
@@ -275,15 +275,12 @@ int	is_one_cmd(char *cmd)
 	return (is_option);
 }
 
+// TOO LONG
 void	exec_cmd_with_fork(char *cmd, char **env, t_minishell *exit_code)
 {
 	char	**cmd_line;
-	char	*final_path;
 	int		pid;
-	int		status;
 
-	status = 0;
-	// if (is_one_cmd(cmd) == 1)
 	cmd_line = ft_split(cmd, ' ');
 	if (!cmd)
 		exit(EXIT_FAILURE);
@@ -294,32 +291,39 @@ void	exec_cmd_with_fork(char *cmd, char **env, t_minishell *exit_code)
 		exit(EXIT_FAILURE);
 	}
 	else if (pid == 0)
-	{
-		final_path = get_path(cmd_line[0], env);
-		if (!final_path)
-		{
-			free_tab(cmd_line);
-			exit(EXIT_FAILURE);
-		}
-		if (execve(final_path, cmd_line, env) == -1)
-		{
-			free_tab(cmd_line);
-			free(final_path);
-			exit(EXIT_FAILURE);
-		}
-	}
+		child_cmd_only(cmd_line, env);
 	else
+		parent_cmd_only(pid, exit_code);
+}
+
+void	child_cmd_only(char **cmd_line, char **env)
+{
+	char	*final_path;
+
+	final_path = get_path(cmd_line[0], env);
+	if (!final_path)
 	{
-		(void)exit_code;
-		waitpid(pid, &status, 0); // Attend la fin du processus fils
-        if (WIFEXITED(status))
-		{
-            exit_code->last_exit_status = WEXITSTATUS(status);
-            printf("Command executed with exit status: %d\n", exit_code->last_exit_status);
-		}
-		else
-			exit_code->last_exit_status = -1;
+		free_tab(cmd_line);
+		exit(EXIT_FAILURE);
 	}
+	if (execve(final_path, cmd_line, env) == -1)
+	{
+		free_tab(cmd_line);
+		free(final_path);
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	parent_cmd_only(int pid, t_minishell *exit_code)
+{
+	int	status;
+
+	status = 0;
+	waitpid(pid, &status, 0); // Attend la fin du processus enfant.
+    if (WIFEXITED(status))
+        exit_code->last_exit_status = WEXITSTATUS(status);
+	else
+		exit_code->last_exit_status = -1;
 }
 
 // void	exec_cmd_with_fork(char *cmd, char **env, t_minishell *exit_code)

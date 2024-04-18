@@ -1,2 +1,10 @@
-9
-Command executed with exit status: 0
+Bonjour
+comment
+tu
+vas
+aujourd'hui
+pour
+faire
+minishell
+encore
+...Command executed with exit status: 0
