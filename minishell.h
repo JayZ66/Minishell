@@ -124,6 +124,7 @@ char	**builtin_export(char **args, char **env);
 char	**create_var_env(char **env, char *var);
 char	**modify_value_env(char **env, char *var, char *new_value);
 char	**modify_or_create_var_in_env(char **args, char **env, size_t i, char **new_env);
+char	*copy_new_value(char *new_env, char *var, char *new_value);
 int		is_var_in_env(char *var, char **env);
 void	update_env(char **env, char *var);
 void	sort_tab(char **env);
@@ -132,6 +133,9 @@ char	**builtin_cd(char **env, char **cmd);
 int		is_relative_path(char **cmd);
 char	*relative_to_absolute_path(char **cmd);
 char	**go_back_home(char **new_env, char **env);
+char	**env_with_new_pwd(char **new_env, char **env, char *new_pwd);
+char	**get_new_pwd(char **env, char **new_env, char **cmd);
+char	**change_pwd_in_env(char **env, char **new_env, char *new_pwd, size_t cwd_len, char *cwd);
 
 // Execution
 char	**select_path(char **env);

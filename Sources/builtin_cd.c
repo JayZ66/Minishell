@@ -60,7 +60,6 @@ char	*relative_to_absolute_path(char **cmd)
 
 char	**go_back_home(char **new_env, char **env)
 {
-	size_t	i;
 	size_t	cwd_len;
 	char	cwd[1024];
 	char	*new_pwd;
@@ -71,13 +70,9 @@ char	**go_back_home(char **new_env, char **env)
 		exit(EXIT_FAILURE);
 	}
 	cwd_len = 100;
-	i = 0;
 	new_pwd = (char *)malloc(sizeof(char) * (cwd_len + 5));
 	if (!new_pwd)
-	{
-		perror("Can't allocate memory for the path\n");
 		exit(EXIT_FAILURE);
-	}
 	if (getcwd(cwd, cwd_len) == NULL) // Récupérer le new path où on est.
 	{
 		perror("Can't get the new path\n");
@@ -86,6 +81,15 @@ char	**go_back_home(char **new_env, char **env)
 	}
 	ft_string_cpy(new_pwd, "PWD=");
 	ft_strcat(new_pwd, cwd, cwd_len);
+	new_env = env_with_new_pwd(new_env, env, new_pwd);
+	return (new_env);
+}
+
+char	**env_with_new_pwd(char **new_env, char **env, char *new_pwd)
+{
+	size_t	i;
+
+	i = 0;
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "PWD=", 4) == 0)
@@ -100,8 +104,8 @@ char	**go_back_home(char **new_env, char **env)
 		}
 		i++;
 	}
-	free(env);
 	new_env[i] = NULL;
+	free(env);
 	return (new_env);
 }
 
@@ -111,10 +115,6 @@ char	**go_back_home(char **new_env, char **env)
 // Getcwd : Récupérer le new path où on est.
 char	**builtin_cd(char **env, char **cmd)
 {
-	size_t	i;
-	size_t	cwd_len;
-	char	cwd[1024];
-	char	*new_pwd;
 	char	**new_env;
 
 	new_env = (char **)malloc(sizeof(char *) * (ft_size_env(env) + 1));
@@ -131,14 +131,61 @@ char	**builtin_cd(char **env, char **cmd)
 		if (!cmd[1])
 			return (NULL);
 	}
-	i = 0;
+	new_env = get_new_pwd(env, new_env, cmd);
+	return (new_env);
+}
+
+	// cwd_len = ft_strlen(cmd[1]) + 1;
+	// new_pwd = (char *)malloc(sizeof(char) * (cwd_len + 5));
+	// if (!new_pwd)
+	// {
+	// 	perror("Can't allocate memory for the path\n");
+	// 	exit(EXIT_FAILURE);
+	// }
+	// if (cmd[1] != NULL)
+	// {
+	// 	if (chdir(cmd[1]) != 0)
+	// 	{
+	// 		perror("Can't moove to the new directory\n");
+	// 		free(new_pwd);
+	// 		exit(EXIT_FAILURE);
+	// 	}
+	// 	if (getcwd(cwd, cwd_len) == NULL)
+	// 	{
+	// 		perror("Can't get the new path\n");
+	// 		free(new_pwd);
+	// 		exit(EXIT_FAILURE);
+	// 	}
+	// }
+	// ft_string_cpy(new_pwd, "PWD=");
+	// ft_strcat(new_pwd, cwd, cwd_len);
+	// while (env[i])
+	// {
+	// 	if (ft_strncmp(env[i], "PWD=", 4) == 0)
+	// 	{
+	// 		new_env[i] = new_pwd;
+	// 		free(env[i]);
+	// 	}
+	// 	else
+	// 	{
+	// 		new_env[i] = ft_strdup(env[i]);
+	// 		free(env[i]);
+	// 	}
+	// 	i++;
+	// }
+	// free(env);
+	// new_env[i] = NULL;
+
+char	**get_new_pwd(char **env, char **new_env, char **cmd)
+{
+	char	*new_pwd;
+	char	cwd[1024];
+	size_t	cwd_len;
+
 	cwd_len = ft_strlen(cmd[1]) + 1;
 	new_pwd = (char *)malloc(sizeof(char) * (cwd_len + 5));
 	if (!new_pwd)
-	{
-		perror("Can't allocate memory for the path\n");
 		exit(EXIT_FAILURE);
-	}
 	if (cmd[1] != NULL)
 	{
 		if (chdir(cmd[1]) != 0)
@@ -154,6 +201,15 @@ char	**builtin_cd(char **env, char **cmd)
 			exit(EXIT_FAILURE);
 		}
 	}
+	new_env = change_pwd_in_env(env, new_env, new_pwd, cwd_len, cwd);
+	return (new_env);
+}
+
+char	**change_pwd_in_env(char **env, char **new_env, char *new_pwd, size_t cwd_len, char *cwd)
+{
+	size_t	i;
+
+	i = 0;
 	ft_string_cpy(new_pwd, "PWD=");
 	ft_strcat(new_pwd, cwd, cwd_len);
 	while (env[i])

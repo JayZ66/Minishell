@@ -39,12 +39,10 @@ var. in the environment.
 char	**modify_value_env(char **env, char *var, char *new_value)
 {
 	size_t	i;
-	size_t	var_len;
 	size_t	size_env;
 	char	**new_env;
 
-	i = 0;
-	var_len = ft_strlen(var);
+	i = -1;
 	size_env = ft_size_env(env);
 	new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
 	if (!new_env)
@@ -52,25 +50,36 @@ char	**modify_value_env(char **env, char *var, char *new_value)
 		perror("Can't create the new env.\n");
 		exit(EXIT_FAILURE);
 	}
-	while (env[i])
+	while (env[++i])
 	{
-		if (ft_strncmp(env[i], var, var_len) == 0 && env[i][var_len] == '=')
-			env[i] = ft_string_cpy(env[i] + var_len, new_value);
+		if (ft_strncmp(env[i], var, ft_strlen(var)) == 0
+			&& env[i][ft_strlen(var)] == '=')
+		{
+			new_env[i] = copy_new_value(new_env[i], var, new_value);
+			i++;
+		}
 		new_env[i] = ft_strdup(env[i]);
-		i++;
 	}
-	free(env);
+	free_tab(env);
 	new_env[size_env] = NULL;
 	return (new_env);
 }
 
-	// i = 0;
-	// while (env[i])
-	// {
-	// 	new_env[i] = ft_strdup(env[i]);
-	// 	// free(env[i]);
-	// 	i++;
-	// }
+char	*copy_new_value(char *new_env, char *var, char *new_value)
+{
+	size_t	new_var_len;
+
+	new_var_len = ft_strlen(var) + ft_strlen(new_value) + 1;
+	new_env = (char *)malloc(sizeof(char) * new_var_len);
+	if (!new_env)
+	{
+		perror("Memory allocation for new var. failed\n");
+		exit(EXIT_FAILURE);
+	}
+	new_env = ft_string_cpy(new_env, var);
+	new_env = ft_strcat(new_env, new_value, ft_strlen(new_value));
+	return (new_env);
+}
 
 size_t	ft_size_env(char **env)
 {
@@ -142,10 +151,10 @@ void	sort_tab(char **env)
 char	**builtin_export(char **args, char **env)
 {
 	size_t	i;
-	char	*var;
 	char	**new_env;
 
 	i = 0;
+	new_env = NULL;
 	if (args[1] != NULL)
 	{
 		while (args[1][i])
