@@ -91,9 +91,9 @@ int	main(int argc, char **argv, char **env)
 	print_new_env(env);
 	// char *args[] = {"cd", "/home/jeza/Projects/Minishell1/get_next_line", NULL};
 	// char *args[] = {"cd", "/", NULL};
-	char *args[] = {"cd", "..", NULL};
+	// char *args[] = {"cd", "..", NULL};
 	// char *args[] = {"cd", "Libft/", NULL};
-	// char *args[] = {"cd", NULL};
+	char *args[] = {"cd", NULL};
 	new_env = builtin_cd(new_env, args);
 	// char *args[] = {"export", "LS_COLORS=Trop de truc à écrire", NULL};
 	// char *args[] = {"export", "LOL=osef", NULL};

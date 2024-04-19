@@ -13,69 +13,125 @@
 #include "../minishell.h"
 
 
-void echo(char *str){
-  char **tab;
-  char *new_str;
-  int j;
+// void echo(char *str)
+// {
+//   char **tab;
+//   char *new_str;
+//   int j;
   
-  j = 0;
-  new_str = clean_quote(str);
-  tab = ft_split(new_str, ' ');
-  while (tab[j])
+//   j = 0;
+//   new_str = clean_quote(str);
+//   tab = ft_split(new_str, ' ');
+//   while (tab[j])
+//   {
+//     printf("%s ",tab[j]);
+//     j++;
+//   }
+//   if (ft_strcmp(tab[1], "-n"))
+//   {
+//     printf("\n");
+//   }
+// }
+
+
+void  echo(char *str)
+{
+  char    **cmd_with_options;
+  size_t  i;
+
+  i = 1;
+  cmd_with_options = ft_split(str, ' ');
+  if (cmd_with_options[1] && (ft_strcmp(cmd_with_options[1], "-n") != 0))
   {
-    printf("%s ",tab[j]);
-    j++;
+    while (cmd_with_options[i])
+    {
+      printf("%s ", cmd_with_options[i]);
+      if (cmd_with_options[i + 1] == NULL)
+        printf("\n");
+      i++;
+    }
   }
-  if (ft_strcmp(tab[1], "-n"))
-  {
+  else if (ft_strcmp(cmd_with_options[1], "-n") == 0)
+      handle_echo_with_n(cmd_with_options);
+  else
     printf("\n");
-  }
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
-UNDERSTAND HOW TO MANAGE QUOTES
+1. We need to check if -n
+2. On le saut et on affiche tout le reste
+3. On ne met pas de /n à la fin.
 */
-char *clean_quote(char *input)
+void  handle_echo_with_n(char **cmd)
 {
-    int i;
-    int tmp;
+  size_t  i;
 
-    i = 0;
-    tmp = 0;
-    while (input[i])
+  i = 2;
+  while (cmd[i])
+  {
+    if (cmd[i + 1] == NULL)
+      printf("%s", cmd[i]);
+    else
+      printf("%s ", cmd[i]);
+    i++;
+  }
+}
+
+void  handle_quotes(char **cmd)
+{
+  size_t  i;
+  size_t  j;
+  char    *str;
+  size_t  str_size;
+
+  j = 0;
+  str_size = 0;
+  while(cmd[i])
+  {
+    i = 1;
+    while (cmd[i][j])
     {
-        if (input[i] == '"' && ft_strnchr(input + i + 1, '"'))
+      if ((cmd[i][j] == '\'' || cmd[i][j] == '"') 
+        && (cmd[i][ft_strlen(cmd[i]) - 1] == '\'' || cmd[i][ft_strlen(cmd[i]) - 1] == '"'))
         {
-            tmp = i + 1 + ft_strnchr(input + i + 1, '"');
-            input = ft_strjoin(ft_strjoin(ft_substr(input, 0, i), ft_substr(input, i + 1, ft_strnchr(input + i + 1, '"'))),
-            ft_substr(input + 1, ft_strnchr(input + i + 1, '"') + i + 1, ft_strlen(input)));
-            i = tmp - 2;
+          if ((cmd[i][j + 1] == '\'' || cmd[i][j + 1] == '"') 
+        && (cmd[i][ft_strlen(cmd[i]) - 2] == '\'' || cmd[i][ft_strlen(cmd[i]) - 2] == '"'))
+          {
+            j++;
+            str_size = (ft_strlen(cmd[i] - 2) - j);
+            str = ft_substr(cmd[i] + j, 0, str_size);
+            cmd[i] = str;
+          }
+          else
+          {
+            str_size = (ft_strlen(cmd[i - 1]) - j);
+            str = ft_substr(cmd[i] + j, 0, str_size);
+            cmd[i] = str;
+          }
         }
-        else if (input[i] == 39 && ft_strnchr(input + i + 1, 39))
-        {
-            tmp = i + 1 + ft_strnchr(input + i + 1, 39);
-            input = ft_strjoin(ft_strjoin(ft_substr(input, 0, i), ft_substr(input, i + 1, ft_strnchr(input + i + 1, 39))),
-            ft_substr(input + 1, ft_strnchr(input + i + 1, 39) + i + 1, ft_strlen(input)));
-            i = tmp - 2;
-        }
-        i++;
+        j++;
     }
-    return (input);
+    i++;
+  }
+  // return (cmd);
+}
+/*
+1. Si un simple/double quote ==> On retire
+2. Si deux simple/double quote ==> On retire le premier niveau
+*/
+
+
+int main()
+{
+  char  *str;
+
+  // str = "echo";
+  // echo(str);
+  // str = "echo -n cat cat cat";
+  // echo(str);
+  str = "echo cat cat cat";
+  echo(str);
+  
+  return (0);
 }

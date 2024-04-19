@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/04/14 18:46:05 by marvin           ###   ########.fr        #
+#    Updated: 2024/04/19 12:44:29 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,9 @@ SRCS = Sources/main.c Sources/utils.c Sources/extract_cmd.c \
 		Sources/builtin_export.c Sources/execution.c Sources/main_test_exec.c \
 		Sources/signals.c Sources/builtin_cd.c Sources/utils1.c \
 		Sources/utils2.c Sources/path_to_exec.c Sources/manage_pipes.c \
-		Sources/manage_here_doc.c \
+		Sources/manage_here_doc.c Sources/builtin_cd_utils.c \
+		Sources/builtin_export_utils.c Sources/execute_cmd_only.c \
+		Sources/builtin_echo.c
 
 GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 LIBFT = Libft/libft.a

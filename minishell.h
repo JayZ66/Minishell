@@ -135,7 +135,9 @@ char	*relative_to_absolute_path(char **cmd);
 char	**go_back_home(char **new_env, char **env);
 char	**env_with_new_pwd(char **new_env, char **env, char *new_pwd);
 char	**get_new_pwd(char **env, char **new_env, char **cmd);
-char	**change_pwd_in_env(char **env, char **new_env, char *new_pwd, size_t cwd_len, char *cwd);
+char	**change_pwd_env(char **env, char **new_env, size_t cwd_len, char *cwd);
+void  echo(char *str);
+void  handle_echo_with_n(char **cmd);
 
 // Execution
 char	**select_path(char **env);

@@ -13,25 +13,6 @@
 #include "../minishell.h"
 
 /*
-Check if the var. is in the
-existing environment.
-*/
-
-int	is_var_in_env(char *var, char **env)
-{
-	size_t	i;
-
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], var, ft_strlen(var)) == 0)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-/*
 Will modify the value of the identified
 var. in the environment.
 */
@@ -81,16 +62,6 @@ char	*copy_new_value(char *new_env, char *var, char *new_value)
 	return (new_env);
 }
 
-size_t	ft_size_env(char **env)
-{
-	size_t	i;
-
-	i = 0;
-	while (env[i])
-		i++;
-	return (i);
-}
-
 char	**create_var_env(char **env, char *var)
 {
 	size_t	size_env;
@@ -125,26 +96,6 @@ char	**create_var_env(char **env, char *var)
 // 	print_tab(env);
 // }
 
-void	sort_tab(char **env)
-{
-	size_t	i;
-	char	*temp;
-
-	i = 0;
-	while (env[i + 1])
-	{
-		if (env[i][0] > env[i + 1][0]
-			|| (env[i][0] == env[i + 1][0] && env[i][1] > env[i + 1][1]))
-		{
-			temp = env[i];
-			env[i] = env[i + 1];
-			env[i + 1] = temp;
-			i = 0;
-		}
-		else
-			i++;
-	}
-}
 
 // On check, first, si la variable, que l'on souhaite
 // modifier ou créer existe dans l'env. ou non.
@@ -161,7 +112,7 @@ char	**builtin_export(char **args, char **env)
 		{
 			if (args[1][i] == '=')
 			{
-				new_env = modify_or_create_var_in_env(args, env, i, new_env);
+				new_env = modify_or_create_var(args, env, i, new_env);
 				return (new_env);
 			}
 			i++;
@@ -174,39 +125,6 @@ char	**builtin_export(char **args, char **env)
 	}
 	perror("The cmd is not the export we're expected\n");
 	return (NULL);
-}
-
-char	**modify_or_create_var_in_env(char **args, char **env, size_t i, char **new_env)
-{
-	char	*var;
-
-	var = ft_substr(args[1], 0, i);
-	if (is_var_in_env(var, env) == 1)
-	{
-		new_env = modify_value_env(env, var, args[1] + i);
-		free(var);
-		return (new_env);
-	}
-	else
-	{
-		new_env = create_var_env(env, args[1]);
-		free(var);
-		return (new_env);
-	}
-}
-
-char	**print_env(char **env)
-{
-	size_t	i;
-
-	i = 0;
-	sort_tab(env);
-	while(env[i])
-	{
-		printf("declare -x %s\n", env[i]);
-		i++;
-	}
-	return (env);
 }
 
 // if (args[1][i] == '=')

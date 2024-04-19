@@ -12,52 +12,6 @@
 
 #include "../minishell.h"
 
-int	is_relative_path(char **cmd)
-{
-	size_t	i;
-	size_t	is_absolute;
-
-	is_absolute = 0;
-	if (cmd[1] != NULL)
-	{
-		i = 0;
-		while (cmd[1][i])
-		{
-			if (cmd[1][0] == '/' && cmd[1][1]) // Check when we put just "//"
-			{
-				is_absolute = 1;
-				break ;
-			}
-			else
-				break ;
-			i++;
-		}
-	}
-	return (is_absolute);
-}
-
-// TESTER SUR MAC pour les ".." et quelles est la racine
-// que l'on doit protéger ? + Si ça fonctionne ou non !
-char	*relative_to_absolute_path(char **cmd)
-{
-	char	cwd[1024];
-	char	*partial_path;
-	char	*final_path;
-
-	if (getcwd(cwd, sizeof(cwd)) == NULL)
-	{
-		perror("Can't get the new path\n");
-		exit(EXIT_FAILURE);
-	}
-	if (ft_strcmp(cmd[1], "..") == 0
-		&& ft_strcmp(cwd, getenv("HOME")) == 0)
-		return (perror("Can't go higher than the root\n"), NULL);
-	partial_path = ft_strjoin(cwd, "/");
-	final_path = ft_strjoin(partial_path, cmd[1]);
-	free(partial_path);
-	return (final_path);
-}
-
 char	**go_back_home(char **new_env, char **env)
 {
 	size_t	cwd_len;
@@ -129,9 +83,14 @@ char	**builtin_cd(char **env, char **cmd)
 	{
 		cmd[1] = relative_to_absolute_path(cmd);
 		if (!cmd[1])
+		{
+			free(new_env);
+			free(cmd[1]);
 			return (NULL);
+		}
 	}
 	new_env = get_new_pwd(env, new_env, cmd);
+	free(cmd[1]);
 	return (new_env);
 }
 
@@ -178,41 +137,39 @@ char	**builtin_cd(char **env, char **cmd)
 
 char	**get_new_pwd(char **env, char **new_env, char **cmd)
 {
-	char	*new_pwd;
 	char	cwd[1024];
 	size_t	cwd_len;
 
 	cwd_len = ft_strlen(cmd[1]) + 1;
-	new_pwd = (char *)malloc(sizeof(char) * (cwd_len + 5));
-	if (!new_pwd)
-		exit(EXIT_FAILURE);
 	if (cmd[1] != NULL)
 	{
 		if (chdir(cmd[1]) != 0)
 		{
 			perror("Can't moove to the new directory\n");
-			free(new_pwd);
 			exit(EXIT_FAILURE);
 		}
 		if (getcwd(cwd, cwd_len) == NULL)
 		{
 			perror("Can't get the new path\n");
-			free(new_pwd);
 			exit(EXIT_FAILURE);
 		}
 	}
-	new_env = change_pwd_in_env(env, new_env, new_pwd, cwd_len, cwd);
+	new_env = change_pwd_env(env, new_env, cwd_len, cwd);
 	return (new_env);
 }
 
-char	**change_pwd_in_env(char **env, char **new_env, char *new_pwd, size_t cwd_len, char *cwd)
+char	**change_pwd_env(char **env, char **new_env, size_t cwd_len, char *cwd)
 {
 	size_t	i;
+	char	*new_pwd;
 
-	i = 0;
+	i = -1;
+	new_pwd = (char *)malloc(sizeof(char) * (cwd_len + 5));
+	if (!new_pwd)
+		exit(EXIT_FAILURE);
 	ft_string_cpy(new_pwd, "PWD=");
 	ft_strcat(new_pwd, cwd, cwd_len);
-	while (env[i])
+	while (env[++i])
 	{
 		if (ft_strncmp(env[i], "PWD=", 4) == 0)
 		{
@@ -224,9 +181,9 @@ char	**change_pwd_in_env(char **env, char **new_env, char *new_pwd, size_t cwd_l
 			new_env[i] = ft_strdup(env[i]);
 			free(env[i]);
 		}
-		i++;
 	}
 	free(env);
+	// free(new_pwd); Why ??
 	new_env[i] = NULL;
 	return (new_env);
 }
