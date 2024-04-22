@@ -57,56 +57,56 @@ char	*read_input(void)
 	return (input);
 }
 
-int	main(int argc, char **argv, char **env)
-{
-	char	*input;
-	char	**new_env;
-	// t_token	*token;
+// int	main(int argc, char **argv, char **env)
+// {
+// 	char	*input;
+// 	char	**new_env;
+// 	// t_token	*token;
 
-	manage_signals();
-	(void)argc;
-	(void)argv;
-	// token = NULL;
-	// if (argc != 1 || argv[1])
-	// 	return (perror("Wrong nb of args\n"), 1);
-	new_env = realloc_env(env);
-	if (env == NULL)
-		return (perror("Realloc env. failed\n"), 1);
-	while (1)
-	{
-		input = read_input();
-		if (ft_strcmp(input, "exit") == 0)
-		{
-			free(input);
-			exit(0);
-		}
-		else if (ft_strcmp(input, "cd") == 0)
-		{
-			break ;
-		}
-		// token = extract_cmd(&token, input, env);
-		// if (!token)
-		// 	return(perror("Extract cmd failed\n"), free(input), 1);
-	}
-	print_new_env(env);
-	// char *args[] = {"cd", "/home/jeza/Projects/Minishell1/get_next_line", NULL};
-	// char *args[] = {"cd", "/", NULL};
-	// char *args[] = {"cd", "..", NULL};
-	// char *args[] = {"cd", "Libft/", NULL};
-	char *args[] = {"cd", NULL};
-	new_env = builtin_cd(new_env, args);
-	// char *args[] = {"export", "LS_COLORS=Trop de truc à écrire", NULL};
-	// char *args[] = {"export", "LOL=osef", NULL};
-	// char *args[] = {"export", NULL};
-	// new_env = builtin_export(args, new_env);
-	print_new_env(new_env);
-	free(input);
-	// free_that_lst(&token);
-	// if (env != NULL)
-	free_tab(new_env);
-	// free_tab(env);
-	return (0);
-}
+// 	manage_signals();
+// 	(void)argc;
+// 	(void)argv;
+// 	// token = NULL;
+// 	// if (argc != 1 || argv[1])
+// 	// 	return (perror("Wrong nb of args\n"), 1);
+// 	new_env = realloc_env(env);
+// 	if (env == NULL)
+// 		return (perror("Realloc env. failed\n"), 1);
+// 	while (1)
+// 	{
+// 		input = read_input();
+// 		if (ft_strcmp(input, "exit") == 0)
+// 		{
+// 			free(input);
+// 			exit(0);
+// 		}
+// 		else if (ft_strcmp(input, "cd") == 0)
+// 		{
+// 			break ;
+// 		}
+// 		// token = extract_cmd(&token, input, env);
+// 		// if (!token)
+// 		// 	return(perror("Extract cmd failed\n"), free(input), 1);
+// 	}
+// 	print_new_env(env);
+// 	// char *args[] = {"cd", "/home/jeza/Projects/Minishell1/get_next_line", NULL};
+// 	// char *args[] = {"cd", "/", NULL};
+// 	// char *args[] = {"cd", "..", NULL};
+// 	// char *args[] = {"cd", "Libft/", NULL};
+// 	char *args[] = {"cd", NULL};
+// 	new_env = builtin_cd(new_env, args);
+// 	// char *args[] = {"export", "LS_COLORS=Trop de truc à écrire", NULL};
+// 	// char *args[] = {"export", "LOL=osef", NULL};
+// 	// char *args[] = {"export", NULL};
+// 	// new_env = builtin_export(args, new_env);
+// 	print_new_env(new_env);
+// 	free(input);
+// 	// free_that_lst(&token);
+// 	// if (env != NULL)
+// 	free_tab(new_env);
+// 	// free_tab(env);
+// 	return (0);
+// }
 
 //  cmd -l < file1 | cmd|cmd -a > file2
 //  1. Boucle tant que je vois pas de pipe (puis boucle ext. tant 

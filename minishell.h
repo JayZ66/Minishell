@@ -123,7 +123,7 @@ void	builtin_env(char **env);
 char	**builtin_export(char **args, char **env);
 char	**create_var_env(char **env, char *var);
 char	**modify_value_env(char **env, char *var, char *new_value);
-char	**modify_or_create_var_in_env(char **args, char **env, size_t i, char **new_env);
+char	**modify_or_create_var(char **args, char **env, size_t i, char **new_env);
 char	*copy_new_value(char *new_env, char *var, char *new_value);
 int		is_var_in_env(char *var, char **env);
 void	update_env(char **env, char *var);
@@ -136,8 +136,11 @@ char	**go_back_home(char **new_env, char **env);
 char	**env_with_new_pwd(char **new_env, char **env, char *new_pwd);
 char	**get_new_pwd(char **env, char **new_env, char **cmd);
 char	**change_pwd_env(char **env, char **new_env, size_t cwd_len, char *cwd);
-void  echo(char *str);
-void  handle_echo_with_n(char **cmd);
+void  	echo(char *str);
+void  	handle_echo_with_n(char **cmd);
+char  	*clean_quote(char *str);
+char	*handle_quotes(char *cmd);
+
 
 // Execution
 char	**select_path(char **env);

@@ -37,14 +37,19 @@
 void  echo(char *str)
 {
   char    **cmd_with_options;
+  char    *cleaned_quotes;
+  // char    *str_clean_quotes;
   size_t  i;
 
-  i = 1;
-  cmd_with_options = ft_split(str, ' ');
+  i = 0;
+  cleaned_quotes = handle_quotes(str);
+  cmd_with_options = ft_split(cleaned_quotes, ' ');
   if (cmd_with_options[1] && (ft_strcmp(cmd_with_options[1], "-n") != 0))
   {
     while (cmd_with_options[i])
     {
+      if (ft_strcmp(cmd_with_options[i], "echo") == 0)
+        i++;
       printf("%s ", cmd_with_options[i]);
       if (cmd_with_options[i + 1] == NULL)
         printf("\n");
@@ -55,6 +60,7 @@ void  echo(char *str)
       handle_echo_with_n(cmd_with_options);
   else
     printf("\n");
+  free_tab(cmd_with_options);
 }
 
 
@@ -78,44 +84,66 @@ void  handle_echo_with_n(char **cmd)
   }
 }
 
-void  handle_quotes(char **cmd)
+char  *handle_quotes(char *cmd)
 {
   size_t  i;
-  size_t  j;
+  size_t  z;
+  int     multiple_quotes;
+  int     first_quote;
   char    *str;
   size_t  str_size;
 
-  j = 0;
   str_size = 0;
+  i = 0;
+  multiple_quotes = 0;
+  first_quote = 0;
   while(cmd[i])
   {
-    i = 1;
-    while (cmd[i][j])
+    z = 0;
+    if (cmd[i] == '\'' || cmd[i] == '"') 
     {
-      if ((cmd[i][j] == '\'' || cmd[i][j] == '"') 
-        && (cmd[i][ft_strlen(cmd[i]) - 1] == '\'' || cmd[i][ft_strlen(cmd[i]) - 1] == '"'))
+      z = i + 1;
+      while (cmd[z] && cmd[z] != cmd[i])
+      {
+        if (cmd[z] == '\'' || cmd[z] == '"')
+          multiple_quotes = 1;
+         z++;
+       }
+     }
+     i++;
+  }
+  i = 0;
+  while (cmd[i])
+  {
+    if (multiple_quotes == 1)
+    {
+        if (first_quote != 1 && (cmd[i] == '\'' || cmd[i] == '"'))
         {
-          if ((cmd[i][j + 1] == '\'' || cmd[i][j + 1] == '"') 
-        && (cmd[i][ft_strlen(cmd[i]) - 2] == '\'' || cmd[i][ft_strlen(cmd[i]) - 2] == '"'))
-          {
-            j++;
-            str_size = (ft_strlen(cmd[i] - 2) - j);
-            str = ft_substr(cmd[i] + j, 0, str_size);
-            cmd[i] = str;
-          }
-          else
-          {
-            str_size = (ft_strlen(cmd[i - 1]) - j);
-            str = ft_substr(cmd[i] + j, 0, str_size);
-            cmd[i] = str;
-          }
+          first_quote = 1;
+          i++;
         }
-        j++;
+        if (first_quote == 1)
+        {
+          str_size = ft_strlen(cmd + i) - 1;
+          str = ft_substr(cmd + i, 0, str_size);
+          return (str);
+        }
+      }
+    else
+    {
+      if (cmd[i] == '\'' || cmd[i] == '"')
+      {
+        i++;
+        str_size = ft_strlen(cmd + i) - 1;
+        str = ft_substr(cmd + i, 0, str_size);
+        return (str);
+      }
     }
     i++;
   }
-  // return (cmd);
+  return (cmd);
 }
+
 /*
 1. Si un simple/double quote ==> On retire
 2. Si deux simple/double quote ==> On retire le premier niveau
@@ -130,8 +158,51 @@ int main()
   // echo(str);
   // str = "echo -n cat cat cat";
   // echo(str);
-  str = "echo cat cat cat";
+  str = "echo cat cat \"cat\""; // PAS GERE !!
   echo(str);
-  
+  // str = "echo \"'''''Hello World'''''\"";
+  // echo(str);
   return (0);
 }
+
+// void  handle_quotes(char **cmd)
+// {
+//   size_t  i;
+//   size_t  j;
+//   char    *str;
+//   size_t  str_size;
+
+//   j = 0;
+//   str_size = 0;
+//   i = 0;
+//   while(cmd[i])
+//   {
+//     j = 0;
+//     while (cmd[i][j])
+//     {
+//       if ((cmd[i][j] == '\'' || cmd[i][j] == '"') 
+//         && (cmd[i][ft_strlen(cmd[i]) - 1] == '\'' || cmd[i][ft_strlen(cmd[i]) - 1] == '"'))
+//         {
+//           printf("cmd[i][j] : %c\n", cmd[i][ft_strlen(cmd[i]) - 1]);
+//           if ((cmd[i][j + 1] == '\'' || cmd[i][j + 1] == '"') 
+//         && (cmd[i][ft_strlen(cmd[i]) - 2] == '\'' || cmd[i][ft_strlen(cmd[i]) - 2] == '"'))
+//           {
+//             printf("cmd[i][j] : %c\n", cmd[i][ft_strlen(cmd[i]) - 2]);
+//             j++;
+//             str_size = (ft_strlen(cmd[i] - 2) - j);
+//             str = ft_substr(cmd[i] + j, 0, str_size);
+//             cmd[i] = str;
+//           }
+//           else
+//           {
+//             str_size = (ft_strlen(cmd[i - 1]) - j);
+//             str = ft_substr(cmd[i] + j, 0, str_size);
+//             cmd[i] = str;
+//           }
+//         }
+//         j++;
+//     }
+//     i++;
+//   }
+//   // return (cmd);
+// }
