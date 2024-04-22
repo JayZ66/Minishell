@@ -340,12 +340,15 @@ int tokenize_arg(t_token **token, char *input, int i)
 	// int flag = 0;
 	// printf("taille de start %d\n", start);
 	// printf("taille de end avant: %d\n", end);
-	while((input[end] && input[end] != '|' && input[end] != '<' && input[end] != '>'))
+	if (input[end] == '"')
 	{
-		// if (input[end] == '"')
-		// 	flag ++;
 		end++;
+		while (input[end] || input[end] == '"')
+			end++;
 	}
+	else
+		while((input[end] && input[end] != '|' && input[end] != '<' && input[end] != '>'))
+			end++;
 	arg = ft_strndup(input + start, end - start);
 	printf("arg: %s\n", arg);
 	new = init_node(arg, ARG);

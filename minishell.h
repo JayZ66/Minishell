@@ -67,6 +67,7 @@ typedef struct s_clean_token
 {
 	char					*content;
 	Token_type				type;
+	struct s_clean_token	*prev;
 	struct s_clean_token	*next;
 } t_clean_token;
 
@@ -140,7 +141,11 @@ t_token    *init_node_separator(Token_type type);
 // t_token	*clean_space(t_token **token);
 // void clean_spaces(t_token *head);
 void	clean_spaces(t_token *token);
-void	clean_arg(t_token *token);
+void	clean_chevron(t_token *token);
+
+// gerer les inputs
+void	manage_input(t_token *token);
+void	cut_node_input(t_token *token);
 
 //Tokenization
 int	tokenize_append(t_token **token, char *input, int i, char **env);

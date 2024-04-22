@@ -119,9 +119,11 @@ int		main(int argc, char **argv, char **env)
 		}
 
 		token = extract_cmd(&token, input, env);
+		clean_chevron(token);
 		clean_spaces(token);
-		clean_arg(token);
+		manage_input(token);
 		print_lst(token);
+
 
 		t_token *original = token;
 		// while (token)
