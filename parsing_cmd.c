@@ -229,44 +229,6 @@ void	clean_chevron(t_token *token)
 		token = token->next;
 	}
 }
-//probleme quand j'ai juste un space apres le file il me creer un nouveau
-//segfault si j'ai que des chevrons sans rien derriere donc gerer ca
-// void	cut_node(t_token *token)
-// {
-// 	char	*temp;
-// 	t_token	*new;
-// 	int		i;
-
-// 	i = 0;
-// 	while (token->content[i] && token->content[i] != ' ')
-// 		i++;
-// 	if (!token->content[i] || string_is_space(token->content + i, i));
-// 		{
-// 			perror("Manque le file après le couz");
-// 			exit(EXIT_FAILURE);
-// 		}
-// 	temp = ft_strndup(token->content, i);
-// 	if (token->content[i] == ' ')
-// 	{
-// 		while (token->content[i] == ' ')
-// 			i++;
-// 		if (!token->content[i])
-// 			return ;
-// 		new = (t_token *)malloc(sizeof(t_token));
-// 		if (new == NULL)
-// 		{
-// 			perror("Erreur d'allocation de mémoire");
-// 			exit(EXIT_FAILURE);
-// 		}
-// 		new->content = ft_strdup(token->content + i);
-// 		new->type = ARG;
-// 		new->next = token->next;
-// 		token->next = new;
-// 		free(token->content);
-// 		token->content = ft_strdup(temp);
-// 		free(temp);
-// 	}
-// }
 
 void	cut_node(t_token *token)
 {
@@ -318,7 +280,6 @@ int	string_is_space(char *token, int i)
 	return (0);
 }
 
-//rename la ft pour gerer tous les cas
 void	manage_node(t_token *token)
 {
 	while(token)
@@ -335,7 +296,27 @@ void	manage_node(t_token *token)
 	}
 }
 
+t_clean_token	*copy_list(t_token *token, t_clean_token **clean_token)
+{
+	t_clean_token	*new_node;
 
+	while (token)
+	{
+		new_node = (t_clean_token *)malloc(sizeof(t_clean_token));
+		if (!new_node)
+		{
+			perror("Erreur de mémoire");
+			exit(EXIT_FAILURE);
+		}
+		new_node->content = ft_strdup(token->content);
+		new_node->type = token->type;
+	}
+}
+
+// t_clean_token	*redirection_node(t_token **token)
+// {
+// 	t_clean_token *clean_node;
+// }
 
 
 
