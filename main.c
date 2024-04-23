@@ -121,7 +121,7 @@ int		main(int argc, char **argv, char **env)
 		token = extract_cmd(&token, input, env);
 		clean_chevron(token);
 		clean_spaces(token);
-		manage_input(token);
+		manage_node(token);
 		print_lst(token);
 
 

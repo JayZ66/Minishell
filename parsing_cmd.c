@@ -208,7 +208,8 @@ void	clean_chevron(t_token *token)
 	int	j;
 	while (token != NULL)
 	{
-		if (token->type == INPUT || token->type == OUTPUT || token->type == APPEND || token->type == HERE_DOC)
+		if (token->type == INPUT || token->type == OUTPUT
+			|| token->type == APPEND|| token->type == HERE_DOC)
 		{
 			if (token->content)
 			{
@@ -216,7 +217,8 @@ void	clean_chevron(t_token *token)
 				j = 0;
 				while (token->content[i])
 				{
-					if (token->content[i] == '<' || token->content[i] == '>' || token->content[i] == '|')
+					if (token->content[i] == '<' || token->content[i] == '>'
+						|| token->content[i] == '|')
 						i++;
 					else
 						token->content[j++] = token->content[i++];
@@ -227,113 +229,112 @@ void	clean_chevron(t_token *token)
 		token = token->next;
 	}
 }
-
-
-
-// void	cut_node_input(t_token *token)
-// {
-// 	char	*arg;
-// 	char	*space_pos;
-// 	t_token	*new;
-// 	int		i;
-
-// 	i = 0;
-// 	arg = token->content;
-// 	space_pos = ft_strchr(arg, ' ');
-// 	if (!space_pos)
-// 		*space_pos = '\0';
-// 	new =  (t_token *)malloc(sizeof(t_token));
-// 	printf("%s\n", space_pos);
-// 	token->content = ft_strndup(arg, i);
-// 	new->content = ft_strdup(space_pos + 1);
-// 	new->type = ARG;
-// 	new->next = token->next;
-// 	token->next = new;
-// }
-
-// void	cut_node_input(t_token *token)
+//probleme quand j'ai juste un space apres le file il me creer un nouveau
+//segfault si j'ai que des chevrons sans rien derriere donc gerer ca
+// void	cut_node(t_token *token)
 // {
 // 	char	*temp;
-// 	// char	*temp_new_node;
 // 	t_token	*new;
 // 	int		i;
 
 // 	i = 0;
-// 	new = NULL;
 // 	while (token->content[i] && token->content[i] != ' ')
 // 		i++;
+// 	if (!token->content[i] || string_is_space(token->content + i, i));
+// 		{
+// 			perror("Manque le file après le couz");
+// 			exit(EXIT_FAILURE);
+// 		}
 // 	temp = ft_strndup(token->content, i);
-// 	if (token->content[i])
+// 	if (token->content[i] == ' ')
 // 	{
-// 		new->content = ft_strdup(token->content + i + 1);
+// 		while (token->content[i] == ' ')
+// 			i++;
+// 		if (!token->content[i])
+// 			return ;
+// 		new = (t_token *)malloc(sizeof(t_token));
+// 		if (new == NULL)
+// 		{
+// 			perror("Erreur d'allocation de mémoire");
+// 			exit(EXIT_FAILURE);
+// 		}
+// 		new->content = ft_strdup(token->content + i);
 // 		new->type = ARG;
 // 		new->next = token->next;
 // 		token->next = new;
+// 		free(token->content);
+// 		token->content = ft_strdup(temp);
+// 		free(temp);
 // 	}
-// 	token->content = ft_strdup(temp);
-// 	free(temp);
 // }
 
-void cut_node_input(t_token *token) {
-    char *temp;
-    t_token *new;
-    int i = 0;
+void	cut_node(t_token *token)
+{
+	char	*temp;
+	t_token	*new;
+	int		i;
 
-    while (token->content[i] && token->content[i] != ' ') {
-        i++;
-    }
-    temp = ft_strndup(token->content, i);
-
-    if (token->content[i] == ' ') {
-        new = (t_token *)malloc(sizeof(t_token));
-        if (new == NULL) {
-            perror("Erreur d'allocation de mémoire");
-            exit(EXIT_FAILURE);
-        }
-
-        new->content = ft_strdup(token->content + i + 1);
-        new->type = ARG;
-        new->next = token->next;
-
-        token->next = new;
-    }
-
-    // Maintenant, vous pouvez mettre à jour le contenu de la node actuelle
-    free(token->content);
-    token->content = ft_strdup(temp);
-    free(temp);
+	i = 0;
+	while (token->content[i] && token->content[i] != ' ')
+		i++;
+	if (!token->content[i] || string_is_space(token->content + i, i) == 0)
+		{
+			perror("Manque le file après le couz");
+			exit(EXIT_FAILURE);
+		}
+	temp = ft_strndup(token->content, i);
+	if (string_is_space(token->content + i, i) == 1)
+	{
+		while (token->content[i] == ' ')
+			i++;
+		if (!token->content[i])
+			return ;
+		new = (t_token *)malloc(sizeof(t_token));
+		if (new == NULL)
+		{
+			perror("Erreur d'allocation de mémoire");
+			exit(EXIT_FAILURE);
+		}
+		new->content = ft_strdup(token->content + i);
+		new->type = ARG;
+		new->next = token->next;
+		token->next = new;
+		free(token->content);
+		token->content = ft_strdup(temp);
+		free(temp);
+	}
 }
 
-
-void	manage_input(t_token *token)
+int	string_is_space(char *token, int i)
 {
-	// int	i;
-	// int	end;
+	if (token == NULL)
+		return (1);
+	while (token[i])
+	{
+		if (token[i] != ' ' && token[i] != '\t')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
-	// i = 0;
-	// end = 0;
+//rename la ft pour gerer tous les cas
+void	manage_node(t_token *token)
+{
 	while(token)
 	{
 		if (token->type == INPUT)
-			cut_node_input(token);
+			cut_node(token);
+		if (token->type == OUTPUT)
+			cut_node(token);
+		if (token->type == APPEND)
+			cut_node(token);
+		if (token->type == HERE_DOC)
+			cut_node(token);
 		token = token->next;
 	}
 }
 
-void	insert_new_node(t_token *token, char *arg)
-{
-	t_token	*new;
-
-	if (!token)
-		return ;
-	new = (t_token *)malloc(sizeof(token));
-	if (!new)
-		return ;
-	new->content = arg;
-	new->type = ARG;
-	new->next = token->next;
-	token->next = new;
-}
 
 
 

@@ -144,8 +144,11 @@ void	clean_spaces(t_token *token);
 void	clean_chevron(t_token *token);
 
 // gerer les inputs
-void	manage_input(t_token *token);
-void	cut_node_input(t_token *token);
+void	manage_node(t_token *token);
+void	cut_node(t_token *token);
+
+//utils
+int	string_is_space(char *token ,int i);
 
 //Tokenization
 int	tokenize_append(t_token **token, char *input, int i, char **env);
