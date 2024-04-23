@@ -382,10 +382,10 @@ t_clean_token *copy_lst(t_token *token)
 
 
 
-// t_clean_token	*redirection_node(t_token **token)
-// {
-// 	t_clean_token *clean_node;
-// }
+t_clean_token	*redirection_node(t_token **token)
+{
+	t_clean_token *clean_node;
+}
 
 
 
