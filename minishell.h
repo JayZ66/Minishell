@@ -86,7 +86,7 @@ char	*read_input();
 t_token	*extract_cmd(t_token **token, char *cmd_line, char **env);
 t_token	*init_node(char *content, Token_type type);
 
-t_clean_token    *init_clean_node(char *content);
+t_clean_token    *init_clean_node(char *content, Token_type type);
 
 t_token	*lst_last(t_token *token);
 
@@ -148,7 +148,7 @@ void	manage_node(t_token *token);
 void	cut_node(t_token *token);
 
 //utils
-int	string_is_space(char *token ,int i);
+int	string_is_space(char *token);
 
 //Tokenization
 int	tokenize_append(t_token **token, char *input, int i, char **env);
@@ -163,5 +163,9 @@ void	builtin_or_not_builtin(char *str, char **env);
 void	builtin_pwd(char *str);
 void	builtin_env(char **env);
 void	builtin_exit(char *str);
+
+//clean node
+t_clean_token	*copy_lst(t_token *token);
+
 
 #endif

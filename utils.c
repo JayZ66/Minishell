@@ -33,7 +33,7 @@ t_token    *init_node(char *content, Token_type type)
     return (token);
 }
 
-t_clean_token    *init_clean_node(char *content)
+t_clean_token    *init_clean_node(char *content, Token_type type)
 {
     t_clean_token    *token;
 
@@ -49,6 +49,7 @@ t_clean_token    *init_clean_node(char *content)
         perror("Memory allocation failde\n");
         exit(EXIT_FAILURE);
     }
+	token->type = type;
     token->next = NULL;
     return (token);
 }

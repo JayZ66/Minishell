@@ -12,53 +12,6 @@
 
 #include "minishell.h"
 
-// t_token *clean_arg(t_token **token)
-// {
-// 	t_token *clean_token = NULL;
-// 	t_token *new = NULL;
-// 	char *arg = NULL;
-
-// 	while (*token)
-// 	{
-// 		if ((*token)->type == ARG)
-// 		{
-// 			arg = ft_strdup((*token)->content);
-// 			if ((*token)->next && (*token)->next->type == INPUT)
-// 			{
-//                 clean_token = init_node(arg, INPUT);
-//                 add_back(&new, clean_token);
-//                 (*token) = (*token)->next;
-//             }
-//             else
-//             {
-//                 // Traitement pour d'autres types de nodes si nécessaire
-// 				clean_token = init_node(arg, ARG);
-//                 add_back(&new, clean_token);
-//             }
-//             free(arg); // Libérer la mémoire après utilisation
-//         }
-// 		else if ((*token)-> type == INPUT)
-// 		{
-// 			if((*token)->next && (*token)->next->type == ARG)
-// 			{
-// 				arg = ft_strdup((*token)->next->content);
-// 				clean_token = init_node(arg, INPUT);
-// 				add_back(&new, clean_token);
-// 				free(arg);
-// 				(*token) = (*token)->next;
-// 			}
-// 		}
-//         // else
-//         // {
-//         //     // Gestion des autres types de nodes
-//         //     clean_token = init_node(ft_strdup((*token)->content), PIPE);
-//         //     add_back(&new, clean_token);
-//         // }
-//         (*token) = (*token)->next;
-//     }
-//     return (new);
-// }
-
 
 // t_token	*clean_arg(t_token **token)
 // {
@@ -239,13 +192,13 @@ void	cut_node(t_token *token)
 	i = 0;
 	while (token->content[i] && token->content[i] != ' ')
 		i++;
-	if (!token->content[i] || string_is_space(token->content + i, i) == 0)
-		{
-			perror("Manque le file après le couz");
-			exit(EXIT_FAILURE);
-		}
+	// if (!token->content[i] || string_is_space(token->content + i, i) == 0)
+	// 	{
+	// 		perror("Manque le file après le couz");
+	// 		exit(EXIT_FAILURE);
+	// 	}
 	temp = ft_strndup(token->content, i);
-	if (string_is_space(token->content + i, i) == 1)
+	if (string_is_space(token->content + i) == 0)
 	{
 		while (token->content[i] == ' ')
 			i++;
@@ -267,17 +220,17 @@ void	cut_node(t_token *token)
 	}
 }
 
-int	string_is_space(char *token, int i)
+int	string_is_space(char *token)
 {
 	if (token == NULL)
 		return (1);
-	while (token[i])
+	while (token)
 	{
-		if (token[i] != ' ' && token[i] != '\t')
-			return (1);
-		i++;
+		if (*token != ' ' && *token != '\t')
+			return (0);
+		token++;
 	}
-	return (0);
+	return (1);
 }
 
 void	manage_node(t_token *token)
@@ -296,22 +249,138 @@ void	manage_node(t_token *token)
 	}
 }
 
-t_clean_token	*copy_list(t_token *token, t_clean_token **clean_token)
-{
-	t_clean_token	*new_node;
+// t_clean_token	*copy_list(t_token *token, t_clean_token **clean_token)
+// {
+// 	t_clean_token	*new_node;
+// 	t_clean_token	*last_node;
 
-	while (token)
-	{
-		new_node = (t_clean_token *)malloc(sizeof(t_clean_token));
-		if (!new_node)
-		{
-			perror("Erreur de mémoire");
-			exit(EXIT_FAILURE);
-		}
-		new_node->content = ft_strdup(token->content);
-		new_node->type = token->type;
-	}
+// 	while (token)
+// 	{
+// 		new_node = (t_clean_token *)malloc(sizeof(t_clean_token));
+// 		if (!new_node)
+// 		{
+// 			perror("Erreur de mémoire");
+// 			exit(EXIT_FAILURE);
+// 		}
+// 		if (token->type != PIPE)
+// 			new_node->content = ft_strdup(token->content);
+// 		new_node->type = token->type;
+
+// 		new_node->next = NULL;
+// 		last_node = NULL;
+// 		new_node->prev = last_node;
+
+// 		if ((!*clean_token))
+// 			*clean_token = new_node;
+// 		else
+// 			last_node = *clean_token;
+// 		// while (!last_node)
+// 		// 	last_node = last_node->next;
+
+// 		last_node = new_node;
+// 		token = token->next;
+// 	}
+// 	return (*clean_token);
+// }
+
+// t_token *clean_arg(t_token **token)
+// {
+// 	t_token *clean_token = NULL;
+// 	t_token *new = NULL;
+// 	char *arg = NULL;
+
+// 	while (*token)
+// 	{
+// 		if ((*token)->type == ARG)
+// 		{
+// 			arg = ft_strdup((*token)->content);
+// 			if ((*token)->next && (*token)->next->type == INPUT)
+// 			{
+//                 clean_token = init_node(arg, INPUT);
+//                 add_back(&new, clean_token);
+//                 (*token) = (*token)->next;
+//             }
+//             else
+//             {
+//                 // Traitement pour d'autres types de nodes si nécessaire
+// 				clean_token = init_node(arg, ARG);
+//                 add_back(&new, clean_token);
+//             }
+//             free(arg); // Libérer la mémoire après utilisation
+//         }
+// 		else if ((*token)-> type == INPUT)
+// 		{
+// 			if((*token)->next && (*token)->next->type == ARG)
+// 			{
+// 				arg = ft_strdup((*token)->next->content);
+// 				clean_token = init_node(arg, INPUT);
+// 				add_back(&new, clean_token);
+// 				free(arg);
+// 				(*token) = (*token)->next;
+// 			}
+// 		}
+//         // else
+//         // {
+//         //     // Gestion des autres types de nodes
+//         //     clean_token = init_node(ft_strdup((*token)->content), PIPE);
+//         //     add_back(&new, clean_token);
+//         // }
+//         (*token) = (*token)->next;
+//     }
+//     return (new);
+// }
+
+
+// t_clean_token	*copy_lst(t_token *token)
+// {
+// 	t_clean_token	*clean_token = NULL;
+// 	t_clean_token	*new = NULL;
+// 	char			*content = NULL;
+
+// 	while (token)
+// 	{
+// 		if (token->type != PIPE)
+// 			content = ft_strdup(token->content);
+// 		else
+// 			content = NULL;
+// 		clean_token = init_clean_node(content, token->type);
+// 		add_clean_back(&new, clean_token);
+// 		free(content);
+// 		token = token->next;
+// 	}
+// 	return (new);
+// }
+
+t_clean_token *copy_lst(t_token *token)
+{
+    t_clean_token *clean_token = NULL;
+    t_clean_token *new = NULL; // Initialisez new à NULL
+    t_clean_token *last_node = NULL;
+
+    while (token)
+    {
+        char *content = NULL;
+        if (token->type != PIPE)
+            content = ft_strdup(token->content);
+
+        t_clean_token *clean_node = init_clean_node(content, token->type);
+
+        if (!clean_token) {
+            clean_token = clean_node;
+            new = clean_token; // Mettez à jour new pour pointer vers le premier nœud
+        } else {
+            last_node->next = clean_node; // Connectez le nouveau nœud après le dernier nœud trouvé
+            clean_node->prev = last_node; // Mettez à jour les liens vers le nœud précédent
+        }
+
+        last_node = clean_node; // Mettez à jour last_node pour pointer vers le dernier nœud ajouté
+        token = token->next;
+    }
+    return new;
 }
+
+
+
 
 // t_clean_token	*redirection_node(t_token **token)
 // {

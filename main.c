@@ -100,13 +100,15 @@ int		main(int argc, char **argv, char **env)
 {
 	char	*input;
 	t_token	*token;
+	t_clean_token *clean_token;
 	// t_token *clean_token;
 	// char	*cmd_line;
 	(void)argc;
 	(void)argv;
 
 	token = NULL;
-	// clean_token = NULL;
+	clean_token = NULL;
+
 	// if (argc != 1 || argv[1])
 	// 	return (perror("Wrong nb of args\n"), 1);
 	while (1)
@@ -123,6 +125,8 @@ int		main(int argc, char **argv, char **env)
 		clean_spaces(token);
 		manage_node(token);
 		print_lst(token);
+		clean_token = copy_lst(token);
+		print_clean_lst(clean_token);
 
 
 		t_token *original = token;
