@@ -136,7 +136,7 @@ char	**go_back_home(char **new_env, char **env);
 char	**env_with_new_pwd(char **new_env, char **env, char *new_pwd);
 char	**get_new_pwd(char **env, char **new_env, char **cmd);
 char	**change_pwd_env(char **env, char **new_env, size_t cwd_len, char *cwd);
-void  	echo(char *str);
+void  	builtin_echo(char *str);
 void  	handle_echo_with_n(char **cmd);
 char  	*clean_quote(char *str);
 char	*handle_quotes(char *cmd);
@@ -144,6 +144,11 @@ char 	*copy_string_without_char(const char *source, char exclude_char);
 int 	is_there_someting_after_quote(char *str);
 char   *copy_str_without_first_quote(char *source);
 int 	is_space(char c);
+char	*check_quotes(char *cmd, int multiple_quotes);
+char 	*check_multiple_quotes(char *cmd);
+char	*check_initial_quote(char *cmd);
+char	*removing_one_level_of_quote(char *cmd, char c, size_t i);
+int		is_there_multiple_quotes(char *cmd);
 
 
 // Execution

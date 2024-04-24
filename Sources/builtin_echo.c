@@ -34,7 +34,7 @@
 // }
 
 
-void  echo(char *str)
+void  builtin_echo(char *str)
 {
   char    **cmd_with_options;
   char    *cleaned_quotes;
@@ -86,85 +86,85 @@ void  handle_echo_with_n(char **cmd)
   }
 }
 
-char  *handle_quotes(char *cmd)
-{
-  size_t  i;
-  size_t  j;
-  size_t  z;
-  int     multiple_quotes;
-  int     first_quote;
-  char    *str;
-  size_t  str_size;
+// char  *handle_quotes(char *cmd)
+// {
+//   size_t  i;
+//   size_t  j;
+//   size_t  z;
+//   int     multiple_quotes;
+//   int     first_quote;
+//   char    *str;
+//   size_t  str_size;
 
-  str_size = 0;
-  i = 0;
-  j = 0;
-  multiple_quotes = 0;
-  first_quote = 0;
-  while(cmd[i])
-  {
-    z = 0;
-    if (cmd[i] == '\'' || cmd[i] == '"') 
-    {
-      z = i + 1;
-      while (cmd[z] && cmd[z] != cmd[i])
-      {
-        if (cmd[z] == '\'' || cmd[z] == '"')
-          multiple_quotes = 1;
-         z++;
-       }
-     }
-     i++;
-  }
-  i = 0;
-  while (cmd[i])
-  {
-    if (multiple_quotes == 1)
-    {
-      if (first_quote != 1 && (cmd[i] == '\'' || cmd[i] == '"'))
-      {
-        first_quote = 1;
-        i++;
-      }
-      if (first_quote == 1 && (is_there_someting_after_quote(cmd + i) == 0))
-      {
-        str_size = ft_strlen(cmd + i) - 1;
-        str = ft_substr(cmd + i, 0, str_size);
-        return (str);
-      }
-      else if (first_quote == 1 && (is_there_someting_after_quote(cmd + i) == 1))
-      {
-        str = copy_str_without_first_quote(cmd);
-        return (str);
-      }
-    }
-    else if (cmd[i] == '\'' || cmd[i] == '"')
-    {
-      j = i + 1;
-      while (cmd[j])
-      {
-        if (cmd[j] == cmd[i] && (is_there_someting_after_quote(cmd + j) == 1))
-        {
-          str = copy_string_without_char(cmd, cmd[i]);
-          return (str);
-        }
-        j++;
-      }
-    }
-    else
-    {
-      if (cmd[i] == '\'' || cmd[i] == '"')
-      {
-        i++;
-        str_size = ft_strlen(cmd + i) - 1;
-        str = ft_substr(cmd + i, 0, str_size);
-        return (str);
-      }
-    }
-    i++;
-  }
-  return (cmd);
-}
+//   str_size = 0;
+//   i = 0;
+//   j = 0;
+//   multiple_quotes = 0;
+//   first_quote = 0;
+//   while(cmd[i])
+//   {
+//     z = 0;
+//     if (cmd[i] == '\'' || cmd[i] == '"') 
+//     {
+//       z = i + 1;
+//       while (cmd[z] && cmd[z] != cmd[i])
+//       {
+//         if (cmd[z] == '\'' || cmd[z] == '"')
+//           multiple_quotes = 1;
+//          z++;
+//        }
+//      }
+//      i++;
+//   }
+//   i = 0;
+//   while (cmd[i])
+//   {
+//     if (multiple_quotes == 1)
+//     {
+//       if (first_quote != 1 && (cmd[i] == '\'' || cmd[i] == '"'))
+//       {
+//         first_quote = 1;
+//         i++;
+//       }
+//       if (first_quote == 1 && (is_there_someting_after_quote(cmd + i) == 0))
+//       {
+//         str_size = ft_strlen(cmd + i) - 1;
+//         str = ft_substr(cmd + i, 0, str_size);
+//         return (str);
+//       }
+//       else if (first_quote == 1 && (is_there_someting_after_quote(cmd + i) == 1))
+//       {
+//         str = copy_str_without_first_quote(cmd);
+//         return (str);
+//       }
+//     }
+//     else if (cmd[i] == '\'' || cmd[i] == '"')
+//     {
+//       j = i + 1;
+//       while (cmd[j])
+//       {
+//         if (cmd[j] == cmd[i] && (is_there_someting_after_quote(cmd + j) == 1))
+//         {
+//           str = copy_string_without_char(cmd, cmd[i]);
+//           return (str);
+//         }
+//         j++;
+//       }
+//     }
+//     else
+//     {
+//       if (cmd[i] == '\'' || cmd[i] == '"')
+//       {
+//         i++;
+//         str_size = ft_strlen(cmd + i) - 1;
+//         str = ft_substr(cmd + i, 0, str_size);
+//         return (str);
+//       }
+//     }
+//     i++;
+//   }
+//   return (cmd);
+// }
 
 int is_space(char c)
 {
