@@ -54,9 +54,9 @@ char	*removing_one_level_of_quote(char *cmd, char c, size_t i)
 	j = i + 1;
 	while (cmd[j])
 	{
-		if (cmd[j] == cmd[i] && (is_there_someting_after_quote(cmd + j) == 1))
+		if (cmd[j] == c && (is_there_something_after_quote(cmd + j) == 1))
 		{
-			str = copy_string_without_char(cmd, cmd[i]); // In builtin_echo.c
+			str = copy_string_without_char(cmd, c); // In builtin_echo.c
 			return (str);
 		}
 		j++;
@@ -111,12 +111,12 @@ char *check_multiple_quotes(char *cmd)
             first_quote = 1;
             i++;
         }     
-        if (first_quote == 1 && (is_something_after_quote(cmd + i) == 0))
+        if (first_quote == 1 && (is_there_something_after_quote(cmd + i) == 0))
         {
             str_size = ft_strlen(cmd + i) - 1;
             return (ft_substr(cmd + i, 0, str_size));
         }
-        else if (first_quote == 1 && (is_something_after_quote(cmd + i) == 1))
+        else if (first_quote == 1 && (is_there_something_after_quote(cmd + i) == 1))
             return (copy_str_without_first_quote(cmd)); 
         i++;
     }
@@ -171,6 +171,7 @@ int	is_relative_path(char **cmd)
 
 // TESTER SUR MAC pour les ".." et quelles est la racine
 // que l'on doit protéger ? + Si ça fonctionne ou non !
+// Nécessaire pour les built-ins => BEST to run.
 char	*relative_to_absolute_path(char **cmd)
 {
 	char	cwd[1024];
@@ -259,7 +260,7 @@ void	builtin_or_not_builtin(char *str, char **env)
 	else if (ft_strncmp(str, "env", 4) == 0)
 		builtin_env(env);
 	else if (ft_strncmp(str, "exit", 4) == 0)
-		builtin_exit(str);
+		builtin_exit(cmd);
 	else if (ft_strncmp(str, "unset", 5) == 0)
 		builtin_unset(cmd, env); // Change the return.
 	else if (ft_strncmp(str, "cd", 2) == 0)
@@ -274,6 +275,36 @@ void	builtin_or_not_builtin(char *str, char **env)
 Expanser
 */
 
+int main()
+{
+  char  *str;
+
+//   str = "echo \"''''pourquoi''''\" \"''toi''\"";
+//   str = "echo '\"""pourquoi\"""' \"''toi''\"";
+  // str = "echo";
+  // echo(str);
+  str = "echo -n \"cat\" \"'cat'\" 'cat'";
+//   str = "echo '-n' 'cat' cat cat";
+  // echo(str);
+//   str = "echo cat cat \"''''cat''''\"";
+  // echo(str);
+//   str = "echo \"''''Hello' 'World''''\' \"'''cat'''\" cat";
+  // str = "echo cat";
+builtin_echo(str);
+//   str = handle_quotes(str);
+//   printf("new_str : %s\n", str);
+  return (0);
+}
+
+/*
+GESTION DES GUILLEMETS : 
+- Sans guillemets : echo hello world
+La commande est interprétée comme trois tokens distincts : echo, Hello, World.
+- Avec simple quotes : echo 'Hello World'
+La commande est interprétée comme deux tokens : echo et Hello World.
+- Avec double quotes : echo "Hello World"
+La commande est également interprétée comme deux tokens : echo et Hello World.
+*/
 
 // char	*check_quotes(char *cmd, int multiple_quotes)
 // {

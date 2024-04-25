@@ -141,7 +141,7 @@ void  	handle_echo_with_n(char **cmd);
 char  	*clean_quote(char *str);
 char	*handle_quotes(char *cmd);
 char 	*copy_string_without_char(const char *source, char exclude_char);
-int 	is_there_someting_after_quote(char *str);
+int 	is_there_something_after_quote(char *str);
 char   *copy_str_without_first_quote(char *source);
 int 	is_space(char c);
 char	*check_quotes(char *cmd, int multiple_quotes);

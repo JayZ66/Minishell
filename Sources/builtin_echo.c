@@ -188,7 +188,7 @@ char   *copy_str_without_first_quote(char *source)
         return (NULL);
     while (source[i] && i < source_length)
     {
-      if (((source[i] == '\'' || source[i] == '"') && !(is_space(source[i - 1]))) && (!(is_space(source[i + 1])) && source[i + 1] != '\0'))
+      if (((source[i] == '\'' || source[i] == '"') && !(is_space(source[i - 1]))) && (!(is_space(source[i + 1])) && source[i + 1] != '\0' && i != 0))
       {
         result[j] = source[i];
         j++;
@@ -205,7 +205,7 @@ char   *copy_str_without_first_quote(char *source)
     return (result);
 }
 
-int is_there_someting_after_quote(char *str)
+int is_there_something_after_quote(char *str)
 {
   int i;
   int something_after;
@@ -262,61 +262,4 @@ char *copy_string_without_char(const char *source, char exclude_char)
 */
 
 
-int main()
-{
-  char  *str;
 
-  // str = "echo";
-  // echo(str);
-  // str = "echo -n \"cat\" \"'cat'\" 'cat'";
-  // str = "echo '-n' 'cat' cat cat";
-  // echo(str);
-  // str = "echo cat cat \"cat\"";
-  // echo(str);
-  // str = "echo \"''''Hello' 'World''''\' \"'''cat'''\" cat";
-  // str = "echo cat";
-  echo(str);
-  return (0);
-}
-
-// void  handle_quotes(char **cmd)
-// {
-//   size_t  i;
-//   size_t  j;
-//   char    *str;
-//   size_t  str_size;
-
-//   j = 0;
-//   str_size = 0;
-//   i = 0;
-//   while(cmd[i])
-//   {
-//     j = 0;
-//     while (cmd[i][j])
-//     {
-//       if ((cmd[i][j] == '\'' || cmd[i][j] == '"') 
-//         && (cmd[i][ft_strlen(cmd[i]) - 1] == '\'' || cmd[i][ft_strlen(cmd[i]) - 1] == '"'))
-//         {
-//           printf("cmd[i][j] : %c\n", cmd[i][ft_strlen(cmd[i]) - 1]);
-//           if ((cmd[i][j + 1] == '\'' || cmd[i][j + 1] == '"') 
-//         && (cmd[i][ft_strlen(cmd[i]) - 2] == '\'' || cmd[i][ft_strlen(cmd[i]) - 2] == '"'))
-//           {
-//             printf("cmd[i][j] : %c\n", cmd[i][ft_strlen(cmd[i]) - 2]);
-//             j++;
-//             str_size = (ft_strlen(cmd[i] - 2) - j);
-//             str = ft_substr(cmd[i] + j, 0, str_size);
-//             cmd[i] = str;
-//           }
-//           else
-//           {
-//             str_size = (ft_strlen(cmd[i - 1]) - j);
-//             str = ft_substr(cmd[i] + j, 0, str_size);
-//             cmd[i] = str;
-//           }
-//         }
-//         j++;
-//     }
-//     i++;
-//   }
-//   // return (cmd);
-// }

@@ -18,52 +18,52 @@
 // + Est-ce que ce sera stocké dans un noeud
 // individuellement ou avec d'autres choses ?
 
-char	*extract_var(char *str)
-{
-	size_t	i;
-	char	*var_env;
-	char	*result;
+// char	*extract_var(char *str)
+// {
+// 	size_t	i;
+// 	char	*var_env;
+// 	char	*result;
 
-	i = 0;
-	if (str[i] == '$')
-	{
-		i++;
-		var_env = ft_substr(str + i, 0, ft_strlen(str + i));
-		result = getenv(var_env);
-		if (result == NULL)
-			return (perror("This var. is not existing in the env.\n"),
-				free(var_env), NULL);
-		return (free(var_env), result);
-	}
-	perror("Can't get the var. of env.");
-	return (NULL);
-}
+// 	i = 0;
+// 	if (str[i] == '$')
+// 	{
+// 		i++;
+// 		var_env = ft_substr(str + i, 0, ft_strlen(str + i));
+// 		result = getenv(var_env);
+// 		if (result == NULL)
+// 			return (perror("This var. is not existing in the env.\n"),
+// 				free(var_env), NULL);
+// 		return (free(var_env), result);
+// 	}
+// 	perror("Can't get the var. of env.");
+// 	return (NULL);
+// }
 
-char	*get_the_var_of_env(t_token *node)
-{
-	t_token	*tmp;
-	// char	*var_env;
-	// char	*result;
-	char	*var;
-	size_t	i;
+// char	*get_the_var_of_env(t_token *node)
+// {
+// 	t_token	*tmp;
+// 	// char	*var_env;
+// 	// char	*result;
+// 	char	*var;
+// 	size_t	i;
 
-	tmp = node;
-	while (tmp)
-	{
-		i = -1;
-		while (tmp->content[++i])
-		{
-			while (tmp->content[i] == ' ')
-				i++;
-			var = extract_var(tmp->content + i);
-			if (!var)
-				return (NULL);
-			return (var);
-		}
-		tmp = tmp->next;
-	}
-	return (perror("Can't get this var.\n"), NULL);
-}
+// 	tmp = node;
+// 	while (tmp)
+// 	{
+// 		i = -1;
+// 		while (tmp->content[++i])
+// 		{
+// 			while (tmp->content[i] == ' ')
+// 				i++;
+// 			var = extract_var(tmp->content + i);
+// 			if (!var)
+// 				return (NULL);
+// 			return (var);
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	return (perror("Can't get this var.\n"), NULL);
+// }
 
 // char	*get_the_var_of_env(t_token *node)
 // {
