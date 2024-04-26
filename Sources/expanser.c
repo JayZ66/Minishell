@@ -123,6 +123,32 @@ char *check_multiple_quotes(char *cmd)
     return (cmd);
 }
 
+// Gérer si premier quote et dernier sont les mêmes & si mêmes types.
+// int	handle_type_of_quotes(char *cmd)
+// {
+// 	size_t	i;
+// 	char	first_quote;
+// 	int		count_pair_of_quotes;
+
+// 	i = 0;
+// 	while (cmd[i])
+// 	{
+// 		if ((cmd[i] == '\'' || cmd[i] == '"') && first_quote == NULL)
+// 		{
+// 			first_quote = cmd[i];
+// 			i++;
+// 		}
+// 		if (cmd[i] == first_quote)
+// 		{
+// 			count_pair_of_quotes++;
+// 			first_quote = NULL;
+// 		}
+// 		i++;
+// 	}
+// 	return (count_pair_of_quotes);
+// }
+
+
 // To manage if quotes are by pair.
 // To manage if there is the same quote at the beginning & the end.
 int	handle_quote_errors(char *cmd)
@@ -165,7 +191,8 @@ char  *handle_quotes(char *cmd)
 
   multiple_quotes = is_there_multiple_quotes(cmd);
   pair_of_quotes = handle_quote_errors(cmd);
-  str = check_quotes(cmd, multiple_quotes);
+  if (pair_of_quotes == 0)
+  	str = check_quotes(cmd, multiple_quotes);
   return (str);
 }
 
@@ -264,10 +291,10 @@ int	check_var(t_token *node)
 				while (tmp->content[i])
 				{
 					if (tmp->content[i] == '$')
-						is_var_in_env = 1;
+						is_var_env = 1;
 					if (tmp->content[i] == '"')
 						is_second_quote = 1;
-					if (is_var_in_env == 1 && is_second_quote == 1)
+					if ((is_var_env == 1) && (is_second_quote == 1))
 						return (0); 
 					i++;
 				}
@@ -315,7 +342,7 @@ DetectBuiltInCmd
 // Check si built_in dans mon execution => Si oui on redirige
 // le résultat (dup2) et on n'envoie pas dans execve.
 // Check how to manage the new env !
-void	builtin_or_not_builtin(char *str, char **env)
+int	builtin_or_not_builtin(char *str, char **env)
 {
 	char	**cmd;
 
@@ -327,13 +354,16 @@ void	builtin_or_not_builtin(char *str, char **env)
 	else if (ft_strncmp(str, "exit", 4) == 0)
 		builtin_exit(cmd);
 	else if (ft_strncmp(str, "unset", 5) == 0)
-		builtin_unset(cmd, env); // Change the return.
+		env = builtin_unset(cmd, env); // Change the return.
 	else if (ft_strncmp(str, "cd", 2) == 0)
-		builtin_cd(env, cmd); // Change the return.
+		env = builtin_cd(env, cmd); // Change the return.
 	else if (ft_strncmp(str, "echo", 4) == 0)
 		builtin_echo(str);
 	else if (ft_strncmp(str, "export", 6) == 0)
-		builtin_export(cmd, env); // Change the return.
+		env = builtin_export(cmd, env); // Change the return.
+	else
+		return (1);
+	return (0);
 }
 
 /*
@@ -344,7 +374,7 @@ int main()
 {
   char  *str;
 
-  str = "echo """"pourquoi'''' \"''toi''\"";
+//   str = "echo """"pourquoi'''' \"''toi''\"";
 //   str = "echo '\"""pourquoi\"""' \"''toi''\"";
   // str = "echo";
   // echo(str);
@@ -356,6 +386,7 @@ int main()
 //   str = "echo \"''''Hello' 'World''''\' \"'''cat'''\" cat";
   // str = "echo cat";
 //   builtin_echo(str);
+str = "\"''cat\"'' ok";
   str = handle_quotes(str);
   printf("new_str : %s\n", str);
   return (0);

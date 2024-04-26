@@ -22,6 +22,7 @@ not execute pipe. Just send it to execution.
 // Need input/here_doc before cmd.
 // CHECK IF MULTIPLE REDIRECTIONS !
 
+
 void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 {
 	int		first_file;
@@ -90,6 +91,11 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 					|| (current->next && current->next->next
 						&& current->next->next->type == PIPE))))
 		{
+			if (builtin_or_not_builtin(current->content, env) == 0)
+			{
+				// Si output on ne redirige pas.
+				// Si pas d'output on redirige.
+			}
 			create_pipes(current->content, env, exit_code);
 			current = current->next;
 			if (current->next->type == PIPE)
@@ -97,7 +103,10 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 		}
 		else if (current->type == CMD)
 		{
-			exec_cmd_with_fork(current->content, env, exit_code);
+			if (builtin_or_not_builtin(current->content, env) == 0)
+				;
+			else
+				exec_cmd_with_fork(current->content, env, exit_code);
 			dup2(saved_stdin, STDIN_FILENO);
 			dup2(saved_stdout, STDOUT_FILENO);
 		}

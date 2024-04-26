@@ -182,6 +182,7 @@ void	sigquit_handler(int sig);
 // EXPANSER
 int	check_var(t_token *node);
 int	handle_quote_errors(char *cmd);
+int	builtin_or_not_builtin(char *str, char **env);
 
 
 #endif
