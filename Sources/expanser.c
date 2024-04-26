@@ -123,6 +123,32 @@ char *check_multiple_quotes(char *cmd)
     return (cmd);
 }
 
+// To manage if quotes are by pair.
+// To manage if there is the same quote at the beginning & the end.
+int	handle_quote_errors(char *cmd)
+{
+	size_t	i;
+	int		count_quotes;
+
+	i = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == '\'' || cmd[i] == '"')
+			count_quotes++;
+		i++;
+	}
+	if (count_quotes % 2 != 0)
+	{
+		perror("Quote is not closed\n");
+		exit(EXIT_FAILURE);
+	}
+	return (0);
+}
+/*
+Si multiple_quotes : check si un nb pair de quotes
+puis check si same au début et à la fin.
+*/
+
 char *check_quotes(char *cmd, int multiple_quotes)
 {
     if (multiple_quotes == 1)
@@ -134,9 +160,11 @@ char *check_quotes(char *cmd, int multiple_quotes)
 char  *handle_quotes(char *cmd)
 {
   int	multiple_quotes;
+  int	pair_of_quotes;
   char	*str;
 
   multiple_quotes = is_there_multiple_quotes(cmd);
+  pair_of_quotes = handle_quote_errors(cmd);
   str = check_quotes(cmd, multiple_quotes);
   return (str);
 }
@@ -218,6 +246,38 @@ char	*extract_var(char *str)
 	return (NULL);
 }
 
+int	check_var(t_token *node)
+{
+	t_token	*tmp;
+	size_t	i;
+	int		is_var_env;
+	int		is_second_quote;
+
+	tmp = node;
+	while (tmp)
+	{
+		i = -1;
+		while(tmp->content[++i])
+		{
+			if (tmp->content[i] == '"')
+			{
+				while (tmp->content[i])
+				{
+					if (tmp->content[i] == '$')
+						is_var_in_env = 1;
+					if (tmp->content[i] == '"')
+						is_second_quote = 1;
+					if (is_var_in_env == 1 && is_second_quote == 1)
+						return (0); 
+					i++;
+				}
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
 char	*get_the_var_of_env(t_token *node)
 {
 	t_token	*tmp;
@@ -227,6 +287,11 @@ char	*get_the_var_of_env(t_token *node)
 	size_t	i;
 
 	tmp = node;
+	if (check_var(node) == 1) // CHECK IF WE ALWAYS NEED QUOTES TO GET VAR ENV.
+	{
+		perror("Can't get var. of env bce of quotes\n");
+		exit(EXIT_FAILURE);
+	}
 	while (tmp)
 	{
 		i = -1;
@@ -279,20 +344,20 @@ int main()
 {
   char  *str;
 
-//   str = "echo \"''''pourquoi''''\" \"''toi''\"";
+  str = "echo """"pourquoi'''' \"''toi''\"";
 //   str = "echo '\"""pourquoi\"""' \"''toi''\"";
   // str = "echo";
   // echo(str);
-  str = "echo -n \"cat\" \"'cat'\" 'cat'";
+//   str = "echo -n \"""cat'''' \"'cat'\" 'cat'";
 //   str = "echo '-n' 'cat' cat cat";
   // echo(str);
 //   str = "echo cat cat \"''''cat''''\"";
   // echo(str);
 //   str = "echo \"''''Hello' 'World''''\' \"'''cat'''\" cat";
   // str = "echo cat";
-builtin_echo(str);
-//   str = handle_quotes(str);
-//   printf("new_str : %s\n", str);
+//   builtin_echo(str);
+  str = handle_quotes(str);
+  printf("new_str : %s\n", str);
   return (0);
 }
 
@@ -305,62 +370,3 @@ La commande est interprétée comme deux tokens : echo et Hello World.
 - Avec double quotes : echo "Hello World"
 La commande est également interprétée comme deux tokens : echo et Hello World.
 */
-
-// char	*check_quotes(char *cmd, int multiple_quotes)
-// {
-// 	size_t	j;
-// 	size_t	i;
-// 	int		first_quote;
-// 	char	*str;
-// 	int		str_size;
-
-// 	i = 0;
-// 	first_quote = 0;
-// 	while (cmd[i])
-// 	{
-// 		if (multiple_quotes == 1)
-// 		{
-// 			if (first_quote != 1 && (cmd[i] == '\'' || cmd[i] == '"'))
-// 			{
-// 				first_quote = 1;
-// 				i++;
-// 			}
-// 			if (first_quote == 1 && (is_there_someting_after_quote(cmd + i) == 0)) // In builtin_echo.c
-// 			{
-// 				str_size = ft_strlen(cmd + i) - 1;
-// 				str = ft_substr(cmd + i, 0, str_size);
-// 				return (str);
-// 			}
-// 			else if (first_quote == 1 && (is_there_someting_after_quote(cmd + i) == 1))
-// 			{
-// 				str = copy_str_without_first_quote(cmd); // In builtin_echo.c
-// 				return (str);
-// 			}
-// 		}
-// 		else if (cmd[i] == '\'' || cmd[i] == '"')
-// 		{
-// 			j = i + 1;
-// 			while (cmd[j])
-// 			{
-// 				if (cmd[j] == cmd[i] && (is_there_someting_after_quote(cmd + j) == 1))
-// 				{
-// 				str = copy_string_without_char(cmd, cmd[i]); // In builtin_echo.c
-// 				return (str);
-// 				}
-// 				j++;
-// 			}
-// 		}
-// 		else
-// 		{
-// 			if (cmd[i] == '\'' || cmd[i] == '"')
-// 			{
-// 				i++;
-// 				str_size = ft_strlen(cmd + i) - 1;
-// 				str = ft_substr(cmd + i, 0, str_size);
-// 				return (str);
-// 			}
-// 		}
-// 		i++;
-// 	}
-//   return (cmd);
-// }

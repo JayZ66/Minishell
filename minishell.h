@@ -150,7 +150,6 @@ char	*check_initial_quote(char *cmd);
 char	*removing_one_level_of_quote(char *cmd, char c, size_t i);
 int		is_there_multiple_quotes(char *cmd);
 
-
 // Execution
 char	**select_path(char **env);
 char	*get_path(char *cmd, char **env);
@@ -179,5 +178,10 @@ void	display_lst(t_token *line);
 void 	sigint_handler(int sig);
 void	manage_signals();
 void	sigquit_handler(int sig);
+
+// EXPANSER
+int	check_var(t_token *node);
+int	handle_quote_errors(char *cmd);
+
 
 #endif
