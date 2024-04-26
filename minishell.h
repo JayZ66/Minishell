@@ -168,4 +168,8 @@ void	builtin_exit(char *str);
 t_clean_token	*copy_lst(t_token *token);
 
 
+void	redirection_node(t_clean_token **head_ref);
+
+void swap_nodes(t_clean_token **head_ref, t_clean_token *node1, t_clean_token *node2);
+
 #endif
