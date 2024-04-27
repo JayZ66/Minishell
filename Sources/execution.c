@@ -91,12 +91,14 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 					|| (current->next && current->next->next
 						&& current->next->next->type == PIPE))))
 		{
-			if (builtin_or_not_builtin(current->content, env) == 0)
+			if (is_built_in(current->content) == 0)
 			{
-				// Si output on ne redirige pas.
+				redirect_builtin_result(current->content, exit_code, env);
+				// 	dup2()
 				// Si pas d'output on redirige.
 			}
-			create_pipes(current->content, env, exit_code);
+			else
+				create_pipes(current->content, env, exit_code);
 			current = current->next;
 			if (current->next->type == PIPE)
 				current = current->next;
@@ -112,8 +114,8 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 		}
 		current = current->next;
 	}
-	// dup2(saved_stdin, STDIN_FILENO);
-	// dup2(saved_stdout, STDOUT_FILENO);
+	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
 } 
 
 // CHECK SI PLS REDIRECTIONS ET SI APRES EXEC OU CHQ LIGNE DE CMD !!
@@ -134,6 +136,41 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 		// 		create_pipes(node->content, env);
 		// 	node = node->next;
 		// }
+
+
+void	redirect_builtin_result(char *cmd, t_minishell *exit_code, char **env)
+{
+	int	exit_status;
+	int	fd[2];
+	int	pid;
+
+	if (pipe(fd) == -1)
+	{
+		exit(EXIT_FAILURE);
+	}
+	pid = fork();
+	if (pid == -1)
+	{
+		exit(EXIT_FAILURE);
+	}
+	if (pid == 0)
+	{
+		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+		builtin_or_not_builtin(cmd, env);
+		exit(EXIT_SUCCESS);
+	}
+	else
+	{
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
+		waitpid(-1, &exit_status, 0);
+		if (WIFEXITED(exit_status))
+			exit_code->last_exit_status = WEXITSTATUS(exit_status);
+	}
+}
 
 void	exec_cmd(char *cmd, char **env)
 {

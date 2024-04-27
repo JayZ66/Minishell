@@ -164,6 +164,7 @@ void	parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code);
 void	child_here_doc(int *pfd, char *cmd);
 void	handle_here_doc(char *cmd, t_minishell *exit_code);
 void	check_line(t_token **lst, char **env, t_minishell *exit_code);
+void	redirect_builtin_result(char *cmd,t_minishell *exit_code, char **env);
 void 	append_exec_node(t_token **head, char *content, Token_type type);
 t_token	*create_command_list();
 t_token	*create_command_list2(void);
@@ -183,6 +184,8 @@ void	sigquit_handler(int sig);
 int	check_var(t_token *node);
 int	handle_quote_errors(char *cmd);
 int	builtin_or_not_builtin(char *str, char **env);
+int	is_built_in(char *str);
+char *managing_quotes(char *input);
 
 
 #endif

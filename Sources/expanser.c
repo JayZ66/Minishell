@@ -16,6 +16,49 @@
 MANAGE QUOTES
 */
 
+char *managing_quotes(char *input)
+{
+    int i;
+    int tmp;
+	char	*prefix;
+	char	*quoted_content;
+	char	*suffix;
+
+	i = 0;
+	tmp = 0;
+    while (input[i])
+    {
+        if (input[i] == '"' && ft_strnchr(input + i + 1, '"'))
+        {
+            // Trouver l'indice du prochain guillemet fermant
+            tmp = i + 1 + ft_strnchr(input + i + 1, '"');
+            // Extraire la partie avant le guillemet ouvrant
+            prefix = ft_substr(input, 0, i);
+            // Extraire la partie entre les guillemets
+            quoted_content = ft_substr(input, i + 1, ft_strnchr(input + i + 1, '"'));
+            // Extraire la partie après le guillemet fermant
+            suffix = ft_substr(input + 1, ft_strnchr(input + i + 1, '"') + i + 1, ft_strlen(input));
+            // Concaténer les parties sans les guillemets
+            input = ft_strjoin(ft_strjoin(prefix, quoted_content), suffix);
+            // Mettre à jour l'indice pour passer le contenu entre guillemets
+            i = tmp - 2;
+        }
+        else if (input[i] == 39 && ft_strnchr(input + i + 1, 39))
+        {
+            // Même procédure que ci-dessus pour les apostrophes (single quotes)
+            tmp = i + 1 + ft_strnchr(input + i + 1, 39);
+            prefix = ft_substr(input, 0, i);
+            quoted_content = ft_substr(input, i + 1, ft_strnchr(input + i + 1, 39));
+            suffix = ft_substr(input + 1, ft_strnchr(input + i + 1, 39) + i + 1, ft_strlen(input));
+            input = ft_strjoin(ft_strjoin(prefix, quoted_content), suffix);
+            i = tmp - 2;
+        }
+        i++;
+    }
+    return (input);
+}
+
+
 int	is_there_multiple_quotes(char *cmd)
 {
 	size_t	i;
@@ -347,6 +390,7 @@ int	builtin_or_not_builtin(char *str, char **env)
 	char	**cmd;
 
 	cmd = ft_split(str, ' ');
+	// print_new_env(env);
 	if (ft_strncmp(str, "pwd", 3) == 0)
 		builtin_pwd(str);
 	else if (ft_strncmp(str, "env", 4) == 0)
@@ -354,7 +398,14 @@ int	builtin_or_not_builtin(char *str, char **env)
 	else if (ft_strncmp(str, "exit", 4) == 0)
 		builtin_exit(cmd);
 	else if (ft_strncmp(str, "unset", 5) == 0)
+	{
 		env = builtin_unset(cmd, env); // Change the return.
+		if (env == NULL)
+		 {
+			perror("The var. can't be unset\n");
+			exit(EXIT_FAILURE);
+		 }
+	}
 	else if (ft_strncmp(str, "cd", 2) == 0)
 		env = builtin_cd(env, cmd); // Change the return.
 	else if (ft_strncmp(str, "echo", 4) == 0)
@@ -363,34 +414,56 @@ int	builtin_or_not_builtin(char *str, char **env)
 		env = builtin_export(cmd, env); // Change the return.
 	else
 		return (1);
+	// print_new_env(env);
 	return (0);
+}
+
+int	is_built_in(char *str)
+{
+	if (ft_strncmp(str, "pwd", 3) == 0)
+		return (0);
+	else if (ft_strncmp(str, "env", 4) == 0)
+		return (0);
+	else if (ft_strncmp(str, "exit", 4) == 0)
+		return (0);
+	else if (ft_strncmp(str, "unset", 5) == 0)
+		return (0);
+	else if (ft_strncmp(str, "cd", 2) == 0)
+		return (0);
+	else if (ft_strncmp(str, "echo", 4) == 0)
+		return (0);
+	else if (ft_strncmp(str, "export", 6) == 0)
+		return (0);
+	else
+		return (1);
 }
 
 /*
 Expanser
 */
 
-int main()
-{
-  char  *str;
+// int main()
+// {
+//   char  *str;
 
-//   str = "echo """"pourquoi'''' \"''toi''\"";
-//   str = "echo '\"""pourquoi\"""' \"''toi''\"";
-  // str = "echo";
-  // echo(str);
+// //   str = "echo """"pourquoi'''' \"''toi''\"";
+// //   str = "echo '\"""pourquoi\"""' \"''toi''\"";
+//   // str = "echo";
+//   // echo(str);
 //   str = "echo -n \"""cat'''' \"'cat'\" 'cat'";
-//   str = "echo '-n' 'cat' cat cat";
-  // echo(str);
-//   str = "echo cat cat \"''''cat''''\"";
-  // echo(str);
-//   str = "echo \"''''Hello' 'World''''\' \"'''cat'''\" cat";
-  // str = "echo cat";
-//   builtin_echo(str);
-str = "\"''cat\"'' ok";
-  str = handle_quotes(str);
-  printf("new_str : %s\n", str);
-  return (0);
-}
+// //   str = "echo '-n' 'cat' cat cat";
+//   // echo(str);
+// //   str = "echo cat cat \"''''cat''''\"";
+//   // echo(str);
+// //   str = "echo \"''''Hello' 'World''''\' \"'''cat'''\" cat";
+// //   str = "echo cat";
+// //   builtin_echo(str);
+// // str = "\"''cat\"'' ok";
+// //   str = clean_quote(str);
+//   str = handle_quotes(str);
+//   printf("new_str : %s\n", str);
+//   return (0);
+// }
 
 /*
 GESTION DES GUILLEMETS : 

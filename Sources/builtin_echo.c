@@ -21,7 +21,7 @@ void  builtin_echo(char *str)
   size_t  i;
 
   i = 0;
-  cleaned_quotes = handle_quotes(str);
+  cleaned_quotes = managing_quotes(str);
   cmd_with_options = ft_split(cleaned_quotes, ' ');
   if (cmd_with_options[1] && (ft_strcmp(cmd_with_options[1], "-n") != 0) 
     && (ft_strcmp(cmd_with_options[0], "-n") != 0))
@@ -57,11 +57,15 @@ void  handle_echo_with_n(char **cmd)
   while (cmd[i])
   {
     if (ft_strcmp(cmd[i], "-n") == 0)
+    {
       i++;
+      continue ;
+    }
     if (cmd[i + 1] == NULL)
       printf("%s", cmd[i]);
     else
       printf("%s ", cmd[i]);
+    fflush(stdout);
     i++;
   }
 }

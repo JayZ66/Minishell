@@ -78,23 +78,27 @@ char	**builtin_unset(char **var, char **new_env)
 	size_t	i;
 
 	i = 0;
-	while (new_env[i])
+	if (var[1])
 	{
-		if (ft_strncmp(new_env[i], var[1], ft_strlen(var[1])) == 0
-			&& new_env[i][ft_strlen(var[1])] == '=')
+		while (new_env[i])
 		{
-			while (new_env[i + 1])
+			if (ft_strncmp(new_env[i], var[1], ft_strlen(var[1])) == 0
+				&& new_env[i][ft_strlen(var[1])] == '=')
 			{
-				new_env[i] = new_env[i + 1];
-				i++;
+				while (new_env[i + 1])
+				{
+					new_env[i] = new_env[i + 1];
+					i++;
+				}
+				new_env[i] = NULL;
+				return (new_env);
 			}
-			new_env[i] = NULL;
-			return (new_env);
+			i++;
 		}
-		i++;
+		perror("Can't find the var. to remove from the env.\n");
+		return (NULL);
 	}
-	perror("Can't find the var. to remove from the env.\n");
-	return (NULL);
+	return (new_env);
 }
 
 void	builtin_env(char **env)
