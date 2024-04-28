@@ -126,7 +126,7 @@ int		main(int argc, char **argv, char **env)
 		manage_node(token);
 		print_lst(token);
 		clean_token = copy_lst(token);
-		clean_token = redirection_node(clean_token);
+		test_redirection_input(clean_token);
 		print_clean_lst(clean_token);
 
 

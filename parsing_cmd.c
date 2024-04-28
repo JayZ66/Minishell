@@ -12,120 +12,6 @@
 
 #include "minishell.h"
 
-
-// t_token	*clean_arg(t_token **token)
-// {
-// 	t_token	*clean_token = NULL;
-// 	t_token	*new = NULL;
-// 	char	*arg = NULL;
-
-// 	while (*token)
-// 	{
-// 		if ((*token)->type == ARG && (*token)->next->type == INPUT)
-// 		{
-// 			arg = ft_strdup((*token)->content);
-// 			clean_token = init_node(arg, INPUT);
-// 			add_back(&new, clean_token);
-// 			(*token) = (*token)->next;
-// 		}
-// 		else
-// 		{
-// 			if (arg == NULL)
-// 				arg = ft_strdup((*token)->content);
-// 			else
-// 			{
-// 				char *temp = ft_strjoin(arg, " ");
-// 				free(arg);
-// 				arg = ft_strjoin(temp, (*token)->content);
-// 				free(temp);
-// 			}
-// 		}
-// 		(*token) = (*token)->next;
-// 	}
-// 	return (new);
-// }
-
-// t_clean_token	*clean_arg(t_token **token)
-// {
-// 	t_clean_token	*clean_token = NULL;
-// 	t_clean_token	*new = NULL;
-// 	char			*arg = NULL;
-
-// 	while (*token)
-// 	{
-// 		if ((*token)->type == ARG)
-// 		{
-// 			if (arg == NULL)
-// 				arg = ft_strdup((*token)->content);
-// 			else
-// 			{
-// 				char *temp = ft_strjoin(arg, " ");
-// 				free(arg);
-// 				arg = ft_strjoin(temp, (*token)->content);
-// 				free(temp);
-// 			}
-// 		}
-// 		else if (arg != NULL)
-// 		{
-// 			if (clean_token == NULL)
-// 			{
-// 				clean_token = init_clean_node(arg);
-// 				new = clean_token;
-// 			}
-// 			else
-// 			{
-// 				new->next = init_clean_node(arg);
-// 				new = new->next;
-// 			}
-// 			free(arg);
-// 			arg = NULL;
-// 		}
-// 		*token = (*token)->next;
-// 	}
-
-// 	if (arg != NULL)
-// 	{
-// 		if (clean_token == NULL)
-// 			clean_token = init_clean_node(arg);
-// 		else
-// 			new->next = init_clean_node(arg);
-// 		free(arg);
-// 	}
-
-// 	return (clean_token);
-// }
-
-// t_clean_token	*clean_arg(t_token **token)
-// {
-// 	t_clean_token	*clean_token = NULL;
-// 	t_clean_token	*new = NULL;
-// 	char			*arg = NULL;
-// 	char			*temp = NULL;
-// 	while(*token)
-// 	{
-// 		if((*token)->type == ARG && (*token)->next->type == INPUT)
-// 		{
-// 			if (arg == NULL)
-// 			{
-// 				arg = ft_strdup((*token)->content);
-
-// 				*token = (*token)->next;
-// 			}
-// 			else
-// 				temp = ft_strjoin(arg, " ");
-// 				free(arg);
-// 				arg = ft_strjoin(temp, (*token)->content);
-// 				free(temp);
-
-// 		}
-// 		else if ((*token)->type == INPUT && (*token)->next->type == ARG)
-// 		{
-
-// 		}
-// 	}
-// }
-
-
 void	clean_spaces(t_token *token)
 {
 	int	i;
@@ -249,108 +135,6 @@ void	manage_node(t_token *token)
 	}
 }
 
-// t_clean_token	*copy_list(t_token *token, t_clean_token **clean_token)
-// {
-// 	t_clean_token	*new_node;
-// 	t_clean_token	*last_node;
-
-// 	while (token)
-// 	{
-// 		new_node = (t_clean_token *)malloc(sizeof(t_clean_token));
-// 		if (!new_node)
-// 		{
-// 			perror("Erreur de mémoire");
-// 			exit(EXIT_FAILURE);
-// 		}
-// 		if (token->type != PIPE)
-// 			new_node->content = ft_strdup(token->content);
-// 		new_node->type = token->type;
-
-// 		new_node->next = NULL;
-// 		last_node = NULL;
-// 		new_node->prev = last_node;
-
-// 		if ((!*clean_token))
-// 			*clean_token = new_node;
-// 		else
-// 			last_node = *clean_token;
-// 		// while (!last_node)
-// 		// 	last_node = last_node->next;
-
-// 		last_node = new_node;
-// 		token = token->next;
-// 	}
-// 	return (*clean_token);
-// }
-
-// t_token *clean_arg(t_token **token)
-// {
-// 	t_token *clean_token = NULL;
-// 	t_token *new = NULL;
-// 	char *arg = NULL;
-
-// 	while (*token)
-// 	{
-// 		if ((*token)->type == ARG)
-// 		{
-// 			arg = ft_strdup((*token)->content);
-// 			if ((*token)->next && (*token)->next->type == INPUT)
-// 			{
-//                 clean_token = init_node(arg, INPUT);
-//                 add_back(&new, clean_token);
-//                 (*token) = (*token)->next;
-//             }
-//             else
-//             {
-//                 // Traitement pour d'autres types de nodes si nécessaire
-// 				clean_token = init_node(arg, ARG);
-//                 add_back(&new, clean_token);
-//             }
-//             free(arg); // Libérer la mémoire après utilisation
-//         }
-// 		else if ((*token)-> type == INPUT)
-// 		{
-// 			if((*token)->next && (*token)->next->type == ARG)
-// 			{
-// 				arg = ft_strdup((*token)->next->content);
-// 				clean_token = init_node(arg, INPUT);
-// 				add_back(&new, clean_token);
-// 				free(arg);
-// 				(*token) = (*token)->next;
-// 			}
-// 		}
-//         // else
-//         // {
-//         //     // Gestion des autres types de nodes
-//         //     clean_token = init_node(ft_strdup((*token)->content), PIPE);
-//         //     add_back(&new, clean_token);
-//         // }
-//         (*token) = (*token)->next;
-//     }
-//     return (new);
-// }
-
-
-// t_clean_token	*copy_lst(t_token *token)
-// {
-// 	t_clean_token	*clean_token = NULL;
-// 	t_clean_token	*new = NULL;
-// 	char			*content = NULL;
-
-// 	while (token)
-// 	{
-// 		if (token->type != PIPE)
-// 			content = ft_strdup(token->content);
-// 		else
-// 			content = NULL;
-// 		clean_token = init_clean_node(content, token->type);
-// 		add_clean_back(&new, clean_token);
-// 		free(content);
-// 		token = token->next;
-// 	}
-// 	return (new);
-// }
-
 t_clean_token *copy_lst(t_token *token)
 {
     t_clean_token *clean_token = NULL;
@@ -418,85 +202,108 @@ t_clean_token *copy_lst(t_token *token)
 //     }
 // }
 
-void redirection_node(t_clean_token **head_ref)
+
+//A VOIR SI JE L'UTILISE VRAIMENT OU PAS (je reflechis si j'ai besoin de swap ou si juste j'avance sur ma ligne
+//je me comprends)
+
+// void redirection_node(t_clean_token **head_ref)
+// {
+//     t_clean_token *current = *head_ref;
+
+//     while (current && current->next)
+//     {
+//         if (current->type == ARG && current->next->type == INPUT)
+//         {
+//             // Récupérer le nœud de type ARG et son précédent
+//             t_clean_token *arg_node = current;
+//             t_clean_token *input_node = current->next;
+//             t_clean_token *prev_arg_node = arg_node->prev;
+
+//             // Vérifier que le nœud de type ARG est bien précédé par un nœud de type INPUT
+//             if (prev_arg_node && prev_arg_node->type == INPUT)
+//             {
+//                 // Mettre à jour les pointeurs next et prev pour le nœud précédant le nœud de type ARG
+//                 prev_arg_node->next = input_node;
+
+//                 // Mettre à jour les pointeurs next et prev pour le nœud suivant le nœud de type INPUT
+//                 if (input_node->next)
+//                     input_node->next->prev = arg_node;
+
+//                 // Mettre à jour les pointeurs next et prev pour le nœud de type ARG
+//                 arg_node->prev = input_node;
+//                 arg_node->next = input_node->next;
+
+//                 // Mettre à jour les pointeurs next et prev pour le nœud de type INPUT
+//                 input_node->prev = prev_arg_node;
+//                 input_node->next = arg_node;
+
+//                 // Mettre à jour la tête de la liste si nécessaire
+//                 if (*head_ref == arg_node)
+//                     *head_ref = input_node;
+//             }
+//         }
+//         current = current->next;
+//     }
+// }
+
+void	test_redirection_input(t_clean_token *clean_node)
 {
-    t_clean_token *current = *head_ref;
+	while (clean_node && clean_node->type != PIPE)
+	{
+		if (clean_node->type == INPUT && clean_node->next->type == INPUT)
+		{
+			while (clean_node->type == INPUT)
+			{
+				redirection_input(clean_node);
+				clean_node = clean_node->next;
+			}
+		}
+		else if (clean_node->type == INPUT)
+		{
+			redirection_last_input(clean_node);
+			clean_node = clean_node->next;
+		}
+		else
+			clean_node = clean_node->next;
+	}
 
-    while (current && current->next)
-    {
-        if (current->type == ARG && current->next->type == INPUT)
-        {
-            // Récupérer le nœud de type ARG et son précédent
-            t_clean_token *arg_node = current;
-            t_clean_token *input_node = current->next;
-            t_clean_token *prev_arg_node = arg_node->prev;
-
-            // Vérifier que le nœud de type ARG est bien précédé par un nœud de type INPUT
-            if (prev_arg_node && prev_arg_node->type == INPUT)
-            {
-                // Mettre à jour les pointeurs next et prev pour le nœud précédant le nœud de type ARG
-                prev_arg_node->next = input_node;
-
-                // Mettre à jour les pointeurs next et prev pour le nœud suivant le nœud de type INPUT
-                if (input_node->next)
-                    input_node->next->prev = arg_node;
-
-                // Mettre à jour les pointeurs next et prev pour le nœud de type ARG
-                arg_node->prev = input_node;
-                arg_node->next = input_node->next;
-
-                // Mettre à jour les pointeurs next et prev pour le nœud de type INPUT
-                input_node->prev = prev_arg_node;
-                input_node->next = arg_node;
-
-                // Mettre à jour la tête de la liste si nécessaire
-                if (*head_ref == arg_node)
-                    *head_ref = input_node;
-            }
-        }
-        current = current->next;
-    }
 }
 
+void	redirection_last_input(t_clean_token *clean_node)
+{
+	int	filein;
+	int	fd[2];
 
+	filein = open(clean_node->content, O_RDONLY, 0777);
+	if (filein == -1)
+	{
+		perror("Erreur dernier file");
+		exit(EXIT_FAILURE);
+	}
+	dup2(fd[1], STDOUT_FILENO);
+	dup2(filein, STDIN_FILENO);
+}
 
-// t_clean_token	*redirection_node(t_clean_token *clean_node)
-// {
-// 	t_clean_token *head = clean_node;
-// 	while (clean_node)
-// 	{
-// 		while (clean_node && clean_node->type != PIPE)
-// 		{
-// 			if (clean_node->type == ARG && clean_node->prev && clean_node->next->type == INPUT)
-// 				swap_nodes(&head, clean_node, clean_node->next);
-// 			clean_node = clean_node->next;
-// 		}
-// 		if (clean_node)
-// 			clean_node = clean_node->next;
-// 	}
-// 	return (head);
-// }
+void	redirection_input(t_clean_token *clean_node)
+{
+	int	filein;
+	int	fd[2];
 
-// void	redirection_node(t_clean_token *clean_node)
-// {
-// 	while(clean_node && clean_node->type != PIPE)
-// 	{
-// 		if (clean_node->type == INPUT)
-// 			reposition_input;
-// 		else if (clean_node->type == OUTPUT)
-// 			reposition output;
-// 		else if (clean_node->type == APPEND)
-// 			reposition append;
-// 		else if (clean_node->type == HERE_DOC)
-// 			reposition here_doc;
-// 		clean_node = clean_node->next;
-// 	}
-// }
+	if (pipe(fd) == -1)
+		exit(EXIT_FAILURE);
+	filein = open(clean_node->content, O_RDONLY, 0777);
+	printf("%i\n", filein);
+	printf("%s\n", clean_node->content);
+	if (filein == -1)
+	{
+		perror("Erreur file");
+		exit(EXIT_FAILURE);
+	}
+	dup2(fd[1], STDOUT_FILENO);
+	dup2(filein, STDIN_FILENO);
+	close(fd[0]);
+}
 
-// void	reposition_input(t_clean_token *clean_node)
-// {
-// 	if (clean_node->prev != NULL)
-// }
 
 
 

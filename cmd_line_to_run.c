@@ -75,45 +75,6 @@ void	print_tab(char **cmd_line)
 	}
 }
 
-// 1. Déterminer la longueur totale de la chaîne résultante.
-// char	*list_to_string(t_token *token)
-// {
-// 	size_t	str_size;
-// 	size_t	index;
-// 	char	*line_cmd;
-// 	t_token	*temp;
-
-// 	str_size = ft_lstsize_content(token);
-// 	printf("Size lst content : %ld\n", str_size);
-// 	index = 0;
-// 	print_lst(token);
-// 	line_cmd = (char *)malloc(sizeof(char) * (str_size + 1));
-// 	if (!line_cmd)
-// 	{
-// 		perror("Can't get the line cmd from list\n");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	temp = token;
-// 	while (temp)
-// 	{
-// 		ft_strcat(line_cmd, temp->content, ft_strlen(temp->content));
-// 		// printf("each line : %s\n", line_cmd);
-// 		index += ft_strlen(temp->content);
-// 		temp = temp->next;
-// 	}
-// 	line_cmd[index] = '\0';
-// 	return (line_cmd);
-// }
-
-// char	*check_line_cmd(t_token *token)
-// {
-// 	char	*line_cmd;
-// 	// int		i;
-
-// 	line_cmd = list_to_string(token);
-// 	printf("Ligne de cmd : %s\n", line_cmd);
-// 	return (printf("OK"), "OK");
-// }
 
 /*
 STEPS :

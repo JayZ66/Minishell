@@ -172,4 +172,10 @@ void	redirection_node(t_clean_token **head_ref);
 
 void swap_nodes(t_clean_token **head_ref, t_clean_token *node1, t_clean_token *node2);
 
+
+//redirection input
+void	test_redirection_input(t_clean_token *clean_node);
+void	redirection_last_input(t_clean_token *clean_node);
+void	redirection_input(t_clean_token *clean_node);
+
 #endif

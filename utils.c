@@ -33,6 +33,7 @@ t_token    *init_node(char *content, Token_type type)
     return (token);
 }
 
+//j'utilise pour le moment mais à voir dans le futur si j'en ai vraiment besoin
 t_clean_token    *init_clean_node(char *content, Token_type type)
 {
     t_clean_token    *token;
