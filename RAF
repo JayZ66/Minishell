@@ -1,0 +1,85 @@
+MINISHELL - RAF :
+
+- Gérer si on a une variable d'environnement dans des " " et remplacer
+par sa valeur (si ' ' on ne remplace pas). => DONE
+- Gérer si les guillemets sont pairs => DONE
+- Mettre les built-ins dans l'exécution + redirection => DONE
+- Gérer si le premier quote et le dernier sont les mêmes
+REVOIR GESTION QUOTES. => DONE
+
+- Gestion des Caractères d'Échappement (\n et autre).
+- Intégrer gestion pls input/output dans ma ligne de cmd.
+- Gérer plusieurs input à la suite : 
+=> Si input : On check par type si chq fichier existe bien, 
+on close et on avance tant qu'on est pas sur le dernier input du bloc.
+On ne garde que le dernier input du bloc.
+=> Si output : On check chq fichier par type, on crée si pas créé, 
+on close et on avance tant qu'on est pas sur le dernier output du bloc.
+
+- Gérer le fait d'avoir $? => Qu'est-ce qu'on en fait du coup ?
+- Gérer la redirection vers la sortie d'erreur.
+- Regrouper parsing + exécution
+- Finaliser la norme
+- Check how to manage & update ENV (modification) !
+
+Today : 
+- Gérer si les guillemets sont pairs => OK
+- Gérer var. d'env. avec " " et pas avec ' ' => OK
+- Mettre les built-ins dans l'exécution + redirection => OK
+- TESTS : Built-ins execution => OK
+- Fixed export & unset => OK
+
+TOMORROW : 
+- Norme
+- EXPORT : Check when multiple var. to modify.
+- TESTS EXECUTION !!
+- Fix pb with : built-ins > output | input < cmd  => Finally GOOD !!!
+=> Same with just cmd.
+=> Work if we just have output on first block
+=> Doesn't work if we have output in first block & input in 2nd
+- Multiple input/output ??
+
+
+
+
+TESTS BUILT-INS : Cmds seules
+- echo hola > output => OK
+- echo "'ok' hello" > output => OK
+- echo -n "ta race" > output => OK BUT PRINT ON TERMINAL & NOT OUTPUT
+- echo '"""pourquoi"""' "''toi''" => OK
+- echo '-n' 'cat' cat cat > output => OK
+- echo cat cat "'''cat''''" > output => OK
+- echo => OK 
+- < input echo => OK
+- < input echo hola => OK
+- pwd => OK
+- pwd > output.txt => OK
+- < input.txt pwd => OK
+- env => OK
+- env > output.txt => OK
+- exit => OK 
+=> NEED TO TEST WITH SHELL LEVELS !!
+
+- unset path => OK (error)
+- unset $PATH= => OK (error)
+- unset PATH= => OK (error)
+- unset PATH => OK
+- unset => OK 
+- cd Libft/ => OK
+- cd /home/jeza/Projects/Minishell1/Libft/ => OK
+- cd => OK
+- cd .. => OK
+- export NAME=OK => OK
+- export MY_VAR=value => OK
+- export PATH=jeza => OK
+- export => OK
+- export VAR1=value1 VAR2=value2 VAR3=value3 => OK
+- export MY_VAR="value with spaces" => KO : NEED TO TAKE INTO ACCOUNT QUOTES (not spaces)!
+- export EMPTY_VAR= => OK
+- export SPECIAL_VAR='!@#$%^&*()' => OK
+- export =value => NEED TO CREATE AN ERROR !!
+
+TESTS BUILT-INS : Cmds pipes
+- echo hola > output.txt | cat > end.txt => KO
+-  < file2 cat | echo hola > end.txt => OK
+-  echo hey > output.txt | < end.txt ls => KO : hey pas dans output !

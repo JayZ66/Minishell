@@ -91,14 +91,14 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 					|| (current->next && current->next->next
 						&& current->next->next->type == PIPE))))
 		{
-			if (is_built_in(current->content) == 0)
-			{
-				redirect_builtin_result(current->content, exit_code, env);
-				// 	dup2()
-				// Si pas d'output on redirige.
-			}
-			else
-				create_pipes(current->content, env, exit_code);
+			// if (is_built_in(current->content) == 0)
+			// {
+			// 	redirect_builtin_result(current->content, exit_code, env);
+			// 	// 	dup2()
+			// 	// Si pas d'output on redirige.
+			// }
+			// else
+			create_pipes(current->content, env, exit_code);
 			current = current->next;
 			if (current->next->type == PIPE)
 				current = current->next;
@@ -113,6 +113,8 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 			dup2(saved_stdout, STDOUT_FILENO);
 		}
 		current = current->next;
+		// dup2(saved_stdin, STDIN_FILENO);
+		// dup2(saved_stdout, STDOUT_FILENO);
 	}
 	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);

@@ -16,46 +16,47 @@
 MANAGE QUOTES
 */
 
-char *managing_quotes(char *input)
+// 1. Trouver l'indice du prochain guillemet fermant
+// 2. Extraire la partie avant le guillemet ouvrant
+// 3. Extraire la partie entre les guillemets
+// 4. Extraire la partie après le guillemet fermant
+// 5. Concaténer les parties sans les guillemets
+// 6. Mettre à jour l'indice pour passer le contenu entre guillemets
+char	*managing_quotes(char *input)
 {
-    int i;
-    int tmp;
+	int		i;
+    int		tmp;
 	char	*prefix;
 	char	*quoted_content;
 	char	*suffix;
 
 	i = 0;
 	tmp = 0;
-    while (input[i])
-    {
-        if (input[i] == '"' && ft_strnchr(input + i + 1, '"'))
-        {
-            // Trouver l'indice du prochain guillemet fermant
-            tmp = i + 1 + ft_strnchr(input + i + 1, '"');
-            // Extraire la partie avant le guillemet ouvrant
-            prefix = ft_substr(input, 0, i);
-            // Extraire la partie entre les guillemets
-            quoted_content = ft_substr(input, i + 1, ft_strnchr(input + i + 1, '"'));
-            // Extraire la partie après le guillemet fermant
-            suffix = ft_substr(input + 1, ft_strnchr(input + i + 1, '"') + i + 1, ft_strlen(input));
-            // Concaténer les parties sans les guillemets
-            input = ft_strjoin(ft_strjoin(prefix, quoted_content), suffix);
-            // Mettre à jour l'indice pour passer le contenu entre guillemets
-            i = tmp - 2;
-        }
-        else if (input[i] == 39 && ft_strnchr(input + i + 1, 39))
-        {
-            // Même procédure que ci-dessus pour les apostrophes (single quotes)
-            tmp = i + 1 + ft_strnchr(input + i + 1, 39);
-            prefix = ft_substr(input, 0, i);
-            quoted_content = ft_substr(input, i + 1, ft_strnchr(input + i + 1, 39));
-            suffix = ft_substr(input + 1, ft_strnchr(input + i + 1, 39) + i + 1, ft_strlen(input));
-            input = ft_strjoin(ft_strjoin(prefix, quoted_content), suffix);
-            i = tmp - 2;
-        }
-        i++;
-    }
-    return (input);
+	while (input[i])
+	{
+		if (input[i] == '"' && ft_strnchr(input + i + 1, '"'))
+		{
+			tmp = i + 1 + ft_strnchr(input + i + 1, '"');
+			prefix = ft_substr(input, 0, i);
+			quoted_content = ft_substr(input, i + 1, 
+				ft_strnchr(input + i + 1, '"'));
+			suffix = ft_substr(input + 1, ft_strnchr(input + i + 1, '"') 
+				+ i + 1, ft_strlen(input));
+			input = ft_strjoin(ft_strjoin(prefix, quoted_content), suffix);
+			i = tmp - 2;
+		}
+		else if (input[i] == 39 && ft_strnchr(input + i + 1, 39))
+		{
+			tmp = i + 1 + ft_strnchr(input + i + 1, 39);
+			prefix = ft_substr(input, 0, i);
+			quoted_content = ft_substr(input, i + 1, ft_strnchr(input + i + 1, 39));
+			suffix = ft_substr(input + 1, ft_strnchr(input + i + 1, 39) + i + 1, ft_strlen(input));
+			input = ft_strjoin(ft_strjoin(prefix, quoted_content), suffix);
+			i = tmp - 2;
+		}
+		i++;
+	}
+	return (input);
 }
 
 

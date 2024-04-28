@@ -113,10 +113,10 @@ t_token	*create_command_list(void)
 
 	head = NULL;
 	// append_exec_node(&head, "$PATH", CMD);
-	// append_exec_node(&head, "file.txt", INPUT);
+	// append_exec_node(&head, "file2", INPUT);
 	// append_exec_node(&head, "<< end", HERE_DOC);
-	append_exec_node(&head, "pwd", CMD);
-	append_exec_node(&head, "end.txt", OUTPUT);
+	append_exec_node(&head, "echo hey", CMD);
+	append_exec_node(&head, "output.txt", OUTPUT);
 	append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "end.txt", INPUT);
 	append_exec_node(&head, "cat", CMD);
