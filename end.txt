@@ -1,0 +1,1 @@
+The absolute path is : /home/jeguerin/Documents/42_projects/Minishell

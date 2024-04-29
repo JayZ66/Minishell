@@ -113,18 +113,25 @@ t_token	*create_command_list(void)
 
 	head = NULL;
 	// append_exec_node(&head, "$PATH", CMD);
-	// append_exec_node(&head, "file2", INPUT);
+	// append_exec_node(&head, "end.txt", INPUT);
+	// append_exec_node(&head, "file.txt", INPUT);
+	// append_exec_node(&head, "end.txt", INPUT);
+	// append_exec_node(&head, "output.txt", INPUT);
 	// append_exec_node(&head, "<< end", HERE_DOC);
-	append_exec_node(&head, "echo hey", CMD);
+	append_exec_node(&head, "echo hola", CMD);
 	append_exec_node(&head, "output.txt", OUTPUT);
 	append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "file.txt", INPUT);
+	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "end.txt", INPUT);
 	append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "end.txt", OUTPUT);
 	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "end.txt", INPUT);
 	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "fin.txt", OUTPUT);
 	// append_exec_node(&head, "", PIPE);
-	// append_exec_node(&head, "grep PROUT", CMD);
+	// append_exec_node(&head, "export", CMD);
 	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "cat", CMD);
 	// append_exec_node(&head, "", PIPE);
@@ -142,7 +149,7 @@ t_token	*create_command_list(void)
 	// append_exec_node(&head, "cat", CMD);
 	// append_exec_node(&head, "hello", APPEND);
 	// append_exec_node(&head, "../bonjour", OUTPUT);
-	append_exec_node(&head, "end.txt", OUTPUT);
+	append_exec_node(&head, "fin.txt", OUTPUT);
 	return (head);
 }
 

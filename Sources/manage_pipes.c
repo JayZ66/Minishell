@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-void	create_pipes(char *cmd, char **env, t_minishell *exit_code)
+void	create_pipes(char *cmd, char **env, t_minishell *exit_code, int output)
 {
 	int	fd[2];
 	int	pid;
@@ -28,19 +28,22 @@ void	create_pipes(char *cmd, char **env, t_minishell *exit_code)
 	}
 	if (pid == 0)
 	{
-		child_process(fd, cmd, env);
+		child_process(fd, cmd, env, output);
 	}
 	else
 		parent_process(fd, cmd, env, exit_code);
 }
 
-void	child_process(int *pfd, char *cmd, char **env)
+void	child_process(int *pfd, char *cmd, char **env, int output)
 {
 	(void)cmd;
 	(void)env;
-	close(pfd[0]);
-	dup2(pfd[1], STDOUT_FILENO);
-	close(pfd[1]);
+	if (output == 0)
+	{
+		close(pfd[0]);
+		dup2(pfd[1], STDOUT_FILENO);
+		close(pfd[1]);
+	}
 	exec_cmd(cmd, env);
 }
 

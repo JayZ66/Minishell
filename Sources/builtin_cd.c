@@ -27,7 +27,7 @@ char	**go_back_home(char **new_env, char **env)
 	new_pwd = (char *)malloc(sizeof(char) * (cwd_len + 5));
 	if (!new_pwd)
 		exit(EXIT_FAILURE);
-	if (getcwd(cwd, cwd_len) == NULL) // Récupérer le new path où on est.
+	if (getcwd(cwd, cwd_len) == NULL)
 	{
 		perror("Can't get the new path\n");
 		free(new_pwd);

@@ -106,7 +106,7 @@ void	builtin_env(char **env);
 char	**builtin_export(char **args, char **env);
 char	**create_var_env(char **env, char *var);
 char	**modify_value_env(char **env, char *var, char *new_value);
-char	**modify_or_create_var(char **args, char **env, size_t i,
+char	**modify_or_create(char **args, char **env, size_t i,
 			char **new_env);
 char	*copy_new_value(char *new_env, char *var, char *new_value);
 int		is_var_in_env(char *var, char **env);
@@ -142,13 +142,13 @@ void	child_cmd_only(char **cmd_line, char **env);
 void	parent_cmd_only(int pid, t_minishell *exit_code);
 void	exec_cmd(char *cmd, char **env);
 void	parent_process(int *pfd, char *cmd, char **env, t_minishell *exit_code);
-void	child_process(int *pfd, char *cmd, char **env);
-void	create_pipes(char *cmd, char **env, t_minishell *exit_code);
+void	child_process(int *pfd, char *cmd, char **env, int output);
+void	create_pipes(char *cmd, char **env, t_minishell *exit_code, int output);
 void	parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code);
 void	child_here_doc(int *pfd, char *cmd);
 void	handle_here_doc(char *cmd, t_minishell *exit_code);
 void	check_line(t_token **lst, char **env, t_minishell *exit_code);
-void	redirect_builtin_result(char *cmd, t_minishell *exit_code, char **env);
+void	redirect_builtin_result(char *cmd, t_minishell *exit_code, char **env, int output);
 void	append_exec_node(t_token **head, char *content, Token_type type);
 t_token	*create_command_list(void);
 t_token	*create_command_list2(void);

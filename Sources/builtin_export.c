@@ -96,7 +96,6 @@ char	**create_var_env(char **env, char *var)
 // 	print_tab(env);
 // }
 
-
 // On check, first, si la variable, que l'on souhaite
 // modifier ou créer existe dans l'env. ou non.
 char	**builtin_export(char **args, char **env)
@@ -112,7 +111,7 @@ char	**builtin_export(char **args, char **env)
 		{
 			if (args[1][i] == '=')
 			{
-				new_env = modify_or_create_var(args, env, i, new_env);
+				new_env = modify_or_create(args, env, i, new_env);
 				return (new_env);
 			}
 			i++;
@@ -120,7 +119,7 @@ char	**builtin_export(char **args, char **env)
 	}
 	else
 	{
-		env = print_env(env); // To test.
+		env = print_env(env);
 		return (env);
 	}
 	perror("The cmd is not the export we're expected\n");

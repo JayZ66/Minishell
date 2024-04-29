@@ -34,10 +34,10 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 	current = *lst;
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
-	first_file = 0;
-	last_file = 0;
 	while (current)
 	{
+		first_file = 0;
+		last_file = 0;
 		if (current->type == INPUT && (current->next
 				&& current->next->type == CMD))
 		{
@@ -91,17 +91,15 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 					|| (current->next && current->next->next
 						&& current->next->next->type == PIPE))))
 		{
-			// if (is_built_in(current->content) == 0)
-			// {
-			// 	redirect_builtin_result(current->content, exit_code, env);
-			// 	// 	dup2()
-			// 	// Si pas d'output on redirige.
-			// }
-			// else
-			create_pipes(current->content, env, exit_code);
+			if (is_built_in(current->content) == 0)
+				redirect_builtin_result(current->content, exit_code, env, last_file);
+			else
+				create_pipes(current->content, env, exit_code, last_file);
 			current = current->next;
 			if (current->next->type == PIPE)
 				current = current->next;
+			// dup2(saved_stdin, STDIN_FILENO);
+			// dup2(saved_stdout, STDOUT_FILENO);
 		}
 		else if (current->type == CMD)
 		{
@@ -114,10 +112,10 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 		}
 		current = current->next;
 		// dup2(saved_stdin, STDIN_FILENO);
-		// dup2(saved_stdout, STDOUT_FILENO);
+		dup2(saved_stdout, STDOUT_FILENO);
 	}
-	dup2(saved_stdin, STDIN_FILENO);
-	dup2(saved_stdout, STDOUT_FILENO);
+	// dup2(saved_stdin, STDIN_FILENO);
+	// dup2(saved_stdout, STDOUT_FILENO);
 } 
 
 // CHECK SI PLS REDIRECTIONS ET SI APRES EXEC OU CHQ LIGNE DE CMD !!
@@ -140,7 +138,7 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 		// }
 
 
-void	redirect_builtin_result(char *cmd, t_minishell *exit_code, char **env)
+void	redirect_builtin_result(char *cmd, t_minishell *exit_code, char **env, int output)
 {
 	int	exit_status;
 	int	fd[2];
@@ -157,9 +155,12 @@ void	redirect_builtin_result(char *cmd, t_minishell *exit_code, char **env)
 	}
 	if (pid == 0)
 	{
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
+		if (output == 0)
+		{
+			close(fd[0]);
+			dup2(fd[1], STDOUT_FILENO);
+			close(fd[1]);
+		}
 		builtin_or_not_builtin(cmd, env);
 		exit(EXIT_SUCCESS);
 	}

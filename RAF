@@ -32,12 +32,11 @@ Today :
 TOMORROW : 
 - Norme
 - EXPORT : Check when multiple var. to modify.
-- TESTS EXECUTION !!
-- Fix pb with : built-ins > output | input < cmd  => Finally GOOD !!!
-=> Same with just cmd.
-=> Work if we just have output on first block
-=> Doesn't work if we have output in first block & input in 2nd
-- Multiple input/output ??
+- TESTS EXECUTION !! => IN PROGRESS
+- Multiple input/output ?? => OK
+- IL FAUT CHECK SI PLS INPUT ON GARDE LE LAST
+- export MY_VAR="value with spaces" => KO : NEED TO TAKE INTO ACCOUNT QUOTES (not spaces)!
+
 
 
 
@@ -80,6 +79,6 @@ TESTS BUILT-INS : Cmds seules
 - export =value => NEED TO CREATE AN ERROR !!
 
 TESTS BUILT-INS : Cmds pipes
-- echo hola > output.txt | cat > end.txt => KO
+- echo hola > output.txt | cat > end.txt => OK
 -  < file2 cat | echo hola > end.txt => OK
--  echo hey > output.txt | < end.txt ls => KO : hey pas dans output !
+-  echo hey > output.txt | < end.txt ls => OK

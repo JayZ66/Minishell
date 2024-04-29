@@ -62,7 +62,7 @@ void	sort_tab(char **env)
 	}
 }
 
-char	**modify_or_create_var(char **args, char **env, size_t i, char **new_env)
+char	**modify_or_create(char **args, char **env, size_t i, char **new_env)
 {
 	char	*var;
 	size_t	j;
@@ -73,7 +73,7 @@ char	**modify_or_create_var(char **args, char **env, size_t i, char **new_env)
 		var = ft_substr(args[j], 0, i);
 		if (is_var_in_env(var, env) == 1)
 		{
-			new_env = modify_value_env(env, var, args[1] + i); // TO MODIFY !
+			new_env = modify_value_env(env, var, args[1] + i);
 			free(var);
 			return (new_env);
 		}

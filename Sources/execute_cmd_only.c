@@ -32,7 +32,6 @@ int	is_one_cmd(char *cmd)
 	return (is_option);
 }
 
-// TOO LONG
 void	exec_cmd_with_fork(char *cmd, char **env, t_minishell *exit_code)
 {
 	char	**cmd_line;
@@ -76,7 +75,7 @@ void	parent_cmd_only(int pid, t_minishell *exit_code)
 	int	status;
 
 	status = 0;
-	waitpid(pid, &status, 0); // Attend la fin du processus enfant.
+	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		exit_code->last_exit_status = WEXITSTATUS(status);
 	else

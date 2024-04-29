@@ -393,7 +393,7 @@ int	builtin_or_not_builtin(char *str, char **env)
 	cmd = ft_split(str, ' ');
 	// print_new_env(env);
 	if (ft_strncmp(str, "pwd", 3) == 0)
-		builtin_pwd(str);
+		builtin_pwd();
 	else if (ft_strncmp(str, "env", 4) == 0)
 		builtin_env(env);
 	else if (ft_strncmp(str, "exit", 4) == 0)
