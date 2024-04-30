@@ -67,7 +67,6 @@ typedef struct s_clean_token
 {
 	char					*content;
 	Token_type				type;
-	struct s_clean_token	*prev;
 	struct s_clean_token	*next;
 } t_clean_token;
 
@@ -165,7 +164,7 @@ void	builtin_env(char **env);
 void	builtin_exit(char *str);
 
 //clean node
-t_clean_token	*copy_lst(t_token *token);
+t_clean_token	*copy_lst(t_token *token, t_clean_token **clean_list);
 
 
 void	redirection_node(t_clean_token **head_ref);
@@ -177,5 +176,9 @@ void swap_nodes(t_clean_token **head_ref, t_clean_token *node1, t_clean_token *n
 void	test_redirection_input(t_clean_token *clean_node);
 void	redirection_last_input(t_clean_token *clean_node);
 void	redirection_input(t_clean_token *clean_node);
+
+//free list
+void    free_that_lst(t_token **token);
+void    free_that_clean_lst(t_clean_token **token);
 
 #endif

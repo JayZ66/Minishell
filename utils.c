@@ -118,11 +118,11 @@ void	add_clean_back(t_clean_token **token, t_clean_token *new)
 {
 	t_clean_token	*last;
 
-	if (!token)
-	{
-		perror("List is empty\n");
-		EXIT_FAILURE;
-	}
+	// if (!(token))
+	// {
+	// 	perror("List is empty\n");
+	// 	EXIT_FAILURE;
+	// }
 	if (!(*token)) // To check !
 		*token = new;
 	else
@@ -278,6 +278,47 @@ void	print_clean_lst(t_clean_token *token)
 	while (tmp)
 	{
 		printf("Chaque node clean content : %s\n", tmp->content);
+		printf("Chaque node clean type content : %u\n", tmp->type);
 		tmp = tmp->next;
 	}
+}
+
+
+void    free_that_lst(t_token **token)
+{
+    t_token    *tmp;
+
+    if (!(*token))
+    {
+        perror("Lst is empty, can't free\n");
+        exit(EXIT_FAILURE);
+    }
+    while (*token)
+    {
+        tmp = (*token)->next;
+        free((*token)->content);
+        free(*token);
+        *token = tmp;
+    }
+    *token = NULL;
+}
+
+
+void    free_that_clean_lst(t_clean_token **token)
+{
+	t_clean_token	*tmp;
+
+	// if (!(*token))
+	// {
+	// 	perror("Clean lst is empty, can't free\n");
+	// 	exit(EXIT_FAILURE);
+	// }
+	while(*token)
+	{
+		tmp = (*token)->next;
+		free((*token)->content);
+		free(*token);
+		*token = tmp;
+	}
+	*token = NULL;
 }

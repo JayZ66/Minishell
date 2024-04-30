@@ -107,8 +107,8 @@ int		main(int argc, char **argv, char **env)
 	(void)argv;
 
 	token = NULL;
+	clean_token = (t_clean_token *)malloc(sizeof(t_clean_token));
 	clean_token = NULL;
-
 	// if (argc != 1 || argv[1])
 	// 	return (perror("Wrong nb of args\n"), 1);
 	while (1)
@@ -121,16 +121,21 @@ int		main(int argc, char **argv, char **env)
 		}
 
 		token = extract_cmd(&token, input, env);
+		t_token *head = token;
 		clean_chevron(token);
 		clean_spaces(token);
 		manage_node(token);
 		print_lst(token);
-		clean_token = copy_lst(token);
-		test_redirection_input(clean_token);
+		token = head;
+		printf("token = %s\n", token->content);
+		clean_token = copy_lst(token, &clean_token);
+		// test_redirection_input(clean_token);
 		print_clean_lst(clean_token);
+		free_that_lst(&token);
+		free_that_clean_lst(&clean_token);
+		// free(token);
+		// free(clean_token);
 
-
-		t_token *original = token;
 		// while (token)
 		// {
 		// 	builtin_or_not_builtin(token->content, env);
@@ -138,7 +143,6 @@ int		main(int argc, char **argv, char **env)
 		// }
 		//gerer les builtins car si je mets un espace pb
 		//pb sur pwd pour le moment
-		token = original;
 
 		free(input);
 	}
