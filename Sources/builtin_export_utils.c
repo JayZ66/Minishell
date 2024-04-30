@@ -62,30 +62,45 @@ void	sort_tab(char **env)
 	}
 }
 
-char	**modify_or_create(char **args, char **env, size_t i, char **new_env)
+char	**modify_or_create(char **args, char **env, size_t i, size_t j)
 {
 	char	*var;
-	size_t	j;
+	char	**new_env;
 
-	j = 1;
-	while (args[j])
+	var = ft_substr(args[i], 0, j);
+	if (is_var_in_env(var, env) == 1)
 	{
-		var = ft_substr(args[j], 0, i);
-		if (is_var_in_env(var, env) == 1)
-		{
-			new_env = modify_value_env(env, var, args[1] + i);
-			free(var);
-			return (new_env);
-		}
-		else
-		{
-			new_env = create_var_env(env, args[j]);
-			free(var);
-		}
-		env = new_env;
-		j++;
+		new_env = modify_value_env(env, var, args[i] + j);
+		free(var);
+	}
+	else
+	{
+		new_env = create_var_env(env, args[i]);
+		free(var);
 	}
 	return (new_env);
+}
+
+int	main(int argc, char **argv, char **env)
+{
+	char	*str;
+	// char	*result;
+	(void)argc;
+	(void)argv;
+	char	**new_env;
+	new_env = realloc_env(env);
+	// str = "'''\"Salut\"''' \"tu\" 'vas' \"''bien''\"";
+	// str = "'\"'\"'\"OK\"'\"'\"'";
+	// char *args[] = {"export", "LS_COLORS=OK", "PATH=KO", NULL};
+	// char *args[] = {"export", "LOL=osef", NULL};
+	// char *args[] = {"export", NULL};
+	str = "export LS_COLORS=OK PATH=KO";
+	// result = managing_quotes(str);
+	// result = handle_quotes(str);
+	new_env = builtin_export(str, new_env);
+	print_new_env(new_env);
+	// printf("Clean string : %s\n", result);
+	return(0);
 }
 
 char	**print_env(char **env)

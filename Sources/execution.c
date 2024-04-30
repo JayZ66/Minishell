@@ -22,7 +22,6 @@ not execute pipe. Just send it to execution.
 // Need input/here_doc before cmd.
 // CHECK IF MULTIPLE REDIRECTIONS !
 
-
 void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 {
 	int		first_file;
@@ -92,7 +91,7 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 						&& current->next->next->type == PIPE))))
 		{
 			if (is_built_in(current->content) == 0)
-				redirect_builtin_result(current->content, exit_code, env, last_file);
+				redir_builtin(current->content, exit_code, env, last_file);
 			else
 				create_pipes(current->content, env, exit_code, last_file);
 			current = current->next;
@@ -111,12 +110,11 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 			dup2(saved_stdout, STDOUT_FILENO);
 		}
 		current = current->next;
-		// dup2(saved_stdin, STDIN_FILENO);
 		dup2(saved_stdout, STDOUT_FILENO);
 	}
 	// dup2(saved_stdin, STDIN_FILENO);
 	// dup2(saved_stdout, STDOUT_FILENO);
-} 
+}
 
 // CHECK SI PLS REDIRECTIONS ET SI APRES EXEC OU CHQ LIGNE DE CMD !!
 
@@ -137,25 +135,19 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 		// 	node = node->next;
 		// }
 
-
-void	redirect_builtin_result(char *cmd, t_minishell *exit_code, char **env, int output)
+void	redir_builtin(char *cmd, t_minishell *exit_code, char **env, int out)
 {
-	int	exit_status;
 	int	fd[2];
 	int	pid;
 
 	if (pipe(fd) == -1)
-	{
 		exit(EXIT_FAILURE);
-	}
 	pid = fork();
 	if (pid == -1)
-	{
 		exit(EXIT_FAILURE);
-	}
 	if (pid == 0)
 	{
-		if (output == 0)
+		if (out == 0)
 		{
 			close(fd[0]);
 			dup2(fd[1], STDOUT_FILENO);
@@ -165,14 +157,19 @@ void	redirect_builtin_result(char *cmd, t_minishell *exit_code, char **env, int 
 		exit(EXIT_SUCCESS);
 	}
 	else
-	{
-		close(fd[1]);
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-		waitpid(-1, &exit_status, 0);
-		if (WIFEXITED(exit_status))
-			exit_code->last_exit_status = WEXITSTATUS(exit_status);
-	}
+		parent_builtin(fd, exit_code);
+}
+
+void	parent_builtin(int *fd, t_minishell *exit_code)
+{
+	int	exit_status;
+
+	close(fd[1]);
+	dup2(fd[0], STDIN_FILENO);
+	close(fd[0]);
+	waitpid(-1, &exit_status, 0);
+	if (WIFEXITED(exit_status))
+		exit_code->last_exit_status = WEXITSTATUS(exit_status);
 }
 
 void	exec_cmd(char *cmd, char **env)

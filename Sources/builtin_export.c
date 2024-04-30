@@ -98,29 +98,65 @@ char	**create_var_env(char **env, char *var)
 
 // On check, first, si la variable, que l'on souhaite
 // modifier ou créer existe dans l'env. ou non.
-char	**builtin_export(char **args, char **env)
+// char	**builtin_export(char **args, char **env)
+// {
+// 	size_t	i;
+// 	char	**new_env;
+
+// 	i = 0;
+// 	new_env = NULL;
+// 	if (args[1] != NULL)
+// 	{
+// 		while (args[1][i])
+// 		{
+// 			if (args[1][i] == '=')
+// 			{
+// 				new_env = modify_or_create(args, env, i, new_env);
+// 				return (new_env);
+// 			}
+// 			i++;
+// 		}
+// 	}
+// 	else
+// 	{
+// 		new_env = print_env(env);
+// 		return (new_env);
+// 	}
+// 	perror("The cmd is not the export we're expected\n");
+// 	return (NULL);
+// }
+
+char	**builtin_export(char *var_env, char **env)
 {
 	size_t	i;
+	size_t	j;
+	char	**args;
 	char	**new_env;
 
 	i = 0;
 	new_env = NULL;
+	args = ft_split(var_env, ' ');
 	if (args[1] != NULL)
 	{
-		while (args[1][i])
+		while (args[i])
 		{
-			if (args[1][i] == '=')
+			i = 0;
+			while (args[i][j])
 			{
-				new_env = modify_or_create(args, env, i, new_env);
-				return (new_env);
+				if (args[i][j] == '=')
+				{
+					new_env = modify_or_create(args, env, i, j);
+					return (new_env);
+				}
+				j++;
 			}
 			i++;
 		}
 	}
 	else
 	{
-		env = print_env(env);
-		return (env);
+		new_env = print_env(env);
+		return (new_env);
 	}
 	perror("The cmd is not the export we're expected\n");
 	return (NULL);

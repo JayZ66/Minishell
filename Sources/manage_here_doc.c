@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-void	handle_here_doc(char *cmd, t_minishell *exit_code) // CMD << LIMITER
+void	handle_here_doc(char *cmd, t_minishell *exit_code)
 {
 	int	pfd[2];
 	int	pid;
@@ -69,7 +69,6 @@ void	parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code)
 {
 	int	exit_status;
 
-	// exit_status = 0;
 	(void)cmd;
 	close(pfd[1]);
 	dup2(pfd[0], STDIN_FILENO);

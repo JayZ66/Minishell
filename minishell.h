@@ -103,11 +103,10 @@ void	builtin_exit(char **args);
 void	builtin_pwd(void);
 char	**builtin_unset(char **var, char **new_env);
 void	builtin_env(char **env);
-char	**builtin_export(char **args, char **env);
+char	**builtin_export(char *var_env, char **env);
 char	**create_var_env(char **env, char *var);
 char	**modify_value_env(char **env, char *var, char *new_value);
-char	**modify_or_create(char **args, char **env, size_t i,
-			char **new_env);
+char	**modify_or_create(char **args, char **env, size_t i, size_t j);
 char	*copy_new_value(char *new_env, char *var, char *new_value);
 int		is_var_in_env(char *var, char **env);
 void	update_env(char **env, char *var);
@@ -148,7 +147,8 @@ void	parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code);
 void	child_here_doc(int *pfd, char *cmd);
 void	handle_here_doc(char *cmd, t_minishell *exit_code);
 void	check_line(t_token **lst, char **env, t_minishell *exit_code);
-void	redirect_builtin_result(char *cmd, t_minishell *exit_code, char **env, int output);
+void	redir_builtin(char *cmd, t_minishell *exit_code, char **env, int out);
+void	parent_builtin(int *fd, t_minishell *exit_code);
 void	append_exec_node(t_token **head, char *content, Token_type type);
 t_token	*create_command_list(void);
 t_token	*create_command_list2(void);
@@ -170,5 +170,8 @@ int		handle_quote_errors(char *cmd);
 int		builtin_or_not_builtin(char *str, char **env);
 int		is_built_in(char *str);
 char	*managing_quotes(char *input);
+char	*manage_simple_quotes(char *input, int i);
+char	*manage_double_quotes(char *input, int i);
+
 
 #endif

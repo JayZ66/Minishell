@@ -30,12 +30,14 @@ Today :
 - Fixed export & unset => OK
 
 TOMORROW : 
-- Norme
+- Norme => OK
 - EXPORT : Check when multiple var. to modify.
 - TESTS EXECUTION !! => IN PROGRESS
 - Multiple input/output ?? => OK
 - IL FAUT CHECK SI PLS INPUT ON GARDE LE LAST
 - export MY_VAR="value with spaces" => KO : NEED TO TAKE INTO ACCOUNT QUOTES (not spaces)!
+- Split fonctions => OK
+- Manage quotes : simple rentrent pas dans la condition.
 
 
 

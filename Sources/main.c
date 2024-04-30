@@ -42,9 +42,9 @@ char	*read_input(void)
 	char	*input;
 
 	input = readline("Minishell>$");
-	if (input == NULL) // Manage ctrl + d bce this is not a signal.
+	if (input == NULL) // Manage ctrl + d bce this is not a signal (ascii).
 	{
-		free(input); // Ctrl + d = ascii code (null)
+		free(input);
 		exit(EXIT_FAILURE);
 	}
 	if (ft_strlen(input) <= 0)
@@ -89,7 +89,7 @@ char	*read_input(void)
 // 		// 	return(perror("Extract cmd failed\n"), free(input), 1);
 // 	}
 // 	print_new_env(env);
-// 	// char *args[] = {"cd", "/home/jeza/Projects/Minishell1/get_next_line", NULL};
+// 	// char *args[] = {"cd", "/home/jeza/Projects/Minishell1", NULL};
 // 	// char *args[] = {"cd", "/", NULL};
 // 	// char *args[] = {"cd", "..", NULL};
 // 	// char *args[] = {"cd", "Libft/", NULL};

@@ -149,12 +149,6 @@ void	handle_echo_with_n(char **cmd)
 //   return (cmd);
 // }
 
-int	is_space(char c)
-{
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\v'
-		|| c == '\f' || c == '\r');
-}
-
 char	*copy_str_without_first_quote(char *source)
 {
 	size_t	source_length;
@@ -164,29 +158,21 @@ char	*copy_str_without_first_quote(char *source)
 
 	source_length = strlen(source);
 	j = 0;
-	i = 0;
+	i = -1;
 	result = (char *)malloc(source_length + 1);
-	if (result == NUL || source == NULL)
+	if (result == NULL || source == NULL)
 		return (NULL);
-	while (source[i] && i < source_length)
+	while (source[++i] && i < source_length)
 	{
 		if (((source[i] == '\'' || source[i] == '"')
 				&& !(is_space(source[i - 1]))) && (!(is_space(source[i + 1]))
 				&& source[i + 1] != '\0' && i != 0))
-		{
-			result[j] = source[i];
-			j++;
-		}
+			result[j++] = source[i];
 		else if ((source[i] < 9 || source[i] > 13)
 			&& (source[i] != '\'' && source[i] != '"'))
-		{
-			result[j] = source[i];
-			j++;
-		}
-		i++;
+			result[j++] = source[i];
 	}
 	result[j] = '\0';
-	i = 0;
 	return (result);
 }
 
