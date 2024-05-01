@@ -1,0 +1,182 @@
+Etapes : 
+1. Je reçois ma liste chaînée avec chaque cmd ou redirection/pipe dans un noeud.
+2. Je check d'abord s'il y a un type "file" au début. Si oui, j'ouvre le file et je redirige.
+3. Je check s'il y a un file à la fin (?) et j'ouvre le dernier fichier.
+4. Je check si c'est un here_doc et je gère les redirections.
+5. J'avance dans ma liste chaînée (je change de noeud), j'ai la commande.
+6. Je crée mon pipe, où je commence par le child process, je redirige la sortie
+pour la première cmd qui va être exécutée, s'il y a une autre cmd ensuite, sinon
+j'envoie dans le file ou sur la sortie. 
+7. J'envoie pour exécution la commande actuelle que je vais ajouter
+au path pour l'envoyer à execve. 
+8. Dans le process parent, je fais la redirection du pipe pour récupèrer la sortie
+de la dernière commande.
+
+
+void	check_line(t_exec *node, char **env) // Tu retires le type quand tu raffines ???
+{
+	int	first_file;
+
+	while (node->next)
+	{
+		if (node->type == 'FILE') // DO THE SAME FOR HERE_DOC.
+		{
+			first_file = open(node->content, RDONLY, 0644)
+			if (first_file == -1)
+				exit(EXIT_FAILURE);
+			dup2(first_file, STDIN_FILENO);
+			close(first_file);
+		}
+		else if (node->type == 'CMD')
+		{
+			execute_pipes(node->content, char **env);
+		}
+		etc...
+	}
+}
+
+void	execute_pipes(char *cmd, char **env)
+{
+	int	fd[2];
+	int	pid;
+
+	if (pipe(fd) == -1)
+	{
+		exit(EXIT_FAILURE);
+	}
+	pid = fork();
+	if (pid == -1)
+	{
+		exit(EXIT_FAILURE);
+	}
+	if (pid == 0)
+	{
+		child_process(fd, cmd, env);
+	}
+	else
+		parent_process(fd, cmd, env);
+}
+
+void	child_process(int *pfd, char *cmd, char **env)
+{
+	close(pfd[0]);
+	dup2(pfd[1], STDOUT_FILENO);
+	close(pfd[1]);
+	exec_cmd(cmd, env);
+}
+
+void	parent_process(int *pfd, char *cmd, char **env)
+{
+	int	exit_status;
+
+	status = 0;
+	close(pfd[1]);
+	dup2(pfd[0], STDIN_FILENO);
+	close(pfd[0]);
+	wait(&status); // Need to use the waitpid() function to get $? code.
+	if (WIFEXITED(status)) // To put in a structure.
+    	exit_status = WEXITSTATUS(status);
+}
+
+void	exec_cmd(char *cmd, char **env)
+{
+	char	**cmd;
+	char	*final_path;
+
+	cmd = ft_split(cmd, ' ');
+	if (!cmd)
+		exit(EXIT_FAILURE);
+	final_path = get_path(cmd[0], env);
+	if (!final_path)
+	{
+		free_tab(cmd);
+		exit(EXIT_FAILURE);
+	}
+	if (execve(final_path, cmd, env) == -1)
+	{
+		free_tab(cmd);
+		free(path);
+		exit(EXIT_FAILURE);
+	}
+}
+
+char	*get_path(char *cmd, char **env)
+{
+	char	*tmp_path;
+	char	*final_path;
+	char	**path;
+	size_t	i;
+
+	path = select_path(env);
+	if (!path)
+		exit(EXIT_FAILURE);
+	while (path[i])
+	{
+		tmp_path = ft_strjoin(path[i], "/");
+		final_path = ft_strjoin(path[i], cmd);
+		free(tmp_path);
+		if (access(exec_path, X_OK) == 0)
+		{
+			return (free_tab(path), final_path);
+		}
+		free(final_path);
+		i++;
+	}
+	free_tab(path);
+	perror("The executable doesn't exist in the repo\n");
+	return (NULL);
+}
+
+char	**select_path(char **env)
+{
+	size_t	i;
+	size_t	j;
+	char	**all_path;
+
+	i = 0;
+	while (env[i])
+	{
+		j = 0;
+		while (env[i][j])
+		{
+			if (env[i][j] == '=')
+			{
+				if (ft_strncmp(env[i], "PATH", 4) == 0)
+				{
+					j++;
+					all_path = ft_split(env[i] + j, ':');
+					return (all_path);
+				}
+			}
+			j++;
+		}
+		i++;
+	}
+	perror("Can't find the var. path in env.\n");
+	return (NULL);
+}
+
+
+IDEE EXECUTION : 
+1. Grande boucle pour la liste. // Prévoir le cas où c'est la last cmd.
+2. On check node par node si c'est une redirection, on gère la redirection.
+3. Si c'est une cmd avec un pipe ensuite, alors on crée un pipe et on fork pour exécuter.
+4. Si c'est une cmd sans pipe après, on check si après il y a un output.
+5. alors on exécute ensuite directement la cmd.
+
+CAS : 
+- cmd
+- cmd puis input
+- cmd puis output
+- cmd puis input puis pipe puis cmd
+- cmd puis input puis pipe puis output
+- cmd puis input puis pipe puis append
+- cmd puis pipe puis cmd
+- cmd puis pipe puis output ou append
+- cmd puis input puis output
+- cmd puis output puis pipe puis cmd
+- cmd puis here_doc
+- cmd puis here_doc puis output ou append
+- cmd puis here_doc puis pipe puis cmd
+- cmd puis here_doc puis pipe puis cmd puis output ou append
+- cmd puis here_doc puis pipe puis cmd puis output puis pipe puis cmd puis append.

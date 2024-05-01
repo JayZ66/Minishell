@@ -1,0 +1,42 @@
+- echo hey | cat
+OK
+- echo hey > output.txt | cat
+OK
+- < input cat > output.txt | cat
+OK
+- < input cat > output.txt | cat > end.txt
+OK
+- < input cat > output.txt
+OK
+echo hey > output.txt | cat > end.txt
+OK
+- cat file.txt | < output.txt | wc -l
+KO
+- echo cool > output.txt | pwd > end.txt | env > fin.txt
+OK
+- echo cool > output.txt | pwd > end.txt | env > fin.txt | export > output.txt
+OK
+cat file.txt < end.txt < fin.txt
+OK
+echo cool > output.txt | < file.txt cat
+OK
+- < input cat > output.txt | cat
+OK
+- < output.txt cat | < file.txt cat | < end.txt cat
+OK
+- < output.txt < file.txt < end.txt cat
+OK
+- < output.txt < file.txt < end.txt cat | cat
+OK
+- < output.txt < file.txt < end.txt cat | echo cool
+OK
+- echo hey > output.txt | < end.txt ls
+OK
+- echo hola > output.txt | cat > end.txt
+OK
+- Fix pb with : built-ins > output | input < cmd  => Finally GOOD !!!
+=> Same with just cmd.
+=> Work if we just have output on first block
+=> Doesn't work if we have output in first block & input in 2nd
+
+- export MY_VAR="value with spaces" => KO : NEED TO TAKE INTO ACCOUNT QUOTES (not spaces)!

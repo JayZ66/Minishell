@@ -14,27 +14,22 @@
 # define MINISHELL_H
 
 # include "Libft/libft.h"
-// # include "get_next_line/get_next_line.h"
-// # include "printf/ft_printf.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <time.h>
-#include <errno.h> // perror - strerror
-#include <unistd.h> // access - dup2 - execve - fork - pipe - waitpid
-#include <sys/wait.h> // Wait
-#include <fcntl.h>
-
-// Une structure token
-// token cmd;
-// token arg;
-// token options;
+# include "get_next_line/get_next_line.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <time.h>
+# include <errno.h> // perror - strerror
+# include <unistd.h> // access - dup2 - execve - fork - pipe - waitpid
+# include <sys/wait.h> // Wait
+# include <fcntl.h>
+# include <signal.h>
 
 typedef enum
 {
-    CMD,
+	CMD,
 	ARG,
 	PIPE,
 	INPUT,
@@ -43,60 +38,29 @@ typedef enum
 	HERE_DOC
 } Token_type;
 
-typedef struct	s_token
+typedef struct s_token
 {
 	char			*content;
 	Token_type		type;
 	struct s_token	*next;
-} t_token;
+}	t_token;
 
 typedef struct s_exec
 {
 	char	**path;
 	char	*cmd;
-} t_exec;
-
+}	t_exec;
 
 typedef struct s_minishell
 {
 	t_token	*token;
 	t_exec	exec;
-} t_minishell;
-
-typedef struct s_clean_token
-{
-	char					*content;
-	Token_type				type;
-	struct s_clean_token	*prev;
-	struct s_clean_token	*next;
-} t_clean_token;
-
-// Une structure outils
-// path
-// envp
-// cmd
-// args
-// here_doc
-// pipes
-// pid
-
+	int		last_exit_status;
+}	t_minishell;
 
 // MANDATORY PART
-char	*read_input();
+char	*read_input(void);
 t_token	*extract_cmd(t_token **token, char *cmd_line, char **env);
-t_token	*init_node(char *content, Token_type type);
-
-t_clean_token    *init_clean_node(char *content, Token_type type);
-
-t_token	*lst_last(t_token *token);
-
-t_clean_token	*lst_clean_last(t_clean_token *token);
-
-void	add_back(t_token **token, t_token *new);
-
-void	add_clean_back(t_clean_token **token, t_clean_token *new);
-
-char	*ft_strndup(const char *s, size_t n);
 void	shell_level(char **env);
 
 void	execute_pipe(int nb_args, char **cmd_line, char **env);
@@ -107,69 +71,107 @@ void	print_tab(char **cmd_line);
 int		lst_size(t_token *token);
 void	free_tab(char **tab);
 
-void	exec_cmd(char *cmd, char **env);
-char	*select_path(char *cmd, char **env);
-char	**get_path(char **env);
 int		manage_file(int nb_args, char **cmd_line, int flag);
-int		ft_strlen_tab(char **cmd_line);
-int		ft_lstsize_content(t_token *token);
 char	*check_line_cmd(t_token *token);
-char	*ft_strcat(char *dst, const char *src, size_t size);
-void	print_lst(t_token *token);
-
-void	print_clean_lst(t_clean_token *token);
-
-void	print_new_env(char **env);
-
 
 // tokenisation
-int	tokenize_separator(t_token **token, char *input, int i, char **env);
-int	tokenize_arg(t_token **token, char *input, int i);
-int	tokenize_double_quote(t_token **token, char *input, int i, char **env);
-int	tokenize_simple_quote(t_token **token, char *input, int i);
+int		tokenize_separator(t_token **token, char *input, int i, char **env);
+int		tokenize_arg(t_token **token, char *input, int i);
+int		tokenize_double_quote(t_token **token, char *input, int i, char **env);
+int		tokenize_simple_quote(t_token **token, char *input, int i);
 
-t_token    *init_node_separator(Token_type type);
+// Var. env.
+char	*get_the_var_of_env(t_token *node);
 
-//Clean Node
-// t_token	*clean_arg(t_token **token);
+// Utils
+t_token	*init_node(char *content, Token_type type);
+t_token	*lst_last(t_token *token);
+void	add_back(t_token **token, t_token *new);
+char	*ft_strndup(const char *s, size_t n);
+char	*ft_strcat(char *dst, const char *src, size_t size);
+void	print_lst(t_token *token);
+void	print_new_env(char **env);
+int		ft_strlen_tab(char **cmd_line);
+int		ft_lstsize_content(t_token *token);
+void	free_that_lst(t_token **token);
+char	**realloc_env(char **env);
+size_t	ft_size_env(char **env);
+int		ft_strncmp_limiter(const char *s1, const char *s2, size_t n);
 
-// t_clean_token	*clean_arg(t_token **token);
-// t_clean_token	*clean_space(t_clean_token **clean_token);
-// char	*ft_clean_space(char *content);
-
-
-// t_token	*clean_space(t_token **token);
-// void clean_spaces(t_token *head);
-void	clean_spaces(t_token *token);
-void	clean_chevron(t_token *token);
-
-// gerer les inputs
-void	manage_node(t_token *token);
-void	cut_node(t_token *token);
-
-//utils
-int	string_is_space(char *token);
-
-//Tokenization
-int	tokenize_append(t_token **token, char *input, int i, char **env);
-int	tokenize_output(t_token **token, char *input, int i, char **env);
-int	tokenize_here_doc(t_token **token, char *input, int i, char **env);
-int	tokenize_input(t_token **token, char *input, int i, char **env);
-int	tokenize_pipe(t_token **token, int i);
-
-
-//built-in
-void	builtin_or_not_builtin(char *str, char **env);
-void	builtin_pwd(char *str);
+// Built_in
+void	builtin_exit(char **args);
+void	builtin_pwd(void);
+char	**builtin_unset(char **var, char **new_env);
 void	builtin_env(char **env);
-void	builtin_exit(char *str);
+char	**builtin_export(char *var_env, char **env);
+char	**create_var_env(char **env, char *var);
+char	**modify_value_env(char **env, char *var, char *new_value);
+char	**modify_or_create(char **args, char **env, size_t i, size_t j);
+char	*copy_new_value(char *new_env, char *var, char *new_value);
+int		is_var_in_env(char *var, char **env);
+void	update_env(char **env, char *var);
+void	sort_tab(char **env);
+char	**print_env(char **env);
+char	**builtin_cd(char **env, char **cmd);
+int		is_relative_path(char **cmd);
+char	*relative_to_absolute_path(char **cmd);
+char	**go_back_home(char **new_env, char **env);
+char	**env_with_new_pwd(char **new_env, char **env, char *new_pwd);
+char	**get_new_pwd(char **env, char **new_env, char **cmd);
+char	**change_pwd_env(char **env, char **new_env, size_t cwd_len, char *cwd);
+void	builtin_echo(char *str);
+void	handle_echo_with_n(char **cmd);
+char	*clean_quote(char *str);
+char	*handle_quotes(char *cmd);
+char	*copy_string_without_char(const char *source, char exclude_char);
+int		is_there_something_after_quote(char *str);
+char	*copy_str_without_first_quote(char *source);
+int		is_space(char c);
+char	*check_quotes(char *cmd, int multiple_quotes);
+char	*check_multiple_quotes(char *cmd);
+char	*check_initial_quote(char *cmd);
+char	*removing_one_level_of_quote(char *cmd, char c, size_t i);
+int		is_there_multiple_quotes(char *cmd);
 
-//clean node
-t_clean_token	*copy_lst(t_token *token);
+// Execution
+char	**select_path(char **env);
+char	*get_path(char *cmd, char **env);
+void	exec_cmd_with_fork(char *cmd, char **env, t_minishell *exit_code);
+void	child_cmd_only(char **cmd_line, char **env);
+void	parent_cmd_only(int pid, t_minishell *exit_code);
+void	exec_cmd(char *cmd, char **env);
+void	parent_process(int *pfd, char *cmd, char **env, t_minishell *exit_code);
+void	child_process(int *pfd, char *cmd, char **env, int output);
+void	create_pipes(char *cmd, char **env, t_minishell *exit_code, int output);
+void	parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code);
+void	child_here_doc(int *pfd, char *cmd);
+void	handle_here_doc(char *cmd, t_minishell *exit_code);
+void	check_line(t_token **lst, char **env, t_minishell *exit_code);
+void	redir_builtin(char *cmd, t_minishell *exit_code, char **env, int out);
+void	parent_builtin(int *fd, t_minishell *exit_code);
+void	append_exec_node(t_token **head, char *content, Token_type type);
+t_token	*create_command_list(void);
+t_token	*create_command_list2(void);
+t_token	*create_command_list3(void);
+t_token	*create_command_list4(void);
+t_token	*create_command_list5(void);
+t_token	*create_command_list6(void);
+void	print_exec_list(t_token *head);
+void	display_lst(t_token *line);
 
+// SIGNALS
+void	sigint_handler(int sig);
+void	manage_signals(void);
+void	sigquit_handler(int sig);
 
-void	redirection_node(t_clean_token **head_ref);
+// EXPANSER
+int		check_var(t_token *node);
+int		handle_quote_errors(char *cmd);
+int		builtin_or_not_builtin(char *str, char **env);
+int		is_built_in(char *str);
+char	*managing_quotes(char *input);
+char	*manage_simple_quotes(char *input, int i);
+char	*manage_double_quotes(char *input, int i);
 
-void swap_nodes(t_clean_token **head_ref, t_clean_token *node1, t_clean_token *node2);
 
 #endif

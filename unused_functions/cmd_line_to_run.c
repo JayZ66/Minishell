@@ -63,17 +63,6 @@ donc argv[count] pointe au-delà de la dernière entrée valide, où nous
 plaçons le NULL de terminaison.
 */
 
-void	print_tab(char **cmd_line)
-{
-	size_t	i;
-
-	i = 0;
-	while (cmd_line[i])
-	{
-		printf("Voici ma ligne de cmd : %s\n", cmd_line[i]);
-		i++;
-	}
-}
 
 // 1. Déterminer la longueur totale de la chaîne résultante.
 // char	*list_to_string(t_token *token)
