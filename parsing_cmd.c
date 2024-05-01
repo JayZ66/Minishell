@@ -375,59 +375,126 @@ int	input_in_bloc(t_token *token, int i)
 // faire une fonction pour ouvrir et close les input et juste ouvrir le dernier
 // faire une fonction pareil pour les outputs + les creer s'ils existent pas
 // j'ai pas fait dpeuis pipex jsp si j'vais y arriver zebi
-t_clean_token	*copy_lst(t_token *token, t_clean_token **clean_list)
-{
-	int				i;
-	t_token			*head;
-	t_clean_token	*new;
-	char			*content;
+// t_clean_token	*copy_lst(t_token *token, t_clean_token **clean_list)
+// {
+// 	int				i;
+// 	t_token			*head;
+// 	t_clean_token	*new;
+// 	char			*content;
 
-	i = 0;
-	head = token;
-	// new = NULL;
-	content = NULL;
-	// clean_list = NULL;
-	if (input_in_bloc(token, i) > 0)
-	{
-		while (i >= 0)
-		{
-			if (token->type == INPUT)
+// 	i = 0;
+// 	head = token;
+// 	// new = NULL;
+// 	content = NULL;
+// 	// clean_list = NULL;
+// 	if (input_in_bloc(token, i) > 0)
+// 	{
+// 		while (token && token->type != PIPE)
+// 		{
+// 			if (token->type == INPUT)
+// 			{
+// 				content = ft_strdup((token)->content);
+// 				new = init_clean_node(content, (token)->type);
+// 				add_clean_back(clean_list, new);
+// 				free (content);
+// 			}
+// 			token = token->next;
+// 		}
+// 		token = head;
+// 		while (token && token->type != PIPE)
+// 		{
+// 			if ((token)->type == ARG)
+// 			{
+// 				content = ft_strdup((token)->content);
+// 				new = init_clean_node(content, (token)->type);
+// 				add_clean_back(clean_list, new);
+// 				free (content);
+// 			}
+// 			(token) = (token)->next;
+// 		}
+// 		token = head;
+// 		while (token && token->type != PIPE)
+// 		{
+// 			if ((token)->type == OUTPUT)
+// 			{
+// 				content = ft_strdup((token)->content);
+// 				new = init_clean_node(content, (token)->type);
+// 				add_clean_back(clean_list, new);
+// 				free (content);
+// 			}
+// 			(token) = (token)->next;
+// 		}
+// 	}
+// 	return (*clean_list);
+// }
+
+t_clean_token *copy_lst(t_token *token)
+{
+    // t_token *head = token;
+    t_clean_token *clean_list = NULL;
+    char *content = NULL;
+
+    while (token != NULL)
+    {
+        t_token *block_start = token; // Pointeur de départ pour le bloc actuel
+
+        while (token != NULL && token->type != PIPE)
+        {
+            if (token->type == INPUT)
+            {
+                content = ft_strdup(token->content);
+                t_clean_token *new = init_clean_node(content, token->type);
+                add_clean_back(&clean_list, new);
+                free(content);
+            }
+            token = token->next;
+        }
+
+        // Ajouter les arguments pour ce bloc
+        token = block_start;
+        while (token != NULL && token->type != PIPE)
+        {
+            if (token->type == ARG)
+            {
+                content = ft_strdup(token->content);
+                t_clean_token *new = init_clean_node(content, token->type);
+                add_clean_back(&clean_list, new);
+                free(content);
+            }
+            token = token->next;
+        }
+
+        // Ajouter les sorties pour ce bloc
+        token = block_start;
+        while (token != NULL && token->type != PIPE)
+        {
+            if (token->type == OUTPUT)
+            {
+                content = ft_strdup(token->content);
+                t_clean_token *new = init_clean_node(content, token->type);
+                add_clean_back(&clean_list, new);
+                free(content);
+            }
+            token = token->next;
+        }
+
+        // Passer au prochain bloc s'il y en a un
+        if (token!= NULL)
+        {
+			if (token->type == PIPE)
 			{
-				content = ft_strdup(token->content);
-				new = init_clean_node(content, token->type);
-				add_clean_back(clean_list, new);
-				free (content);
-				i--;
+				content = ft_strdup("|");
+                t_clean_token *new = init_clean_node(content, token->type);
+                add_clean_back(&clean_list, new);
+                free(content);
 			}
-			token = token->next;
-		}
-		token = head;
-		while (token)
-		{
-			if ((token)->type == ARG)
-			{
-				content = ft_strdup((token)->content);
-				new = init_clean_node(content, (token)->type);
-				add_clean_back(clean_list, new);
-				free (content);
-			}
-			(token) = (token)->next;
-		}
-		token = head;
-		while (token)
-		{
-			if ((token)->type == OUTPUT)
-			{
-				content = ft_strdup((token)->content);
-				new = init_clean_node(content, (token)->type);
-				add_clean_back(clean_list, new);
-				free (content);
-			}
-			(token) = (token)->next;
-		}
-	}
-	return (*clean_list);
+            token = token->next; // Avancer pour sauter le pipe
+        }
+    }
+    return clean_list;
 }
+
+
 
 // t_clean_token *copy_lst(t_token *token, t_clean_token **clean_list)
 // {

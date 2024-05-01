@@ -125,10 +125,10 @@ int		main(int argc, char **argv, char **env)
 		clean_chevron(token);
 		clean_spaces(token);
 		manage_node(token);
-		print_lst(token);
+		// print_lst(token);
 		token = head;
 		printf("token = %s\n", token->content);
-		clean_token = copy_lst(token, &clean_token);
+		clean_token = copy_lst(token);
 		// test_redirection_input(clean_token);
 		print_clean_lst(clean_token);
 		free_that_lst(&token);

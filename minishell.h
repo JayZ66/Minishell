@@ -164,7 +164,7 @@ void	builtin_env(char **env);
 void	builtin_exit(char *str);
 
 //clean node
-t_clean_token	*copy_lst(t_token *token, t_clean_token **clean_list);
+t_clean_token	*copy_lst(t_token *token);
 
 
 void	redirection_node(t_clean_token **head_ref);
