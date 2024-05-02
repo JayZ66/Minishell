@@ -140,6 +140,7 @@ t_token    *init_node_separator(Token_type type);
 // t_token	*clean_space(t_token **token);
 // void clean_spaces(t_token *head);
 void	clean_spaces(t_token *token);
+void	clean_spaces2(t_token *token);
 void	clean_chevron(t_token *token);
 
 // gerer les inputs
@@ -174,8 +175,9 @@ void swap_nodes(t_clean_token **head_ref, t_clean_token *node1, t_clean_token *n
 
 //redirection input
 void	test_redirection_input(t_clean_token *clean_node);
-void	redirection_last_input(t_clean_token *clean_node);
 void	redirection_input(t_clean_token *clean_node);
+void	redirection_output(t_clean_token *clean_node);
+void	redirection_append(t_clean_token *clean_node);
 
 //free list
 void    free_that_lst(t_token **token);

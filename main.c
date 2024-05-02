@@ -108,7 +108,7 @@ int		main(int argc, char **argv, char **env)
 
 	token = NULL;
 	clean_token = (t_clean_token *)malloc(sizeof(t_clean_token));
-	clean_token = NULL;
+	// clean_token = NULL;
 	// if (argc != 1 || argv[1])
 	// 	return (perror("Wrong nb of args\n"), 1);
 	while (1)
@@ -124,7 +124,10 @@ int		main(int argc, char **argv, char **env)
 		t_token *head = token;
 		clean_chevron(token);
 		clean_spaces(token);
+
+		printf("%s|\n", token->content);
 		manage_node(token);
+		clean_spaces2(token);
 		// print_lst(token);
 		token = head;
 		printf("token = %s\n", token->content);
