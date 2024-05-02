@@ -96,8 +96,8 @@ char	**modify_or_create(char **args, char **env, size_t i, size_t j)
 // 	// char *args[] = {"export", NULL};
 // 	// str = "export LS_COLORS=OK PATH=KO";
 // 	// str = "export";
-// 	// str = "export MDR=COOL LS_COLORS=PAS.DE.COULEURS MOI=PAS_OUF OH=YOHAN";
-// 	str = "MY_VAR=\"value with spaces\"";
+// 	// str = "export MDR=COOL PWD=PAS.DE.COULEURS MOI=PAS_OUF OH=YOHAN";
+// 	// str = "export MY_VAR=\"value with spaces\" OK=\"KO\" PATH=COOL";
 // 	// result = managing_quotes(str);
 // 	// result = handle_quotes(str);
 // 	new_env = builtin_export(str, new_env);

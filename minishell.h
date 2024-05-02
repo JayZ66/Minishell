@@ -107,6 +107,8 @@ char	**builtin_export(char *var_env, char **env);
 char	**create_var_env(char **env, char *var);
 char	**modify_value_env(char **env, char *var, char *new_value);
 char	**modify_or_create(char **args, char **env, size_t i, size_t j);
+char	**manage_quote_export(char *input);
+char	**clean_spaces(char **args);
 char	*copy_new_value(char *new_env, char *var, char *new_value);
 int		is_var_in_env(char *var, char **env);
 void	update_env(char **env, char *var);

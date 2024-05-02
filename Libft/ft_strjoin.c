@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 18:17:19 by jeguerin          #+#    #+#             */
-/*   Updated: 2023/10/13 14:49:54 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/02 14:58:19 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
+#include "stdio.h"
 static	char	*ft_strcpy(char *dest, const char *src)
 {
 	size_t	i;

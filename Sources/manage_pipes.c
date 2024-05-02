@@ -17,6 +17,7 @@ void	create_pipes(char *cmd, char **env, t_minishell *exit_code, int output)
 	int	fd[2];
 	int	pid;
 
+	// if (cmd == "cat")
 	if (pipe(fd) == -1)
 	{
 		exit(EXIT_FAILURE);
@@ -62,6 +63,32 @@ void	parent_process(int *pfd, char *cmd, char **env, t_minishell *exit_code)
 	if (WIFEXITED(exit_status))
 		exit_code->last_exit_status = WEXITSTATUS(exit_status);
 }
+
+// void parent_process(int *pfd, char *cmd, char **env, t_minishell *exit_code) {
+//     int exit_status;
+//     (void)cmd;
+//     (void)env;
+//     (void)exit_code;
+//     exit_status = 0;
+//     close(pfd[1]);
+    
+//     // Vérifier si l'entrée standard est un terminal interactif
+//     if (isatty(STDIN_FILENO)) {
+//         // Configurer l'entrée standard en mode non bloquant
+//         int flags = fcntl(STDIN_FILENO, F_GETFL);
+//         fcntl(STDIN_FILENO, F_SETFL, flags | O_NONBLOCK);
+//     }
+
+//     // Rediriger l'entrée standard vers le tuyau
+//     dup2(pfd[0], STDIN_FILENO);
+//     close(pfd[0]);
+
+//     // Attendre le processus enfant
+//     waitpid(-1, &exit_status, 0);
+//     if (WIFEXITED(exit_status)) {
+//         exit_code->last_exit_status = WEXITSTATUS(exit_status);
+//     }
+// }
 
 // WIFEXITED : Maj de la variable qui stocke le code de
 // sortie de la cmd avec le code de sortie de la cmd.
