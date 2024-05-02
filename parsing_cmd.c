@@ -268,42 +268,57 @@ void	manage_node(t_token *token)
 // 	}
 // }
 
-// void	redirection_last_input(t_clean_token *clean_node)
-// {
-// 	int	filein;
-// 	int	fd[2];
+void	test_redirection_input(t_clean_token *clean_node)
+{
+	int i;
 
-// 	filein = open(clean_node->content, O_RDONLY, 0777);
-// 	if (filein == -1)
-// 	{
-// 		perror("Erreur dernier file");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	dup2(fd[1], STDOUT_FILENO);
-// 	dup2(filein, STDIN_FILENO);
-// }
+	i = 0;
+	i = input_in_bloc(clean_node, i);
+	while (clean_node && i > 0)
+	{
+		if (clean_node->type == INPUT)
+		{
+			redirection_input(clean_node);
+			i--;
+		}
+		clean_node = clean_node->next;
+	}
+	if (clean_node->type == INPUT)
+	{
+		redirection_last_input(clean_node);
+	}
+}
 
-// void	redirection_input(t_clean_token *clean_node)
-// {
-// 	int	filein;
-// 	int	fd[2];
+void	redirection_last_input(t_clean_token *clean_node)
+{
+	int	filein;
 
-// 	if (pipe(fd) == -1)
-// 		exit(EXIT_FAILURE);
-// 	filein = open(clean_node->content, O_RDONLY, 0777);
-// 	printf("%i\n", filein);
-// 	printf("%s\n", clean_node->content);
-// 	if (filein == -1)
-// 	{
-// 		perror("Erreur file");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	dup2(fd[1], STDOUT_FILENO);
-// 	dup2(filein, STDIN_FILENO);
-// 	close(fd[0]);
-// }
+	filein = 0;
+	filein = open(clean_node->content, O_RDONLY, 0777);
+	if (filein == -1)
+	{
+		perror("Erreur dernier file");
+		exit(EXIT_FAILURE);
+	}
+}
 
-int	input_in_bloc(t_token *token, int i)
+void	redirection_input(t_clean_token *clean_node)
+{
+	int	filein;
+
+	filein = 0;
+	printf("%s\n", clean_node->content);
+	filein = open(clean_node->content, O_RDONLY, 0644);
+
+	if (filein == -1)
+	{
+		perror("Erreur file");
+		exit(EXIT_FAILURE);
+	}
+	close(filein);
+}
+
+int	input_in_bloc(t_clean_token *token, int i)
 {
 	while (token != NULL && token->type != PIPE)
 	{
@@ -314,119 +329,13 @@ int	input_in_bloc(t_token *token, int i)
 	return (i);
 }
 
-// t_clean_token	*copy_lst(t_token *token, t_clean_token *clean_list)
-// {
-// 	int				i;
-// 	t_token			*head;
-// 	char			*content;
-// 	t_clean_token	*new;
-
-// 	i = 0;
-// 	content = NULL;
-// 	new = NULL;
-// 	head = (token);
-// 	if (input_in_bloc(token, i) > 0)
-// 	{
-// 		while(token)
-// 		{
-// 			if ((token)->type == INPUT)
-// 			{
-// 				content = ft_strdup((token)->content);
-// 				new = init_clean_node(content, (token)->type);
-// 				add_clean_back(&clean_list, new);
-// 				free (content);
-// 				i--;
-// 			}
-// 			(token) = (token)->next;
-// 		}
-// 		(token) = head;
-// 		while ((token) || (token)->type == PIPE)
-// 		{
-// 			if ((token)->type == ARG)
-// 			{
-// 				content = ft_strdup((token)->content);
-// 				new = init_clean_node(content, (token)->type);
-// 				add_clean_back(&clean_list, new);
-// 				free (content);
-// 			}
-// 			(token) = (token)->next;
-// 		}
-// 		(token) = head;
-// 		while ((token) || ((token)->type == OUTPUT))
-// 		{
-// 			if ((token)->type  == OUTPUT)
-// 			{
-// 				content = ft_strdup((token)->content);
-// 				new = init_clean_node(content, (token)->type);
-// 				add_clean_back(&clean_list, new);
-// 				free (content);
-// 			}
-// 			(token) = (token)->next;
-// 		}
-// 	}
-// 	return (clean_list);
-// }
-
-
-//faire que le input fonctionne apres un pipe
 //gerer le append
 // split la commande
 
 // faire une fonction pour ouvrir et close les input et juste ouvrir le dernier
 // faire une fonction pareil pour les outputs + les creer s'ils existent pas
 // j'ai pas fait dpeuis pipex jsp si j'vais y arriver zebi
-// t_clean_token	*copy_lst(t_token *token, t_clean_token **clean_list)
-// {
-// 	int				i;
-// 	t_token			*head;
-// 	t_clean_token	*new;
-// 	char			*content;
 
-// 	i = 0;
-// 	head = token;
-// 	// new = NULL;
-// 	content = NULL;
-// 	// clean_list = NULL;
-// 	if (input_in_bloc(token, i) > 0)
-// 	{
-// 		while (token && token->type != PIPE)
-// 		{
-// 			if (token->type == INPUT)
-// 			{
-// 				content = ft_strdup((token)->content);
-// 				new = init_clean_node(content, (token)->type);
-// 				add_clean_back(clean_list, new);
-// 				free (content);
-// 			}
-// 			token = token->next;
-// 		}
-// 		token = head;
-// 		while (token && token->type != PIPE)
-// 		{
-// 			if ((token)->type == ARG)
-// 			{
-// 				content = ft_strdup((token)->content);
-// 				new = init_clean_node(content, (token)->type);
-// 				add_clean_back(clean_list, new);
-// 				free (content);
-// 			}
-// 			(token) = (token)->next;
-// 		}
-// 		token = head;
-// 		while (token && token->type != PIPE)
-// 		{
-// 			if ((token)->type == OUTPUT)
-// 			{
-// 				content = ft_strdup((token)->content);
-// 				new = init_clean_node(content, (token)->type);
-// 				add_clean_back(clean_list, new);
-// 				free (content);
-// 			}
-// 			(token) = (token)->next;
-// 		}
-// 	}
-// 	return (*clean_list);
-// }
 
 t_clean_token *copy_lst(t_token *token)
 {
@@ -495,24 +404,4 @@ t_clean_token *copy_lst(t_token *token)
 }
 
 
-
-// t_clean_token *copy_lst(t_token *token, t_clean_token **clean_list)
-// {
-//     // t_token *head = token; // Sauvegarde de la tête de la liste d'origine
-
-//     while (token != NULL)
-//     {
-//         // Traitement des tokens et ajout à la liste clean_list
-//         if (token->type == INPUT || token->type == ARG || token->type == OUTPUT)
-//         {
-//             char *content = ft_strdup(token->content);
-//             t_clean_token *new = init_clean_node(content, token->type);
-//             add_clean_back(clean_list, new);
-//             free(content); // Libération de la mémoire allouée dynamiquement
-//         }
-//         token = token->next;
-//     }
-
-//     return *clean_list;
-// }
 

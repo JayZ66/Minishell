@@ -181,4 +181,6 @@ void	redirection_input(t_clean_token *clean_node);
 void    free_that_lst(t_token **token);
 void    free_that_clean_lst(t_clean_token **token);
 
+int	input_in_bloc(t_clean_token *token, int i);
+
 #endif
