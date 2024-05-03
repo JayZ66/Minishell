@@ -17,7 +17,6 @@ void	create_pipes(char *cmd, char **env, t_minishell *exit_code, int output)
 	int	fd[2];
 	int	pid;
 
-	// if (cmd == "cat")
 	if (pipe(fd) == -1)
 	{
 		exit(EXIT_FAILURE);
@@ -27,12 +26,14 @@ void	create_pipes(char *cmd, char **env, t_minishell *exit_code, int output)
 	{
 		exit(EXIT_FAILURE);
 	}
-	if (pid == 0)
+	else if (pid == 0)
 	{
 		child_process(fd, cmd, env, output);
 	}
 	else
+	{
 		parent_process(fd, cmd, env, exit_code);
+	}
 }
 
 void	child_process(int *pfd, char *cmd, char **env, int output)
@@ -64,14 +65,15 @@ void	parent_process(int *pfd, char *cmd, char **env, t_minishell *exit_code)
 		exit_code->last_exit_status = WEXITSTATUS(exit_status);
 }
 
-// void parent_process(int *pfd, char *cmd, char **env, t_minishell *exit_code) {
+// void parent_process(int *pfd, char *cmd, char **env, t_minishell *exit_code) 
+//{
 //     int exit_status;
 //     (void)cmd;
 //     (void)env;
 //     (void)exit_code;
 //     exit_status = 0;
 //     close(pfd[1]);
-    
+
 //     // Vérifier si l'entrée standard est un terminal interactif
 //     if (isatty(STDIN_FILENO)) {
 //         // Configurer l'entrée standard en mode non bloquant

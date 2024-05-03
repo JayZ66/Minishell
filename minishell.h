@@ -108,9 +108,12 @@ char	**create_var_env(char **env, char *var);
 char	**modify_value_env(char **env, char *var, char *new_value);
 char	**modify_or_create(char **args, char **env, size_t i, size_t j);
 char	**manage_quote_export(char *input);
+int		if_quote(char *var_env);
+int		is_something_after_equal(char *str);
 char	**clean_spaces(char **args);
 char	*copy_new_value(char *new_env, char *var, char *new_value);
 int		is_var_in_env(char *var, char **env);
+int		is_var_env(const char c);
 void	update_env(char **env, char *var);
 void	sort_tab(char **env);
 char	**print_env(char **env);
@@ -160,6 +163,10 @@ t_token	*create_command_list5(void);
 t_token	*create_command_list6(void);
 void	print_exec_list(t_token *head);
 void	display_lst(t_token *line);
+int		manage_output_redirection(char *node_content, int last_file);
+int		manage_input_redirection(t_token **current, char *node_content, int first_file);
+int		manage_append_redirection(char *node_content, int last_file);
+void	exec_simple_cmd(t_token **current, t_minishell *exit_code, char **env);
 
 // SIGNALS
 void	sigint_handler(int sig);
@@ -174,6 +181,6 @@ int		is_built_in(char *str);
 char	*managing_quotes(char *input);
 char	*manage_simple_quotes(char *input, int i);
 char	*manage_double_quotes(char *input, int i);
-
+char	**split_cmd(char *var_env);
 
 #endif

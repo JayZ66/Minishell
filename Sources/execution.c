@@ -22,6 +22,69 @@ not execute pipe. Just send it to execution.
 // Need input/here_doc before cmd.
 // CHECK IF MULTIPLE REDIRECTIONS !
 
+int	manage_input_redirection(t_token **current, char *node_content, int first_file)
+{
+	first_file = open(node_content, O_RDONLY, 0644);
+	if (first_file == -1)
+	{
+		perror("Can't open first file\n");
+		exit(EXIT_FAILURE);
+	}
+	dup2(first_file, STDIN_FILENO);
+	close(first_file);
+	*current = (*current)->next;
+	return (first_file);
+}
+
+int	manage_output_redirection(char *node_content, int last_file)
+{
+	last_file = open(node_content, O_WRONLY | O_CREAT
+		| O_TRUNC, 0644);
+	if (last_file == -1)
+	{
+		perror("Can't open last file\n");
+		exit(EXIT_FAILURE);
+	}
+	dup2(last_file, STDOUT_FILENO);
+	close(last_file);
+	return (last_file);
+}
+
+int	manage_append_redirection(char *node_content, int last_file)
+{
+	last_file = open(node_content, O_WRONLY | O_CREAT
+		| O_APPEND, 0644);
+	if (last_file == -1)
+	{
+		perror("Can't open last file\n");
+		exit(EXIT_FAILURE);
+	}
+	dup2(last_file, STDOUT_FILENO);
+	close(last_file);
+	return (last_file);
+}
+
+void	exec_cmd_with_pipe(t_token **current, t_minishell *exit_code, int last_file, char **env)
+{
+	if (is_built_in((*current)->content) == 0)
+		redir_builtin((*current)->content, exit_code, env, last_file);
+	else
+		create_pipes((*current)->content, env, exit_code, last_file);
+	*current = (*current)->next;
+	if ((*current)->next->type == PIPE)
+		*current = (*current)->next;
+	// dup2(saved_stdin, STDIN_FILENO);
+	// dup2(saved_stdout, STDOUT_FILENO);
+}
+
+void	exec_simple_cmd(t_token **current, t_minishell *exit_code, char **env)
+{
+	if (builtin_or_not_builtin((*current)->content, env) == 0)
+		;
+	else
+		exec_cmd_with_fork((*current)->content, env, exit_code);
+}
+
 void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 {
 	int		first_file;
@@ -39,17 +102,7 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 		last_file = 0;
 		if (current->type == INPUT && (current->next
 				&& current->next->type == CMD))
-		{
-			first_file = open(current->content, O_RDONLY, 0644);
-			if (first_file == -1)
-			{
-				perror("Can't open first file\n");
-				exit(EXIT_FAILURE);
-			}
-			dup2(first_file, STDIN_FILENO);
-			close(first_file);
-			current = current->next;
-		}
+			first_file = manage_input_redirection(&current, current->content, first_file);
 		else if (current->type == HERE_DOC && (current->next->type == CMD))
 		{
 			handle_here_doc(current->content, exit_code);
@@ -59,61 +112,26 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 						&& current->next->type == OUTPUT)
 					|| (current->next && current->next->next
 						&& current->next->next->type == OUTPUT))))
-		{
-			last_file = open(current->next->content, O_WRONLY | O_CREAT
-					| O_TRUNC, 0644);
-			if (last_file == -1)
-			{
-				perror("Can't open last file\n");
-				exit(EXIT_FAILURE);
-			}
-			dup2(last_file, STDOUT_FILENO);
-			close(last_file);
-		}
+			last_file = manage_output_redirection(current->next->content, last_file);
 		else if ((current->type == CMD && ((current->next
 						&& current->next->type == APPEND)
 					|| (current->next && current->next->next
 						&& current->next->next->type == APPEND))))
-		{
-			last_file = open(current->next->content, O_WRONLY | O_CREAT
-					| O_APPEND, 0644);
-			if (last_file == -1)
-			{
-				perror("Can't open last file\n");
-				exit(EXIT_FAILURE);
-			}
-			dup2(last_file, STDOUT_FILENO);
-			close(last_file);
-		}
+			last_file = manage_append_redirection(current->next->content, last_file);
 		if ((current->type == CMD && ((current->next
 						&& current->next->type == PIPE)
 					|| (current->next && current->next->next
 						&& current->next->next->type == PIPE))))
-		{
-			if (is_built_in(current->content) == 0)
-				redir_builtin(current->content, exit_code, env, last_file);
-			else
-				create_pipes(current->content, env, exit_code, last_file);
-			current = current->next;
-			if (current->next->type == PIPE)
-				current = current->next;
-			// dup2(saved_stdin, STDIN_FILENO);
-			// dup2(saved_stdout, STDOUT_FILENO);
-		}
+			exec_cmd_with_pipe(&current, exit_code, last_file, env);
 		else if (current->type == CMD)
 		{
-			if (builtin_or_not_builtin(current->content, env) == 0)
-				;
-			else
-				exec_cmd_with_fork(current->content, env, exit_code);
+			exec_simple_cmd(&current, exit_code, env);
 			dup2(saved_stdin, STDIN_FILENO);
 			dup2(saved_stdout, STDOUT_FILENO);
 		}
 		current = current->next;
 		dup2(saved_stdout, STDOUT_FILENO);
 	}
-	// dup2(saved_stdin, STDIN_FILENO);
-	// dup2(saved_stdout, STDOUT_FILENO);
 }
 
 // CHECK SI PLS REDIRECTIONS ET SI APRES EXEC OU CHQ LIGNE DE CMD !!

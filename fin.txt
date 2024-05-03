@@ -1,0 +1,15 @@
+Docs
+end.txt
+file.txt
+fin.txt
+get_next_line
+Libft
+Makefile
+minishell
+minishell.h
+output.txt
+RAF.txt
+Roadmap
+Sources
+TEST.txt
+unused_functions

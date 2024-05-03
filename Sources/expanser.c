@@ -103,22 +103,6 @@ char	*extract_var(char *str)
 	return (NULL);
 }
 
-int	is_var_env(const char c)
-{
-	int	is_var_env;
-	int	is_second_quote;
-
-	is_var_env = 0;
-	is_second_quote = 0;
-	if (c == '$')
-		is_var_env = 1;
-	if (c == '"')
-		is_second_quote = 1;
-	if ((is_var_env == 1) && (is_second_quote == 1))
-		return (0);
-	return (1);
-}
-
 int	check_var(t_token *node)
 {
 	t_token	*tmp;
@@ -135,7 +119,7 @@ int	check_var(t_token *node)
 				while (tmp->content[i])
 				{
 					if (is_var_env(tmp->content[i]) == 0)
-						return (0); 
+						return (0);
 					i++;
 				}
 			}

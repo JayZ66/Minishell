@@ -66,7 +66,6 @@ char	**modify_or_create(char **args, char **env, size_t i, size_t j)
 {
 	char	*var;
 	// char	**new_env;
-
 	var = ft_substr(args[i], 0, j);
 	if (is_var_in_env(var, env) == 1)
 	{

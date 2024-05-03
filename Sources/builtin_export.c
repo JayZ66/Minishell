@@ -148,88 +148,22 @@ char	**create_var_env(char **env, char *var)
 // 	}
 // }
 
-int	if_quote(char *var_env)
-{
-	int		quote;
-	size_t	i;
-
-	quote = 0;
-	i = 0;
-	while (var_env[i])
-	{
-		if (var_env[i] == '"' || var_env[i] == '\'')
-			quote = 1;
-		i++;
-	}
-	return (quote);
-}
-
-char	**clean_spaces(char **args)
-{
-	size_t	i;
-	size_t	j;
-	size_t	k;
-
-	i = 0;
-	while (args[i])
-	{
-		j = 0;
-		k = 0;
-		if (ft_strnchr(args[i], '=') == 0)
-			args[i] = args[i];
-		else
-		{
-			while (args[i][j])
-			{
-				if (args[i][j] != 32)
-				{
-					args[i][k] = args[i][j];
-					k++;
-				}
-				j++;
-			}
-			args[i][k] = '\0';
-		}
-		i++;
-	}
-	return (args);
-}
-
-int	is_something_after_equal(char *str)
-{
-	size_t	i;
-	int		is_equal;
-
-	i = 0;
-	is_equal = 0;
-	while (str[i])
-	{
-		if (str[i] == '=')
-			is_equal = 1;
-		else if (is_equal == 1 && str[i] != '\0')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 char	**manage_quote_export(char *input)
 {
 	char	**args;
-	// char	*str;
 	size_t	i;
-	
+
 	if (ft_strnstr(input, "export", 7) != NULL)
 		input += 7;
 	args = ft_split(input, '"');
 	i = 0;
-	// str = ft_strjoin(args[0], args[1]);
 	args = clean_spaces(args);
 	while (args[i])
 	{
 		if (is_something_after_equal(args[i]) == 1)
 			args[i] = args[i];
-		else if (ft_strnchr(args[i], '=') != 0 && is_something_after_equal(args[i]) == 0)
+		else if (ft_strnchr(args[i], '=') != 0
+			&& is_something_after_equal(args[i]) == 0)
 			args[i] = ft_strjoin(args[i], args[i + 1]);
 		i++;
 	}
@@ -238,26 +172,40 @@ char	**manage_quote_export(char *input)
 	return (args);
 }
 
+char	**split_cmd(char *var_env)
+{
+	char	**args;
+
+	args = NULL;
+	if (if_quote(var_env) == 1)
+		args = manage_quote_export(var_env);
+	else
+		args = ft_split(var_env, ' ');
+	return (args);
+}
+
+char	**print_export_env(char **env)
+{
+	char	**new_env;
+
+	new_env = print_env(env);
+	return (new_env);
+}
+
 char	**builtin_export(char *var_env, char **env)
 {
 	size_t	i;
 	size_t	j;
 	char	**args;
-	char	**new_env;
 
-	i = 0;
-	args = NULL;
-	new_env = NULL;
-	if (if_quote(var_env) == 1)
-		args = manage_quote_export(var_env);
-	if (args == NULL)
-		args = ft_split(var_env, ' ');
+	i = -1;
+	args = split_cmd(var_env);
 	if (args[1] != NULL)
 	{
-		while (args[i])
+		while (args[++i])
 		{
-			j = 0;
-			while (args[i][j])
+			j = -1;
+			while (args[i][++j])
 			{
 				if (args[i][j] == '=')
 				{
@@ -265,18 +213,12 @@ char	**builtin_export(char *var_env, char **env)
 					if (args[i + 1] == NULL)
 						return (env);
 				}
-				j++;
 			}
-			i++;
 		}
 	}
 	else
-	{
-		new_env = print_env(env);
-		return (new_env);
-	}
-	perror("The cmd is not the export we're expected\n");
-	return (env);
+		return (print_export_env(env));
+	return (printf("The cmd is not the export we're expected\n"), env);
 }
 
 // if (args[1][i] == '=')

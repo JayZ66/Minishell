@@ -6,12 +6,13 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 18:17:19 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/02 14:58:19 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/03 16:40:48 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "stdio.h"
+
 static	char	*ft_strcpy(char *dest, const char *src)
 {
 	size_t	i;

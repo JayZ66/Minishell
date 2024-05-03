@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:51:22 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/01 20:09:10 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/03 16:41:26 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*manage_double_quotes(char *input, int i)
 	char	*prefix;
 	char	*quoted_content;
 	char	*suffix;
-	
+
 	prefix = ft_substr(input, 0, i);
 	quoted_content = ft_substr(input, i + 1,
 			ft_strnchr(input + i + 1, '"'));
