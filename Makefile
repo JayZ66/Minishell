@@ -20,8 +20,7 @@ CC := gcc
 CFLAGS := -Wall -Wextra -Werror -Iheaders/ -g
 
 #Liste des fichiers source.
-SRCS = main.c utils.c extract_cmd.c modify_env.c executing_cmds.c \
-		cmd_line_to_run.c select_cmd_path.c parsing_cmd.c builtin.c
+SRCS = main.c utils.c extract_cmd.c parsing_cmd.c
 
 LIBFT = Libft/libft.a
 # PRINTF = printf/libftprintf.a

@@ -244,7 +244,7 @@ t_clean_token *copy_lst(t_token *token)
 
         while (token != NULL && token->type != PIPE)
         {
-            if (token->type == INPUT)
+            if (token->type == INPUT || token->type == HERE_DOC)
             {
                 content = ft_strdup(token->content);
                 t_clean_token *new = init_clean_node(content, token->type);
@@ -272,20 +272,7 @@ t_clean_token *copy_lst(t_token *token)
         token = block_start;
         while (token != NULL && token->type != PIPE)
         {
-            if (token->type == OUTPUT)
-            {
-                content = ft_strdup(token->content);
-                t_clean_token *new = init_clean_node(content, token->type);
-                add_clean_back(&clean_list, new);
-                free(content);
-            }
-            token = token->next;
-        }
-
-		token = block_start;
-        while (token != NULL && token->type != PIPE)
-        {
-            if (token->type == APPEND)
+            if (token->type == OUTPUT || token->type == APPEND)
             {
                 content = ft_strdup(token->content);
                 t_clean_token *new = init_clean_node(content, token->type);

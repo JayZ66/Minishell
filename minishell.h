@@ -101,8 +101,8 @@ void	shell_level(char **env);
 void	execute_pipe(int nb_args, char **cmd_line, char **env);
 void	do_pipes(char *cmd, char **env);
 
-char	**lst_to_tab(t_token *token);
-void	print_tab(char **cmd_line);
+// char	**lst_to_tab(t_token *token);
+// void	print_tab(char **cmd_line);
 int		lst_size(t_token *token);
 void	free_tab(char **tab);
 

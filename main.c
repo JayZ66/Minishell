@@ -12,73 +12,13 @@
 
 #include "minishell.h"
 
-void	builtin_or_not_builtin(char *str, char **env)
-{
-	if (ft_strncmp(str, "pwd", 3) == 0)
-		builtin_pwd(str);
-	else if (ft_strncmp(str, "env", 4) == 0)
-		builtin_env(env);
-	else if (ft_strncmp(str, "exit", 4) == 0)
-		builtin_exit(str);
-	// else if (ft_strncmp(str, "unset", 5) == 0)
-	// 	builtin_unset(var, new_env);
-}
-
-
-// void	builtin_exit(char *str)
-// {
-// 	size_t	i;
-// 	size_t	j;
-// 	size_t	len_num;
-// 	int		exit_status;
-// 	char	*dest;
-
-// 	i = 4;
-// 	exit_status = 0;
-// 	len_num = 0;
-// 	if (str[i] == 0)
-// 		exit(0);
-// 	i++;
-// 	while(str[i])
-// 	{
-// 		if (ft_isdigit(str[i]) == 1)
-// 			len_num++;
-// 		i++;
-// 	}
-// 	dest = (char *)malloc(sizeof(char) * len_num + 1);
-// 	if (!dest)
-// 		return ;
-// 	i = 5;
-// 	j = 0;
-// 	while (ft_isdigit(str[i]) == 1)
-// 		dest[j++] = str[i++];
-// 	dest[j] = 0;
-// 	printf("exit: %s\n", dest);
-// 	i = 5;
-// 	exit_status = ft_atoi(str + i);
-// 	if (exit_status >= 0 && exit_status <= 255)
-// 		{
-// 			printf("Exit_status : %d\n", exit_status);
-// 			exit(exit_status);
-// 		}
-// }
-
 
 char	*read_input()
 {
 	char	*input;
 
 	input = readline(">$");
-	// if (input == NULL)
-	// {
-	// 	perror("Input is null\n");
-	// 	EXIT_FAILURE;
-	// }
-	// if (ft_strlen(input) <= 0)
-	// {
-	// 	perror("Input is empty\n");
-	// 	exit(0);
-	// }
+
 	add_history(input);
 	return (input);
 }
@@ -121,6 +61,10 @@ int		main(int argc, char **argv, char **env)
 		}
 
 		token = extract_cmd(&token, input, env);
+		if (!token)
+		{
+			return 0;
+		}
 		t_token *head = token;
 		clean_chevron(token);
 		clean_spaces(token);
@@ -134,16 +78,11 @@ int		main(int argc, char **argv, char **env)
 		clean_token = copy_lst(token);
 		print_clean_lst(clean_token);
 		test_redirection_input(clean_token);
+
 		free_that_lst(&token);
 		free_that_clean_lst(&clean_token);
-		// free(token);
-		// free(clean_token);
 
-		// while (token)
-		// {
-		// 	builtin_or_not_builtin(token->content, env);
-		// 	token = token->next;
-		// }
+
 		//gerer les builtins car si je mets un espace pb
 		//pb sur pwd pour le moment
 
