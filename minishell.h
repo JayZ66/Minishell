@@ -151,6 +151,7 @@ void	create_pipes(char *cmd, char **env, t_minishell *exit_code, int output);
 void	parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code);
 void	child_here_doc(int *pfd, char *cmd);
 void	handle_here_doc(char *cmd, t_minishell *exit_code);
+void	manage_here_doc(t_token **current, t_minishell *exit_code, char *content);
 void	check_line(t_token **lst, char **env, t_minishell *exit_code);
 void	redir_builtin(char *cmd, t_minishell *exit_code, char **env, int out);
 void	parent_builtin(int *fd, t_minishell *exit_code);
@@ -166,6 +167,9 @@ void	display_lst(t_token *line);
 int		manage_output_redirection(char *node_content, int last_file);
 int		manage_input_redirection(t_token **current, char *node_content, int first_file);
 int		manage_append_redirection(char *node_content, int last_file);
+int		manage_redirection_input(t_token **current, t_minishell *exit_code, int first_file);
+int		manage_redirection_output(t_token **current, int last_file);
+int		manage_cmd_pipe(t_token **current, t_minishell *exit_code, int last_file, char **env);
 void	exec_simple_cmd(t_token **current, t_minishell *exit_code, char **env);
 
 // SIGNALS

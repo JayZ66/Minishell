@@ -85,6 +85,51 @@ void	exec_simple_cmd(t_token **current, t_minishell *exit_code, char **env)
 		exec_cmd_with_fork((*current)->content, env, exit_code);
 }
 
+void	manage_here_doc(t_token **current, t_minishell *exit_code, char *content)
+{
+	handle_here_doc(content, exit_code);
+	*current = (*current)->next;
+}
+
+int	manage_redirection_input(t_token **current, t_minishell *exit_code, int first_file)
+{
+	if ((*current)->type == INPUT && ((*current)->next
+			&& (*current)->next->type == CMD))
+		first_file = manage_input_redirection(current, (*current)->content, first_file);
+	else if ((*current)->type == HERE_DOC && ((*current)->next 
+			&& (*current)->next->type == CMD))
+		manage_here_doc(current, exit_code, (*current)->content); // To check !
+	return (first_file);
+}
+
+int	manage_redirection_output(t_token **current, int last_file)
+{
+	if (((*current)->type == CMD && (((*current)->next
+				&& (*current)->next->type == OUTPUT)
+			|| ((*current)->next && (*current)->next->next
+				&& (*current)->next->next->type == OUTPUT))))
+		last_file = manage_output_redirection((*current)->next->content, last_file);
+	else if (((*current)->type == CMD && (((*current)->next
+				&& (*current)->next->type == APPEND)
+			|| ((*current)->next && (*current)->next->next
+				&& (*current)->next->next->type == APPEND))))
+		last_file = manage_append_redirection((*current)->next->content, last_file);
+	return (last_file);
+}
+
+int	manage_cmd_pipe(t_token **current, t_minishell *exit_code, int last_file, char **env)
+{
+	if (((*current)->type == CMD && (((*current)->next
+				&& (*current)->next->type == PIPE)
+			|| ((*current)->next && (*current)->next->next
+				&& (*current)->next->next->type == PIPE))))
+	{
+		exec_cmd_with_pipe(current, exit_code, last_file, env);
+		return (0);
+	}
+	return (1);
+}
+
 void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 {
 	int		first_file;
@@ -100,29 +145,15 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 	{
 		first_file = 0;
 		last_file = 0;
-		if (current->type == INPUT && (current->next
-				&& current->next->type == CMD))
-			first_file = manage_input_redirection(&current, current->content, first_file);
-		else if (current->type == HERE_DOC && (current->next->type == CMD))
-		{
-			handle_here_doc(current->content, exit_code);
-			current = current->next;
-		}
-		if ((current->type == CMD && ((current->next
-						&& current->next->type == OUTPUT)
-					|| (current->next && current->next->next
-						&& current->next->next->type == OUTPUT))))
-			last_file = manage_output_redirection(current->next->content, last_file);
-		else if ((current->type == CMD && ((current->next
-						&& current->next->type == APPEND)
-					|| (current->next && current->next->next
-						&& current->next->next->type == APPEND))))
-			last_file = manage_append_redirection(current->next->content, last_file);
-		if ((current->type == CMD && ((current->next
-						&& current->next->type == PIPE)
-					|| (current->next && current->next->next
-						&& current->next->next->type == PIPE))))
-			exec_cmd_with_pipe(&current, exit_code, last_file, env);
+		first_file = manage_redirection_input(&current, exit_code, first_file);
+		last_file = manage_redirection_output(&current, last_file);
+		// if ((current->type == CMD && ((current->next
+		// 				&& current->next->type == PIPE)
+		// 			|| (current->next && current->next->next
+		// 				&& current->next->next->type == PIPE))))
+		// 	exec_cmd_with_pipe(&current, exit_code, last_file, env);
+		if (manage_cmd_pipe(&current, exit_code, last_file, env) == 0)
+			;
 		else if (current->type == CMD)
 		{
 			exec_simple_cmd(&current, exit_code, env);
@@ -220,4 +251,24 @@ dans le même pipe.
 3. Ensuite on envoie dans execve ce "fichier" pour 
 que la cmd l'utilise et ensuite envoie le résultat dans le pipe
 vers le processus parent et que la prochaine cmd l'utilise.
+*/
+
+/*
+MANAGE REDIRECTIONS :
+
+// if (current->type == INPUT && (current->next
+		// 		&& current->next->type == CMD))
+		// 	first_file = manage_input_redirection(&current, current->content, first_file);
+		// else if (current->type == HERE_DOC && (current->next->type == CMD))
+		// 	manage_here_doc(&current, exit_code, current->content);
+		// if ((current->type == CMD && ((current->next
+		// 				&& current->next->type == OUTPUT)
+		// 			|| (current->next && current->next->next
+		// 				&& current->next->next->type == OUTPUT))))
+		// 	last_file = manage_output_redirection(current->next->content, last_file);
+		// else if ((current->type == CMD && ((current->next
+		// 				&& current->next->type == APPEND)
+		// 			|| (current->next && current->next->next
+		// 				&& current->next->next->type == APPEND))))
+		// 	last_file = manage_append_redirection(current->next->content, last_file);
 */

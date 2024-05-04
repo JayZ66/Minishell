@@ -47,12 +47,12 @@ char	*read_input(void)
 		free(input);
 		exit(EXIT_FAILURE);
 	}
-	if (ft_strlen(input) <= 0)
-	{
-		perror("Input is empty\n");
-		free(input);
-		exit(0);
-	}
+	// if (ft_strlen(input) <= 0)
+	// {
+	// 	perror("Input is empty\n");
+	// 	free(input);
+	// 	exit(0);
+	// }
 	add_history(input);
 	return (input);
 }

@@ -76,5 +76,5 @@ void	parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code)
 	waitpid(-1, &exit_status, 0);
 	if (WIFEXITED(exit_status))
 		exit_code->last_exit_status = WEXITSTATUS(exit_status);
-	printf("exit_code->last_exit_status = %d\n", exit_code->last_exit_status);
+	// printf("exit_code->last_exit_status = %d\n", exit_code->last_exit_status);
 }
