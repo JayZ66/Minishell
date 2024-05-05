@@ -6,7 +6,7 @@
 #    By: romlambe <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/04/05 16:14:42 by romlambe         ###   ########.fr        #
+#    Updated: 2024/05/05 17:13:33 by romlambe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ CC := gcc
 CFLAGS := -Wall -Wextra -Werror -Iheaders/ -g
 
 #Liste des fichiers source.
-SRCS = main.c utils.c extract_cmd.c parsing_cmd.c
+SRCS = main.c clean_nodes.c copy_list.c extract_cmd.c init_clean_nodes.c\
+		init_nodes.c redirection.c tokenize.c utils_list.c
 
 LIBFT = Libft/libft.a
 # PRINTF = printf/libftprintf.a
