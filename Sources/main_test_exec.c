@@ -39,7 +39,9 @@ int	main(int argc, char **argv, char **env)
 		if (!token)
 			return (perror("Extract cmd failed\n"), 1);
 		display_lst(token);
-		check_line(&token, env, &exit_code);
+		// check_line2(&token, env, &exit_code);
+		execute_commands_with_pipes_and_redirections(&token, env, exit_code);
+		// execute_commands_with_pipes(&token);
 		free_that_lst(&token);
 		// token = create_command_list2();
 		// if (!token)
@@ -121,18 +123,19 @@ t_token	*create_command_list(void)
 	// append_exec_node(&head, "file.txt", INPUT);
 	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "OK.txt", INPUT);
+	// append_exec_node(&head, "output.txt", INPUT);
 	append_exec_node(&head, "cat", CMD);
 	// append_exec_node(&head, "end.txt", APPEND);
 	append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "end.txt", INPUT);
 	append_exec_node(&head, "cat", CMD);
 	// append_exec_node(&head, "fin.txt", OUTPUT);
-	append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "ls", CMD);
 	// append_exec_node(&head, "", PIPE);
-	append_exec_node(&head, "cat", CMD);
-	append_exec_node(&head, "", PIPE);
-	append_exec_node(&head, "echo -n \"COUCOU TOI\"", CMD);
+	// append_exec_node(&head, "cat", CMD);
+	// append_exec_node(&head, "", PIPE);
+	// append_exec_node(&head, "echo -n \"COUCOU TOI\"", CMD);
 	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "cat", CMD);
 	// append_exec_node(&head, "", PIPE);
@@ -142,7 +145,7 @@ t_token	*create_command_list(void)
 	// append_exec_node(&head, "cat", CMD);
 	// append_exec_node(&head, "", PIPE);
 	// append_exec_node(&head, "cat", CMD);
-	append_exec_node(&head, "end.txt", APPEND);
+	// append_exec_node(&head, "end.txt", APPEND);
 	// append_exec_node(&head, "cat", CMD);
 	// append_exec_node(&head, "file.txt", APPEND);
 	// append_exec_node(&head, "../bonjour", OUTPUT);

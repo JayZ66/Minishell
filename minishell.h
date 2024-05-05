@@ -171,8 +171,12 @@ int		manage_redirection_input(t_token **current, t_minishell *exit_code, int fir
 int		manage_redirection_output(t_token **current, int last_file);
 int		manage_cmd_pipe(t_token **current, t_minishell *exit_code, int last_file, char **env);
 void	exec_simple_cmd(t_token **current, t_minishell *exit_code, char **env);
+void execute_commands_with_pipes(t_token **lst);
+void check_line2(t_token **lst, char **env, t_minishell *exit_code);
+void exec_cmd_with_pipe2(t_token **current, t_minishell *exit_code, int *pid_array, int index, char **env);
+void execute_commands_with_pipes_and_redirections(t_token **lst, char **env, t_minishell *exit_code);
 
-// SIGNALS
+// SIGNAL
 void	sigint_handler(int sig);
 void	manage_signals(void);
 void	sigquit_handler(int sig);

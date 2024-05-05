@@ -6,7 +6,7 @@
 #    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/05/01 10:42:28 by marvin           ###   ########.fr        #
+#    Updated: 2024/05/05 16:37:01 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRCS = Sources/main.c Sources/utils.c \
 		Sources/manage_here_doc.c Sources/builtin_cd_utils.c \
 		Sources/builtin_export_utils.c Sources/execute_cmd_only.c \
 		Sources/builtin_echo.c Sources/expanser.c Sources/manage_quotes.c \
-		Sources/expanser2.c Sources/utils3.c
+		Sources/expanser2.c Sources/utils3.c Sources/new_exec.c
 
 GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 LIBFT = Libft/libft.a

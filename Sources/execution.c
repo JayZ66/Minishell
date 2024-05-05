@@ -165,8 +165,6 @@ void	check_line(t_token **lst, char **env, t_minishell *exit_code)
 	}
 }
 
-// CHECK SI PLS REDIRECTIONS ET SI APRES EXEC OU CHQ LIGNE DE CMD !!
-
 // Alternative to the else !
 // else if ((current->type == CMD && (current->next 
 		//		&& current->next->type != PIPE)) // Ne marchera pas.
