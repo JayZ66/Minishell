@@ -108,7 +108,12 @@ int	manage_redirection_output(t_token **current, int last_file)
 				&& (*current)->next->type == OUTPUT)
 			|| ((*current)->next && (*current)->next->next
 				&& (*current)->next->next->type == OUTPUT))))
-		last_file = manage_output_redirection((*current)->next->content, last_file);
+		{
+			if ((*current)->next->type == PIPE)
+				last_file = manage_output_redirection((*current)->next->next->content, last_file);
+			else
+				last_file = manage_output_redirection((*current)->next->content, last_file);
+		}
 	else if (((*current)->type == CMD && (((*current)->next
 				&& (*current)->next->type == APPEND)
 			|| ((*current)->next && (*current)->next->next
