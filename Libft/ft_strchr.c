@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 10:01:14 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/01 10:55:52 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/06 17:24:08 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,21 @@ int	ft_strnchr(const char *str, int c)
 		i++;
 	}
 	return (0);
+}
+
+int	ft_strschr(const char *str, char *ligne)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == ligne[i] && str[i + 1] == ligne[i + 1])
+			return (0);
+		else if (str[i] == ligne[i] && str[i + 1] == ligne[i + 1] 
+			&& str[i + 2] == ligne[i + 2])
+			return (0);
+		i++;
+	}
+	return (i);
 }

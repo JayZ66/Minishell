@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/06 15:07:19 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/06 17:35:28 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ char	*read_input(void)
 		free(input);
 		exit(EXIT_FAILURE);
 	}
+    if (ft_strncmp(input, ":", 1) == 0 || ft_strncmp(input, "!", 1) == 0)
+    {
+        input = ft_strdup("");
+        return (input);
+    }
 	// if (ft_strlen(input) <= 0)
 	// {
 	// 	perror("Input is empty\n");
@@ -51,6 +56,12 @@ int		main(int argc, char **argv, char **env)
 	while (1)
 	{
 		input = read_input();
+        if (ft_strlen(input) == 0)
+        {
+            rl_on_new_line();
+            free(input);
+            continue ;
+        }
 		token = extract_cmd(&token, input); // condition si input vide
 		t_token *head = token;
 		clean_chevron(token);
@@ -61,7 +72,7 @@ int		main(int argc, char **argv, char **env)
 		token = head;
 		// printf("token = %s\n", token->content);
 		clean_token = copy_lst(token);
-		// print_clean_lst(clean_token);
+		print_clean_lst(clean_token);
 		test_redirection_input(clean_token);
         execute_commands_with_pipes_and_redirections(&clean_token, env, &exit_code);
 		free_that_lst(&token);

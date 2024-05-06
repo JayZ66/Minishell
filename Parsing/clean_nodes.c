@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:08:10 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/06 15:02:28 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:54:55 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	clean_spaces2(t_token *token)
 				i++;
 			token->content = ft_strndup(token->content, i);
 		}
-		printf("token->content clean space %s\n", token->content);
+		// printf("token->content clean space %s\n", token->content);
 		token = token->next;
 	}
 

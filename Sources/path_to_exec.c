@@ -36,7 +36,7 @@ char	*get_path(char *cmd, char **env)
 		i++;
 	}
 	free_tab(path);
-	perror("The executable doesn't exist in the repo\n");
+	printf("bash: %s: command not found\n", cmd);
 	return (NULL);
 }
 

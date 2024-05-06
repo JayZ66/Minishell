@@ -79,7 +79,7 @@ void	exec_cmd_with_pipe(t_clean_token **current, t_minishell *exit_code, int las
 
 void	exec_simple_cmd(t_clean_token **current, t_minishell *exit_code, char **env)
 {
-	if (builtin_or_not_builtin((*current)->content, env) == 0)
+	if (builtin_or_not_builtin((*current)->content, env, exit_code) == 0)
 		;
 	else
 		exec_cmd_with_fork((*current)->content, env, exit_code);
@@ -205,7 +205,7 @@ void	redir_builtin(char *cmd, t_minishell *exit_code, char **env, int out)
 			dup2(fd[1], STDOUT_FILENO);
 			close(fd[1]);
 		}
-		builtin_or_not_builtin(cmd, env);
+		builtin_or_not_builtin(cmd, env, exit_code);
 		exit(EXIT_SUCCESS);
 	}
 	else

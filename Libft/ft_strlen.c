@@ -17,7 +17,7 @@ size_t	ft_strlen(const char *s)
 	size_t	taille;
 
 	taille = 0;
-	while (s[taille])
+	while (s[taille] && s[taille] != 32 && s[taille] != 9)
 	{
 		taille++;
 	}

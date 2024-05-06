@@ -118,7 +118,7 @@ char	**go_back_home(char **new_env, char **env);
 char	**env_with_new_pwd(char **new_env, char **env, char *new_pwd);
 char	**get_new_pwd(char **env, char **new_env, char **cmd);
 char	**change_pwd_env(char **env, char **new_env, size_t cwd_len, char *cwd);
-void	builtin_echo(char *str);
+void	builtin_echo(char *str, t_minishell *exit_code);
 void	handle_echo_with_n(char **cmd);
 char	*clean_quote(char *str);
 char	*handle_quotes(char *cmd);
@@ -178,7 +178,7 @@ void	sigquit_handler(int sig);
 // EXPANSER
 int		check_var(t_clean_token *node);
 int		handle_quote_errors(char *cmd);
-int		builtin_or_not_builtin(char *str, char **env);
+int		builtin_or_not_builtin(char *str, char **env, t_minishell *exit_code);
 int		is_built_in(char *str);
 char	*managing_quotes(char *input);
 char	*manage_simple_quotes(char *input, int i);

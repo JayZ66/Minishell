@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:06:45 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/06 15:01:17 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:56:30 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ int tokenize_arg(t_token **token, char *input, int i)
 		while((input[end] && input[end] != '|' && input[end] != '<' && input[end] != '>'))
 			end++;
 	arg = ft_strndup(input + start, end - start);
-	printf("arg: %s\n", arg);
+	// printf("arg: %s\n", arg);
 	new = init_node(arg, CMD);
 	add_back(token, new);
 	free(arg);

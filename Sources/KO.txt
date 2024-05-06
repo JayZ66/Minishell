@@ -1,7 +1,25 @@
 
 - exit
-- ctrl + c
+- ctrl + c => OK
 - < end.txt wc -l < file.txt cat
 => Error to handle
 - echo '"SALUT'"
 => Quotes are not closed, error to manage
+- entree => OK
+- Que des espaces : OK
+=> Devrait renvoyer a la ligne.
+- > - | - < - \ 
+=> Erreurs a gerer pour arreter le prog.
+- Minishell>$echo -nnn ------------------n
+malloc(): corrupted top size
+- echo >< | echo > < + gestion | | + etc.
+=> SEGFAULT
+Gerer les erreurs de syntaxe !
+- $VAR.ENV.:
+Check dans la tokenisation > Checker dans la string : 
+1. tant que str & que pas $
+2. puis que pas autre $
+3. Check si var. d'env. 
+4. On modifie
+
+- REVOIR FONCTION QUOTES !

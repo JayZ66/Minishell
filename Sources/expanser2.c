@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanser2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:55:48 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/01 20:34:35 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/06 17:27:50 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ DetectBuiltInCmd
 // le résultat (dup2) et on n'envoie pas dans execve.
 // Check how to manage the new env !
 // Need to change the return ? unset - cd - export ??
-int	builtin_or_not_builtin(char *str, char **env)
+int	builtin_or_not_builtin(char *str, char **env, t_minishell *exit_code)
 {
 	char	**cmd;
 
@@ -39,7 +39,7 @@ int	builtin_or_not_builtin(char *str, char **env)
 	else if (ft_strncmp(str, "cd", 2) == 0)
 		env = builtin_cd(env, cmd);
 	else if (ft_strncmp(str, "echo", 4) == 0)
-		builtin_echo(str);
+		builtin_echo(str, exit_code);
 	else if (ft_strncmp(str, "export", 6) == 0)
 		env = builtin_export(str, env);
 	else

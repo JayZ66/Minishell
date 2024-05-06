@@ -218,7 +218,7 @@ char	**builtin_export(char *var_env, char **env)
 	}
 	else
 		return (print_export_env(env));
-	return (printf("The cmd is not the export we're expected\n"), env);
+	return (printf("bash: export: '%s': not a valid identifier\n", args[1]), env);
 }
 
 // if (args[1][i] == '=')
