@@ -1,0 +1,7 @@
+
+- exit
+- ctrl + c
+- < end.txt wc -l < file.txt cat
+=> Error to handle
+- echo '"SALUT'"
+=> Quotes are not closed, error to manage

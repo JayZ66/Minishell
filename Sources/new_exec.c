@@ -13,9 +13,9 @@
 #include "../minishell.h"
 
 
-void execute_commands_with_pipes_and_redirections(t_token **lst, char **env, t_minishell *exit_code) 
+void execute_commands_with_pipes_and_redirections(t_clean_token **lst, char **env, t_minishell *exit_code) 
 {
-    t_token *current = *lst;
+    t_clean_token *current = *lst;
     int pid_array[1024]; 
     int index = 0;
     int first_file;

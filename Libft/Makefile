@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/05 11:23:23 by romlambe          #+#    #+#              #
-#    Updated: 2024/03/29 14:21:02 by marvin           ###   ########.fr        #
+#    Updated: 2024/05/06 11:08:19 by jeguerin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 	ft_strchr.c ft_strdup.c ft_strlcat.c ft_strlcpy.c ft_strlen.c ft_strncmp.c \
 	ft_strnstr.c ft_strrchr.c ft_tolower.c ft_toupper.c ft_substr.c ft_strcmp.c\
 	ft_strjoin.c ft_strmapi.c ft_striteri.c ft_itoa.c ft_split.c ft_strtrim.c \
-	ft_string_cpy.c
+	ft_string_cpy.c ft_strndup.c
 
 SRCBONUS 	=	ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c \
 			ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c

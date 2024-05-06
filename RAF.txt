@@ -40,7 +40,12 @@ Mercredi - 01/05 :
 - EXPORT : Check when multiple var. to modify or create. => DONE
 - export MY_VAR="value with spaces" => KO : Take quotes into account ? => In progress
 Manage_quotes => Removing quotes. => DONE
-- Tester : cat | cat | ls + autres cmds execution (test). => DONE ALMOST OK
+- Tester : cat | cat | ls + autres cmds execution (test). => DONE
 
 - Faire fonction pour input
 IL FAUT CHECK SI PLS INPUT ON GARDE LE LAST => DONE
+
+Lundi - 06/05 :
+- Regrouper travail
+- MAJ structures/listes
+- Tests

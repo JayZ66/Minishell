@@ -22,7 +22,7 @@ not execute pipe. Just send it to execution.
 // Need input/here_doc before cmd.
 // CHECK IF MULTIPLE REDIRECTIONS !
 
-int	manage_input_redirection(t_token **current, char *node_content, int first_file)
+int	manage_input_redirection(t_clean_token **current, char *node_content, int first_file)
 {
 	first_file = open(node_content, O_RDONLY, 0644);
 	if (first_file == -1)
@@ -64,7 +64,7 @@ int	manage_append_redirection(char *node_content, int last_file)
 	return (last_file);
 }
 
-void	exec_cmd_with_pipe(t_token **current, t_minishell *exit_code, int last_file, char **env)
+void	exec_cmd_with_pipe(t_clean_token **current, t_minishell *exit_code, int last_file, char **env)
 {
 	if (is_built_in((*current)->content) == 0)
 		redir_builtin((*current)->content, exit_code, env, last_file);
@@ -77,7 +77,7 @@ void	exec_cmd_with_pipe(t_token **current, t_minishell *exit_code, int last_file
 	// dup2(saved_stdout, STDOUT_FILENO);
 }
 
-void	exec_simple_cmd(t_token **current, t_minishell *exit_code, char **env)
+void	exec_simple_cmd(t_clean_token **current, t_minishell *exit_code, char **env)
 {
 	if (builtin_or_not_builtin((*current)->content, env) == 0)
 		;
@@ -85,13 +85,13 @@ void	exec_simple_cmd(t_token **current, t_minishell *exit_code, char **env)
 		exec_cmd_with_fork((*current)->content, env, exit_code);
 }
 
-void	manage_here_doc(t_token **current, t_minishell *exit_code, char *content)
+void	manage_here_doc(t_clean_token **current, t_minishell *exit_code, char *content)
 {
 	handle_here_doc(content, exit_code);
 	*current = (*current)->next;
 }
 
-int	manage_redirection_input(t_token **current, t_minishell *exit_code, int first_file)
+int	manage_redirection_input(t_clean_token **current, t_minishell *exit_code, int first_file)
 {
 	if ((*current)->type == INPUT && ((*current)->next
 			&& (*current)->next->type == CMD))
@@ -102,7 +102,7 @@ int	manage_redirection_input(t_token **current, t_minishell *exit_code, int firs
 	return (first_file);
 }
 
-int	manage_redirection_output(t_token **current, int last_file)
+int	manage_redirection_output(t_clean_token **current, int last_file)
 {
 	if (((*current)->type == CMD && (((*current)->next
 				&& (*current)->next->type == OUTPUT)
@@ -122,7 +122,7 @@ int	manage_redirection_output(t_token **current, int last_file)
 	return (last_file);
 }
 
-int	manage_cmd_pipe(t_token **current, t_minishell *exit_code, int last_file, char **env)
+int	manage_cmd_pipe(t_clean_token **current, t_minishell *exit_code, int last_file, char **env)
 {
 	if (((*current)->type == CMD && (((*current)->next
 				&& (*current)->next->type == PIPE)
@@ -135,13 +135,13 @@ int	manage_cmd_pipe(t_token **current, t_minishell *exit_code, int last_file, ch
 	return (1);
 }
 
-void	check_line(t_token **lst, char **env, t_minishell *exit_code)
+void	check_line(t_clean_token **lst, char **env, t_minishell *exit_code)
 {
-	int		first_file;
-	int		last_file;
-	int		saved_stdin;
-	int		saved_stdout;
-	t_token	*current;
+	int				first_file;
+	int				last_file;
+	int				saved_stdin;
+	int				saved_stdout;
+	t_clean_token	*current;
 
 	current = *lst;
 	saved_stdin = dup(STDIN_FILENO);

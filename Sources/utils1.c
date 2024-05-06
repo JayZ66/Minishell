@@ -33,18 +33,18 @@ char	*ft_strcat(char *dst, const char *src, size_t size)
 	return (dst);
 }
 
-void	print_lst(t_token *token)
-{
-	t_token	*tmp;
+// void	print_lst(t_token *token)
+// {
+// 	t_token	*tmp;
 
-	tmp = token;
-	while (tmp)
-	{
-		printf("Chaque node content : %s\n", tmp->content);
-		printf("Chaque node type content : %u\n", tmp->type);
-		tmp = tmp->next;
-	}
-}
+// 	tmp = token;
+// 	while (tmp)
+// 	{
+// 		printf("Chaque node content : %s\n", tmp->content);
+// 		printf("Chaque node type content : %u\n", tmp->type);
+// 		tmp = tmp->next;
+// 	}
+// }
 
 void	print_new_env(char **env)
 {

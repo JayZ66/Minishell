@@ -12,74 +12,74 @@
 
 #include "../minishell.h"
 
-int	main(int argc, char **argv, char **env)
-{
-	t_minishell	exit_code;
-	char		*input;
-	t_token		*token;
-	// char	*result_env;
-	(void)argc;
-	(void)argv;
-	token = NULL;
-	if (argc != 1 || argv[1])
-		return (perror("Wrong nb of args\n"), 1);
-	exit_code.last_exit_status = 0;
-	env = realloc_env(env);
-	if (env == NULL)
-		return (perror("Realloc env. failed\n"), 1);
-	while (1)
-	{
-		input = read_input();
-		if (ft_strcmp(input, "exit") == 0)
-		{
-			free(input);
-			exit(0);
-		}
-		token = create_command_list();
-		if (!token)
-			return (perror("Extract cmd failed\n"), 1);
-		display_lst(token);
-		// check_line2(&token, env, &exit_code);
-		execute_commands_with_pipes_and_redirections(&token, env, &exit_code);
-		// execute_commands_with_pipes(&token);
-		free_that_lst(&token);
-		// token = create_command_list2();
-		// if (!token)
-		// 	return(perror("Extract cmd failed\n"), 1);
-		// display_lst(token);
-		// check_line(&token, env, &exit_code); // PB qd on exec. la 2ème ligne de cmd => C'est dans l'output de l'ancienne ligne !!!
-		// free_that_lst(&token);
-		// token = create_command_list3();
-		// if (!token)
-		// 	return(perror("Extract cmd failed\n"), 1);
-		// display_lst(token);
-		// check_line(&token, env, &exit_code);
-		// free_that_lst(&token);
-		// token = create_command_list4();
-		// if (!token)
-		// 	return(perror("Extract cmd failed\n"), 1);
-		// display_lst(token);
-		// check_line(&token, env, &exit_code);
-		// free_that_lst(&token);
-		// token = create_command_list5();
-		// if (!token)
-		// 	return(perror("Extract cmd failed\n"), 1);
-		// display_lst(token);
-		// check_line(&token, env, &exit_code);
-		// free_that_lst(&token);
-		// token = create_command_list6();
-		// if (!token)
-		// 	return(perror("Extract cmd failed\n"), 1);
-		// display_lst(token);
-		// check_line(&token, env, &exit_code);
-		// free_that_lst(&token);
-	}
-	free(input);
-	printf("Exit statut : %d\n", exit_code.last_exit_status);
-	// printf("Variable d'environnement : %s\n", result_env);
-	free_tab(env);
-	return (0);
-}
+// int	main(int argc, char **argv, char **env)
+// {
+// 	t_minishell	exit_code;
+// 	char		*input;
+// 	t_token		*token;
+// 	// char	*result_env;
+// 	(void)argc;
+// 	(void)argv;
+// 	token = NULL;
+// 	if (argc != 1 || argv[1])
+// 		return (perror("Wrong nb of args\n"), 1);
+// 	exit_code.last_exit_status = 0;
+// 	env = realloc_env(env);
+// 	if (env == NULL)
+// 		return (perror("Realloc env. failed\n"), 1);
+// 	while (1)
+// 	{
+// 		input = read_input();
+// 		if (ft_strcmp(input, "exit") == 0)
+// 		{
+// 			free(input);
+// 			exit(0);
+// 		}
+// 		token = create_command_list();
+// 		if (!token)
+// 			return (perror("Extract cmd failed\n"), 1);
+// 		display_lst(token);
+// 		// check_line2(&token, env, &exit_code);
+// 		execute_commands_with_pipes_and_redirections(&token, env, &exit_code);
+// 		// execute_commands_with_pipes(&token);
+// 		free_that_lst(&token);
+// 		// token = create_command_list2();
+// 		// if (!token)
+// 		// 	return(perror("Extract cmd failed\n"), 1);
+// 		// display_lst(token);
+// 		// check_line(&token, env, &exit_code); // PB qd on exec. la 2ème ligne de cmd => C'est dans l'output de l'ancienne ligne !!!
+// 		// free_that_lst(&token);
+// 		// token = create_command_list3();
+// 		// if (!token)
+// 		// 	return(perror("Extract cmd failed\n"), 1);
+// 		// display_lst(token);
+// 		// check_line(&token, env, &exit_code);
+// 		// free_that_lst(&token);
+// 		// token = create_command_list4();
+// 		// if (!token)
+// 		// 	return(perror("Extract cmd failed\n"), 1);
+// 		// display_lst(token);
+// 		// check_line(&token, env, &exit_code);
+// 		// free_that_lst(&token);
+// 		// token = create_command_list5();
+// 		// if (!token)
+// 		// 	return(perror("Extract cmd failed\n"), 1);
+// 		// display_lst(token);
+// 		// check_line(&token, env, &exit_code);
+// 		// free_that_lst(&token);
+// 		// token = create_command_list6();
+// 		// if (!token)
+// 		// 	return(perror("Extract cmd failed\n"), 1);
+// 		// display_lst(token);
+// 		// check_line(&token, env, &exit_code);
+// 		// free_that_lst(&token);
+// 	}
+// 	free(input);
+// 	printf("Exit statut : %d\n", exit_code.last_exit_status);
+// 	// printf("Variable d'environnement : %s\n", result_env);
+// 	free_tab(env);
+// 	return (0);
+// }
 
 void	append_exec_node(t_token **head, char *content, Token_type type)
 {
