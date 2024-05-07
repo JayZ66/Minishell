@@ -30,7 +30,8 @@ void execute_commands_with_pipes_and_redirections(t_clean_token **lst, char **en
         first_file = 0;
         first_file = manage_redirection_input(&current, exit_code, first_file);
         last_file = manage_redirection_output(&current, last_file);
-        if (current->type == CMD && current->next && current->next->type == PIPE)
+        if ((current->type == CMD && ((current->next && current->next->type == PIPE)
+			|| (current->next && current->next->next && current->next->next->type == PIPE))))
         {
             int pipefd[2];
             if (pipe(pipefd) == -1) 
@@ -52,7 +53,7 @@ void execute_commands_with_pipes_and_redirections(t_clean_token **lst, char **en
                 close(pipefd[1]);
 
                 exec_simple_cmd(&current, exit_code, env);
-                exit(EXIT_SUCCESS);
+                // exit(EXIT_SUCCESS);
             } 
             else // Processus parent
             {

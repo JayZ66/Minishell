@@ -1,5 +1,5 @@
 
-- exit
+- exit => OK
 - ctrl + c => OK
 - < end.txt wc -l < file.txt cat
 => Error to handle
@@ -8,13 +8,17 @@
 - entree => OK
 - Que des espaces : OK
 => Devrait renvoyer a la ligne.
+
 - > - | - < - \ 
 => Erreurs a gerer pour arreter le prog.
+
 - Minishell>$echo -nnn ------------------n
 malloc(): corrupted top size
+
 - echo >< | echo > < + gestion | | + etc.
 => SEGFAULT
 Gerer les erreurs de syntaxe !
+
 - $VAR.ENV.:
 Check dans la tokenisation > Checker dans la string : 
 1. tant que str & que pas $
@@ -22,4 +26,30 @@ Check dans la tokenisation > Checker dans la string :
 3. Check si var. d'env. 
 4. On modifie
 
-- REVOIR FONCTION QUOTES !
+- Try a command like : echo "cat lol.c | cat > lol.c"
+=> Need to put things inside quotes in a node (like option)
+& not creating different nodes.
+- Absolute path => Check how to manage it
+
+- REVOIR FONCTION QUOTES ! => OK ?
+On avance de gauche a droite > On check chaque quote,
+si un niveau de quote on retire, sinon d'autres dedans,
+on affiche ce qu'il y a l'interieur.
+
+Quand guillemets tu ouvres, puis
+si meme guillemets et rien avant > on ouvre.
+Sinon si meme guillemets > Ferme et i--;
+Sinon, on ajoute le texte : 
+si i != 0, pb de guillemets.
+
+- Absolute path : 
+Checker si abolute path : Si je rencontre un slash alors absolute path !
+On va pas chercher le path, on l'envoie direct a execve.
+
+- Quotes avec $ => Pas besoin des doubles quote pour
+avoir la var. d'env.
+Par contre, si ne trouve pas => Retire le bout.
+
+JEZA : TO DO
+- Gerer echo SALUT > OK | cat OK
+- Tester de nouveau les file seuls ! + voir pour append/output or else.

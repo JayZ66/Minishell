@@ -234,4 +234,8 @@ void			redirection_output(t_clean_token *clean_node);
 void			redirection_append(t_clean_token *clean_node);
 int				input_in_bloc(t_clean_token *token, int i);
 
+
+char *clean_quote(char *input);
+void	echo(char *str);
+
 #endif

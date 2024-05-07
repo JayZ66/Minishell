@@ -98,7 +98,9 @@ int	manage_redirection_input(t_clean_token **current, t_minishell *exit_code, in
 		first_file = manage_input_redirection(current, (*current)->content, first_file);
 	else if ((*current)->type == HERE_DOC && ((*current)->next 
 			&& (*current)->next->type == CMD))
-		manage_here_doc(current, exit_code, (*current)->content); // To check !
+		manage_here_doc(current, exit_code, (*current)->content);
+	else if ((*current)->type == INPUT)
+		first_file = manage_input_redirection(current, (*current)->content, first_file);
 	return (first_file);
 }
 
@@ -119,6 +121,10 @@ int	manage_redirection_output(t_clean_token **current, int last_file)
 			|| ((*current)->next && (*current)->next->next
 				&& (*current)->next->next->type == APPEND))))
 		last_file = manage_append_redirection((*current)->next->content, last_file);
+	else if ((*current)->type == OUTPUT) // Check if do all files.
+		last_file = manage_output_redirection((*current)->content, last_file);
+	else if ((*current)->type == APPEND)
+		last_file = manage_append_redirection((*current)->content, last_file);
 	return (last_file);
 }
 

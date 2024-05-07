@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:55:48 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/06 17:27:50 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/07 10:50:48 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ DetectBuiltInCmd
 int	builtin_or_not_builtin(char *str, char **env, t_minishell *exit_code)
 {
 	char	**cmd;
+	(void)exit_code;
 
 	cmd = ft_split(str, ' ');
 	if (ft_strncmp(str, "pwd", 3) == 0)
@@ -104,6 +105,7 @@ int	handle_quote_errors(char *cmd)
 	int		count_quotes;
 
 	i = 0;
+	count_quotes = 0;
 	while (cmd[i])
 	{
 		if (cmd[i] == '\'' || cmd[i] == '"')

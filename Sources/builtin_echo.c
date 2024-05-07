@@ -15,14 +15,17 @@
 void	builtin_echo(char *str, t_minishell *exit_code)
 {
 	char	**cmd_with_options;
-	char	*cleaned_quotes;
+	// char	*cleaned_quotes;
 	size_t	i;
 
 	i = -1;
-	// cleaned_quotes = handle_quotes(str);
-	cleaned_quotes = managing_quotes(str);
-	printf("quotes : %s\n", cleaned_quotes);
-	cmd_with_options = ft_split(cleaned_quotes, ' ');
+	cmd_with_options = ft_split(str, ' ');
+	while (cmd_with_options[++i])
+		cmd_with_options[i] = managing_quotes(cmd_with_options[i]);
+	// cleaned_quotes = clean_quote(str);
+	// printf("quotes : %s\n", cleaned_quotes);
+	// cmd_with_options = ft_split(cleaned_quotes, ' ');
+	i = -1;
 	if (cmd_with_options[1] && (ft_strcmp(cmd_with_options[1], "-n") != 0)
 		&& (ft_strcmp(cmd_with_options[0], "-n") != 0))
 	{

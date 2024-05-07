@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:08:38 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/06 14:12:32 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/07 14:00:58 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	test_redirection_input(t_clean_token *clean_node)
 			redirection_input(clean_node);
 		else if (clean_node->type == OUTPUT && clean_node->next->type == OUTPUT)
 			redirection_output(clean_node);
-		else if (clean_node->type == APPEND && clean_node->next->type == APPEND)
+		else if (clean_node->type == APPEND && clean_node->next->type == APPEND) // BUT CAN BE ALSO APPEND & OUTPUT or else.
 			redirection_append(clean_node);
 		clean_node = clean_node->next;
 	}
