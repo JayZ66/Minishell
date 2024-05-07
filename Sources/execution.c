@@ -106,23 +106,20 @@ int	manage_redirection_input(t_clean_token **current, t_minishell *exit_code, in
 
 int	manage_redirection_output(t_clean_token **current, int last_file)
 {
-	if (((*current)->type == CMD && (((*current)->next
-				&& (*current)->next->type == OUTPUT)
-			|| ((*current)->next && (*current)->next->next
-				&& (*current)->next->next->type == OUTPUT))))
-		{
-			if ((*current)->next->type == PIPE)
-				last_file = manage_output_redirection((*current)->next->next->content, last_file);
-			else
+	if ((*current)->type == CMD && ((*current)->next
+				&& (*current)->next->type == OUTPUT))
 				last_file = manage_output_redirection((*current)->next->content, last_file);
-		}
-	else if (((*current)->type == CMD && (((*current)->next
-				&& (*current)->next->type == APPEND)
-			|| ((*current)->next && (*current)->next->next
-				&& (*current)->next->next->type == APPEND))))
-		last_file = manage_append_redirection((*current)->next->content, last_file);
-	else if ((*current)->type == OUTPUT) // Check if do all files.
-		last_file = manage_output_redirection((*current)->content, last_file);
+	else if ((*current)->type == CMD && (((*current)->next && (*current)->next->next
+				&& (*current)->next->next->type == OUTPUT)))
+				last_file = manage_output_redirection((*current)->next->next->content, last_file);
+	else if ((*current)->type == CMD && ((*current)->next
+				&& (*current)->next->type == APPEND))
+				last_file = manage_append_redirection((*current)->next->content, last_file);
+	else if ((*current)->type == CMD && ((*current)->next && (*current)->next->next
+				&& (*current)->next->next->type == APPEND))
+				last_file = manage_append_redirection((*current)->next->content, last_file);
+	else if ((*current)->type == OUTPUT)
+	last_file = manage_output_redirection((*current)->content, last_file);
 	else if ((*current)->type == APPEND)
 		last_file = manage_append_redirection((*current)->content, last_file);
 	return (last_file);

@@ -46,16 +46,17 @@ void execute_commands_with_pipes_and_redirections(t_clean_token **lst, char **en
                 perror("fork");
                 exit(EXIT_FAILURE);
             } 
-            else if (pid == 0) // Processus enfant
+            else if (pid == 0)
             { 
-                close(pipefd[0]);
-                dup2(pipefd[1], STDOUT_FILENO);
-                close(pipefd[1]);
-
+                    close(pipefd[0]);
+                    dup2(pipefd[1], STDOUT_FILENO);
+                    close(pipefd[1]);
                 exec_simple_cmd(&current, exit_code, env);
-                // exit(EXIT_SUCCESS);
+                dup2(saved_stdin, STDIN_FILENO);
+                dup2(saved_stdout, STDOUT_FILENO);
+                exit(EXIT_SUCCESS);
             } 
-            else // Processus parent
+            else
             {
                 close(pipefd[1]);
                 dup2(pipefd[0], STDIN_FILENO);
@@ -72,18 +73,19 @@ void execute_commands_with_pipes_and_redirections(t_clean_token **lst, char **en
                 perror("fork");
                 exit(EXIT_FAILURE);
             }
-            else if (pid == 0) // Processus enfant
+            else if (pid == 0)
             {
                 exec_simple_cmd(&current, exit_code, env);
                 exit(EXIT_SUCCESS);
             }
-            else // Processus parent
+            else
             {
                 pid_array[index] = pid;
                 index++;
             }
         }
-
+        if (current->next && (current->next->type == OUTPUT || current->next->type == APPEND))
+            current = current->next;
         current = current->next;
     }
 
@@ -91,8 +93,6 @@ void execute_commands_with_pipes_and_redirections(t_clean_token **lst, char **en
     for (int i = 0; i < index; i++) {
         waitpid(pid_array[i], NULL, 0);
     }
-
-    // Restaurer les descripteurs de fichier d'entrée et de sortie standard
     dup2(saved_stdin, STDIN_FILENO);
     dup2(saved_stdout, STDOUT_FILENO);
 }

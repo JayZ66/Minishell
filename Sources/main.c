@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/06 17:35:28 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/07 21:41:38 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ int		main(int argc, char **argv, char **env)
 	clean_token = (t_clean_token *)malloc(sizeof(t_clean_token));
 	if (argc != 1 || argv[1])
 		return (perror("Wrong nb of args\n"), 1);
-    env = realloc_env(env);
-    if (env == NULL)
-		return (perror("Realloc env. failed\n"), 1);
+    // env = realloc_env(env);
+    // if (env == NULL)
+	// 	return (perror("Realloc env. failed\n"), 1);
     manage_signals();
 	while (1)
 	{
@@ -74,7 +74,8 @@ int		main(int argc, char **argv, char **env)
 		clean_token = copy_lst(token);
 		print_clean_lst(clean_token);
 		test_redirection_input(clean_token);
-        execute_commands_with_pipes_and_redirections(&clean_token, env, &exit_code);
+		check_line(&clean_token, env, &exit_code);
+        // execute_commands_with_pipes_and_redirections(&clean_token, env, &exit_code);
 		free_that_lst(&token);
 		free_that_clean_lst(&clean_token);
 		//gerer les builtins car si je mets un espace pb

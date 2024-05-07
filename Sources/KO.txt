@@ -51,5 +51,19 @@ avoir la var. d'env.
 Par contre, si ne trouve pas => Retire le bout.
 
 JEZA : TO DO
-- Gerer echo SALUT > OK | cat OK
+- Gerer echo SALUT > OK | cat OK => OK with check_line function because
+i'm waiting for each block, so the end of each cmd, then cat can access to ok file.
+=> So how to do it ??
 - Tester de nouveau les file seuls ! + voir pour append/output or else.
+=> OK : i'm can now verify if there is one file if it exists or not.
+=> BUT it's not totally good bce if i have a file & then a pipe, ça
+fait la redirection du file sur STDOUT ce qui fait qu'il envoie les données à
+cat alors que normalement cat ne reçoit rien => TO CHECK.
+idée : créer une autre fonction d'output pour l'output seul.
+
+TO TEST : 
+$> echo hola > bonjour
+$> echo hey > hello
+$> <bonjour >hello
+$> cat bonjour 
+$> cat hello

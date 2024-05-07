@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:04:26 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/06 14:56:44 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/07 20:56:08 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	**realloc_env(char **env)
 	size_t	size_env;
 	size_t	i;
 
-	size_env = ft_size_env(env);
+	size_env = ft_size_env(env) + 1;
 	i = 0;
 	new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
 	if (!new_env)
