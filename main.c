@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 char	*read_input()
 {
 	char	*input;
@@ -34,7 +33,6 @@ void	print_new_env(char **env)
 		i++;
 	}
 }
-
 
 int		main(int argc, char **argv, char **env)
 {
@@ -60,7 +58,7 @@ int		main(int argc, char **argv, char **env)
 			exit(0) ;
 		}
 
-		token = extract_cmd(&token, input, env);
+		token = extract_cmd(&token, input);
 		if (!token)
 		{
 			return 0;

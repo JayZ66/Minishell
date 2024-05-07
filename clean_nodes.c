@@ -6,7 +6,7 @@
 /*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:08:10 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/05 17:08:28 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/05/06 11:00:54 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	clean_spaces(t_token *token)
 {
 	int	i;
 	int	j;
-	int prev_space;
+	int	prev_space;
+
 	while (token != NULL)
 	{
 		if (token->content != NULL)
@@ -45,32 +46,31 @@ void	clean_spaces2(t_token *token)
 {
 	int	i;
 
-	// i = 0;
 	while (token)
 	{
 		i = 0;
-		if (token->type == INPUT || token->type == OUTPUT || token->type == APPEND
-			|| token->type == HERE_DOC)
+		if (token->type == INPUT
+			|| token->type == OUTPUT
+			|| token->type == APPEND || token->type == HERE_DOC)
 		{
 			while (token->content[i] && token->content[i] != ' '
 				&& token->content[i] != '\t')
 				i++;
 			token->content = ft_strndup(token->content, i);
 		}
-		printf("token->content clean space %s\n", token->content);
 		token = token->next;
 	}
-
 }
 
 void	clean_chevron(t_token *token)
 {
 	int	i;
 	int	j;
+
 	while (token != NULL)
 	{
 		if (token->type == INPUT || token->type == OUTPUT
-			|| token->type == APPEND|| token->type == HERE_DOC)
+			|| token->type == APPEND || token->type == HERE_DOC)
 		{
 			if (token->content)
 			{
@@ -125,7 +125,7 @@ void	cut_node(t_token *token)
 
 void	manage_node(t_token *token)
 {
-	while(token)
+	while (token)
 	{
 		if (token->type == INPUT)
 			cut_node(token);

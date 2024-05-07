@@ -6,15 +6,14 @@
 /*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:06:45 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/05 17:07:09 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/05/06 11:00:02 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	tokenize_append(t_token **token, char *input, int i, char **env)
+int	tokenize_append(t_token **token, char *input, int i)
 {
-	(void)	env;
 	t_token	*new;
 	int		start;
 	int		end;
@@ -40,9 +39,8 @@ int	tokenize_append(t_token **token, char *input, int i, char **env)
 	return (end);
 }
 
-int	tokenize_output(t_token **token, char *input, int i, char **env)
+int	tokenize_output(t_token **token, char *input, int i)
 {
-	(void)	env;
 	t_token	*new;
 	int		start;
 	int		end;
@@ -68,9 +66,8 @@ int	tokenize_output(t_token **token, char *input, int i, char **env)
 	return (end);
 }
 
-int	tokenize_here_doc(t_token **token, char *input, int i, char **env)
+int	tokenize_here_doc(t_token **token, char *input, int i)
 {
-	(void)	env;
 	t_token	*new;
 	int		start;
 	int		end;
@@ -96,9 +93,8 @@ int	tokenize_here_doc(t_token **token, char *input, int i, char **env)
 	return (end);
 }
 
-int	tokenize_input(t_token **token, char *input, int i, char **env)
+int	tokenize_input(t_token **token, char *input, int i)
 {
-	(void)	env;
 	t_token	*new;
 	int		start;
 	int		end;
@@ -145,9 +141,6 @@ int tokenize_arg(t_token **token, char *input, int i)
 	t_token *new;
 	start = i;
 	end = i;
-	// int flag = 0;
-	// printf("taille de start %d\n", start);
-	// printf("taille de end avant: %d\n", end);
 	if (input[end] == '"')
 	{
 		end++;
@@ -158,7 +151,6 @@ int tokenize_arg(t_token **token, char *input, int i)
 		while((input[end] && input[end] != '|' && input[end] != '<' && input[end] != '>'))
 			end++;
 	arg = ft_strndup(input + start, end - start);
-	printf("arg: %s\n", arg);
 	new = init_node(arg, ARG);
 	add_back(token, new);
 	free(arg);

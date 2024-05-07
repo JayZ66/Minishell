@@ -82,7 +82,7 @@ typedef struct s_clean_token
 
 // MANDATORY PART
 char	*read_input();
-t_token	*extract_cmd(t_token **token, char *cmd_line, char **env);
+t_token	*extract_cmd(t_token **token, char *cmd_line);
 t_token	*init_node(char *content, Token_type type);
 
 t_clean_token    *init_clean_node(char *content, Token_type type);
@@ -101,8 +101,7 @@ void	shell_level(char **env);
 void	execute_pipe(int nb_args, char **cmd_line, char **env);
 void	do_pipes(char *cmd, char **env);
 
-// char	**lst_to_tab(t_token *token);
-// void	print_tab(char **cmd_line);
+
 int		lst_size(t_token *token);
 void	free_tab(char **tab);
 
@@ -151,10 +150,10 @@ void	cut_node(t_token *token);
 int	string_is_space(char *token);
 
 //Tokenization
-int	tokenize_append(t_token **token, char *input, int i, char **env);
-int	tokenize_output(t_token **token, char *input, int i, char **env);
-int	tokenize_here_doc(t_token **token, char *input, int i, char **env);
-int	tokenize_input(t_token **token, char *input, int i, char **env);
+int	tokenize_append(t_token **token, char *input, int i);
+int	tokenize_output(t_token **token, char *input, int i);
+int	tokenize_here_doc(t_token **token, char *input, int i);
+int	tokenize_input(t_token **token, char *input, int i);
 int	tokenize_pipe(t_token **token, int i);
 
 
