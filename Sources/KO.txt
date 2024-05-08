@@ -8,6 +8,19 @@
 - entree => OK
 - Que des espaces : OK
 => Devrait renvoyer a la ligne.
+TO TEST : DONE
+$> echo hola > bonjour
+$> echo hey > hello
+$> <bonjour >hello
+$> cat bonjour 
+$> cat hello
+
+cat > ok 
+...
+...
+cat < ok => DONE
+- Gestion env + update => DONE
+
 
 - > - | - < - \ 
 => Erreurs a gerer pour arreter le prog.
@@ -49,6 +62,8 @@ On va pas chercher le path, on l'envoie direct a execve.
 - Quotes avec $ => Pas besoin des doubles quote pour
 avoir la var. d'env.
 Par contre, si ne trouve pas => Retire le bout.
+=> Gerer dans le parsing : 
+- Si tu trouves double quotes & 
 
 JEZA : TO DO
 - Gerer echo SALUT > OK | cat OK => OK with check_line function because
@@ -58,12 +73,13 @@ i'm waiting for each block, so the end of each cmd, then cat can access to ok fi
 => OK : i'm can now verify if there is one file if it exists or not.
 => BUT it's not totally good bce if i have a file & then a pipe, ça
 fait la redirection du file sur STDOUT ce qui fait qu'il envoie les données à
-cat alors que normalement cat ne reçoit rien => TO CHECK.
-idée : créer une autre fonction d'output pour l'output seul.
+cat alors que normalement cat ne reçoit rien.
+idée : créer une autre fonction d'output pour l'output seul. => OK
 
-TO TEST : 
-$> echo hola > bonjour
-$> echo hey > hello
-$> <bonjour >hello
-$> cat bonjour 
-$> cat hello
+
+
+< ok | cat / wc => why send it to the cmd ? => DONE
+
+<< end | cat => OK
+cat | < end.txt => SEGFAULT
+Checker parsing & execution => Invalid read of size.

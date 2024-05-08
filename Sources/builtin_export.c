@@ -17,31 +17,31 @@ Will modify the value of the identified
 var. in the environment.
 */
 
-char	**modify_value_env(char **env, char *var, char *new_value)
+char	**modify_value_env(t_minishell *minishell, char *var, char *new_value)
 {
 	size_t	i;
 	size_t	size_env;
 	char	**new_env;
 
 	i = -1;
-	size_env = ft_size_env(env);
+	size_env = ft_size_env(minishell->env);
 	new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
 	if (!new_env)
 	{
 		perror("Can't create the new env.\n");
 		exit(EXIT_FAILURE);
 	}
-	while (env[++i])
+	while (minishell->env[++i])
 	{
-		if (ft_strncmp(env[i], var, ft_strlen(var)) == 0
-			&& env[i][ft_strlen(var)] == '=')
+		if (ft_strncmp(minishell->env[i], var, ft_strlen(var)) == 0
+			&& minishell->env[i][ft_strlen(var)] == '=')
 		{
 			new_env[i] = copy_new_value(new_env[i], var, new_value);
 			i++;
 		}
-		new_env[i] = ft_strdup(env[i]);
+		new_env[i] = ft_strdup(minishell->env[i]);
 	}
-	free_tab(env);
+	// free_tab(env);
 	new_env[size_env] = NULL;
 	return (new_env);
 }
@@ -62,13 +62,13 @@ char	*copy_new_value(char *new_env, char *var, char *new_value)
 	return (new_env);
 }
 
-char	**create_var_env(char **env, char *var)
+char	**create_var_env(t_minishell *minishell, char *var)
 {
 	size_t	size_env;
 	size_t	i;
 	char	**new_env;
 
-	size_env = ft_size_env(env);
+	size_env = ft_size_env(minishell->env);
 	i = 0;
 	new_env = (char **)malloc(sizeof(char *) * (size_env + 2));
 	if (!new_env)
@@ -78,11 +78,11 @@ char	**create_var_env(char **env, char *var)
 	}
 	while (i < size_env)
 	{
-		new_env[i] = ft_strdup(env[i]);
-		free(env[i]);
+		new_env[i] = ft_strdup(minishell->env[i]);
+		// free(env[i]);
 		i++;
 	}
-	free(env);
+	// free(env);
 	new_env[size_env] = ft_strdup(var);
 	new_env[size_env + 1] = NULL;
 	return (new_env);
@@ -184,15 +184,13 @@ char	**split_cmd(char *var_env)
 	return (args);
 }
 
-char	**print_export_env(char **env)
+void	print_export_env(t_minishell *minishell)
 {
-	char	**new_env;
-
-	new_env = print_env(env);
-	return (new_env);
+	print_env(minishell);
+	return ;
 }
 
-char	**builtin_export(char *var_env, char **env)
+void	builtin_export(char *var_env, t_minishell *minishell)
 {
 	size_t	i;
 	size_t	j;
@@ -209,16 +207,20 @@ char	**builtin_export(char *var_env, char **env)
 			{
 				if (args[i][j] == '=')
 				{
-					env = modify_or_create(args, env, i, j);
+					modify_or_create(args, minishell, i, j);
 					if (args[i + 1] == NULL)
-						return (env);
+						return ;
 				}
 			}
 		}
 	}
 	else
-		return (print_export_env(env));
-	return (printf("bash: export: '%s': not a valid identifier\n", args[1]), env);
+	{
+		print_export_env(minishell);
+		return ;
+	}
+	printf("bash: export: '%s': not a valid identifier\n", args[1]);
+	return ;
 }
 
 // if (args[1][i] == '=')

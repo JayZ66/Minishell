@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:55:48 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/07 10:50:48 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/08 18:42:57 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ DetectBuiltInCmd
 // le résultat (dup2) et on n'envoie pas dans execve.
 // Check how to manage the new env !
 // Need to change the return ? unset - cd - export ??
-int	builtin_or_not_builtin(char *str, char **env, t_minishell *exit_code)
+int	builtin_or_not_builtin(char *str, t_minishell *minishell, t_minishell *exit_code)
 {
 	char	**cmd;
 	(void)exit_code;
@@ -28,21 +28,17 @@ int	builtin_or_not_builtin(char *str, char **env, t_minishell *exit_code)
 	if (ft_strncmp(str, "pwd", 3) == 0)
 		builtin_pwd();
 	else if (ft_strncmp(str, "env", 4) == 0)
-		builtin_env(env);
+		builtin_env(minishell);
 	else if (ft_strncmp(str, "exit", 4) == 0)
 		builtin_exit(cmd);
 	else if (ft_strncmp(str, "unset", 5) == 0)
-	{
-		env = builtin_unset(cmd, env);
-		if (env == NULL)
-			exit(EXIT_FAILURE);
-	}
+		builtin_unset(cmd, minishell);
 	else if (ft_strncmp(str, "cd", 2) == 0)
-		env = builtin_cd(env, cmd);
+		builtin_cd(minishell, cmd);
 	else if (ft_strncmp(str, "echo", 4) == 0)
 		builtin_echo(str, exit_code);
 	else if (ft_strncmp(str, "export", 6) == 0)
-		env = builtin_export(str, env);
+		builtin_export(str, minishell);
 	else
 		return (1);
 	return (0);

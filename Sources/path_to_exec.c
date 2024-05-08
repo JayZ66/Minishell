@@ -12,14 +12,14 @@
 
 #include "../minishell.h"
 
-char	*get_path(char *cmd, char **env)
+char	*get_path(char *cmd, t_minishell *minishell)
 {
 	char	*tmp_path;
 	char	*final_path;
 	char	**path;
 	size_t	i;
 
-	path = select_path(env);
+	path = select_path(minishell);
 	i = 0;
 	if (!path)
 		exit(EXIT_FAILURE);
@@ -40,12 +40,14 @@ char	*get_path(char *cmd, char **env)
 	return (NULL);
 }
 
-char	**select_path(char **env)
+char	**select_path(t_minishell *minishell)
 {
 	size_t	i;
 	size_t	j;
 	char	**all_path;
+	char	**env;
 
+	env = minishell->env;
 	i = 0;
 	while (env[i])
 	{

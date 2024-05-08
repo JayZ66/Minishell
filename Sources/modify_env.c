@@ -23,18 +23,18 @@ And we don't use getenv() who get env. var. from the "real" env.
 
 //strcmp de SHLVL=
 // atoi, puis itoa puis strcpy.
-void	shell_level(char **env)
+void	shell_level(t_minishell *minishell)
 {
 	size_t	i;
 	char	*level;
 
 	i = 0;
-	while (env[i])
+	while (minishell->env[i])
 	{
-		if (ft_strncmp(env[i], "SHLVL=", 6) == 0)
+		if (ft_strncmp(minishell->env[i], "SHLVL=", 6) == 0)
 		{
-			level = ft_itoa(ft_atoi(env[i] + 6) + 1);
-			ft_string_cpy(env[i] + 6, level);
+			level = ft_itoa(ft_atoi(minishell->env[i] + 6) + 1);
+			ft_string_cpy(minishell->env[i] + 6, level);
 			break ;
 		}
 		i++;

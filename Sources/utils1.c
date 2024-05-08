@@ -46,14 +46,14 @@ char	*ft_strcat(char *dst, const char *src, size_t size)
 // 	}
 // }
 
-void	print_new_env(char **env)
+void	print_new_env(t_minishell *minishell)
 {
 	size_t	i;
 
 	i = 0;
-	while (env[i])
+	while (minishell->env[i])
 	{
-		printf("Voici mon new env. : %s\n", env[i]);
+		printf("Voici mon new env. : %s\n", minishell->env[i]);
 		i++;
 	}
 }

@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-void	handle_here_doc(char *cmd, t_minishell *exit_code)
+void	handle_here_doc(char *cmd, t_minishell *exit_code, int alone)
 {
 	int	pfd[2];
 	int	pid;
@@ -29,16 +29,13 @@ void	handle_here_doc(char *cmd, t_minishell *exit_code)
 		exit(EXIT_FAILURE);
 	}
 	if (pid == 0)
-	{
-		// signal(SIGTTIN, SIG_IGN);
-		child_here_doc(pfd, cmd);
-	}
+		child_here_doc(pfd, cmd, alone);
 	else
 		parent_here_doc(pfd, cmd, exit_code);
 }
 
 // JE DOIS RECEVOIR LE NODE AVEC DES ESPACES !
-void	child_here_doc(int *pfd, char *cmd)
+void	child_here_doc(int *pfd, char *cmd, int alone)
 {
 	char	**limiter;
 	char	*line;
@@ -46,9 +43,12 @@ void	child_here_doc(int *pfd, char *cmd)
 
 	i = 0;
 	limiter = ft_split(cmd, ' ');
+	if (alone == 0)
+	{
 	close(pfd[0]);
 	dup2(pfd[1], STDOUT_FILENO);
 	close(pfd[1]);
+	}
 	while (limiter[i + 1] != NULL)
 		i++;
 	while (1)
@@ -64,7 +64,6 @@ void	child_here_doc(int *pfd, char *cmd)
 	}
 }
 
-// WEXITSTATUS : To put in a structure.
 void	parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code)
 {
 	int	exit_status;

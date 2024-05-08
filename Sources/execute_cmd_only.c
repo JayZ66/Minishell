@@ -32,7 +32,7 @@ int	is_one_cmd(char *cmd)
 	return (is_option);
 }
 
-void	exec_cmd_with_fork(char *cmd, char **env, t_minishell *exit_code)
+void	exec_cmd_with_fork(char *cmd, t_minishell *minishell, t_minishell *exit_code)
 {
 	char	**cmd_line;
 	int		pid;
@@ -47,22 +47,22 @@ void	exec_cmd_with_fork(char *cmd, char **env, t_minishell *exit_code)
 		exit(EXIT_FAILURE);
 	}
 	else if (pid == 0)
-		child_cmd_only(cmd_line, env);
+		child_cmd_only(cmd_line, minishell);
 	else
 		parent_cmd_only(pid, exit_code);
 }
 
-void	child_cmd_only(char **cmd_line, char **env)
+void	child_cmd_only(char **cmd_line, t_minishell *minishell)
 {
 	char	*final_path;
 
-	final_path = get_path(cmd_line[0], env);
+	final_path = get_path(cmd_line[0], minishell);
 	if (!final_path)
 	{
 		free_tab(cmd_line);
 		exit(EXIT_FAILURE);
 	}
-	if (execve(final_path, cmd_line, env) == -1)
+	if (execve(final_path, cmd_line, minishell->env) == -1)
 	{
 		free_tab(cmd_line);
 		free(final_path);

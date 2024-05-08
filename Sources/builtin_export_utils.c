@@ -17,14 +17,14 @@ Check if the var. is in the
 existing environment.
 */
 
-int	is_var_in_env(char *var, char **env)
+int	is_var_in_env(char *var, t_minishell *minishell)
 {
 	size_t	i;
 
 	i = 0;
-	while (env[i])
+	while (minishell->env[i])
 	{
-		if (ft_strncmp(env[i], var, ft_strlen(var)) == 0)
+		if (ft_strncmp(minishell->env[i], var, ft_strlen(var)) == 0)
 			return (1);
 		i++;
 	}
@@ -41,12 +41,14 @@ size_t	ft_size_env(char **env)
 	return (i);
 }
 
-void	sort_tab(char **env)
+void	sort_tab(t_minishell *minishell)
 {
 	size_t	i;
 	char	*temp;
+	char	**env;
 
 	i = 0;
+	env = minishell->env;
 	while (env[i + 1])
 	{
 		if (env[i][0] > env[i + 1][0]
@@ -62,22 +64,22 @@ void	sort_tab(char **env)
 	}
 }
 
-char	**modify_or_create(char **args, char **env, size_t i, size_t j)
+void	modify_or_create(char **args, t_minishell *minishell, size_t i, size_t j)
 {
 	char	*var;
 	// char	**new_env;
 	var = ft_substr(args[i], 0, j);
-	if (is_var_in_env(var, env) == 1)
+	if (is_var_in_env(var, minishell) == 1)
 	{
-		env = modify_value_env(env, var, args[i] + j);
+		minishell->env = modify_value_env(minishell, var, args[i] + j);
 		free(var);
 	}
 	else
 	{
-		env = create_var_env(env, args[i]);
+		minishell->env = create_var_env(minishell, args[i]);
 		free(var);
 	}
-	return (env);
+	return ;
 }
 
 // int	main(int argc, char **argv, char **env)
@@ -105,16 +107,16 @@ char	**modify_or_create(char **args, char **env, size_t i, size_t j)
 // 	return(0);
 // }
 
-char	**print_env(char **env)
+void	print_env(t_minishell *minishell)
 {
 	size_t	i;
 
 	i = 0;
-	sort_tab(env);
-	while (env[i])
+	sort_tab(minishell);
+	while (minishell->env[i])
 	{
-		printf("declare -x %s\n", env[i]);
+		printf("declare -x %s\n", minishell->env[i]);
 		i++;
 	}
-	return (env);
+	return ;
 }

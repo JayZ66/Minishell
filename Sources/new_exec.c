@@ -13,7 +13,7 @@
 #include "../minishell.h"
 
 
-void execute_commands_with_pipes_and_redirections(t_clean_token **lst, char **env, t_minishell *exit_code) 
+void execute_commands_with_pipes_and_redirections(t_clean_token **lst, t_minishell *minishell, t_minishell *exit_code) 
 {
     t_clean_token *current = *lst;
     int pid_array[1024]; 
@@ -48,12 +48,10 @@ void execute_commands_with_pipes_and_redirections(t_clean_token **lst, char **en
             } 
             else if (pid == 0)
             { 
-                    close(pipefd[0]);
-                    dup2(pipefd[1], STDOUT_FILENO);
-                    close(pipefd[1]);
-                exec_simple_cmd(&current, exit_code, env);
-                dup2(saved_stdin, STDIN_FILENO);
-                dup2(saved_stdout, STDOUT_FILENO);
+                close(pipefd[0]);
+                dup2(pipefd[1], STDOUT_FILENO);
+                close(pipefd[1]);
+                exec_simple_cmd(&current, exit_code, minishell);
                 exit(EXIT_SUCCESS);
             } 
             else
@@ -65,6 +63,8 @@ void execute_commands_with_pipes_and_redirections(t_clean_token **lst, char **en
                 index++;
             }
         }
+        // else if ((current->type == INPUT && (current->next && current->next->type == PIPE))
+        //     || (current->type == OUTPUT && (current->next && current->next->type == PIPE)))
         else if (current->type == CMD)
         {
             pid_t pid = fork();
@@ -75,8 +75,8 @@ void execute_commands_with_pipes_and_redirections(t_clean_token **lst, char **en
             }
             else if (pid == 0)
             {
-                exec_simple_cmd(&current, exit_code, env);
-                exit(EXIT_SUCCESS);
+                exec_simple_cmd(&current, exit_code, minishell);
+                // exit(EXIT_SUCCESS); // Check if it's not a pb.
             }
             else
             {
@@ -90,9 +90,8 @@ void execute_commands_with_pipes_and_redirections(t_clean_token **lst, char **en
     }
 
     // Attendre la fin de tous les processus enfants
-    for (int i = 0; i < index; i++) {
+    for (int i = 0; i < index; i++) 
         waitpid(pid_array[i], NULL, 0);
-    }
     dup2(saved_stdin, STDIN_FILENO);
     dup2(saved_stdout, STDOUT_FILENO);
 }

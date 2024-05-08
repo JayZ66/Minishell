@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-char	**go_back_home(char **new_env, char **env)
+char	**go_back_home(char **new_env, t_minishell *minishell)
 {
 	size_t	cwd_len;
 	char	cwd[1024];
@@ -35,31 +35,33 @@ char	**go_back_home(char **new_env, char **env)
 	}
 	ft_string_cpy(new_pwd, "PWD=");
 	ft_strcat(new_pwd, cwd, cwd_len);
-	new_env = env_with_new_pwd(new_env, env, new_pwd);
+	new_env = env_with_new_pwd(new_env, minishell, new_pwd);
 	return (new_env);
 }
 
-char	**env_with_new_pwd(char **new_env, char **env, char *new_pwd)
+char	**env_with_new_pwd(char **new_env, t_minishell *minishell, char *new_pwd)
 {
 	size_t	i;
+	char	**env;
 
+	env = minishell->env;
 	i = 0;
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "PWD=", 4) == 0)
 		{
 			new_env[i] = new_pwd;
-			free(env[i]);
+			// free(env[i]);
 		}
 		else
 		{
 			new_env[i] = ft_strdup(env[i]);
-			free(env[i]);
+			// free(env[i]);
 		}
 		i++;
 	}
 	new_env[i] = NULL;
-	free(env);
+	// free(env);
 	return (new_env);
 }
 
@@ -67,31 +69,36 @@ char	**env_with_new_pwd(char **new_env, char **env, char *new_pwd)
 // Check if we need the all cmd ou just path.
 // Chdir : Moving from a dir. to another one.
 // Getcwd : Récupérer le new path où on est.
-char	**builtin_cd(char **env, char **cmd)
+void	builtin_cd(t_minishell *minishell, char **cmd)
 {
 	char	**new_env;
 
-	new_env = (char **)malloc(sizeof(char *) * (ft_size_env(env) + 1));
+	new_env = (char **)malloc(sizeof(char *) * (ft_size_env(minishell->env) + 1));
 	if (!new_env)
 	{
 		perror("Can't allocate memory for the env\n");
 		exit(EXIT_FAILURE);
 	}
 	if (cmd[1] == NULL)
-		return (new_env = go_back_home(new_env, env), new_env);
+	{
+		minishell->env = go_back_home(new_env, minishell);
+		free_tab(new_env);
+		return ;
+	}
 	if (cmd[1] != NULL && is_relative_path(cmd) == 0)
 	{
 		cmd[1] = relative_to_absolute_path(cmd);
 		if (!cmd[1])
 		{
-			free(new_env);
+			free_tab(new_env);
 			free(cmd[1]);
-			return (NULL);
+			return ;
 		}
 	}
-	new_env = get_new_pwd(env, new_env, cmd);
+	minishell->env = get_new_pwd(minishell, new_env, cmd);
 	free(cmd[1]);
-	return (new_env);
+	free_tab(new_env);
+	return ;
 }
 
 	// cwd_len = ft_strlen(cmd[1]) + 1;
@@ -135,7 +142,7 @@ char	**builtin_cd(char **env, char **cmd)
 	// free(env);
 	// new_env[i] = NULL;
 
-char	**get_new_pwd(char **env, char **new_env, char **cmd)
+char	**get_new_pwd(t_minishell *minishell, char **new_env, char **cmd)
 {
 	char	cwd[1024];
 	size_t	cwd_len;
@@ -154,16 +161,18 @@ char	**get_new_pwd(char **env, char **new_env, char **cmd)
 			exit(EXIT_FAILURE);
 		}
 	}
-	new_env = change_pwd_env(env, new_env, cwd_len, cwd);
+	new_env = change_pwd_env(minishell, new_env, cwd_len, cwd);
 	return (new_env);
 }
 
-char	**change_pwd_env(char **env, char **new_env, size_t cwd_len, char *cwd)
+char	**change_pwd_env(t_minishell *minishell, char **new_env, size_t cwd_len, char *cwd)
 {
 	size_t	i;
 	char	*new_pwd;
+	char	**env;
 
 	i = -1;
+	env = minishell->env;
 	new_pwd = (char *)malloc(sizeof(char) * (cwd_len + 5));
 	if (!new_pwd)
 		exit(EXIT_FAILURE);
@@ -174,15 +183,15 @@ char	**change_pwd_env(char **env, char **new_env, size_t cwd_len, char *cwd)
 		if (ft_strncmp(env[i], "PWD=", 4) == 0)
 		{
 			new_env[i] = new_pwd;
-			free(env[i]);
+			// free(env[i]);
 		}
 		else
 		{
 			new_env[i] = ft_strdup(env[i]);
-			free(env[i]);
+			// free(env[i]);
 		}
 	}
-	free(env);
+	// free(env);
 	// free(new_pwd); Why ??
 	new_env[i] = NULL;
 	return (new_env);

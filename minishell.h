@@ -50,6 +50,7 @@ typedef struct s_minishell
 {
 	t_token	*token;
 	int		last_exit_status;
+	char	**env;
 }	t_minishell;
 
 typedef struct s_clean_token
@@ -61,10 +62,10 @@ typedef struct s_clean_token
 
 // MANDATORY PART
 char	*read_input(void);
-void	shell_level(char **env);
+void	shell_level(t_minishell *minishell);
 
-void	execute_pipe(int nb_args, char **cmd_line, char **env);
-void	do_pipes(char *cmd, char **env);
+// void	execute_pipe(int nb_args, char **cmd_line, char **env);
+// void	do_pipes(char *cmd, char **env);
 
 // int		manage_file(int nb_args, char **cmd_line, int flag);
 // char	*check_line_cmd(t_token *token);
@@ -73,10 +74,6 @@ void	do_pipes(char *cmd, char **env);
 char	*get_the_var_of_env(t_clean_token *node);
 
 // Utils
-// t_token	*init_node(char *content, Token_type type);
-// t_token	*lst_last(t_token *token);
-// void	add_back(t_token **token, t_token *new);
-// char	**lst_to_tab(t_token *token);
 void	print_tab(char **cmd_line);
 int		lst_size(t_token *token);
 void	free_tab(char **tab);
@@ -84,40 +81,41 @@ void	free_tab(char **tab);
 char	*ft_strndup(const char *s, size_t n);
 char	*ft_strcat(char *dst, const char *src, size_t size);
 // void	print_lst(t_token *token);
-void	print_new_env(char **env);
+void	print_new_env(t_minishell *minishell);
 int		ft_strlen_tab(char **cmd_line);
 int		ft_lstsize_content(t_token *token);
 void	free_that_lst(t_token **token);
 char	**realloc_env(char **env);
 size_t	ft_size_env(char **env);
 int		ft_strncmp_limiter(const char *s1, const char *s2, size_t n);
+void	print_export_env(t_minishell *minishell);
 
 // Built_in
 void	builtin_exit(char **args);
 void	builtin_pwd(void);
-char	**builtin_unset(char **var, char **new_env);
-void	builtin_env(char **env);
-char	**builtin_export(char *var_env, char **env);
-char	**create_var_env(char **env, char *var);
-char	**modify_value_env(char **env, char *var, char *new_value);
-char	**modify_or_create(char **args, char **env, size_t i, size_t j);
+void	builtin_unset(char **var, t_minishell *minishell);
+void	builtin_env(t_minishell *minishell);
+void	builtin_export(char *var_env, t_minishell *minishell);
+char	**create_var_env(t_minishell *minishell, char *var);
+char	**modify_value_env(t_minishell *minishell, char *var, char *new_value);
+void	modify_or_create(char **args, t_minishell *minishell, size_t i, size_t j);
 char	**manage_quote_export(char *input);
 int		if_quote(char *var_env);
 int		is_something_after_equal(char *str);
 char	**clean_spaces(char **args);
 char	*copy_new_value(char *new_env, char *var, char *new_value);
-int		is_var_in_env(char *var, char **env);
+int	is_var_in_env(char *var, t_minishell *minishell);
 int		is_var_env(const char c);
 void	update_env(char **env, char *var);
-void	sort_tab(char **env);
-char	**print_env(char **env);
-char	**builtin_cd(char **env, char **cmd);
+void	sort_tab(t_minishell *minishell);
+void	print_env(t_minishell *minishell);
+void	builtin_cd(t_minishell *minishell, char **cmd);
 int		is_relative_path(char **cmd);
 char	*relative_to_absolute_path(char **cmd);
-char	**go_back_home(char **new_env, char **env);
-char	**env_with_new_pwd(char **new_env, char **env, char *new_pwd);
-char	**get_new_pwd(char **env, char **new_env, char **cmd);
-char	**change_pwd_env(char **env, char **new_env, size_t cwd_len, char *cwd);
+char	**go_back_home(char **new_env, t_minishell *minishell);
+char	**env_with_new_pwd(char **new_env, t_minishell *minishell, char *new_pwd);
+char	**get_new_pwd(t_minishell *minishell, char **new_env, char **cmd);
+char	**change_pwd_env(t_minishell *minishell, char **new_env, size_t cwd_len, char *cwd);
 void	builtin_echo(char *str, t_minishell *exit_code);
 void	handle_echo_with_n(char **cmd);
 char	*clean_quote(char *str);
@@ -133,21 +131,21 @@ char	*removing_one_level_of_quote(char *cmd, char c, size_t i);
 int		is_there_multiple_quotes(char *cmd);
 
 // Execution
-char	**select_path(char **env);
-char	*get_path(char *cmd, char **env);
-void	exec_cmd_with_fork(char *cmd, char **env, t_minishell *exit_code);
-void	child_cmd_only(char **cmd_line, char **env);
+char	**select_path(t_minishell *minishell);
+char	*get_path(char *cmd, t_minishell *minishell);
+void	exec_cmd_with_fork(char *cmd, t_minishell *minishell, t_minishell *exit_code);
+void	child_cmd_only(char **cmd_line, t_minishell *minishell);
 void	parent_cmd_only(int pid, t_minishell *exit_code);
-void	exec_cmd(char *cmd, char **env);
-void	parent_process(int *pfd, char *cmd, char **env, t_minishell *exit_code);
-void	child_process(int *pfd, char *cmd, char **env, int output);
-void	create_pipes(char *cmd, char **env, t_minishell *exit_code, int output);
+void	exec_cmd(char *cmd, t_minishell *minishell);
+void	parent_process(int *pfd, char *cmd, t_minishell *exit_code);
+void	child_process(int *pfd, char *cmd, t_minishell *minishell, int output);
+void	create_pipes(char *cmd, t_minishell *minishell, t_minishell *exit_code, int output);
 void	parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code);
-void	child_here_doc(int *pfd, char *cmd);
-void	handle_here_doc(char *cmd, t_minishell *exit_code);
-void	manage_here_doc(t_clean_token **current, t_minishell *exit_code, char *content);
-void	check_line(t_clean_token **lst, char **env, t_minishell *exit_code);
-void	redir_builtin(char *cmd, t_minishell *exit_code, char **env, int out);
+void	child_here_doc(int *pfd, char *cmd, int alone);
+void	handle_here_doc(char *cmd, t_minishell *exit_code, int alone);
+void	manage_here_doc(t_clean_token **current, t_minishell *exit_code, char *content, int alone);
+void	check_line(t_clean_token **lst, t_minishell *minishell, t_minishell *exit_code);
+void	redir_builtin(char *cmd, t_minishell *exit_code, t_minishell *minishell, int out);
 void	parent_builtin(int *fd, t_minishell *exit_code);
 // void	append_exec_node(t_token **head, char *content, Token_type type);
 // t_token	*create_command_list(void);
@@ -163,12 +161,17 @@ int		manage_input_redirection(t_clean_token **current, char *node_content, int f
 int		manage_append_redirection(char *node_content, int last_file);
 int		manage_redirection_input(t_clean_token **current, t_minishell *exit_code, int first_file);
 int		manage_redirection_output(t_clean_token **current, int last_file);
-int		manage_cmd_pipe(t_clean_token **current, t_minishell *exit_code, int last_file, char **env);
-void	exec_simple_cmd(t_clean_token **current, t_minishell *exit_code, char **env);
-void execute_commands_with_pipes(t_clean_token **lst);
-void check_line2(t_clean_token **lst, char **env, t_minishell *exit_code);
-void exec_cmd_with_pipe2(t_clean_token **current, t_minishell *exit_code, int *pid_array, int index, char **env);
-void execute_commands_with_pipes_and_redirections(t_clean_token **lst, char **env, t_minishell *exit_code);
+int		manage_cmd_pipe(t_clean_token **current, t_minishell *exit_code, int last_file, t_minishell *minishell);
+void	exec_simple_cmd(t_clean_token **current, t_minishell *exit_code, t_minishell *minishell);
+// void 	execute_commands_with_pipes(t_clean_token **lst);
+// void 	check_line2(t_clean_token **lst, char **env, t_minishell *exit_code);
+// void 	exec_cmd_with_pipe2(t_clean_token **current, t_minishell *exit_code, int *pid_array, int index, char **env);
+void	execute_commands_with_pipes_and_redirections(t_clean_token **lst, t_minishell *minishell, t_minishell *exit_code);
+int		manage_solo_append_redirection(char *node_content, int last_file);
+int		manage_solo_output_redirection(char *node_content, int last_file);
+int		manage_solo_input_redirection(t_clean_token **current, char *node_content, int first_file);
+void	exec_pipe_simple_cmd(t_clean_token **current, t_minishell *exit_code, char **env);
+void	exec_cmd_with_pipe(t_clean_token **current, t_minishell *exit_code, int last_file, t_minishell *minishell);
 
 // SIGNAL
 void	sigint_handler(int sig);
@@ -178,7 +181,7 @@ void	sigquit_handler(int sig);
 // EXPANSER
 int		check_var(t_clean_token *node);
 int		handle_quote_errors(char *cmd);
-int		builtin_or_not_builtin(char *str, char **env, t_minishell *exit_code);
+int		builtin_or_not_builtin(char *str, t_minishell *minishell, t_minishell *exit_code);
 int		is_built_in(char *str);
 char	*managing_quotes(char *input);
 char	*manage_simple_quotes(char *input, int i);
@@ -236,6 +239,6 @@ int				input_in_bloc(t_clean_token *token, int i);
 
 
 char *clean_quote(char *input);
-void	echo(char *str);
+// void	echo(char *str);
 
 #endif

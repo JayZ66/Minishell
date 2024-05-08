@@ -1,2 +1,0 @@
-quotes : echo "cat input.txt 
-"cat input.txt 

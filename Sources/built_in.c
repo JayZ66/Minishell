@@ -73,42 +73,43 @@ environment var.
 */
 // Check later if we need to send **char ou *char
 // Check how we can get our modify env.
-char	**builtin_unset(char **var, char **new_env)
+void	builtin_unset(char **var, t_minishell *minishell)
 {
 	size_t	i;
+	// char	**new_env = minishell->env; // Check pour leaks !
 
 	i = 0;
 	if (var[1])
 	{
-		while (new_env[i])
+		while (minishell->env[i])
 		{
-			if (ft_strncmp(new_env[i], var[1], ft_strlen(var[1])) == 0
-				&& new_env[i][ft_strlen(var[1])] == '=')
+			if (ft_strncmp(minishell->env[i], var[1], ft_strlen(var[1])) == 0
+				&& minishell->env[i][ft_strlen(var[1])] == '=')
 			{
-				while (new_env[i + 1])
+				while (minishell->env[i + 1])
 				{
-					new_env[i] = new_env[i + 1];
+					minishell->env[i] = minishell->env[i + 1];
 					i++;
 				}
-				new_env[i] = NULL;
-				return (new_env);
+				minishell->env[i] = NULL;
+				return ;
 			}
 			i++;
 		}
 		perror("Can't find the var. to remove from the env.\n");
-		return (NULL);
+		return ;
 	}
-	return (new_env);
+	return ;
 }
 
-void	builtin_env(char **env)
+void	builtin_env(t_minishell *minishell)
 {
 	size_t	i;
 
 	i = 0;
-	while (env[i])
+	while (minishell->env[i])
 	{
-		printf("%s\n", env[i]);
+		printf("%s\n", minishell->env[i]);
 		i++;
 	}
 }
