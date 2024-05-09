@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/08 18:43:15 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/09 12:38:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int		main(int argc, char **argv, char **env)
 	t_minishell		*minishell;
 
 	token = NULL;
+	(void)env;
 	minishell = (t_minishell *)malloc(sizeof(t_minishell));
 	manage_signals();
     exit_code.last_exit_status = 0;
@@ -77,7 +78,7 @@ int		main(int argc, char **argv, char **env)
 		print_clean_lst(clean_token);
 		test_redirection_input(clean_token);
 		// check_line(&clean_token, env, &exit_code);
-        execute_commands_with_pipes_and_redirections(&clean_token, minishell, &exit_code);
+		execute_commands_with_pipes_and_redirections(&clean_token, minishell, &exit_code);
 		free_that_lst(&token);
 		free_that_clean_lst(&clean_token);
 		//gerer les builtins car si je mets un espace pb
@@ -85,6 +86,7 @@ int		main(int argc, char **argv, char **env)
 
 		free(input);
 	}
-    free_tab(env);
+	free_tab(minishell->env);
+	free(minishell);
 	return (0);
 }

@@ -27,6 +27,27 @@ MANAGE QUOTES
 ConvertPathToAbsolute
 */
 
+int	is_absolute_path(char **cmd)
+{
+	size_t	i;
+	size_t	is_absolute;
+
+	is_absolute = 0;
+	i = 0;
+	while (cmd[0][i])
+	{
+		if (cmd[0][0] == '/' && cmd[0][1])
+		{
+			is_absolute = 1;
+			break ;
+		}
+		else
+			break ;
+		i++;
+	}
+	return (is_absolute);
+}
+
 // Maybe not useful for the cmd line.
 // TO CHECK : when we put just "//"
 int	is_relative_path(char **cmd)

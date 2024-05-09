@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:04:26 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/08 17:57:04 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/09 12:38:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	**realloc_env(char **env)
 	}
 	while (env[i])
 	{
-		new_env[i] = ft_strdup(env[i]);
+		new_env[i] = env[i]; // ADD FT_STRDUP SUR MAC ECOLE !!
 		i++;
 	}
 	new_env[size_env] = NULL;

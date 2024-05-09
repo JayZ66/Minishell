@@ -134,7 +134,7 @@ int		is_there_multiple_quotes(char *cmd);
 char	**select_path(t_minishell *minishell);
 char	*get_path(char *cmd, t_minishell *minishell);
 void	exec_cmd_with_fork(char *cmd, t_minishell *minishell, t_minishell *exit_code);
-void	child_cmd_only(char **cmd_line, t_minishell *minishell);
+void	child_cmd_only(char **cmd_line, t_minishell *minishell, char *cmd);
 void	parent_cmd_only(int pid, t_minishell *exit_code);
 void	exec_cmd(char *cmd, t_minishell *minishell);
 void	parent_process(int *pfd, char *cmd, t_minishell *exit_code);
@@ -187,6 +187,7 @@ char	*managing_quotes(char *input);
 char	*manage_simple_quotes(char *input, int i);
 char	*manage_double_quotes(char *input, int i);
 char	**split_cmd(char *var_env);
+int		is_absolute_path(char **cmd);
 
 
 

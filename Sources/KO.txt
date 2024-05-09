@@ -55,10 +55,6 @@ Sinon si meme guillemets > Ferme et i--;
 Sinon, on ajoute le texte : 
 si i != 0, pb de guillemets.
 
-- Absolute path : 
-Checker si abolute path : Si je rencontre un slash alors absolute path !
-On va pas chercher le path, on l'envoie direct a execve.
-
 - Quotes avec $ => Pas besoin des doubles quote pour
 avoir la var. d'env.
 Par contre, si ne trouve pas => Retire le bout.
@@ -66,16 +62,22 @@ Par contre, si ne trouve pas => Retire le bout.
 - Si tu trouves double quotes & 
 
 JEZA : TO DO
-- Gerer echo SALUT > OK | cat OK => OK with check_line function because
+
+- Gerer echo SALUT > OK | cat OK => DONE with check_line function because
 i'm waiting for each block, so the end of each cmd, then cat can access to ok file.
 => So how to do it ??
 - Tester de nouveau les file seuls ! + voir pour append/output or else.
-=> OK : i'm can now verify if there is one file if it exists or not.
+=> DONE : i'm can now verify if there is one file if it exists or not.
 => BUT it's not totally good bce if i have a file & then a pipe, ça
 fait la redirection du file sur STDOUT ce qui fait qu'il envoie les données à
 cat alors que normalement cat ne reçoit rien.
-idée : créer une autre fonction d'output pour l'output seul. => OK
+idée : créer une autre fonction d'output pour l'output seul. => DONE
 
+- Mettre l'env. dans une structure et tout remplacer. => DONE
+- Le mettre à jour et pouvoir y accéder, actualisé, à tout moment. => DONE
+- Absolute path : => DONE
+Checker si abolute path : Si je rencontre un slash alors absolute path !
+On va pas chercher le path, on l'envoie direct a execve.
 
 
 < ok | cat / wc => why send it to the cmd ? => DONE

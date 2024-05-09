@@ -47,26 +47,36 @@ void	exec_cmd_with_fork(char *cmd, t_minishell *minishell, t_minishell *exit_cod
 		exit(EXIT_FAILURE);
 	}
 	else if (pid == 0)
-		child_cmd_only(cmd_line, minishell);
+		child_cmd_only(cmd_line, minishell, cmd);
 	else
 		parent_cmd_only(pid, exit_code);
 }
 
-void	child_cmd_only(char **cmd_line, t_minishell *minishell)
+void	child_cmd_only(char **cmd_line, t_minishell *minishell, char *cmd)
 {
 	char	*final_path;
-
-	final_path = get_path(cmd_line[0], minishell);
-	if (!final_path)
+	if (is_absolute_path(cmd_line) == 0)
 	{
-		free_tab(cmd_line);
-		exit(EXIT_FAILURE);
+		final_path = get_path(cmd_line[0], minishell);
+		if (!final_path)
+		{
+			free_tab(cmd_line);
+			exit(EXIT_FAILURE);
+		}
+		if (execve(final_path, cmd_line, minishell->env) == -1)
+		{
+			free_tab(cmd_line);
+			free(final_path);
+			exit(EXIT_FAILURE);
+		}
 	}
-	if (execve(final_path, cmd_line, minishell->env) == -1)
+	else if (is_absolute_path(cmd_line) == 1)
 	{
-		free_tab(cmd_line);
-		free(final_path);
-		exit(EXIT_FAILURE);
+		if (execve(cmd, cmd_line, minishell->env) == -1)
+		{
+			free_tab(cmd_line);
+			exit(EXIT_FAILURE);
+		}
 	}
 }
 

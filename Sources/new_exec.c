@@ -23,7 +23,6 @@ void execute_commands_with_pipes_and_redirections(t_clean_token **lst, t_minishe
 
     int saved_stdin = dup(STDIN_FILENO);
     int saved_stdout = dup(STDOUT_FILENO);
-
     while (current) 
     {
         last_file = 0;
