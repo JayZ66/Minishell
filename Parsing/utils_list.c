@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:04:26 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/09 12:38:26 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/09 19:17:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	**realloc_env(char **env)
 	size_t	size_env;
 	size_t	i;
 
-	size_env = ft_size_env(env) + 1;
+	size_env = ft_size_env(env);
 	i = 0;
 	new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
 	if (!new_env)

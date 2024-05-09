@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/09 12:38:49 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/09 19:15:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,6 @@ int		main(int argc, char **argv, char **env)
 		free(input);
 	}
 	free_tab(minishell->env);
-	free(minishell);
+	// free(minishell);
 	return (0);
 }

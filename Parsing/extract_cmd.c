@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extract_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:07:45 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/06 14:52:45 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/09 18:49:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_token	*extract_cmd(t_token **token, char *input)
 		else
 			i = tokenize_arg(token, input, i);
 		// else
-		// 	i++;
+			// i++;
 	}
 	return (*token);
 }

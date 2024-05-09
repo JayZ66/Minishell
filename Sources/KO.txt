@@ -84,4 +84,16 @@ On va pas chercher le path, on l'envoie direct a execve.
 
 << end | cat => OK
 cat | < end.txt => SEGFAULT
-Checker parsing & execution => Invalid read of size.
+
+- Checker parsing & execution => Invalid read of size.
+- Quotes : 
+1. Mettre la gestion des quotes au début, pour gérer directement l'input.
+2. Lui envoyer une string au lieu d'un tableau de tableau !
+
+- Echo : 
+1. Gérer tous les cas d'erreurs qui n'ont pas été fait (fonction error)
+2. Voir comment gérer la var. d'env au parsing (?) => Si existe pas > Retiré de la ligne de cmd.
+3. Problème du split à voir => Parce que si var. d'env géré avant + $ > Pas besoin.
+
+- Exit : 
+1. Revoir la gestion d'erreurs !
