@@ -188,8 +188,7 @@ char	*manage_simple_quotes(char *input, int i);
 char	*manage_double_quotes(char *input, int i);
 char	**split_cmd(char *var_env);
 int		is_absolute_path(char **cmd);
-
-
+void	remove_quotes_cmd_line(t_clean_token *node);
 
 //COPY_LIST
 t_clean_token	*copy_lst(t_token *token);

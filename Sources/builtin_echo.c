@@ -20,8 +20,8 @@ void	builtin_echo(char *str, t_minishell *exit_code)
 
 	i = -1;
 	cmd_with_options = ft_split(str, ' ');
-	while (cmd_with_options[++i])
-		cmd_with_options[i] = managing_quotes(cmd_with_options[i]);
+	// while (cmd_with_options[++i])
+	// 	cmd_with_options[i] = managing_quotes(cmd_with_options[i]);
 	// cleaned_quotes = clean_quote(str);
 	// printf("quotes : %s\n", cleaned_quotes);
 	// cmd_with_options = ft_split(cleaned_quotes, ' ');

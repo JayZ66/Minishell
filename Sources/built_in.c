@@ -16,6 +16,22 @@
 This function will mimic the exit cmd.
 It'll exit the prog. based on the given output code.
 */
+
+/*
+To handle : 
+- exit 666 666 => Trop d'args. => DONE
+- exit 666 666 666 666 => DONE
+- exit 666 hola 666 => DONE
+- exit -NOMBRES => Doit fonctionner
+- exit +NOMBRES => Doit fonctionner
+- Si un niveau de quotes doit marcher !
+- Si pls caractères spéciaux : 
+quotes / + / - / etc. 
+=> erreur need numeric arg.
+- exit 9223372036854775807
+Erreur a gerer => minishell: malloc.c:2617: sysmalloc: Assertion `(old_top == initial_top (av) && old_size == 0) || ((unsigned long) (old_size) >= MINSIZE && prev_inuse (old_top) && ((unsigned long) old_end & (pagesize - 1)) == 0)' failed.
+Aborted (core dumped)
+*/
 void	builtin_exit(char **args)
 {
 	size_t	i;
@@ -25,6 +41,11 @@ void	builtin_exit(char **args)
 	exit_status = 0;
 	if (args[1] != NULL)
 	{
+		if (args[2] != NULL)
+		{
+			printf("-bash: exit: too many arguments\n");
+			return ;
+		}
 		while (args[1][i])
 		{
 			if (ft_isdigit(args[1][i]) == 0)

@@ -86,7 +86,15 @@ On va pas chercher le path, on l'envoie direct a execve.
 cat | < end.txt => SEGFAULT
 
 - Checker parsing & execution => Invalid read of size.
+- Parsing : Check des files => Faire toutes les combinaisons : 
+1. Output output
+2. Output append
+3. Append append
+4. Append output
+=> Check si besoin de le faire pour here_doc aussi ?
+
 - Quotes : 
+Important => Les quotes doivent être gérés dès le début avant de split la ligne de commande.
 1. Mettre la gestion des quotes au début, pour gérer directement l'input.
 2. Lui envoyer une string au lieu d'un tableau de tableau !
 
@@ -97,3 +105,6 @@ cat | < end.txt => SEGFAULT
 
 - Exit : 
 1. Revoir la gestion d'erreurs !
+
+- Export : 
+ERROR (malloc corrupted top size) => Check à l'école !

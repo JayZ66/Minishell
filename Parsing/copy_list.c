@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   copy_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:09:29 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/06 15:01:59 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/10 12:42:08 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,5 @@ t_clean_token *copy_lst(t_token *token)
             token = token->next; // Avancer pour sauter le pipe
         }
     }
-    return clean_list;
+    return (clean_list);
 }

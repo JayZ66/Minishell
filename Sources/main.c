@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/09 19:15:49 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/12 17:12:02 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char	*read_input(void)
 int		main(int argc, char **argv, char **env)
 {
 	char			*input;
+	char			*result;
     t_minishell		exit_code;
 	t_token			*token;
 	t_clean_token 	*clean_token;
@@ -65,7 +66,9 @@ int		main(int argc, char **argv, char **env)
             free(input);
             continue ;
         }
-		token = extract_cmd(&token, input); // condition si input vide
+		// result = managing_quotes(input);
+		result = clean_quote(input);
+		token = extract_cmd(&token, result); // condition si input vide
 		t_token *head = token;
 		clean_chevron(token);
 		clean_spaces1(token);
