@@ -12,6 +12,37 @@
 
 #include "../minishell.h"
 
+/*
+Need to handle : 
+- echoHola => Need to go to the exec. or to manage the error.
+- echo-nHola => Same
+- echo   \n hello => Need to pass le \
+=> Global error management ?
+- echo "          " | cat -e
+=> Need to keep the space and exec the cmd line.
+=> Can't work bce of split with space => to check !
+- ""''echo hola""'''' que""'' tal""'' 
+=> Manage quotes
+- echo -n -nnn -nnnn => Si le 1er -n a plein de n fonctionne et le fait.
+=> Need to do the -n & skip the others.
+So the input is empty.
+- echo -n -nnn hola -nnnn
+=> Need to do -n, then skip the 3 n
+& write hola -nnnn
+- echo -nnn --------n
+=> Need to do -n & print ---------n
+- echo -nnn -----nn---nnnn
+=> Need to do -n & to print le reste.
+- echo -nnn --------nnnn
+=> Need to do -n & print le reste.
+- echo " $ " | cat -e
+- echo ' $ ' | cat -e
+Echo n'affiche pas le $ !
+Gerer les quotes avant le split !
+=> Garder le $
+- Cf. KO.txt pour gerer la var. d'env avec echo.
+*/
+
 void	builtin_echo(char *str, t_minishell *exit_code)
 {
 	char	**cmd_with_options;
