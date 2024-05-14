@@ -43,43 +43,72 @@ Gerer les quotes avant le split !
 - Cf. KO.txt pour gerer la var. d'env avec echo.
 */
 
-void	builtin_echo(char *str, t_minishell *exit_code)
+void    builtin_echo(char *str, t_minishell *exit_code)
 {
-	char	**cmd_with_options;
-	// char	*cleaned_quotes;
-	size_t	i;
+    char    **cmd_with_options;
+    // char    *cleaned_quotes;
+    size_t    i;
 
-	i = -1;
-	cmd_with_options = ft_split(str, ' ');
-	// while (cmd_with_options[++i])
-	// 	cmd_with_options[i] = managing_quotes(cmd_with_options[i]);
-	// cleaned_quotes = clean_quote(str);
-	// printf("quotes : %s\n", cleaned_quotes);
-	// cmd_with_options = ft_split(cleaned_quotes, ' ');
-	i = -1;
-	if (cmd_with_options[1] && (ft_strcmp(cmd_with_options[1], "-n") != 0)
-		&& (ft_strcmp(cmd_with_options[0], "-n") != 0))
+    i = -1;
+    cmd_with_options = ft_split(str, ' ');
+    // while (cmd_with_options[++i])
+    //     cmd_with_options[i] = managing_quotes(cmd_with_options[i]);
+    // cleaned_quotes = clean_quote(str);
+    // printf("quotes : %s\n", cleaned_quotes);
+    // cmd_with_options = ft_split(cleaned_quotes, ' ');
+    i = -1;
+    if (ft_strschr(cmd_with_options[1], "-n") == 0 || ft_strschr(cmd_with_options[0], "-n") == 0)
+        handle_echo_with_n(cmd_with_options);
+    else if (cmd_with_options[1] && (ft_strcmp(cmd_with_options[1], "-n") != 0)
+        && (ft_strcmp(cmd_with_options[0], "-n") != 0))
+    {
+        while (cmd_with_options[++i])
+        {
+            if (ft_strcmp(cmd_with_options[i], "echo") == 0)
+                i++;
+            if (ft_strschr(cmd_with_options[i], "$?") == 0 || ft_strschr(cmd_with_options[i], "$?$") == 0)
+            {
+                printf("%d\n", exit_code->last_exit_status);
+                break ;
+            }
+            printf("%s ", cmd_with_options[i]);
+            if (cmd_with_options[i + 1] == NULL)
+                printf("\n");
+        }
+    }
+    // else if (ft_strcmp(cmd_with_options[1], "-n") == 0
+    //     || ft_strcmp(cmd_with_options[0], "-n") == 0)
+        // handle_echo_with_n(cmd_with_options);
+    else
+        printf("\n");
+    free_tab(cmd_with_options);
+}
+
+
+size_t	count_sign(char **cmd)
+{
+	size_t	i;
+	size_t	j;
+	size_t	count_sign;
+
+	i = 0;
+	if (ft_strncmp(cmd[i], "echo", 4) == 0)
+		i++;
+	while (cmd[i])
 	{
-		while (cmd_with_options[++i])
+		j = 0;
+		count_sign = 0;
+		while (cmd[i][j])
 		{
-			if (ft_strcmp(cmd_with_options[i], "echo") == 0)
-				i++;
-			if (ft_strschr(cmd_with_options[i], "$?") == 0 || ft_strschr(cmd_with_options[i], "$?$") == 0)
-			{
-				printf("%d\n", exit_code->last_exit_status);
-				break ;
-			}
-			printf("%s ", cmd_with_options[i]);
-			if (cmd_with_options[i + 1] == NULL)
-				printf("\n");
+			if (cmd[i][j] == '-')
+					count_sign++;
+			if (count_sign > 1 || count_sign == 0)
+				return (i);
+			j++;
 		}
+		i++;
 	}
-	else if (ft_strcmp(cmd_with_options[1], "-n") == 0
-		|| ft_strcmp(cmd_with_options[0], "-n") == 0)
-		handle_echo_with_n(cmd_with_options);
-	else
-		printf("\n");
-	free_tab(cmd_with_options);
+	return (i);
 }
 
 /*
@@ -87,25 +116,25 @@ void	builtin_echo(char *str, t_minishell *exit_code)
 2. On le saut et on affiche tout le reste
 3. On ne met pas de /n à la fin.
 */
-void	handle_echo_with_n(char **cmd)
+void    handle_echo_with_n(char **cmd)
 {
-	size_t	i;
+    size_t	i;
 
-	i = 1;
-	while (cmd[i])
-	{
-		if (ft_strcmp(cmd[i], "-n") == 0)
-		{
-			i++;
-			continue ;
-		}
-		if (cmd[i + 1] == NULL)
-			printf("%s", cmd[i]);
-		else
-			printf("%s ", cmd[i]);
-		fflush(stdout);
-		i++;
-	}
+	i = count_sign(cmd);
+    while (cmd[i])
+    {
+		// if (ft_strschr(cmd[i], "-n") == 0)
+		// {
+		// 	i++;
+		// 	continue ;
+		// }
+        if (cmd[i + 1] == NULL)
+            printf("%s", cmd[i]);
+        else
+            printf("%s ", cmd[i]);
+        // fflush(stdout);
+        i++;
+    }
 }
 
 // char  *handle_quotes(char *cmd)

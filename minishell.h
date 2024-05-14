@@ -119,6 +119,7 @@ char	**get_new_pwd(t_minishell *minishell, char **new_env, char **cmd);
 char	**change_pwd_env(t_minishell *minishell, char **new_env, size_t cwd_len, char *cwd);
 void	builtin_echo(char *str, t_minishell *exit_code);
 void	handle_echo_with_n(char **cmd);
+size_t	count_sign(char **cmd);
 char	*clean_quote(char *str);
 char	*handle_quotes(char *cmd);
 char	*copy_string_without_char(const char *source, char exclude_char);
