@@ -100,6 +100,8 @@ void	builtin_export(char *var_env, t_minishell *minishell);
 char	**create_var_env(t_minishell *minishell, char *var);
 char	**modify_value_env(t_minishell *minishell, char *var, char *new_value);
 void	modify_or_create(char **args, t_minishell *minishell, size_t i, size_t j);
+int	identifier_errors(char *args);
+int	check_char(char c);
 char	**manage_quote_export(char *input);
 int		if_quote(char *var_env);
 int		is_something_after_equal(char *str);

@@ -177,10 +177,10 @@ char	**split_cmd(char *var_env)
 	char	**args;
 
 	args = NULL;
-	if (if_quote(var_env) == 1)
-		args = manage_quote_export(var_env);
-	else
-		args = ft_split(var_env, ' ');
+	// if (if_quote(var_env) == 1)
+	// 	args = manage_quote_export(var_env);
+	// else
+	args = ft_split(var_env, ' ');
 	return (args);
 }
 
@@ -190,27 +190,71 @@ void	print_export_env(t_minishell *minishell)
 	return ;
 }
 
+int	check_char(char c)
+{
+	if ((c >= 33 && c <= 35) || (c >= 37 && c <= 47) || (c >= 58 && c <= 59)
+		|| c == 64 || (c >= 91 && c <= 94) || c == 96 || (c >= 123 && c <= 126))
+		return (1);
+	else
+		return (0);
+}
+
+/*
+To handle : 
+Inclure =>
+- $
+- ?
+- _
+Exclure : 
+- 33 to 35
+- 37 to 47
+- 58 to 62
+- 64
+- 91 to 94
+ - 96
+ - 123 to 126
+*/
+int	identifier_errors(char *args)
+{
+	size_t	i;
+
+	i = 0;
+	while (args[i])
+	{
+		if (check_char(args[i]) == 1)
+		{
+			printf("bash: export: '%s': not a valid identifier\n", args);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 void	builtin_export(char *var_env, t_minishell *minishell)
 {
 	size_t	i;
 	size_t	j;
 	char	**args;
 
-	i = -1;
+	i = 0;
 	args = split_cmd(var_env);
 	if (args[1] != NULL)
 	{
 		while (args[++i])
 		{
-			j = -1;
-			while (args[i][++j])
+			j = 0;
+			if (identifier_errors(args[i]) == 1)
+				i++;
+			while (args[i][j])
 			{
-				if (args[i][j] == '=')
+				if (args[i][j] == '=' || args[i][j + 1] == 32 || args[i][j + 1] == '\0')
 				{
 					modify_or_create(args, minishell, i, j);
 					if (args[i + 1] == NULL)
 						return ;
 				}
+				j++;
 			}
 		}
 	}

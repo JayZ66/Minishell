@@ -110,9 +110,18 @@ Important => Les quotes doivent être gérés dès le début avant de split la l
 - Exit : DONE => Just need to fix memory errors with parsing.
 1. Revoir la gestion d'erreurs !
 
-
-- Export : 
-ERROR (malloc corrupted top size) => Check à l'école !
-
 Attention : Si en input j'ai export HOLA=ok le parsing ne me
 met pas d'espace !!
+
+Exit : 
+Check pour sortir du prog.
+
+Unset : 
+Can't find the var. i've just added. => DONE
+Check errors like export.
+
+pwd : 
+Errors
+
+CD : 
+Si cd xxx puis env => Marche plus

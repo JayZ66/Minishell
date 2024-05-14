@@ -145,7 +145,8 @@ void	manage_here_doc(t_clean_token **current, t_minishell *exit_code, char *cont
 int	manage_redirection_input(t_clean_token **current, t_minishell *exit_code, int first_file)
 {
 	int	alone;
-
+	// while ((*current)->next->type == INPUT || (*current)->next->type == HERE_DOC)
+	// 	*current = (*current)->next;
 	if ((*current)->type == INPUT && ((*current)->next
 			&& (*current)->next->type == CMD))
 		first_file = manage_input_redirection(current, (*current)->content, first_file);
@@ -167,6 +168,8 @@ int	manage_redirection_input(t_clean_token **current, t_minishell *exit_code, in
 
 int	manage_redirection_output(t_clean_token **current, int last_file)
 {
+	// while ((*current)->next->type == OUTPUT || (*current)->next->type == APPEND)
+	// 	*current = (*current)->next;
 	if ((*current)->type == CMD && ((*current)->next
 				&& (*current)->next->type == OUTPUT))
 				last_file = manage_output_redirection((*current)->next->content, last_file);

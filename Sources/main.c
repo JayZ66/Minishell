@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/13 11:36:50 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/14 17:18:32 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*read_input(void)
 int		main(int argc, char **argv, char **env)
 {
 	char			*input;
-	char			*result;
+	// char			*result;
     t_minishell		exit_code;
 	t_token			*token;
 	t_clean_token 	*clean_token;
@@ -67,8 +67,8 @@ int		main(int argc, char **argv, char **env)
             continue ;
         }
 		// result = managing_quotes(input);
-		result = clean_quote(input);
-		token = extract_cmd(&token, result); // condition si input vide
+		// result = clean_quote(input);
+		token = extract_cmd(&token, input); // condition si input vide
 		t_token *head = token;
 		clean_chevron(token);
 		clean_spaces1(token);
@@ -86,7 +86,6 @@ int		main(int argc, char **argv, char **env)
 		free_that_clean_lst(&clean_token);
 		//gerer les builtins car si je mets un espace pb
 		//pb sur pwd pour le moment
-
 		free(input);
 	}
 	free_tab(minishell->env);

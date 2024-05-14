@@ -107,10 +107,14 @@ void	builtin_exit(char **args)
 		{
 			printf("Exit_status : %d\n", exit_status);
 			exit(exit_status);
+			exit(EXIT_SUCCESS);
 		}
 	}
 	else
+	{
 		exit(0);
+		exit(EXIT_SUCCESS);
+	}
 }
 // Check if else is necessary for errors.
 

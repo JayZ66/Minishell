@@ -57,7 +57,7 @@ void    builtin_echo(char *str, t_minishell *exit_code)
     // printf("quotes : %s\n", cleaned_quotes);
     // cmd_with_options = ft_split(cleaned_quotes, ' ');
     i = -1;
-    if (ft_strschr(cmd_with_options[1], "-n") == 0 || ft_strschr(cmd_with_options[0], "-n") == 0)
+    if (((ft_strschr(cmd_with_options[1], "-n") == 0 || ft_strschr(cmd_with_options[0], "-n") == 0) && count_sign(cmd_with_options) > 1))
         handle_echo_with_n(cmd_with_options);
     else if (cmd_with_options[1] && (ft_strcmp(cmd_with_options[1], "-n") != 0)
         && (ft_strcmp(cmd_with_options[0], "-n") != 0))
