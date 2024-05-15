@@ -108,6 +108,14 @@ int	manage_append_redirection(char *node_content, int last_file)
 
 void	exec_cmd_with_pipe(t_clean_token **current, t_minishell *exit_code, int last_file, t_minishell *minishell)
 {
+	// char	**args;
+
+	// args = ft_split((*current)->content, ' ');
+	// if (ft_strncmp((*current)->content, "exit", 4) != 0)
+	// {
+	// 	builtin_exit(args, exit_code);
+	// 	free_tab(args);
+	// }
 	if (is_built_in((*current)->content) == 0)
 		redir_builtin((*current)->content, exit_code, minishell, last_file);
 	else
@@ -121,6 +129,14 @@ void	exec_cmd_with_pipe(t_clean_token **current, t_minishell *exit_code, int las
 
 void	exec_simple_cmd(t_clean_token **current, t_minishell *exit_code, t_minishell *minishell)
 {
+	// char	**args;
+
+	// args = ft_split((*current)->content, ' ');
+	// if (ft_strncmp((*current)->content, "exit", 4) != 0)
+	// {
+	// 	builtin_exit(args, exit_code);
+	// 	free_tab(args);
+	// }
 	if (builtin_or_not_builtin((*current)->content, minishell, exit_code) == 0)
 		;
 	else

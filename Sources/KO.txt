@@ -107,14 +107,11 @@ Important => Les quotes doivent être gérés dès le début avant de split la l
 => Par contre il retire le $.
 + Gerer les quotes avant echo.
 
-- Exit : DONE => Just need to fix memory errors with parsing.
-1. Revoir la gestion d'erreurs !
-
 Attention : Si en input j'ai export HOLA=ok le parsing ne me
 met pas d'espace !!
 
-Exit : 
-Check pour sortir du prog.
+Exit : DONE => But check if with pipe doesn't work. => DONE
+exit | ls => Do ls but not exit ! => OK
 
 Unset : 
 Can't find the var. i've just added. => DONE
@@ -125,3 +122,25 @@ Errors
 
 CD : 
 Si cd xxx puis env => Marche plus
+
+Quotes & Var. d'env : 
+- D'abord on gere les quotes et ensuite la var. d'env.
+=> Par contre il faut gerer les quotes avant et donc reconnaitre
+le type de quotes :
+- Si simple > c'est une phrase litterale > On garde le texte.
+- Si double ou rien > c'est une variable > On change par sa valeur.
+Var. Env. : 
+- Si entre double quote ou tout seul => On met la valeur de la variable d'env.
+- Si entre si;ple quote => On laisse tel quel et on envoie a echo.
+
+Code de sortie : 
+=> Mettre a jour a chq sortie du programme.
+=> Dans le parsing > Remplacer.
+> Si code d'erreur tout seul = error
+> Si code erreur avec echo > OK
+
+Gestion d'erreurs : DONE
+Si cmd avec quotes pas fermes ! => Errors.
+
+HERE_DOC SOLO : 
+=> SEGFAULT

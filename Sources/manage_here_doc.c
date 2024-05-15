@@ -34,7 +34,6 @@ void	handle_here_doc(char *cmd, t_minishell *exit_code, int alone)
 		parent_here_doc(pfd, cmd, exit_code);
 }
 
-// JE DOIS RECEVOIR LE NODE AVEC DES ESPACES !
 void	child_here_doc(int *pfd, char *cmd, int alone)
 {
 	char	**limiter;

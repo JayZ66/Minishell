@@ -67,17 +67,22 @@ void	sort_tab(t_minishell *minishell)
 void	modify_or_create(char **args, t_minishell *minishell, size_t i, size_t j)
 {
 	char	*var;
+	char	*new_var;
 	// char	**new_env;
-	var = ft_substr(args[i], 0, j);
-	if (is_var_in_env(var, minishell) == 1)
+	new_var = ft_substr(args[i], 0, j + 1);
+	if (is_var_in_env(new_var, minishell) == 1)
 	{
-		minishell->env = modify_value_env(minishell, var, args[i] + j);
+		var = check_value(args[i]);
+		minishell->env = modify_value_env(minishell, new_var, args[i] + j + 1);
+		free(new_var);
 		free(var);
 	}
 	else
 	{
-		minishell->env = create_var_env(minishell, args[i]);
+		var = check_value(args[i]);
+		minishell->env = create_var_env(minishell, var);
 		free(var);
+		free(new_var);
 	}
 	return ;
 }

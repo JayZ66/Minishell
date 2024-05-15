@@ -40,6 +40,7 @@ char	**modify_value_env(t_minishell *minishell, char *var, char *new_value)
 			i++;
 		}
 		new_env[i] = ft_strdup(minishell->env[i]);
+		// free(minishell->env[i]);
 	}
 	// free_tab(env);
 	new_env[size_env] = NULL;
@@ -62,6 +63,28 @@ char	*copy_new_value(char *new_env, char *var, char *new_value)
 	return (new_env);
 }
 
+char	*check_value(char *var)
+{
+	size_t	i;
+
+	i = 0;
+	while (var[i])
+	{
+		if (var[i] == '!')
+		{
+			printf("bash: %s: event not found\n", var + i);
+			return (ft_substr(var, 0, i));
+		}
+		else if (var[i] == ';')
+		{
+			printf("bash: %s: command not found\n", var + i);
+			return (ft_substr(var, 0, i));
+		}
+		i++;
+	}
+	return (var);
+}
+
 char	**create_var_env(t_minishell *minishell, char *var)
 {
 	size_t	size_env;
@@ -79,10 +102,10 @@ char	**create_var_env(t_minishell *minishell, char *var)
 	while (i < size_env)
 	{
 		new_env[i] = ft_strdup(minishell->env[i]);
-		// free(env[i]);
 		i++;
 	}
-	// free(env);
+	// free var ?
+	// new_var = check_value(var);
 	new_env[size_env] = ft_strdup(var);
 	new_env[size_env + 1] = NULL;
 	return (new_env);
@@ -190,13 +213,39 @@ void	print_export_env(t_minishell *minishell)
 	return ;
 }
 
-int	check_char(char c)
+int	check_char_unset(char c)
+{
+	if ((c >= 33 && c <= 35) || (c >= 37 && c <= 47) || (c >= 58 && c <= 64)
+		|| (c >= 91 && c <= 94) || c == 96 || (c >= 123 && c <= 126))
+		return (1);
+	else
+		return (0);
+}
+
+int	check_char_export(char c)
 {
 	if ((c >= 33 && c <= 35) || (c >= 37 && c <= 47) || (c >= 58 && c <= 59)
 		|| c == 64 || (c >= 91 && c <= 94) || c == 96 || (c >= 123 && c <= 126))
 		return (1);
 	else
 		return (0);
+}
+
+int	identifier_errors_unset(char *args)
+{
+	size_t	i;
+
+	i = 0;
+	while (args[i])
+	{
+		if (check_char_unset(args[i]) == 1)
+		{
+			printf("bash: export: '%s': not a valid identifier\n", args);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 /*
@@ -214,19 +263,29 @@ Exclure :
  - 96
  - 123 to 126
 */
-int	identifier_errors(char *args)
+int	identifier_errors_export(char *args)
 {
 	size_t	i;
 
 	i = 0;
-	while (args[i])
+	while (args[i] && args[i] != '=')
 	{
-		if (check_char(args[i]) == 1)
+		if (ft_isalpha(args[0]) == 0)
+		{
+			printf("bash: export: '%s': not a valid identifier\n", args);
+			return (1);
+		}
+		else if (check_char_export(args[i]) == 1)
 		{
 			printf("bash: export: '%s': not a valid identifier\n", args);
 			return (1);
 		}
 		i++;
+	}
+	if (args[i] == '=' && ((!args[i - 1]) || (args[i - 1] >= 9 && args[i - 1] <= 13)))
+	{
+		printf("bash: export: '%s': not a valid identifier\n", args);
+		return (1);
 	}
 	return (0);
 }
@@ -244,11 +303,15 @@ void	builtin_export(char *var_env, t_minishell *minishell)
 		while (args[++i])
 		{
 			j = 0;
-			if (identifier_errors(args[i]) == 1)
+			if (identifier_errors_export(args[i]) == 1)
+			{
+				if (args[i + 1] == NULL)
+					break ;
 				i++;
+			}
 			while (args[i][j])
 			{
-				if (args[i][j] == '=' || args[i][j + 1] == 32 || args[i][j + 1] == '\0')
+				if (args[i][j] == '=')
 				{
 					modify_or_create(args, minishell, i, j);
 					if (args[i + 1] == NULL)
@@ -263,7 +326,7 @@ void	builtin_export(char *var_env, t_minishell *minishell)
 		print_export_env(minishell);
 		return ;
 	}
-	printf("bash: export: '%s': not a valid identifier\n", args[1]);
+	// printf("bash: export: '%s': not a valid identifier\n", args[1]);
 	return ;
 }
 

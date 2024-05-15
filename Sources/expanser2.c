@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanser2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:55:48 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/10 12:45:39 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/15 09:49:09 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	builtin_or_not_builtin(char *str, t_minishell *minishell, t_minishell *exit_
 	else if (ft_strncmp(str, "env", 4) == 0)
 		builtin_env(minishell);
 	else if (ft_strncmp(str, "exit", 4) == 0)
-		builtin_exit(cmd);
+		builtin_exit(cmd, exit_code);
 	else if (ft_strncmp(str, "unset", 5) == 0)
 		builtin_unset(cmd, minishell);
 	else if (ft_strncmp(str, "cd", 2) == 0)

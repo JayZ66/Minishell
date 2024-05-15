@@ -14,28 +14,28 @@
 #include <stdio.h>
 
 
-char	*ft_strdup(const char *s)
-{
-	char	*dest;
-	size_t	i;
+// char	*ft_strdup(const char *s)
+// {
+// 	char	*dest;
+// 	size_t	i;
 
-	i = ft_strlen(s);
-	if (s == NULL)
-		return (NULL);
-	dest = (char *)malloc(sizeof(char) * (i + 1));
-	if (dest == NULL)
-		return (NULL);
-	i = 0;
-	while (s[i])
-	{
-		dest[i] = s[i];
-		// if (dest[i] == '\n')
-		// 	dest[i] = '\0';
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
+// 	i = ft_strlen(s);
+// 	if (s == NULL)
+// 		return (NULL);
+// 	dest = (char *)malloc(sizeof(char) * (i + 1));
+// 	if (dest == NULL)
+// 		return (NULL);
+// 	i = 0;
+// 	while (s[i])
+// 	{
+// 		dest[i] = s[i];
+// 		// if (dest[i] == '\n')
+// 		// 	dest[i] = '\0';
+// 		i++;
+// 	}
+// 	dest[i] = '\0';
+// 	return (dest);
+// }
 
 // char	*ft_strdup(const char *str)
 // {
@@ -49,20 +49,20 @@ char	*ft_strdup(const char *s)
 // 	return ((char *)ft_memcpy(new, str, len));
 // }
 
-// char	*ft_strdup(const char *s)
-// {
-// 	char	*dup;
-// 	int		i;
+char	*ft_strdup(const char *s)
+{
+	char	*dup;
+	int		i;
 
-// 	i = 0;
-// 	dup = malloc((ft_strlen(s) + 1) * sizeof(char));
-// 	if (!dup)
-// 		return (NULL);
-// 	while (s[i])
-// 	{
-// 		dup[i] = s[i];
-// 		i++;
-// 	}
-// 	dup[i] = '\0';
-// 	return (dup);
-// }
+	i = 0;
+	dup = malloc((ft_strlen(s) + 1) * sizeof(char));
+	if (!dup)
+		return (NULL);
+	while (s[i])
+	{
+		dup[i] = s[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
+}
