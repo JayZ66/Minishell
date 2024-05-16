@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 12:56:56 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/15 20:30:52 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/16 19:35:37 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 int		ft_strschr(const char *str, char *ligne);
+int ft_isspace(const char *str);
 
 #endif

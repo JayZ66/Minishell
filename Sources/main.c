@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/16 08:59:05 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/16 19:35:52 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		main(int argc, char **argv, char **env)
 	while (1)
 	{
 		input = read_input();
-        if (ft_strlen(input) == 0)
+        if (ft_strlen(input) == 0 || ft_isspace(input) == 1)
         {
             rl_on_new_line();
             free(input);
@@ -77,7 +77,7 @@ int		main(int argc, char **argv, char **env)
 		// printf("%s|\n", token->content);
 		manage_node(token);
 		clean_spaces2(token);
-		if (verif_pipe(token) == 1) // WHAT ??
+		if (verif_pipe(token) == 1)
         {
             rl_on_new_line();
             free(input);

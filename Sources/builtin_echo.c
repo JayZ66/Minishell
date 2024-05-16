@@ -129,9 +129,9 @@ void    handle_echo_with_n(char **cmd)
 		// 	continue ;
 		// }
         if (cmd[i + 1] == NULL)
-            printf("%s", cmd[i]);
+			ft_putstr_fd(cmd[i], 1);
         else
-            printf("%s ", cmd[i]);
+            ft_putstr_fd(cmd[i], 1);
         // fflush(stdout);
         i++;
     }

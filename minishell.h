@@ -101,6 +101,7 @@ void	print_export_env(t_minishell *minishell);
 void	builtin_exit(char **args, t_minishell *exit_code);
 char	**is_char_ok(char **args);
 void	builtin_pwd(void);
+int		check_pwd_option(char *str);
 void	builtin_unset(char **var, t_minishell *minishell);
 void	builtin_env(t_minishell *minishell);
 void	builtin_export(char *var_env, t_minishell *minishell);

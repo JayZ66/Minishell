@@ -84,7 +84,6 @@ On va pas chercher le path, on l'envoie direct a execve.
 < ok | cat / wc => why send it to the cmd ? => DONE
 
 << end | cat => OK
-cat | < end.txt => SEGFAULT
 
 - Checker parsing & execution => Invalid read of size.
 - Parsing : Check des files => Faire toutes les combinaisons : 
@@ -117,11 +116,19 @@ Unset : DONE
 Can't find the var. i've just added. => DONE
 Check errors like export. => OK
 
-pwd : 
-Errors
+pwd : DONE
+- Errors => OK
+- Tester si MAJ dans l'env. => OK
+
+export :
+- Ne pas afficher la derniere ligne de l'env.
 
 CD : 
 Si cd xxx puis env => Marche plus
+- Si // on print deux slash avec \n.
+- Sinon on print un slash avec \n.
+- cd .. => 2 fois SEGFAULT
+
 
 Quotes & Var. d'env : 
 - D'abord on gere les quotes et ensuite la var. d'env.
@@ -142,5 +149,14 @@ Code de sortie :
 Gestion d'erreurs : DONE
 Si cmd avec quotes pas fermes ! => Errors.
 
-HERE_DOC SOLO : 
+HERE_DOC SOLO : DONE
 => SEGFAULT
+
+cat | < end.txt : DONE
+=> SEGFAULT
+
+echo SALUT > output => Print sur le terminal et pas dans le fichier. => DONE
+
+echo : 
+Si \ alors on skip ce caractere.
+

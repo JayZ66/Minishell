@@ -32,7 +32,8 @@ int	manage_input_redirection(t_final_token **current, char *node_content, int fi
 	}
 	dup2(first_file, STDIN_FILENO);
 	close(first_file);
-	*current = (*current)->next;
+	if ((*current)->next)
+		*current = (*current)->next;
 	return (first_file);
 }
 
@@ -46,7 +47,8 @@ int	manage_solo_input_redirection(t_final_token **current, char *node_content, i
 	}
 	// dup2(first_file, STDIN_FILENO);
 	close(first_file);
-	*current = (*current)->next;
+	if ((*current)->next)
+		*current = (*current)->next;
 	return (first_file);
 }
 

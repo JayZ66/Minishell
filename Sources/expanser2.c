@@ -6,11 +6,29 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:55:48 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/15 20:59:58 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:57:34 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+
+int	check_pwd_option(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '-')
+		{
+			printf("bash: pwd: %s: invalid option\n", str + i);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
 
 /*
 DetectBuiltInCmd
@@ -26,7 +44,10 @@ int	builtin_or_not_builtin(char *str, t_minishell *minishell, t_minishell *exit_
 
 	cmd = ft_split(str, ' ');
 	if (ft_strncmp(str, "pwd", 3) == 0)
-		builtin_pwd();
+	{
+		if (check_pwd_option(str) == 0)
+			builtin_pwd();
+	}
 	else if (ft_strncmp(str, "env", 4) == 0)
 		builtin_env(minishell);
 	else if (ft_strncmp(str, "exit", 4) == 0)
