@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:04:26 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/14 17:48:04 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/16 08:58:38 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,23 @@ char	**realloc_env(char **env)
 	}
 	new_env[size_env] = NULL;
 	return (new_env);
+}
+
+void    free_that_final_lst(t_final_token **token)
+{
+	t_final_token	*tmp;
+
+	// if (!(*token))
+	// {
+	// 	perror("Clean lst is empty, can't free\n");
+	// 	exit(EXIT_FAILURE);
+	// }
+	while(*token)
+	{
+		tmp = (*token)->next;
+		free((*token)->content);
+		free(*token);
+		*token = tmp;
+	}
+	*token = NULL;
 }

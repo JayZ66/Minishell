@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/15 10:32:57 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/16 08:59:05 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int		main(int argc, char **argv, char **env)
     t_minishell		exit_code;
 	t_token			*token;
 	t_clean_token 	*clean_token;
+	t_final_token	*final_token;
 	t_minishell		*minishell;
 
 	token = NULL;
@@ -52,6 +53,7 @@ int		main(int argc, char **argv, char **env)
 	manage_signals();
     exit_code.last_exit_status = 0;
 	clean_token = (t_clean_token *)malloc(sizeof(t_clean_token));
+	final_token = (t_final_token *)malloc(sizeof(t_final_token));
 	if (argc != 1 || argv[1])
 		return (perror("Wrong nb of args\n"), 1);
     minishell->env = realloc_env(env);
@@ -75,15 +77,28 @@ int		main(int argc, char **argv, char **env)
 		// printf("%s|\n", token->content);
 		manage_node(token);
 		clean_spaces2(token);
+		if (verif_pipe(token) == 1) // WHAT ??
+        {
+            rl_on_new_line();
+            free(input);
+			while(token)
+			{
+				free(token->content);
+				token = token->next;
+			}
+            continue ;
+        }
 		token = head;
 		// printf("token = %s\n", token->content);
 		clean_token = copy_lst(token);
 		print_clean_lst(clean_token);
 		test_redirection_input(clean_token);
+		final_token = final_clean_node(clean_token);
 		// check_line(&clean_token, env, &exit_code);
-		execute_commands_with_pipes_and_redirections(&clean_token, minishell, &exit_code);
+		execute_commands_with_pipes_and_redirections(&final_token, minishell, &exit_code);
 		free_that_lst(&token);
 		free_that_clean_lst(&clean_token);
+		free_that_final_lst(&final_token);
 		//gerer les builtins car si je mets un espace pb
 		//pb sur pwd pour le moment
 		free(input);

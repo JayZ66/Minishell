@@ -13,9 +13,9 @@
 #include "../minishell.h"
 
 
-void execute_commands_with_pipes_and_redirections(t_clean_token **lst, t_minishell *minishell, t_minishell *exit_code) 
+void execute_commands_with_pipes_and_redirections(t_final_token **lst, t_minishell *minishell, t_minishell *exit_code) 
 {
-    t_clean_token *current = *lst;
+    t_final_token *current = *lst;
     int pid_array[1024]; 
     int index = 0;
     int first_file;
@@ -69,7 +69,7 @@ void execute_commands_with_pipes_and_redirections(t_clean_token **lst, t_minishe
                 }
             }
         }
-        else if (current->type == CMD) // Check if we don't need to make a special case for builtin
+        else if (current->type == CMD)
         {
             // if (ft_strncmp(current->content, "cat", 3) == 0)
             //     break ;

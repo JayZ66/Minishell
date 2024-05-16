@@ -113,9 +113,9 @@ met pas d'espace !!
 Exit : DONE => But check if with pipe doesn't work. => DONE
 exit | ls => Do ls but not exit ! => OK
 
-Unset : 
+Unset : DONE
 Can't find the var. i've just added. => DONE
-Check errors like export.
+Check errors like export. => OK
 
 pwd : 
 Errors

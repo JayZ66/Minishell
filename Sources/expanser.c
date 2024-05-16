@@ -124,9 +124,9 @@ char	*extract_var(char *str)
 	return (NULL);
 }
 
-int	check_var(t_clean_token *node)
+int	check_var(t_final_token *node)
 {
-	t_clean_token	*tmp;
+	t_final_token	*tmp;
 	size_t	i;
 
 	tmp = node;
@@ -150,9 +150,9 @@ int	check_var(t_clean_token *node)
 	return (1);
 }
 
-char	*get_the_var_of_env(t_clean_token *node)
+char	*get_the_var_of_env(t_final_token *node)
 {
-	t_clean_token	*tmp;
+	t_final_token	*tmp;
 	char	*var;
 	size_t	i;
 

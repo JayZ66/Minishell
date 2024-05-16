@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_nodes.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:08:10 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/06 16:54:55 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/15 15:38:34 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,4 +137,23 @@ void	manage_node(t_token *token)
 			cut_node(token);
 		token = token->next;
 	}
+}
+
+int		verif_pipe(t_token *token)
+{
+	if (token->type == PIPE)
+	{
+		printf("bash syntax error: pipe\n");
+		return (1);
+	}
+	while (token->next)
+	{
+		if (token->type == PIPE && token->next->type == PIPE)
+		{
+			printf("bash syntax error: pipe\n");
+			return (1);
+		}
+		token = token->next;
+	}
+	return (0);
 }

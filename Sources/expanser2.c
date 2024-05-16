@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:55:48 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/15 09:49:09 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/15 20:59:58 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ char	*removing_one_level_of_quote(char *cmd, char c, size_t i)
 	return (str = NULL);
 }
 
-void	remove_quotes_cmd_line(t_clean_token *node)
+void	remove_quotes_cmd_line(t_final_token *node)
 {
 	while (node)
 	{
