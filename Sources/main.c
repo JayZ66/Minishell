@@ -6,20 +6,22 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/16 19:35:52 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/17 17:39:37 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*read_input(void)
+char	*read_input(t_minishell *minishell)
 {
 	char	*input;
+	(void)minishell;
 
 	input = readline(">$");
 	if (input == NULL) // Manage ctrl + d bce this is not a signal (ascii).
 	{
 		free(input);
+		// free_tab(minishell->env);
 		exit(EXIT_FAILURE);
 	}
     if (ft_strncmp(input, ":", 1) == 0 || ft_strncmp(input, "!", 1) == 0)
@@ -61,7 +63,7 @@ int		main(int argc, char **argv, char **env)
 	// 	return (perror("Realloc env. failed\n"), 1);
 	while (1)
 	{
-		input = read_input();
+		input = read_input(minishell);
         if (ft_strlen(input) == 0 || ft_isspace(input) == 1)
         {
             rl_on_new_line();
@@ -104,6 +106,5 @@ int		main(int argc, char **argv, char **env)
 		free(input);
 	}
 	free_tab(minishell->env);
-	// free(minishell);
 	return (0);
 }

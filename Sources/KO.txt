@@ -21,16 +21,35 @@ cat > ok
 cat < ok => DONE
 - Gestion env + update => DONE
 
-
-- > - | - < - \ 
+- > - | - < - \ => DONE
 => Erreurs a gerer pour arreter le prog.
 
 - Minishell>$echo -nnn ------------------n
 malloc(): corrupted top size
 
-- echo >< | echo > < + gestion | | + etc.
+Gestion d'erreurs : DONE
+Si cmd avec quotes pas fermes ! => Errors.
+
+HERE_DOC SOLO : DONE
 => SEGFAULT
-Gerer les erreurs de syntaxe !
+
+cat | < end.txt : DONE
+=> SEGFAULT
+
+echo SALUT > output => Print sur le terminal et pas dans le fichier. => DONE
+
+< ok | cat / wc => why send it to the cmd ? => DONE
+
+<< end | cat => OK
+
+- Checker parsing & execution => Invalid read of size.
+- Parsing : Check des files => Faire toutes les combinaisons : 
+1. Output output
+2. Output append
+3. Append append
+4. Append output
+=> Check si besoin de le faire pour here_doc aussi ?
+
 
 - $VAR.ENV.:
 Check dans la tokenisation > Checker dans la string : 
@@ -81,18 +100,6 @@ Checker si abolute path : Si je rencontre un slash alors absolute path !
 On va pas chercher le path, on l'envoie direct a execve.
 
 
-< ok | cat / wc => why send it to the cmd ? => DONE
-
-<< end | cat => OK
-
-- Checker parsing & execution => Invalid read of size.
-- Parsing : Check des files => Faire toutes les combinaisons : 
-1. Output output
-2. Output append
-3. Append append
-4. Append output
-=> Check si besoin de le faire pour here_doc aussi ?
-
 - Quotes : 
 Important => Les quotes doivent être gérés dès le début avant de split la ligne de commande.
 1. Mettre la gestion des quotes au début, pour gérer directement l'input.
@@ -120,14 +127,12 @@ pwd : DONE
 - Errors => OK
 - Tester si MAJ dans l'env. => OK
 
-export :
-- Ne pas afficher la derniere ligne de l'env.
-
 CD : 
 Si cd xxx puis env => Marche plus
 - Si // on print deux slash avec \n.
 - Sinon on print un slash avec \n.
-- cd .. => 2 fois SEGFAULT
+- cd .. => 2 fois SEGFAULT > OK
+- cd leaks > OK
 
 
 Quotes & Var. d'env : 
@@ -146,17 +151,19 @@ Code de sortie :
 > Si code d'erreur tout seul = error
 > Si code erreur avec echo > OK
 
-Gestion d'erreurs : DONE
-Si cmd avec quotes pas fermes ! => Errors.
 
-HERE_DOC SOLO : DONE
+- echo >< | echo > < + gestion | | + etc.
 => SEGFAULT
-
-cat | < end.txt : DONE
-=> SEGFAULT
-
-echo SALUT > output => Print sur le terminal et pas dans le fichier. => DONE
-
+Gerer les erreurs de syntaxe !
 echo : 
 Si \ alors on skip ce caractere.
 
+exit : 
+Free les listes, envoyer minishell en param a exit.
+
+pwd | cat | echo
+
+export : DONE
+- Ne pas afficher la derniere ligne de l'env.
+
+echo COUCOU > ok | < ok cat => doit l'afficher !

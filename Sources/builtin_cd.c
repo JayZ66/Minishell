@@ -18,7 +18,7 @@ char	**go_back_home(char **new_env, t_minishell *minishell)
 	char	cwd[1024];
 	char	*new_pwd;
 
-	if (chdir(getenv("HOME")) != 0)
+	if (chdir("/") != 0)
 	{
 		perror("Can't change directory\n");
 		exit(EXIT_FAILURE);
@@ -36,26 +36,25 @@ char	**go_back_home(char **new_env, t_minishell *minishell)
 	ft_string_cpy(new_pwd, "PWD=");
 	ft_strcat(new_pwd, cwd, cwd_len);
 	new_env = env_with_new_pwd(new_env, minishell, new_pwd);
+	free(new_pwd);
 	return (new_env);
 }
 
 char	**env_with_new_pwd(char **new_env, t_minishell *minishell, char *new_pwd)
 {
 	size_t	i;
-	char	**env;
 
-	env = minishell->env;
 	i = 0;
-	while (env[i])
+	while (minishell->env[i])
 	{
-		if (ft_strncmp(env[i], "PWD=", 4) == 0)
+		if (ft_strcmp(minishell->env[i], "PWD=") == 0)
 		{
 			new_env[i] = new_pwd;
 			// free(env[i]);
 		}
 		else
 		{
-			new_env[i] = ft_strdup(env[i]);
+			new_env[i] = minishell->env[i];
 			// free(env[i]);
 		}
 		i++;
@@ -65,6 +64,90 @@ char	**env_with_new_pwd(char **new_env, t_minishell *minishell, char *new_pwd)
 	return (new_env);
 }
 
+char	**alloc_newenv(t_minishell *minishell)
+{
+	size_t	i;
+	size_t	size_env;
+	char	**new_env;
+
+	size_env = ft_size_env(minishell->env);
+	new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
+	if (!new_env)
+	{
+		perror("Can't allocate memory for the env\n");
+		exit(EXIT_FAILURE);
+	}
+	i = 0;
+	while (i < size_env)
+	{
+		new_env[i] = NULL;
+		i++;
+	}
+	return (new_env);
+}
+
+int	check_slash(char *cmd)
+{
+	size_t	i;
+	int		count_slash;
+
+	i = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == '/')
+			count_slash++;
+		i++;
+	}
+	if (count_slash == 2)
+	{
+		ft_putstr_fd("//\n", 1);
+		return (1);
+	}
+	else if (count_slash > 2)
+	{
+		ft_putstr_fd("/\n", 1);
+		return (1);
+	}
+	return (0);
+}
+
+int	check_cd_errors(char **cmd)
+{
+	size_t	i;
+	size_t	j;
+	int		one_point;
+
+	i = -1;
+	one_point = 0;
+	// if (!cmd[1])
+	// 	return (0);
+	while (cmd[++i])
+	{
+		j = -1;
+		while (cmd[i][++j])
+		{
+			if (cmd[i][j + 1] && ft_isalpha(cmd[i][j]) == 1 && cmd[i][j + 1] == '.')
+			{
+				printf("Command '%s' not found\n", cmd[i]);
+				return (1);
+			}
+			else if (cmd[i][j + 1] && (cmd[i][j] == '.' && cmd[i][j + 1] == '/'))
+				return (1);
+			else if (cmd[i][j] == '/')
+			{
+				if (check_slash(cmd[i]) == 1)
+					return (1);
+			}
+			else if (cmd[1] && (cmd[1][j] == '.'  || cmd[i][j] == '/'))
+				one_point++;
+		}
+	}
+	if (one_point == 2)
+		return (1);
+	return (0);
+}
+
+
 // Go to the home if cmd[1] doesn't exist
 // Check if we need the all cmd ou just path.
 // Chdir : Moving from a dir. to another one.
@@ -73,16 +156,16 @@ void	builtin_cd(t_minishell *minishell, char **cmd)
 {
 	char	**new_env;
 
-	new_env = (char **)malloc(sizeof(char *) * (ft_size_env(minishell->env) + 1));
-	if (!new_env)
+	new_env = minishell->env;
+	if (check_cd_errors(cmd) == 1)
 	{
-		perror("Can't allocate memory for the env\n");
-		exit(EXIT_FAILURE);
+		// free_tab(new_env);
+		return ;
 	}
 	if (cmd[1] == NULL)
 	{
 		minishell->env = go_back_home(new_env, minishell);
-		free_tab(new_env);
+		// free_tab(new_env);
 		return ;
 	}
 	if (cmd[1] != NULL && is_relative_path(cmd) == 0)
@@ -90,57 +173,19 @@ void	builtin_cd(t_minishell *minishell, char **cmd)
 		cmd[1] = relative_to_absolute_path(cmd);
 		if (!cmd[1])
 		{
-			free_tab(new_env);
+			// free_tab(new_env);
 			free(cmd[1]);
 			return ;
 		}
 	}
 	minishell->env = get_new_pwd(minishell, new_env, cmd);
-	free(cmd[1]);
-	free_tab(new_env);
+	if (minishell->env == NULL)
+		return ;
+	// free(cmd[1]);
+	// free_tab(new_env);
 	return ;
 }
 
-	// cwd_len = ft_strlen(cmd[1]) + 1;
-	// new_pwd = (char *)malloc(sizeof(char) * (cwd_len + 5));
-	// if (!new_pwd)
-	// {
-	// 	perror("Can't allocate memory for the path\n");
-	// 	exit(EXIT_FAILURE);
-	// }
-	// if (cmd[1] != NULL)
-	// {
-	// 	if (chdir(cmd[1]) != 0)
-	// 	{
-	// 		perror("Can't moove to the new directory\n");
-	// 		free(new_pwd);
-	// 		exit(EXIT_FAILURE);
-	// 	}
-	// 	if (getcwd(cwd, cwd_len) == NULL)
-	// 	{
-	// 		perror("Can't get the new path\n");
-	// 		free(new_pwd);
-	// 		exit(EXIT_FAILURE);
-	// 	}
-	// }
-	// ft_string_cpy(new_pwd, "PWD=");
-	// ft_strcat(new_pwd, cwd, cwd_len);
-	// while (env[i])
-	// {
-	// 	if (ft_strncmp(env[i], "PWD=", 4) == 0)
-	// 	{
-	// 		new_env[i] = new_pwd;
-	// 		free(env[i]);
-	// 	}
-	// 	else
-	// 	{
-	// 		new_env[i] = ft_strdup(env[i]);
-	// 		free(env[i]);
-	// 	}
-	// 	i++;
-	// }
-	// free(env);
-	// new_env[i] = NULL;
 
 char	**get_new_pwd(t_minishell *minishell, char **new_env, char **cmd)
 {
@@ -152,13 +197,13 @@ char	**get_new_pwd(t_minishell *minishell, char **new_env, char **cmd)
 	{
 		if (chdir(cmd[1]) != 0)
 		{
-			perror("Can't moove to the new directory\n");
-			exit(EXIT_FAILURE);
+			printf("bash: cd: No such file or directory\n");
+			return (NULL);
 		}
 		if (getcwd(cwd, cwd_len) == NULL)
 		{
 			perror("Can't get the new path\n");
-			exit(EXIT_FAILURE);
+			return (NULL);
 		}
 	}
 	new_env = change_pwd_env(minishell, new_env, cwd_len, cwd);
@@ -180,19 +225,19 @@ char	**change_pwd_env(t_minishell *minishell, char **new_env, size_t cwd_len, ch
 	ft_strcat(new_pwd, cwd, cwd_len);
 	while (env[++i])
 	{
-		if (ft_strncmp(env[i], "PWD=", 4) == 0)
+		if (ft_strcmp(env[i], "PWD=") == 0)
 		{
 			new_env[i] = new_pwd;
 			// free(env[i]);
 		}
 		else
 		{
-			new_env[i] = ft_strdup(env[i]);
+			new_env[i] = env[i];
 			// free(env[i]);
 		}
 	}
 	// free(env);
-	// free(new_pwd); Why ??
+	free(new_pwd);
 	new_env[i] = NULL;
 	return (new_env);
 }

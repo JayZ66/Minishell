@@ -68,7 +68,7 @@ typedef struct s_final_token
 } t_final_token;
 
 // MANDATORY PART
-char	*read_input(void);
+char	*read_input(t_minishell *minishell);
 void	shell_level(t_minishell *minishell);
 
 // void	execute_pipe(int nb_args, char **cmd_line, char **env);
@@ -119,12 +119,14 @@ int		if_quote(char *var_env);
 int		is_something_after_equal(char *str);
 char	**clean_spaces(char **args);
 char	*copy_new_value(char *new_env, char *var, char *new_value);
-int	is_var_in_env(char *var, t_minishell *minishell);
+int		is_var_in_env(char *var, t_minishell *minishell);
 int		is_var_env(const char c);
 void	update_env(char **env, char *var);
 void	sort_tab(t_minishell *minishell);
 void	print_env(t_minishell *minishell);
 void	builtin_cd(t_minishell *minishell, char **cmd);
+int		check_cd_errors(char **cmd);
+char	**alloc_newenv(t_minishell *minishell);
 int		is_relative_path(char **cmd);
 char	*relative_to_absolute_path(char **cmd);
 char	**go_back_home(char **new_env, t_minishell *minishell);

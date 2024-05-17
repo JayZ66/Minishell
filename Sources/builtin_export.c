@@ -209,7 +209,14 @@ char	**split_cmd(char *var_env)
 
 void	print_export_env(t_minishell *minishell)
 {
-	print_env(minishell);
+	size_t	i;
+
+	i = 0;
+	while (minishell->env[i + 1])
+	{
+		printf("%s\n", minishell->env[i]);
+		i++;
+	}
 	return ;
 }
 
