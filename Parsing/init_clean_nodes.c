@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_clean_nodes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:14:00 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/06 14:12:21 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/20 13:21:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,16 @@ void    free_that_clean_lst(t_clean_token **token)
 {
 	t_clean_token	*tmp;
 
-	// if (!(*token))
-	// {
-	// 	perror("Clean lst is empty, can't free\n");
-	// 	exit(EXIT_FAILURE);
-	// }
+	if (!(*token))
+	{
+		perror("Clean lst is empty, can't free\n");
+		exit(EXIT_FAILURE);
+	}
 	while(*token)
 	{
 		tmp = (*token)->next;
-		free((*token)->content);
+		 if ((*token)->content)
+			free((*token)->content);
 		free(*token);
 		*token = tmp;
 	}

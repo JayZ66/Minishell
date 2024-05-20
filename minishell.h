@@ -45,14 +45,6 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-
-typedef struct s_minishell
-{
-	t_token	*token;
-	int		last_exit_status;
-	char	**env;
-}	t_minishell;
-
 typedef struct s_clean_token
 {
 	char					*content;
@@ -66,6 +58,15 @@ typedef struct s_final_token
 	Token_type				type;
 	struct s_final_token	*next;
 } t_final_token;
+
+typedef struct s_minishell
+{
+	t_token			*token;
+	t_clean_token	*clean_token;
+	t_final_token	*final_token;
+	int		last_exit_status;
+	char	**env;
+}	t_minishell;
 
 // MANDATORY PART
 char	*read_input(t_minishell *minishell);
@@ -98,7 +99,7 @@ int		ft_strncmp_limiter(const char *s1, const char *s2, size_t n);
 void	print_export_env(t_minishell *minishell);
 
 // Built_in
-void	builtin_exit(char **args, t_minishell *exit_code);
+void	builtin_exit(char **args, t_minishell *exit_code, t_minishell *minishell);
 char	**is_char_ok(char **args);
 void	builtin_pwd(void);
 int		check_pwd_option(char *str);
@@ -118,14 +119,14 @@ char	**manage_quote_export(char *input);
 int		if_quote(char *var_env);
 int		is_something_after_equal(char *str);
 char	**clean_spaces(char **args);
-char	*copy_new_value(char *new_env, char *var, char *new_value);
+char	*copy_new_value(char *new_env, char *var, char *new_value, t_minishell *minishell);
 int		is_var_in_env(char *var, t_minishell *minishell);
 int		is_var_env(const char c);
 void	update_env(char **env, char *var);
 void	sort_tab(t_minishell *minishell);
 void	print_env(t_minishell *minishell);
 void	builtin_cd(t_minishell *minishell, char **cmd);
-int		check_cd_errors(char **cmd);
+int		check_cd_errors(char **cmd, char **new_env, t_minishell *minishell);
 char	**alloc_newenv(t_minishell *minishell);
 int		is_relative_path(char **cmd);
 char	*relative_to_absolute_path(char **cmd);
@@ -134,6 +135,7 @@ char	**env_with_new_pwd(char **new_env, t_minishell *minishell, char *new_pwd);
 char	**get_new_pwd(t_minishell *minishell, char **new_env, char **cmd);
 char	**change_pwd_env(t_minishell *minishell, char **new_env, size_t cwd_len, char *cwd);
 void	builtin_echo(char *str, t_minishell *exit_code);
+void	how_many_back_slash(char *cmd);
 void	handle_echo_with_n(char **cmd);
 size_t	count_sign(char **cmd);
 char	*clean_quote(char *str);
@@ -178,12 +180,14 @@ void	exec_simple_cmd(t_final_token **current, t_minishell *exit_code, t_minishel
 // void 	execute_commands_with_pipes(t_clean_token **lst);
 // void 	check_line2(t_clean_token **lst, char **env, t_minishell *exit_code);
 // void 	exec_cmd_with_pipe2(t_clean_token **current, t_minishell *exit_code, int *pid_array, int index, char **env);
-void execute_commands_with_pipes_and_redirections(t_final_token **lst, t_minishell *minishell, t_minishell *exit_code);
+void 	execute_commands_with_pipes_and_redirections(t_final_token **lst, t_minishell *minishell, t_minishell *exit_code);
 int		manage_solo_append_redirection(char *node_content, int last_file);
 int		manage_solo_output_redirection(char *node_content, int last_file);
-int	manage_solo_input_redirection(t_final_token **current, char *node_content, int first_file);
+int		manage_solo_input_redirection(t_final_token **current, char *node_content, int first_file);
 void	exec_pipe_simple_cmd(t_clean_token **current, t_minishell *exit_code, char **env);
 void	exec_cmd_with_pipe(t_final_token **current, t_minishell *exit_code, int last_file, t_minishell *minishell);
+int	manage_pipe_output(t_final_token **current, t_minishell *minishell, t_minishell *exit_code);
+int		how_many_output(t_final_token **current);
 
 // SIGNAL
 void	sigint_handler(int sig);

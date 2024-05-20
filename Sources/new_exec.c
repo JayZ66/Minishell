@@ -29,6 +29,8 @@ void execute_commands_with_pipes_and_redirections(t_final_token **lst, t_minishe
     {
         last_file = 0;
         first_file = 0;
+        if (manage_pipe_output(&current, minishell, exit_code) == 1)
+            break ;
         first_file = manage_redirection_input(&current, exit_code, first_file);
         last_file = manage_redirection_output(&current, last_file);
         if ((current->type == CMD && ((current->next && current->next->type == PIPE)
@@ -103,87 +105,62 @@ void execute_commands_with_pipes_and_redirections(t_final_token **lst, t_minishe
         builtin_or_not_builtin("exit", minishell, exit_code);
 }
 
-// void check_line2(t_token **lst, char **env, t_minishell *exit_code) 
-// {
-//     int saved_stdin = dup(STDIN_FILENO);
-//     int saved_stdout = dup(STDOUT_FILENO);
-//     t_token *current = *lst;
-//     int pid_array[1024]; // Tableau pour stocker les PIDs des processus enfants
-//     int index = 0; // Index pour parcourir le tableau
+int	how_many_output(t_final_token **current)
+{
+	t_final_token	*tmp;
 
-//     // Création des processus enfants pour chaque commande avec un pipe
-//     while (current) 
-// 	{
-// 		// int first_file = 0;
-//         // int last_file = 0;
-//         // first_file = manage_redirection_input(&current, exit_code, first_file);
-//         // last_file = manage_redirection_output(&current, last_file);
-//         if (current->type == CMD && (current->next != NULL && current->next->type == PIPE)) 
-// 		{
-//             exec_cmd_with_pipe2(&current, exit_code, pid_array, index, env);
-//             index++;
-//         } 
-// 		else if (current->type == CMD) 
-// 		{
-//             exec_simple_cmd(&current, exit_code, env);
-// 			dup2(saved_stdin, STDIN_FILENO);
-//         }
-// 		// dup2(saved_stdin, STDIN_FILENO);
-//         // dup2(saved_stdout, STDOUT_FILENO);
-//         current = current->next;
-//     }
+	tmp = *current;
+	while (tmp)
+	{
+		if (tmp->type == OUTPUT && (tmp->next && tmp->next->type == PIPE)
+			&& (tmp->next->next && tmp->next->next->type == INPUT))
+		{
+			if (ft_strcmp(tmp->content, tmp->next->next->content) == 0)
+				return (1);
+		}
+		else if (tmp->type == OUTPUT && (tmp->next && tmp->next->type == PIPE)
+			&& (tmp->next->next && tmp->next->next->type == CMD))
+			{
+				if (ft_strschr(tmp->next->next->content, tmp->content) == 0)
+					return (1);
+			}
+		tmp = tmp->next;
+	}
+	return (0);
+}
 
-//     // Attendre la fin de tous les processus enfants
-//     for (int i = 0; i < index; i++) {
-//         waitpid(pid_array[i], NULL, 0);
-//     }
+int	manage_pipe_output(t_final_token **current, t_minishell *minishell, t_minishell *exit_code)
+{
+	int	first_file;
+	int	last_file;
+	int saved_stdin;
+    int saved_stdout;
 
-//     // Restaurer les descripteurs de fichier d'entrée et de sortie standard
-//     dup2(saved_stdin, STDIN_FILENO);
-//     dup2(saved_stdout, STDOUT_FILENO);
-// }
-
-// void check_line2(t_token **lst, char **env, t_minishell *exit_code) 
-// {
-//     // Sauvegarder les descripteurs de fichier d'entrée et de sortie standard
-//     int saved_stdin = dup(STDIN_FILENO);
-//     int saved_stdout = dup(STDOUT_FILENO);
-// 	int	first_file;
-// 	int	last_file;
-    
-//     // Obtenez le premier élément de la liste chaînée
-//     t_token *current = *lst;
-    
-//     // Tableau pour stocker les PIDs des processus enfants
-//     int pid_array[1024];
-    
-//     // Index pour parcourir le tableau
-//     int index = 0;
-//     while (current) 
-//     {
-// 		first_file = 0;
-//         last_file = 0;
-//         first_file = manage_redirection_input(&current, exit_code, first_file);
-//         last_file = manage_redirection_output(&current, last_file);
-//         // Exécuter la commande avec un pipe s'il y a un pipe
-//         if (current->type == CMD && (current->next != NULL && current->next->type == PIPE)) 
-//         {
-//             exec_cmd_with_pipe2(&current, exit_code, pid_array, index, env);
-//             index++;
-//         } 
-//         else if (current->type == CMD) 
-//             exec_simple_cmd(&current, exit_code, env);
-        
-//         // Passer au prochain élément de la liste chaînée
-//         current = current->next;
-//     }
-
-//     // Attendre la fin de tous les processus enfants
-//     for (int i = 0; i < index; i++) {
-//         waitpid(pid_array[i], NULL, 0);
-//     }
-
-//     // Restaurer les descripteurs de fichier d'entrée et de sortie standard
-//     dup2(saved_stdin, STDIN_FILENO);
-//     dup2(saved_stdout, STDOUT_FILENO);
-// }
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
+	if (how_many_output(current) == 1)
+	{
+		while (*current)
+		{
+			first_file = 0;
+			last_file = 0;
+			first_file = manage_redirection_input(current, exit_code, first_file);
+			last_file = manage_redirection_output(current, last_file);
+			if (manage_cmd_pipe(current, exit_code, last_file, minishell) == 0)
+				;
+			else if ((*current)->type == CMD)
+			{
+				exec_simple_cmd(current, exit_code, minishell);
+				dup2(saved_stdin, STDIN_FILENO);
+				dup2(saved_stdout, STDOUT_FILENO);
+			}
+			*current = (*current)->next;
+			dup2(saved_stdout, STDOUT_FILENO);
+		}
+		return (1);
+	}
+	else
+	{
+		return (0);
+	}
+}

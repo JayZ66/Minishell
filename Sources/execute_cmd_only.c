@@ -38,12 +38,17 @@ void	exec_cmd_with_fork(char *cmd, t_minishell *minishell, t_minishell *exit_cod
 	int		pid;
 
 	cmd_line = ft_split(cmd, ' ');
-	if (!cmd)
+	if (!cmd_line)
+	{
+		exit_code->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
+	}
 	pid = fork();
 	if (pid == -1)
 	{
 		perror("Can't fork\n");
+		free_tab(cmd_line);
+		exit_code->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	else if (pid == 0)
@@ -61,22 +66,27 @@ void	child_cmd_only(char **cmd_line, t_minishell *minishell, char *cmd)
 		if (!final_path)
 		{
 			free_tab(cmd_line);
+			minishell->last_exit_status = EXIT_FAILURE;
 			exit(EXIT_FAILURE);
 		}
 		if (execve(final_path, cmd_line, minishell->env) == -1)
 		{
 			free_tab(cmd_line);
 			free(final_path);
+			minishell->last_exit_status = EXIT_FAILURE;
 			exit(EXIT_FAILURE);
 		}
+		free_tab(cmd_line);
 	}
 	else if (is_absolute_path(cmd_line) == 1)
 	{
 		if (execve(cmd, cmd_line, minishell->env) == -1)
 		{
 			free_tab(cmd_line);
+			minishell->last_exit_status = EXIT_FAILURE;
 			exit(EXIT_FAILURE);
 		}
+		free_tab(cmd_line);
 	}
 }
 

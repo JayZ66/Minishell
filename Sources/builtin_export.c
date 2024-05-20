@@ -29,6 +29,7 @@ char	**modify_value_env(t_minishell *minishell, char *var, char *new_value)
 	if (!new_env)
 	{
 		perror("Can't create the new env.\n");
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	while (minishell->env[++i])
@@ -36,7 +37,7 @@ char	**modify_value_env(t_minishell *minishell, char *var, char *new_value)
 		if (ft_strncmp(minishell->env[i], var, ft_strlen(var)) == 0
 			&& minishell->env[i][ft_strlen(var)] == '=')
 		{
-			new_env[i] = copy_new_value(new_env[i], var, new_value);
+			new_env[i] = copy_new_value(new_env[i], var, new_value, minishell);
 			i++;
 		}
 		new_env[i] = ft_strdup(minishell->env[i]);
@@ -47,7 +48,7 @@ char	**modify_value_env(t_minishell *minishell, char *var, char *new_value)
 	return (new_env);
 }
 
-char	*copy_new_value(char *new_env, char *var, char *new_value)
+char	*copy_new_value(char *new_env, char *var, char *new_value, t_minishell *minishell)
 {
 	size_t	new_var_len;
 
@@ -56,6 +57,7 @@ char	*copy_new_value(char *new_env, char *var, char *new_value)
 	if (!new_env)
 	{
 		perror("Memory allocation for new var. failed\n");
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	new_env = ft_string_cpy(new_env, var);
@@ -97,6 +99,7 @@ char	**create_var_env(t_minishell *minishell, char *var)
 	if (!new_env)
 	{
 		perror("Can't create the new env.\n");
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	while (i < size_env)
@@ -214,7 +217,7 @@ void	print_export_env(t_minishell *minishell)
 	i = 0;
 	while (minishell->env[i + 1])
 	{
-		printf("%s\n", minishell->env[i]);
+		printf("declare -x %s\n", minishell->env[i]);
 		i++;
 	}
 	return ;

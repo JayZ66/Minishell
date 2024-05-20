@@ -21,16 +21,21 @@ char	**go_back_home(char **new_env, t_minishell *minishell)
 	if (chdir("/") != 0)
 	{
 		perror("Can't change directory\n");
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	cwd_len = 100;
 	new_pwd = (char *)malloc(sizeof(char) * (cwd_len + 5));
 	if (!new_pwd)
+	{
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
+	}
 	if (getcwd(cwd, cwd_len) == NULL)
 	{
 		perror("Can't get the new path\n");
 		free(new_pwd);
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	ft_string_cpy(new_pwd, "PWD=");
@@ -75,6 +80,7 @@ char	**alloc_newenv(t_minishell *minishell)
 	if (!new_env)
 	{
 		perror("Can't allocate memory for the env\n");
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	i = 0;
@@ -92,6 +98,7 @@ int	check_slash(char *cmd)
 	int		count_slash;
 
 	i = 0;
+	count_slash = 0;
 	while (cmd[i])
 	{
 		if (cmd[i] == '/')
@@ -103,7 +110,7 @@ int	check_slash(char *cmd)
 		ft_putstr_fd("//\n", 1);
 		return (1);
 	}
-	else if (count_slash > 2)
+	else if (count_slash > 2 || count_slash == 1)
 	{
 		ft_putstr_fd("/\n", 1);
 		return (1);
@@ -111,7 +118,7 @@ int	check_slash(char *cmd)
 	return (0);
 }
 
-int	check_cd_errors(char **cmd)
+int	check_cd_errors(char **cmd, char **new_env, t_minishell *minishell)
 {
 	size_t	i;
 	size_t	j;
@@ -136,7 +143,10 @@ int	check_cd_errors(char **cmd)
 			else if (cmd[i][j] == '/')
 			{
 				if (check_slash(cmd[i]) == 1)
+				{
+					minishell->env = go_back_home(new_env, minishell);
 					return (1);
+				}
 			}
 			else if (cmd[1] && (cmd[1][j] == '.'  || cmd[i][j] == '/'))
 				one_point++;
@@ -157,7 +167,7 @@ void	builtin_cd(t_minishell *minishell, char **cmd)
 	char	**new_env;
 
 	new_env = minishell->env;
-	if (check_cd_errors(cmd) == 1)
+	if (check_cd_errors(cmd, new_env, minishell) == 1)
 	{
 		// free_tab(new_env);
 		return ;
@@ -220,7 +230,10 @@ char	**change_pwd_env(t_minishell *minishell, char **new_env, size_t cwd_len, ch
 	env = minishell->env;
 	new_pwd = (char *)malloc(sizeof(char) * (cwd_len + 5));
 	if (!new_pwd)
+	{
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
+	}
 	ft_string_cpy(new_pwd, "PWD=");
 	ft_strcat(new_pwd, cwd, cwd_len);
 	while (env[++i])

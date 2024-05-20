@@ -76,10 +76,11 @@ quotes / + / - / etc.  => DONE
 Erreur a gerer => minishell: malloc.c:2617: sysmalloc: Assertion `(old_top == initial_top (av) && old_size == 0) || ((unsigned long) (old_size) >= MINSIZE && prev_inuse (old_top) && ((unsigned long) old_end & (pagesize - 1)) == 0)' failed.
 Aborted (core dumped)
 */
-void	builtin_exit(char **args, t_minishell *exit_code)
+void	builtin_exit(char **args, t_minishell *exit_code, t_minishell *minishell)
 {
 	size_t	i;
 	int		exit_status;
+	(void) minishell; // Check if necessary to free or not !!
 
 	i = 0;
 	exit_status = 0;
@@ -97,20 +98,25 @@ void	builtin_exit(char **args, t_minishell *exit_code)
 		{
 			if (ft_isdigit(args[1][i]) == 0)
 			{
-				perror("The output code must be a numeric arg.\n");
-				exit(EXIT_FAILURE);
+				printf("bash: exit: %s: numeric argument required\n", args[1]);
+				exit_code->last_exit_status = 255;
+				exit(255);
 			}
 			i++;
 		}
 		exit_status = ft_atoi(args[1]);
 		exit_code->last_exit_status = exit_status;
-		printf("exit_status : %i\n", exit_status);
 		if (exit_status >= 0 && exit_status <= 255)
 			exit(exit_status);
 	}
 	else
 	{
 		exit_code->last_exit_status = 0;
+		// free_that_lst(&((*minishell)->token));
+		// free_that_clean_lst(&minishell->clean_token);
+		// free_that_final_lst(&minishell->final_token);
+		// free(minishell);
+		// minishell = NULL;
 		exit(0);
 	}
 }

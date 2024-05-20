@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/17 17:39:37 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:05:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ char	*read_input(t_minishell *minishell)
 	{
 		free(input);
 		// free_tab(minishell->env);
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
     if (ft_strncmp(input, ":", 1) == 0 || ft_strncmp(input, "!", 1) == 0)
@@ -96,15 +97,16 @@ int		main(int argc, char **argv, char **env)
 		print_clean_lst(clean_token);
 		test_redirection_input(clean_token);
 		final_token = final_clean_node(clean_token);
-		// check_line(&clean_token, env, &exit_code);
+		// check_line(&final_token, minishell, &exit_code);
 		execute_commands_with_pipes_and_redirections(&final_token, minishell, &exit_code);
 		free_that_lst(&token);
 		free_that_clean_lst(&clean_token);
 		free_that_final_lst(&final_token);
-		//gerer les builtins car si je mets un espace pb
-		//pb sur pwd pour le moment
 		free(input);
 	}
 	free_tab(minishell->env);
+	// free(minishell);
 	return (0);
 }
+//gerer les builtins car si je mets un espace pb
+		//pb sur pwd pour le moment

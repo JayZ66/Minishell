@@ -24,7 +24,7 @@ cat < ok => DONE
 - > - | - < - \ => DONE
 => Erreurs a gerer pour arreter le prog.
 
-- Minishell>$echo -nnn ------------------n
+- Minishell>$echo -nnn ------------------n > DONE
 malloc(): corrupted top size
 
 Gestion d'erreurs : DONE
@@ -42,13 +42,69 @@ echo SALUT > output => Print sur le terminal et pas dans le fichier. => DONE
 
 << end | cat => OK
 
-- Checker parsing & execution => Invalid read of size.
-- Parsing : Check des files => Faire toutes les combinaisons : 
+=> DONE !!!
+echo COUCOU > ok | < ok cat => doit l'afficher ! => OK
+To fix : echo SALUT > output | < input (output before) cat => Taking my first execution !
+1. If we find output | input that are the same file
+2. We start a child process for the first block
+3. Then we wait with the parent process
+4. We start again until the last block
+
+pwd | cat | echo => DONE
+
+> Check if it's not a pb for simple exec. + CHECK FOR REDIRECTIONS !!! as we open file twice. => DONE
+> + echo -nnnn SALUT TOI > ok | cat ok => Need to also make a special case. => DONE
+
+- Gerer echo SALUT > OK | cat OK => DONE with check_line function because
+i'm waiting for each block, so the end of each cmd, then cat can access to ok file.
+=> So how to do it ??
+- Tester de nouveau les file seuls ! + voir pour append/output or else.
+=> DONE : i'm can now verify if there is one file if it exists or not.
+=> BUT it's not totally good bce if i have a file & then a pipe, ça
+fait la redirection du file sur STDOUT ce qui fait qu'il envoie les données à
+cat alors que normalement cat ne reçoit rien.
+idée : créer une autre fonction d'output pour l'output seul. => DONE
+
+- Mettre l'env. dans une structure et tout remplacer. => DONE
+- Le mettre à jour et pouvoir y accéder, actualisé, à tout moment. => DONE
+- Absolute path : => DONE
+Checker si abolute path : Si je rencontre un slash alors absolute path !
+On va pas chercher le path, on l'envoie direct a execve.
+
+- echo : DONE
+>< | echo > < + gestion | | + etc. => OK
+=> SEGFAULT
+Gerer les erreurs de syntaxe !
+echo : 
+Si \ alors on skip ce caractere. => OK
+syntaxe echo / function => OK
+
+- Parsing : Check des files => Faire toutes les combinaisons : DONE
 1. Output output
 2. Output append
 3. Append append
 4. Append output
 => Check si besoin de le faire pour here_doc aussi ?
+
+Exit : DONE
+But check if with pipe doesn't work. => OK
+exit | ls => Do ls but not exit ! => OK
+
+Unset : DONE
+Can't find the var. i've just added. => DONE
+Check errors like export. => OK
+
+pwd : DONE
+- Errors => OK
+- Tester si MAJ dans l'env. => OK
+
+CD : DONE
+- Si // on print deux slash avec \n. => OK
+- Sinon on print un slash avec \n. => OK
+- cd .. => 2 fois SEGFAULT > OK
+- cd leaks > OK
+- Re-check cd / function. => DONE
+----------------------------------------------------------------------------------------------------------
 
 
 - $VAR.ENV.:
@@ -81,24 +137,6 @@ Par contre, si ne trouve pas => Retire le bout.
 => Gerer dans le parsing : 
 - Si tu trouves double quotes & 
 
-JEZA : TO DO
-
-- Gerer echo SALUT > OK | cat OK => DONE with check_line function because
-i'm waiting for each block, so the end of each cmd, then cat can access to ok file.
-=> So how to do it ??
-- Tester de nouveau les file seuls ! + voir pour append/output or else.
-=> DONE : i'm can now verify if there is one file if it exists or not.
-=> BUT it's not totally good bce if i have a file & then a pipe, ça
-fait la redirection du file sur STDOUT ce qui fait qu'il envoie les données à
-cat alors que normalement cat ne reçoit rien.
-idée : créer une autre fonction d'output pour l'output seul. => DONE
-
-- Mettre l'env. dans une structure et tout remplacer. => DONE
-- Le mettre à jour et pouvoir y accéder, actualisé, à tout moment. => DONE
-- Absolute path : => DONE
-Checker si abolute path : Si je rencontre un slash alors absolute path !
-On va pas chercher le path, on l'envoie direct a execve.
-
 
 - Quotes : 
 Important => Les quotes doivent être gérés dès le début avant de split la ligne de commande.
@@ -106,7 +144,7 @@ Important => Les quotes doivent être gérés dès le début avant de split la l
 2. Lui envoyer une string au lieu d'un tableau de tableau !
 
 - Echo : 
-1. Gérer tous les cas d'erreurs qui n'ont pas été fait (fonction error)
+1. Gérer tous les cas d'erreurs qui n'ont pas été fait (fonction error) => OK
 2. Voir comment gérer la var. d'env au parsing (?) => Si existe pas > Retiré de la ligne de cmd.
 3. Problème du split à voir => Parce que si var. d'env géré avant + $ > Pas besoin.
 => Si echo a $HOME il print home et pas la var. d'env.
@@ -115,24 +153,6 @@ Important => Les quotes doivent être gérés dès le début avant de split la l
 
 Attention : Si en input j'ai export HOLA=ok le parsing ne me
 met pas d'espace !!
-
-Exit : DONE => But check if with pipe doesn't work. => DONE
-exit | ls => Do ls but not exit ! => OK
-
-Unset : DONE
-Can't find the var. i've just added. => DONE
-Check errors like export. => OK
-
-pwd : DONE
-- Errors => OK
-- Tester si MAJ dans l'env. => OK
-
-CD : 
-Si cd xxx puis env => Marche plus
-- Si // on print deux slash avec \n.
-- Sinon on print un slash avec \n.
-- cd .. => 2 fois SEGFAULT > OK
-- cd leaks > OK
 
 
 Quotes & Var. d'env : 
@@ -145,25 +165,27 @@ Var. Env. :
 - Si entre double quote ou tout seul => On met la valeur de la variable d'env.
 - Si entre si;ple quote => On laisse tel quel et on envoie a echo.
 
-Code de sortie : 
+Code de sortie : Reprendre au file execution.c !!
 => Mettre a jour a chq sortie du programme.
 => Dans le parsing > Remplacer.
 > Si code d'erreur tout seul = error
 > Si code erreur avec echo > OK
 
-
-- echo >< | echo > < + gestion | | + etc.
-=> SEGFAULT
-Gerer les erreurs de syntaxe !
-echo : 
-Si \ alors on skip ce caractere.
-
-exit : 
+exit : => Tests non concluants.
 Free les listes, envoyer minishell en param a exit.
 
-pwd | cat | echo
 
-export : DONE
-- Ne pas afficher la derniere ligne de l'env.
+export :
+- Ne pas afficher la derniere ligne de l'env. => OK
+- CHECK : if export value > Then export if the var. is in the env.
 
-echo COUCOU > ok | < ok cat => doit l'afficher !
+CD : 
+- TO CHECK : cd puis env => Update env pc école ?
+1. Récupèrer le new path.
+2. Modifier le pwd dand l'env.
+3. Modifier le oldpwd
+=> Update le pwd mais pas l'env !
+
+/bin/ls | /bin/cat
+/bin/ls | cat
+=> Don't work, redirection to check. bce ls | cat works.

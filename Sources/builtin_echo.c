@@ -43,13 +43,92 @@ Gerer les quotes avant le split !
 - Cf. KO.txt pour gerer la var. d'env avec echo.
 */
 
+// void how_many_back_slash(char *cmd) 
+// {
+//     size_t i = 0;
+//     int slash_count = 0;
+
+//     while (cmd[i]) 
+// 	{
+//         if (cmd[i] == '\\') 
+//             slash_count++;
+// 		else 
+// 		{
+//             if (cmd[i] == 'n' && slash_count > 0) 
+// 			{
+//                 // Print the appropriate number of backslashes before 'n'
+//                 int to_print = slash_count / 2;
+//                 for (int j = 0; j < to_print; j++) 
+//                     printf("\\");
+//                 printf("n ");  // Print the 'n' character
+//                 slash_count = 0; // Reset the count after printing
+//             }
+// 			else
+// 			{
+//                 // Print the accumulated backslashes
+//                 for (int j = 0; j < slash_count; j++) 
+//                     printf("\\");
+//                 slash_count = 0; // Reset the count after printing
+//                 printf("%c", cmd[i]);  // Print the current character
+//             }
+//         }
+//         i++;
+//     }
+//     // Handle any remaining backslashes at the end of the string
+//     for (int j = 0; j < slash_count; j++) {
+//         printf("\\");
+//     }
+// }
+
+void	how_many_back_slash(char *cmd)
+{
+	size_t	i;
+	size_t	j;
+	size_t	slash_count;
+	size_t	to_print;
+
+	i = -1;
+	slash_count = 0;
+	while (cmd[++i])
+	{
+		if (cmd[i] == '\\')
+			slash_count++;
+		else
+		{
+			if (cmd[i] == 'n' && slash_count > 0)
+			{
+				// Print the appropriate number of backslashes before 'n'
+				to_print = slash_count / 2;
+				j = -1;
+				while (++j < to_print)
+					printf("\\");
+				printf("n ");
+				slash_count = 0; // Reset the count after printing
+			}
+			else
+			{
+				// Print the accumulated backslashes
+				j = -1;
+				while (++j < slash_count)
+					printf("\\");
+				slash_count = 0;
+				printf("%c", cmd[i]); // Print the current character
+			}
+		}
+	}
+	// Handle any remaining backslashes at the end of the string
+	j = -1;
+	while (++j < slash_count)
+		printf("\\");
+}
+
 void    builtin_echo(char *str, t_minishell *exit_code)
 {
-    char    **cmd_with_options;
+    char	**cmd_with_options;
     // char    *cleaned_quotes;
-    size_t    i;
+    size_t	i;
 
-    i = -1;
+    // i = -1;
     cmd_with_options = ft_split(str, ' ');
     // while (cmd_with_options[++i])
     //     cmd_with_options[i] = managing_quotes(cmd_with_options[i]);
@@ -57,25 +136,33 @@ void    builtin_echo(char *str, t_minishell *exit_code)
     // printf("quotes : %s\n", cleaned_quotes);
     // cmd_with_options = ft_split(cleaned_quotes, ' ');
     i = -1;
-    if (((ft_strschr(cmd_with_options[1], "-n") == 0 || ft_strschr(cmd_with_options[0], "-n") == 0) && count_sign(cmd_with_options) > 1))
-        handle_echo_with_n(cmd_with_options);
-    else if (cmd_with_options[1] && (ft_strcmp(cmd_with_options[1], "-n") != 0)
-        && (ft_strcmp(cmd_with_options[0], "-n") != 0))
-    {
-        while (cmd_with_options[++i])
-        {
-            if (ft_strcmp(cmd_with_options[i], "echo") == 0)
-                i++;
-            if (ft_strschr(cmd_with_options[i], "$?") == 0 || ft_strschr(cmd_with_options[i], "$?$") == 0)
-            {
-                printf("%d\n", exit_code->last_exit_status);
-                break ;
-            }
-            printf("%s ", cmd_with_options[i]);
-            if (cmd_with_options[i + 1] == NULL)
-                printf("\n");
-        }
-    }
+	if (cmd_with_options[1])
+	{
+		if (((ft_strschr(cmd_with_options[1], "-n") == 0 || ft_strschr(cmd_with_options[0], "-n") == 0) && count_sign(cmd_with_options) > 1))
+			handle_echo_with_n(cmd_with_options);
+		else if (cmd_with_options[1] && (ft_strcmp(cmd_with_options[1], "-n") != 0)
+			&& (ft_strcmp(cmd_with_options[0], "-n") != 0))
+		{
+			while (cmd_with_options[++i])
+			{
+				if (ft_strcmp(cmd_with_options[i], "echo") == 0)
+					i++;
+				if (ft_strschr(cmd_with_options[i], "$?") == 0 || ft_strschr(cmd_with_options[i], "$?$") == 0)
+				{
+					printf("%d\n", exit_code->last_exit_status);
+					break ; // Not good if something after.
+				}
+				if (ft_strschr(cmd_with_options[i], "\\n") == 0)
+				{
+					how_many_back_slash(cmd_with_options[i]);
+					i++;
+				}
+				printf("%s ", cmd_with_options[i]);
+				if (cmd_with_options[i + 1] == NULL)
+					printf("\n");
+			}
+		}
+	}
     // else if (ft_strcmp(cmd_with_options[1], "-n") == 0
     //     || ft_strcmp(cmd_with_options[0], "-n") == 0)
         // handle_echo_with_n(cmd_with_options);
@@ -129,9 +216,9 @@ void    handle_echo_with_n(char **cmd)
 		// 	continue ;
 		// }
         if (cmd[i + 1] == NULL)
-			ft_putstr_fd(cmd[i], 1);
+			printf("%s", cmd[i]);
         else
-            ft_putstr_fd(cmd[i], 1);
+            printf("%s ", cmd[i]);
         // fflush(stdout);
         i++;
     }
