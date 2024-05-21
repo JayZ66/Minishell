@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:51:22 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/12 17:02:54 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/21 15:58:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,13 @@ char	*manage_simple_quotes(char *input, int i)
 	return (input);
 }
 
-char	*managing_quotes(char *input)
+char	*managing_quotes(char *input, t_minishell *minishell)
 {
 	int		i;
 	int		tmp;
 
 	i = 0;
-	handle_quote_errors(input);
+	handle_quote_errors(input, minishell);
 	while (input[i])
 	{
 		if (input[i] == '"')
@@ -239,14 +239,14 @@ char	*check_quotes(char *cmd, int multiple_quotes)
 		return (check_initial_quote(cmd));
 }
 
-char	*handle_quotes(char *cmd)
+char	*handle_quotes(char *cmd, t_minishell *minishell)
 {
 	int		multiple_quotes;
 	int		pair_of_quotes;
 	char	*str;
 
 	multiple_quotes = is_there_multiple_quotes(cmd);
-	pair_of_quotes = handle_quote_errors(cmd);
+	pair_of_quotes = handle_quote_errors(cmd, minishell);
 	if (pair_of_quotes == 0)
 		str = check_quotes(cmd, multiple_quotes);
 	return (str);

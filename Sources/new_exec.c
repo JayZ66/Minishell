@@ -12,7 +12,6 @@
 
 #include "../minishell.h"
 
-
 void execute_commands_with_pipes_and_redirections(t_final_token **lst, t_minishell *minishell, t_minishell *exit_code) 
 {
     t_final_token *current = *lst;
@@ -157,6 +156,8 @@ int	manage_pipe_output(t_final_token **current, t_minishell *minishell, t_minish
 				dup2(saved_stdin, STDIN_FILENO);
 				dup2(saved_stdout, STDOUT_FILENO);
 			}
+			if ((*current)->next && (*current)->next->type == OUTPUT)
+                *current = (*current)->next;
 			*current = (*current)->next;
 			dup2(saved_stdout, STDOUT_FILENO);
 		}

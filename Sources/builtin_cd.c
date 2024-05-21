@@ -293,7 +293,7 @@ void	builtin_cd(t_minishell *minishell, char **cmd)
 	}
 	if (cmd[1] != NULL && is_relative_path(cmd) == 0)
 	{
-		cmd[1] = relative_to_absolute_path(cmd);
+		cmd[1] = relative_to_absolute_path(cmd, minishell);
 		if (!cmd[1])
 		{
 			// free_tab(new_env);

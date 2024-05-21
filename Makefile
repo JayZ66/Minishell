@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/05/21 12:45:10 by jeguerin         ###   ########.fr        #
+#    Updated: 2024/05/21 16:01:37 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ $(LIBFT):
 	make -C Libft
 
 $(PRINTF):
-	make -C printf
+	make -C ft_printf
 
 # Regle pour creer l'executable en liant les objets.
 # $(NAME): $(OBJS) $(LIBFT) $(PRINTF) $(GETNEXTLINE_OBJ)
@@ -67,13 +67,13 @@ clean:
 	$(RM) $(OBJS)
 	$(RM) $(GETNEXTLINE_OBJ)
 	make clean -C Libft
-	make clean -C printf
+	make clean -C ft_printf
 
 # Regle pour nettoyer les fichiers objets et l'executable.
 fclean: clean
 	$(RM) $(NAME)
 	make fclean -C Libft
-	make fclean -C printf
+	make fclean -C ft_printf
 
 # Regle pour reconstruire le projet (clean, puis all)
 re: author fclean all

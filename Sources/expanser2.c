@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanser2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:55:48 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/21 15:12:59 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:59:41 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,12 +160,12 @@ char	*removing_one_level_of_quote(char *cmd, char c, size_t i)
 	return (str = NULL);
 }
 
-void	remove_quotes_cmd_line(t_final_token *node)
+void	remove_quotes_cmd_line(t_final_token *node, t_minishell *minishell)
 {
 	while (node)
 	{
 		if (node->type != PIPE)
-			node->content = managing_quotes(node->content);
+			node->content = managing_quotes(node->content, minishell);
 		node = node->next;
 	}
 }

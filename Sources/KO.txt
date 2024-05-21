@@ -107,7 +107,6 @@ CD : DONE
 
 ----------------------------------------------------------------------------------------------------------
 
-
 - $VAR.ENV.:
 Check dans la tokenisation > Checker dans la string : 
 1. tant que str & que pas $
@@ -173,7 +172,7 @@ Var. Env. :
 
 ---------------------------
 
-Code de sortie : Reprendre au file execution.c !!
+Code de sortie : DONE
 => Mettre a jour a chq sortie du programme.
 => Dans le parsing > Remplacer.
 > Si code d'erreur tout seul = error
@@ -203,3 +202,9 @@ puis un pipe la j'ai un espace a la fin sur le premier node clean content.
 
 echo : 
 Avec variable d'env. n'affiche rien.
+
+EXIT : NE MARCHE PLUS => Marche donc à tester.
+exit | ls
+
+echo SALUT TOI > ok | cat | cat ok => Fonctionne pas
+Because dernier cat a besoin du file ok

@@ -140,7 +140,7 @@ void	how_many_back_slash(char *cmd);
 void	handle_echo_with_n(char **cmd);
 size_t	count_sign(char **cmd);
 char	*clean_quote(char *str);
-char	*handle_quotes(char *cmd);
+char	*handle_quotes(char *cmd, t_minishell *minishell);
 char	*copy_string_without_char(const char *source, char exclude_char);
 int		is_there_something_after_quote(char *str);
 char	*copy_str_without_first_quote(char *source);
@@ -200,12 +200,12 @@ int	check_var(t_final_token *node);
 int	handle_quote_errors(char *cmd, t_minishell *minishell);
 int		builtin_or_not_builtin(char *str, t_minishell *minishell, t_minishell *exit_code);
 int		is_built_in(char *str);
-char	*managing_quotes(char *input);
+char	*managing_quotes(char *input, t_minishell *minishell);
 char	*manage_simple_quotes(char *input, int i);
 char	*manage_double_quotes(char *input, int i);
 char	**split_cmd(char *var_env);
 int		is_absolute_path(char **cmd);
-void	remove_quotes_cmd_line(t_final_token *node);
+void	remove_quotes_cmd_line(t_final_token *node, t_minishell *minishell);
 
 //COPY_LIST
 t_clean_token	*copy_lst(t_token *token);
