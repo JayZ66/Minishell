@@ -15,6 +15,7 @@
 
 # include "Libft/libft.h"
 # include "get_next_line/get_next_line.h"
+# include "ft_printf/ft_printf.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -79,7 +80,7 @@ void	shell_level(t_minishell *minishell);
 // char	*check_line_cmd(t_token *token);
 
 // Var. env.
-char	*get_the_var_of_env(t_final_token *node);
+char	*get_the_var_of_env(t_final_token *node, t_minishell *minishell);
 
 // Utils
 void	print_tab(char **cmd_line);
@@ -129,11 +130,11 @@ void	builtin_cd(t_minishell *minishell, char **cmd);
 int		check_cd_errors(char **cmd, char **new_env, t_minishell *minishell);
 char	**alloc_newenv(t_minishell *minishell);
 int		is_relative_path(char **cmd);
-char	*relative_to_absolute_path(char **cmd);
+char	*relative_to_absolute_path(char **cmd, t_minishell *minishell);
 char	**go_back_home(char **new_env, t_minishell *minishell);
 char	**env_with_new_pwd(char **new_env, t_minishell *minishell, char *new_pwd);
 char	**get_new_pwd(t_minishell *minishell, char **new_env, char **cmd);
-char	**change_pwd_env(t_minishell *minishell, char **new_env, size_t cwd_len, char *cwd);
+char	**change_pwd_env(t_minishell *minishell, char **new_env, char *cwd, char *old_cwd);
 void	builtin_echo(char *str, t_minishell *exit_code);
 void	how_many_back_slash(char *cmd);
 void	handle_echo_with_n(char **cmd);
@@ -161,7 +162,7 @@ void	parent_process(int *pfd, char *cmd, t_minishell *exit_code);
 void	child_process(int *pfd, char *cmd, t_minishell *minishell, int output);
 void	create_pipes(char *cmd, t_minishell *minishell, t_minishell *exit_code, int output);
 void	parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code);
-void	child_here_doc(int *pfd, char *cmd, int alone);
+void	child_here_doc(int *pfd, char *cmd, int alone, t_minishell *exit_code);
 void	handle_here_doc(char *cmd, t_minishell *exit_code, int alone);
 void	manage_here_doc(t_final_token **current, t_minishell *exit_code, char *content, int alone);
 void	check_line(t_final_token **lst, t_minishell *minishell, t_minishell *exit_code);
@@ -170,20 +171,20 @@ void	parent_builtin(int *fd, t_minishell *exit_code);
 // void	parent_builtin(int *fd, t_minishell *exit_code, t_minishell *minishell, char *cmd);
 void	print_exec_list(t_token *head);
 void	display_lst(t_token *line);
-int		manage_output_redirection(char *node_content, int last_file);
-int	manage_input_redirection(t_final_token **current, char *node_content, int first_file);
-int		manage_append_redirection(char *node_content, int last_file);
+int	manage_output_redirection(char *node_content, int last_file, t_minishell *minishell);
+int	manage_input_redirection(t_final_token **current, char *node_content, int first_file, t_minishell *exit_code);
+int	manage_append_redirection(char *node_content, int last_file, t_minishell *minishell);
 int	manage_redirection_input(t_final_token **current, t_minishell *exit_code, int first_file);
-int	manage_redirection_output(t_final_token **current, int last_file);
+int	manage_redirection_output(t_final_token **current, int last_file, t_minishell *minishell);
 int	manage_cmd_pipe(t_final_token **current, t_minishell *exit_code, int last_file, t_minishell *minishell);
 void	exec_simple_cmd(t_final_token **current, t_minishell *exit_code, t_minishell *minishell);
 // void 	execute_commands_with_pipes(t_clean_token **lst);
 // void 	check_line2(t_clean_token **lst, char **env, t_minishell *exit_code);
 // void 	exec_cmd_with_pipe2(t_clean_token **current, t_minishell *exit_code, int *pid_array, int index, char **env);
 void 	execute_commands_with_pipes_and_redirections(t_final_token **lst, t_minishell *minishell, t_minishell *exit_code);
-int		manage_solo_append_redirection(char *node_content, int last_file);
-int		manage_solo_output_redirection(char *node_content, int last_file);
-int		manage_solo_input_redirection(t_final_token **current, char *node_content, int first_file);
+int	manage_solo_append_redirection(char *node_content, int last_file, t_minishell *minishell);
+int	manage_solo_output_redirection(char *node_content, int last_file, t_minishell *minishell);
+int	manage_solo_input_redirection(t_final_token **current, char *node_content, int first_file, t_minishell *exit_code);
 void	exec_pipe_simple_cmd(t_clean_token **current, t_minishell *exit_code, char **env);
 void	exec_cmd_with_pipe(t_final_token **current, t_minishell *exit_code, int last_file, t_minishell *minishell);
 int	manage_pipe_output(t_final_token **current, t_minishell *minishell, t_minishell *exit_code);
@@ -191,12 +192,12 @@ int		how_many_output(t_final_token **current);
 
 // SIGNAL
 void	sigint_handler(int sig);
-void	manage_signals(void);
+void	manage_signals(t_minishell *minishell);
 void	sigquit_handler(int sig);
 
 // EXPANSER
 int	check_var(t_final_token *node);
-int		handle_quote_errors(char *cmd);
+int	handle_quote_errors(char *cmd, t_minishell *minishell);
 int		builtin_or_not_builtin(char *str, t_minishell *minishell, t_minishell *exit_code);
 int		is_built_in(char *str);
 char	*managing_quotes(char *input);

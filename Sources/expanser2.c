@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanser2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:55:48 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/20 13:41:41 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/21 15:12:59 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int	is_there_multiple_quotes(char *cmd)
 
 // To manage if quotes are by pair.
 // To manage if there is the same quote at the beginning & the end.
-int	handle_quote_errors(char *cmd)
+int	handle_quote_errors(char *cmd, t_minishell *minishell)
 {
 	size_t	i;
 	int		count_quotes;
@@ -136,6 +136,7 @@ int	handle_quote_errors(char *cmd)
 	if (count_quotes % 2 != 0)
 	{
 		perror("Quote is not closed\n");
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	return (0);

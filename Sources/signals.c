@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-void	manage_signals(void)
+void	manage_signals(t_minishell *minishell)
 {
 	struct sigaction	sa;
 
@@ -22,12 +22,14 @@ void	manage_signals(void)
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 	{
 		perror("SIGINT error\n");
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	sa.sa_handler = sigquit_handler;
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
 	{
 		perror("SIGINT error\n");
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 }

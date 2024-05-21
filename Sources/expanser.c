@@ -77,7 +77,7 @@ int	is_relative_path(char **cmd)
 // TESTER SUR MAC pour les ".." et quelles est la racine
 // que l'on doit protéger ? + Si ça fonctionne ou non !
 // Nécessaire pour les built-ins => BEST to run.
-char	*relative_to_absolute_path(char **cmd)
+char	*relative_to_absolute_path(char **cmd, t_minishell *minishell)
 {
 	char	cwd[1024];
 	char	*partial_path;
@@ -86,10 +86,10 @@ char	*relative_to_absolute_path(char **cmd)
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 	{
 		perror("Can't get the new path\n");
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
-	if (ft_strcmp(cmd[1], "..") == 0
-		&& ft_strcmp(cwd, getenv("HOME")) == 0)
+	if (ft_strcmp(cmd[1], "..") == 0 && ft_strcmp(cwd, "/") == 0)
 		return (perror("Can't go higher than the root\n"), NULL);
 	partial_path = ft_strjoin(cwd, "/");
 	final_path = ft_strjoin(partial_path, cmd[1]);
@@ -150,7 +150,7 @@ int	check_var(t_final_token *node)
 	return (1);
 }
 
-char	*get_the_var_of_env(t_final_token *node)
+char	*get_the_var_of_env(t_final_token *node, t_minishell *minishell)
 {
 	t_final_token	*tmp;
 	char	*var;
@@ -160,6 +160,7 @@ char	*get_the_var_of_env(t_final_token *node)
 	if (check_var(node) == 1)
 	{
 		perror("Can't get var. of env bce of quotes\n");
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	while (tmp)

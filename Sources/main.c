@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/20 16:05:16 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/21 15:20:05 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int		main(int argc, char **argv, char **env)
 	token = NULL;
 	(void)env;
 	minishell = (t_minishell *)malloc(sizeof(t_minishell));
-	manage_signals();
+	manage_signals(minishell);
     exit_code.last_exit_status = 0;
 	clean_token = (t_clean_token *)malloc(sizeof(t_clean_token));
 	final_token = (t_final_token *)malloc(sizeof(t_final_token));

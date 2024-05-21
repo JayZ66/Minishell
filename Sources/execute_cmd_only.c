@@ -60,6 +60,7 @@ void	exec_cmd_with_fork(char *cmd, t_minishell *minishell, t_minishell *exit_cod
 void	child_cmd_only(char **cmd_line, t_minishell *minishell, char *cmd)
 {
 	char	*final_path;
+
 	if (is_absolute_path(cmd_line) == 0)
 	{
 		final_path = get_path(cmd_line[0], minishell);

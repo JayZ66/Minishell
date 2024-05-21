@@ -104,6 +104,7 @@ CD : DONE
 - cd .. => 2 fois SEGFAULT > OK
 - cd leaks > OK
 - Re-check cd / function. => DONE
+
 ----------------------------------------------------------------------------------------------------------
 
 
@@ -119,6 +120,8 @@ Check dans la tokenisation > Checker dans la string :
 => Need to put things inside quotes in a node (like option)
 & not creating different nodes.
 - Absolute path => Check how to manage it
+
+---------------------------
 
 - REVOIR FONCTION QUOTES ! => OK ?
 On avance de gauche a droite > On check chaque quote,
@@ -143,6 +146,8 @@ Important => Les quotes doivent être gérés dès le début avant de split la l
 1. Mettre la gestion des quotes au début, pour gérer directement l'input.
 2. Lui envoyer une string au lieu d'un tableau de tableau !
 
+---------------------------
+
 - Echo : 
 1. Gérer tous les cas d'erreurs qui n'ont pas été fait (fonction error) => OK
 2. Voir comment gérer la var. d'env au parsing (?) => Si existe pas > Retiré de la ligne de cmd.
@@ -152,8 +157,9 @@ Important => Les quotes doivent être gérés dès le début avant de split la l
 + Gerer les quotes avant echo.
 
 Attention : Si en input j'ai export HOLA=ok le parsing ne me
-met pas d'espace !!
+met pas d'espace !! => mettre espace dans les built_in
 
+---------------------------
 
 Quotes & Var. d'env : 
 - D'abord on gere les quotes et ensuite la var. d'env.
@@ -165,6 +171,8 @@ Var. Env. :
 - Si entre double quote ou tout seul => On met la valeur de la variable d'env.
 - Si entre si;ple quote => On laisse tel quel et on envoie a echo.
 
+---------------------------
+
 Code de sortie : Reprendre au file execution.c !!
 => Mettre a jour a chq sortie du programme.
 => Dans le parsing > Remplacer.
@@ -174,18 +182,24 @@ Code de sortie : Reprendre au file execution.c !!
 exit : => Tests non concluants.
 Free les listes, envoyer minishell en param a exit.
 
+---------------------------
 
 export :
 - Ne pas afficher la derniere ligne de l'env. => OK
-- CHECK : if export value > Then export if the var. is in the env.
+- CHECK : if export value > Then export if the var. is in the env. => OK
+- Ne modifie pas une variable qu'on vient de creer avec une nouvelle value.
 
-CD : 
+CD : DONE
 - TO CHECK : cd puis env => Update env pc école ?
 1. Récupèrer le new path.
 2. Modifier le pwd dand l'env.
 3. Modifier le oldpwd
 => Update le pwd mais pas l'env !
 
-/bin/ls | /bin/cat
+/bin/ls | /bin/cat 
 /bin/ls | cat
-=> Don't work, redirection to check. bce ls | cat works.
+=> => Probleme parsing des que j'ai une cmd avec chemin absolu au debut
+puis un pipe la j'ai un espace a la fin sur le premier node clean content.
+
+echo : 
+Avec variable d'env. n'affiche rien.

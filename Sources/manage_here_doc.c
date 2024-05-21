@@ -20,21 +20,23 @@ void	handle_here_doc(char *cmd, t_minishell *exit_code, int alone)
 	if (pipe(pfd) == -1)
 	{
 		perror("Pb while creating pipe\n");
+		exit_code->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	pid = fork();
 	if (pid == -1)
 	{
 		perror("Can't create processes\n");
+		exit_code->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	if (pid == 0)
-		child_here_doc(pfd, cmd, alone);
+		child_here_doc(pfd, cmd, alone, exit_code);
 	else
 		parent_here_doc(pfd, cmd, exit_code);
 }
 
-void	child_here_doc(int *pfd, char *cmd, int alone)
+void	child_here_doc(int *pfd, char *cmd, int alone, t_minishell *exit_code)
 {
 	char	**limiter;
 	char	*line;
@@ -56,6 +58,7 @@ void	child_here_doc(int *pfd, char *cmd, int alone)
 		if (ft_strncmp_limiter(line, limiter[i], ft_strlen(limiter[i])) == 0)
 		{
 			free(line);
+			exit_code->last_exit_status = EXIT_SUCCESS;
 			exit(EXIT_SUCCESS);
 		}
 		ft_putstr_fd(line, 1);

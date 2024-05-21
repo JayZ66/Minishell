@@ -22,7 +22,10 @@ char	*get_path(char *cmd, t_minishell *minishell)
 	path = select_path(minishell);
 	i = 0;
 	if (!path)
+	{
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
+	}
 	while (path[i])
 	{
 		tmp_path = ft_strjoin(path[i], "/");

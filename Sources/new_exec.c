@@ -32,7 +32,7 @@ void execute_commands_with_pipes_and_redirections(t_final_token **lst, t_minishe
         if (manage_pipe_output(&current, minishell, exit_code) == 1)
             break ;
         first_file = manage_redirection_input(&current, exit_code, first_file);
-        last_file = manage_redirection_output(&current, last_file);
+        last_file = manage_redirection_output(&current, last_file, minishell);
         if ((current->type == CMD && ((current->next && current->next->type == PIPE)
 			|| (current->next && current->next->next && current->next->next->type == PIPE))))
         {
@@ -44,6 +44,7 @@ void execute_commands_with_pipes_and_redirections(t_final_token **lst, t_minishe
                 if (pipe(pipefd) == -1) 
                 {
                     perror("pipe");
+                    exit_code->last_exit_status = EXIT_FAILURE;
                     exit(EXIT_FAILURE);
                 }
 
@@ -51,6 +52,7 @@ void execute_commands_with_pipes_and_redirections(t_final_token **lst, t_minishe
                 if (pid == -1) 
                 {
                     perror("fork");
+                    exit_code->last_exit_status = EXIT_FAILURE;
                     exit(EXIT_FAILURE);
                 } 
                 else if (pid == 0)
@@ -59,6 +61,7 @@ void execute_commands_with_pipes_and_redirections(t_final_token **lst, t_minishe
                     dup2(pipefd[1], STDOUT_FILENO);
                     close(pipefd[1]);
                     exec_simple_cmd(&current, exit_code, minishell);
+                    exit_code->last_exit_status = EXIT_SUCCESS;
                     exit(EXIT_SUCCESS);
                 } 
                 else
@@ -145,7 +148,7 @@ int	manage_pipe_output(t_final_token **current, t_minishell *minishell, t_minish
 			first_file = 0;
 			last_file = 0;
 			first_file = manage_redirection_input(current, exit_code, first_file);
-			last_file = manage_redirection_output(current, last_file);
+			last_file = manage_redirection_output(current, last_file, minishell);
 			if (manage_cmd_pipe(current, exit_code, last_file, minishell) == 0)
 				;
 			else if ((*current)->type == CMD)
