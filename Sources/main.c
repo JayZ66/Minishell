@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/21 15:20:05 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/22 12:23:09 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int		main(int argc, char **argv, char **env)
 		free(input);
 	}
 	free_tab(minishell->env);
-	// free(minishell);
+	free(minishell);
 	return (0);
 }
 //gerer les builtins car si je mets un espace pb

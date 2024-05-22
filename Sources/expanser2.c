@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanser2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:55:48 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/21 15:59:41 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/22 17:44:47 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@ int	check_pwd_option(char *str)
 	return (0);
 }
 
-/*
-DetectBuiltInCmd
-*/
 // Check si built_in dans mon execution => Si oui on redirige
 // le résultat (dup2) et on n'envoie pas dans execve.
 // Check how to manage the new env !
@@ -59,7 +56,7 @@ int	builtin_or_not_builtin(char *str, t_minishell *minishell, t_minishell *exit_
 	else if (ft_strncmp(str, "echo", 4) == 0)
 		builtin_echo(str, exit_code);
 	else if (ft_strncmp(str, "export", 6) == 0)
-		builtin_export(str, minishell);
+		builtin_export(cmd, minishell);
 	else
 	{
 		free_tab(cmd);

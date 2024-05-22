@@ -55,6 +55,7 @@ void	exec_cmd_with_fork(char *cmd, t_minishell *minishell, t_minishell *exit_cod
 		child_cmd_only(cmd_line, minishell, cmd);
 	else
 		parent_cmd_only(pid, exit_code);
+	free_tab(cmd_line);
 }
 
 void	child_cmd_only(char **cmd_line, t_minishell *minishell, char *cmd)
@@ -77,7 +78,6 @@ void	child_cmd_only(char **cmd_line, t_minishell *minishell, char *cmd)
 			minishell->last_exit_status = EXIT_FAILURE;
 			exit(EXIT_FAILURE);
 		}
-		free_tab(cmd_line);
 	}
 	else if (is_absolute_path(cmd_line) == 1)
 	{
@@ -87,7 +87,6 @@ void	child_cmd_only(char **cmd_line, t_minishell *minishell, char *cmd)
 			minishell->last_exit_status = EXIT_FAILURE;
 			exit(EXIT_FAILURE);
 		}
-		free_tab(cmd_line);
 	}
 }
 

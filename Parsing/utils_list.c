@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:04:26 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/16 17:35:57 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/22 14:09:01 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,27 +69,63 @@ int	string_is_space(char *token)
 }
 
 
+// char	**realloc_env(char **env)
+// {
+// 	char	**new_env;
+// 	size_t	size_env;
+// 	size_t	i;
+
+// 	size_env = ft_size_env(env);
+// 	i = 0;
+// 	new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
+// 	if (!new_env)
+// 	{
+// 		perror("Can't create the new env.\n");
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	while (env[i])
+// 	{
+// 		new_env[i] = env[i]; // ADD FT_STRDUP SUR MAC ECOLE !!
+// 		i++;
+// 	}
+// 	new_env[size_env] = NULL;
+// 	return (new_env);
+// }
+
 char	**realloc_env(char **env)
 {
 	char	**new_env;
 	size_t	size_env;
 	size_t	i;
 
-	size_env = ft_size_env(env);
-	i = 0;
-	new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
-	if (!new_env)
-	{
-		perror("Can't create the new env.\n");
-		exit(EXIT_FAILURE);
-	}
-	while (env[i])
-	{
-		new_env[i] = env[i]; // ADD FT_STRDUP SUR MAC ECOLE !!
-		i++;
-	}
-	new_env[size_env] = NULL;
-	return (new_env);
+    // Calculer la taille de l'environnement
+    for (size_env = 0; env[size_env]; size_env++)
+        ;
+    // Allouer la mémoire pour le nouvel environnement
+    new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
+    if (!new_env)
+    {
+        perror("Can't create the new env.\n");
+        exit(EXIT_FAILURE);
+    }
+    // Copier les chaînes de caractères
+    for (i = 0; i < size_env; i++)
+    {
+        new_env[i] = strdup(env[i]);
+        if (!new_env[i])
+        {
+            perror("Can't duplicate env string.\n");
+            // Libérer les chaînes déjà dupliquées et l'environnement
+            while (i > 0)
+            {
+                free(new_env[--i]);
+            }
+            free(new_env);
+            exit(EXIT_FAILURE);
+        }
+    }
+    new_env[size_env] = NULL;
+    return (new_env);
 }
 
 void    free_that_final_lst(t_final_token **token)

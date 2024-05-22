@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/05/21 16:01:37 by marvin           ###   ########.fr        #
+#    Updated: 2024/05/22 10:21:57 by jeguerin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ SRCS = Sources/main.c Sources/utils.c \
 		Sources/expanser2.c Sources/utils3.c Sources/new_exec.c \
 		Parsing/clean_nodes.c Parsing/copy_list.c Parsing/extract_cmd.c \
 		Parsing/init_clean_nodes.c Parsing/init_nodes.c \
-		Parsing/redirection.c Parsing/tokenize.c Parsing/utils_list.c
+		Parsing/redirection.c Parsing/tokenize.c Parsing/utils_list.c \
+		Sources/builtin_cd2.c
 
 GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 LIBFT = Libft/libft.a

@@ -69,22 +69,22 @@ void	modify_or_create(char **args, t_minishell *minishell, size_t i, size_t j)
 	char	*var;
 	char	*new_var;
 	// char	**new_env;
+
 	new_var = ft_substr(args[i], 0, j + 1);
 	if (is_var_in_env(new_var, minishell) == 1)
 	{
 		var = check_value(args[i]);
 		minishell->env = modify_value_env(minishell, new_var, args[i] + j + 1);
 		free(new_var);
-		free(var);
+		// free(var);
 	}
 	else
 	{
 		var = check_value(args[i]);
 		minishell->env = create_var_env(minishell, var);
-		free(var);
+		// free(var);
 		free(new_var);
 	}
-	return ;
 }
 
 // int	main(int argc, char **argv, char **env)

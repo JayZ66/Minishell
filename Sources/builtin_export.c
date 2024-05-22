@@ -17,9 +17,41 @@ Will modify the value of the identified
 var. in the environment.
 */
 
+// char	**modify_value_env(t_minishell *minishell, char *var, char *new_value)
+// {
+// 	size_t	i;
+// 	size_t	size_env;
+// 	char	**new_env;
+
+// 	i = -1;
+// 	size_env = ft_size_env(minishell->env);
+// 	new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
+// 	if (!new_env)
+// 	{
+// 		perror("Can't create the new env.\n");
+// 		minishell->last_exit_status = EXIT_FAILURE;
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	while (minishell->env[++i])
+// 	{
+// 		if (ft_strncmp(minishell->env[i], var, ft_strlen(var)) == 0
+// 			&& minishell->env[i][ft_strlen(var)] == '=')
+// 		{
+// 			new_env[i] = copy_new_value(new_env[i], var, new_value, minishell);
+// 			i++;
+// 		}
+// 		new_env[i] = ft_strdup(minishell->env[i]);
+// 		// free(minishell->env[i]);
+// 	}
+// 	// free_tab(env);
+// 	new_env[size_env] = NULL;
+// 	return (new_env);
+// }
+
 char	**modify_value_env(t_minishell *minishell, char *var, char *new_value)
 {
 	size_t	i;
+	size_t	j;
 	size_t	size_env;
 	char	**new_env;
 
@@ -34,17 +66,19 @@ char	**modify_value_env(t_minishell *minishell, char *var, char *new_value)
 	}
 	while (minishell->env[++i])
 	{
-		if (ft_strncmp(minishell->env[i], var, ft_strlen(var)) == 0
-			&& minishell->env[i][ft_strlen(var)] == '=')
-		{
+		j = 0;
+		while (minishell->env[i][j] && var[j] && minishell->env[i][j] == var[j])
+            j++;
+        if (var[j] == '\0' && minishell->env[i][j - 1] == '=')
 			new_env[i] = copy_new_value(new_env[i], var, new_value, minishell);
-			i++;
+		else
+		{
+			new_env[i] = ft_strdup(minishell->env[i]);
+			free(minishell->env[i]);
 		}
-		new_env[i] = ft_strdup(minishell->env[i]);
-		// free(minishell->env[i]);
 	}
-	// free_tab(env);
-	new_env[size_env] = NULL;
+	// free_tab(minishell->env);
+	new_env[i] = NULL;
 	return (new_env);
 }
 
@@ -52,16 +86,16 @@ char	*copy_new_value(char *new_env, char *var, char *new_value, t_minishell *min
 {
 	size_t	new_var_len;
 
-	new_var_len = ft_strlen(var) + ft_strlen(new_value) + 1;
-	new_env = (char *)malloc(sizeof(char) * new_var_len);
+	new_var_len = ft_strlen(var) + ft_strlen(new_value);
+	new_env = (char *)malloc(sizeof(char) * (new_var_len + 1));
 	if (!new_env)
 	{
 		perror("Memory allocation for new var. failed\n");
 		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
-	new_env = ft_string_cpy(new_env, var);
-	new_env = ft_strcat(new_env, new_value, ft_strlen(new_value));
+	ft_string_cpy(new_env, var);
+	ft_strcat(new_env, new_value, ft_strlen(new_value));
 	return (new_env);
 }
 
@@ -105,6 +139,7 @@ char	**create_var_env(t_minishell *minishell, char *var)
 	while (i < size_env)
 	{
 		new_env[i] = ft_strdup(minishell->env[i]);
+		free(minishell->env[i]);
 		i++;
 	}
 	// free var ?
@@ -113,66 +148,6 @@ char	**create_var_env(t_minishell *minishell, char *var)
 	new_env[size_env + 1] = NULL;
 	return (new_env);
 }
-
-// void	update_env(char **env, char *var)
-// {
-// 	env = create_var_env(env, var);
-// 	// free_tab(*env);
-// 	// *env = new_env;
-// 	print_tab(env);
-// }
-
-// On check, first, si la variable, que l'on souhaite
-// modifier ou créer existe dans l'env. ou non.
-// char	**builtin_export(char **args, char **env)
-// {
-// 	size_t	i;
-// 	char	**new_env;
-
-// 	i = 0;
-// 	new_env = NULL;
-// 	if (args[1] != NULL)
-// 	{
-// 		while (args[1][i])
-// 		{
-// 			if (args[1][i] == '=')
-// 			{
-// 				new_env = modify_or_create(args, env, i, new_env);
-// 				return (new_env);
-// 			}
-// 			i++;
-// 		}
-// 	}
-// 	else
-// 	{
-// 		new_env = print_env(env);
-// 		return (new_env);
-// 	}
-// 	perror("The cmd is not the export we're expected\n");
-// 	return (NULL);
-// }
-
-//Specific case : 
-// char	**var_with_quotes(char *var)
-// {
-// 	size_t	i;
-// 	char	*str;
-// 	char	**var;
-
-// 	i = 0;
-// 	if (!(handle_quote_errors(var)))
-// 	{
-// 		perror("Problem with quotes\n");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	while (var[i])
-// 	{
-// 		if (ft_strncmp(var, "export", 6) == 0)
-// 		{
-// 			str = ft_substr(var, 0, 6);
-// 		}
-// 	}
-// }
 
 char	**manage_quote_export(char *input)
 {
@@ -258,21 +233,6 @@ int	identifier_errors_unset(char *args)
 	return (0);
 }
 
-/*
-To handle : 
-Inclure =>
-- $
-- ?
-- _
-Exclure : 
-- 33 to 35
-- 37 to 47
-- 58 to 62
-- 64
-- 91 to 94
- - 96
- - 123 to 126
-*/
 int	identifier_errors_export(char *args)
 {
 	size_t	i;
@@ -300,14 +260,14 @@ int	identifier_errors_export(char *args)
 	return (0);
 }
 
-void	builtin_export(char *var_env, t_minishell *minishell)
+void	builtin_export(char **args, t_minishell *minishell)
 {
 	size_t	i;
 	size_t	j;
-	char	**args;
+	// char	**args;
 
 	i = 0;
-	args = split_cmd(var_env);
+	// args = ft_split(var_env, ' ');
 	if (args[1] != NULL)
 	{
 		while (args[++i])
@@ -325,7 +285,10 @@ void	builtin_export(char *var_env, t_minishell *minishell)
 				{
 					modify_or_create(args, minishell, i, j);
 					if (args[i + 1] == NULL)
-						return ;
+					{
+						// free_tab(args); // Why invalid free ?
+						break ;
+					}
 				}
 				j++;
 			}
@@ -334,9 +297,10 @@ void	builtin_export(char *var_env, t_minishell *minishell)
 	else
 	{
 		print_export_env(minishell);
-		return ;
+		// free_tab(args);
 	}
 	// printf("bash: export: '%s': not a valid identifier\n", args[1]);
+	// free_tab(args);
 	return ;
 }
 
