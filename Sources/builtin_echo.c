@@ -43,43 +43,6 @@ Gerer les quotes avant le split !
 - Cf. KO.txt pour gerer la var. d'env avec echo.
 */
 
-// void how_many_back_slash(char *cmd) 
-// {
-//     size_t i = 0;
-//     int slash_count = 0;
-
-//     while (cmd[i]) 
-// 	{
-//         if (cmd[i] == '\\') 
-//             slash_count++;
-// 		else 
-// 		{
-//             if (cmd[i] == 'n' && slash_count > 0) 
-// 			{
-//                 // Print the appropriate number of backslashes before 'n'
-//                 int to_print = slash_count / 2;
-//                 for (int j = 0; j < to_print; j++) 
-//                     printf("\\");
-//                 printf("n ");  // Print the 'n' character
-//                 slash_count = 0; // Reset the count after printing
-//             }
-// 			else
-// 			{
-//                 // Print the accumulated backslashes
-//                 for (int j = 0; j < slash_count; j++) 
-//                     printf("\\");
-//                 slash_count = 0; // Reset the count after printing
-//                 printf("%c", cmd[i]);  // Print the current character
-//             }
-//         }
-//         i++;
-//     }
-//     // Handle any remaining backslashes at the end of the string
-//     for (int j = 0; j < slash_count; j++) {
-//         printf("\\");
-//     }
-// }
-
 void	how_many_back_slash(char *cmd)
 {
 	size_t	i;
@@ -166,11 +129,12 @@ void    builtin_echo(char *str, t_minishell *exit_code)
     // else if (ft_strcmp(cmd_with_options[1], "-n") == 0
     //     || ft_strcmp(cmd_with_options[0], "-n") == 0)
         // handle_echo_with_n(cmd_with_options);
+	else if (ft_strcmp(cmd_with_options[0], "echo") != 0)
+		printf("%s: command not found\n", cmd_with_options[0]);
     else
         printf("\n");
     free_tab(cmd_with_options);
 }
-
 
 size_t	count_sign(char **cmd)
 {

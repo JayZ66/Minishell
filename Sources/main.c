@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/22 12:23:09 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/23 09:21:00 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*read_input(t_minishell *minishell)
 	char	*input;
 	(void)minishell;
 
-	input = readline(">$");
+	input = readline("Tarpin_de_Minishell>");
 	if (input == NULL) // Manage ctrl + d bce this is not a signal (ascii).
 	{
 		free(input);

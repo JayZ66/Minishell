@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 10:04:14 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/22 12:24:58 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:04:03 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,14 +180,15 @@ int	check_cd_errors(char **cmd, t_minishell *minishell)
 		j = -1;
 		while (cmd[i][++j])
 		{
-			if (cmd[i][j + 1] && ft_isalpha(cmd[i][j]) == 1 && cmd[i][j + 1] == '.')
+			if (cmd[i][j + 1] && ft_isalpha(cmd[i][j]) == 1 
+                && (cmd[i][j + 1] == '.' || cmd[i][j + 1] == '?'))
 			{
 				printf("Command '%s' not found\n", cmd[i]);
 				return (1);
 			}
 			else if (cmd[i][j + 1] && (cmd[i][j] == '.' && cmd[i][j + 1] == '/'))
 				return (1);
-			else if (cmd[i][j] == '/')
+			else if (cmd[1][j] == '/')
 			{
 				if (check_slash(cmd[i]) == 1)
 				{
@@ -388,7 +389,6 @@ void env_with_new_var(char ***env, const char *var, const char *value)
             return;
         }
     }
-
     // Si la variable n'est pas trouvée, ajouter une nouvelle entrée
     new_env = realloc(*env, sizeof(char *) * (i + 2));
     if (!new_env)
@@ -437,15 +437,15 @@ void get_new_pwd(t_minishell *minishell, char **cmd)
 
 void builtin_cd(t_minishell *minishell, char **cmd)
 {
-    if (check_cd_errors(cmd, minishell) == 1)
-    {
-        return;
-    }
     if (cmd[1] == NULL)
     {
+        if (ft_strcmp(cmd[0], "cd") != 0) // Checker si / file sinon cmd not found !
+		    printf("bash: %s: No such file or directory\n", cmd[0]);
         go_back_home(minishell);
         return;
     }
+    if (check_cd_errors(cmd, minishell) == 1)
+        return;
     if (cmd[1] != NULL && is_relative_path(cmd) == 0)
     {
         cmd[1] = relative_to_absolute_path(cmd, minishell);
@@ -456,3 +456,5 @@ void builtin_cd(t_minishell *minishell, char **cmd)
     }
     get_new_pwd(minishell, cmd);
 }
+
+//cdLibft/ => bash: cdLibft/: No such file or directory

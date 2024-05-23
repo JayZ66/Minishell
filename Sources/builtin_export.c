@@ -48,55 +48,80 @@ var. in the environment.
 // 	return (new_env);
 // }
 
-char	**modify_value_env(t_minishell *minishell, char *var, char *new_value)
-{
-	size_t	i;
-	size_t	j;
-	size_t	size_env;
-	char	**new_env;
+// char	**modify_value_env(t_minishell *minishell, char *var, char *new_value)
+// {
+// 	size_t	i;
+// 	size_t	j;
+// 	size_t	size_env;
+// 	char	**new_env;
 
-	i = -1;
-	size_env = ft_size_env(minishell->env);
-	new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
-	if (!new_env)
+// 	i = -1;
+// 	size_env = ft_size_env(minishell->env);
+// 	new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
+// 	if (!new_env)
+// 	{
+// 		perror("Can't create the new env.\n");
+// 		minishell->last_exit_status = EXIT_FAILURE;
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	while (minishell->env[++i])
+// 	{
+// 		j = 0;
+// 		while (minishell->env[i][j] && var[j] && minishell->env[i][j] == var[j])
+//             j++;
+//         if (var[j] == '\0' && minishell->env[i][j - 1] == '=')
+// 			new_env[i] = copy_new_value(new_env[i], var, new_value, minishell);
+// 		else
+// 		{
+// 			new_env[i] = ft_strdup(minishell->env[i]);
+// 			free(minishell->env[i]);
+// 		}
+// 	}
+// 	// free_tab(minishell->env);
+// 	new_env[i] = NULL;
+// 	return (new_env);
+// }
+
+void modify_value_env(char ***env, const char *var, const char *value, t_minishell *minishell)
+{
+    size_t i = 0;
+	size_t	j;
+    // size_t var_len = strlen(var);
+
+    while ((*env)[i]) 
 	{
-		perror("Can't create the new env.\n");
-		minishell->last_exit_status = EXIT_FAILURE;
-		exit(EXIT_FAILURE);
-	}
-	while (minishell->env[++i])
-	{
-		j = 0;
-		while (minishell->env[i][j] && var[j] && minishell->env[i][j] == var[j])
+        j = 0;
+		while ((*env)[i][j] && var[j] && (*env)[i][j] == var[j])
             j++;
-        if (var[j] == '\0' && minishell->env[i][j - 1] == '=')
-			new_env[i] = copy_new_value(new_env[i], var, new_value, minishell);
-		else
+        if (var[j] == '\0' && (*env)[i][j - 1] == '=')
 		{
-			new_env[i] = ft_strdup(minishell->env[i]);
-			free(minishell->env[i]);
-		}
-	}
-	// free_tab(minishell->env);
-	new_env[i] = NULL;
-	return (new_env);
+			printf("OK C'EST BON !");
+            char *new_entry = copy_new_value(var, value, minishell);
+            free((*env)[i]);
+            (*env)[i] = new_entry;
+            printf("Modified variable: %s\n", (*env)[i]); // Debugging output
+            return;
+        }
+        i++;
+    }
 }
 
-char	*copy_new_value(char *new_env, char *var, char *new_value, t_minishell *minishell)
+char *copy_new_value(const char *var, const char *new_value, t_minishell *minishell) 
 {
-	size_t	new_var_len;
+    size_t new_var_len;
+	char *new_env;
 
-	new_var_len = ft_strlen(var) + ft_strlen(new_value);
-	new_env = (char *)malloc(sizeof(char) * (new_var_len + 1));
-	if (!new_env)
+	new_var_len = ft_strlen(var) + 1 + ft_strlen(new_value);
+	new_env = (char *)malloc(new_var_len + 1);
+    if (!new_env) 
 	{
-		perror("Memory allocation for new var. failed\n");
+        perror("Memory allocation for new var. failed");
 		minishell->last_exit_status = EXIT_FAILURE;
-		exit(EXIT_FAILURE);
-	}
-	ft_string_cpy(new_env, var);
-	ft_strcat(new_env, new_value, ft_strlen(new_value));
-	return (new_env);
+        exit(EXIT_FAILURE);
+    }
+    ft_string_cpy(new_env, var);
+    ft_strcat(new_env, new_value, ft_strlen(new_value));
+    return (new_env);
 }
 
 char	*check_value(char *var)
@@ -121,14 +146,44 @@ char	*check_value(char *var)
 	return (var);
 }
 
+// char	**create_var_env(t_minishell *minishell, char *var)
+// {
+// 	size_t	size_env;
+// 	size_t	i;
+// 	char	**new_env;
+
+// 	size_env = ft_size_env(minishell->env);
+// 	i = 0;
+// 	new_env = (char **)malloc(sizeof(char *) * (size_env + 2));
+// 	if (!new_env)
+// 	{
+// 		perror("Can't create the new env.\n");
+// 		minishell->last_exit_status = EXIT_FAILURE;
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	while (i < size_env)
+// 	{
+// 		new_env[i] = ft_strdup(minishell->env[i]);
+// 		free(minishell->env[i]);
+// 		i++;
+// 	}
+// 	// free var ?
+// 	// new_var = check_value(var);
+// 	new_env[size_env] = ft_strdup(var);
+// 	new_env[size_env + 1] = NULL;
+// 	return (new_env);
+// }
+
 char	**create_var_env(t_minishell *minishell, char *var)
 {
 	size_t	size_env;
 	size_t	i;
 	char	**new_env;
 
+	// Calculer la taille de l'environnement existant
 	size_env = ft_size_env(minishell->env);
-	i = 0;
+
+	// Allouer de la mémoire pour le nouvel environnement
 	new_env = (char **)malloc(sizeof(char *) * (size_env + 2));
 	if (!new_env)
 	{
@@ -136,19 +191,47 @@ char	**create_var_env(t_minishell *minishell, char *var)
 		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
-	while (i < size_env)
+
+	// Copier les anciennes variables d'environnement
+	for (i = 0; i < size_env; i++)
 	{
 		new_env[i] = ft_strdup(minishell->env[i]);
-		free(minishell->env[i]);
-		i++;
+		if (!new_env[i])
+		{
+			// Gérer l'échec de l'allocation de mémoire
+			perror("Can't copy environment variable.\n");
+			// Libérer la mémoire déjà allouée
+			for (size_t j = 0; j < i; j++)
+				free(new_env[j]);
+			free(new_env);
+			minishell->last_exit_status = EXIT_FAILURE;
+			exit(EXIT_FAILURE);
+		}
 	}
-	// free var ?
-	// new_var = check_value(var);
-	new_env[size_env] = ft_strdup(var);
-	new_env[size_env + 1] = NULL;
-	return (new_env);
-}
 
+	// Ajouter la nouvelle variable à la fin du nouvel environnement
+	new_env[size_env] = ft_strdup(var);
+	if (!new_env[size_env])
+	{
+		// Gérer l'échec de l'allocation de mémoire
+		perror("Can't copy new environment variable.\n");
+		// Libérer la mémoire déjà allouée
+		for (i = 0; i < size_env; i++)
+			free(new_env[i]);
+		free(new_env);
+		minishell->last_exit_status = EXIT_FAILURE;
+		exit(EXIT_FAILURE);
+	}
+
+	// Terminer le nouvel environnement par NULL
+	new_env[size_env + 1] = NULL;
+
+	// Libérer l'ancien environnement
+	free_tab(minishell->env);
+
+	// Retourner le nouvel environnement
+	return new_env;
+}
 char	**manage_quote_export(char *input)
 {
 	char	**args;
@@ -260,6 +343,8 @@ int	identifier_errors_export(char *args)
 	return (0);
 }
 
+// exportOK=OK => Rien (continue)
+
 void	builtin_export(char **args, t_minishell *minishell)
 {
 	size_t	i;
@@ -294,6 +379,8 @@ void	builtin_export(char **args, t_minishell *minishell)
 			}
 		}
 	}
+	else if (ft_strcmp(args[0], "export") != 0)
+		return ;
 	else
 	{
 		print_export_env(minishell);

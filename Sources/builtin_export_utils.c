@@ -74,9 +74,8 @@ void	modify_or_create(char **args, t_minishell *minishell, size_t i, size_t j)
 	if (is_var_in_env(new_var, minishell) == 1)
 	{
 		var = check_value(args[i]);
-		minishell->env = modify_value_env(minishell, new_var, args[i] + j + 1);
+		modify_value_env(&minishell->env, new_var, args[i] + j + 1, minishell);
 		free(new_var);
-		// free(var);
 	}
 	else
 	{

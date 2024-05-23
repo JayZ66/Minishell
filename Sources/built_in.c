@@ -12,6 +12,14 @@
 
 #include "../minishell.h"
 
+/*
+echoSALUTTOI => Message d'erreur : command not found => DONE
+unsetPWD : same => DONE
+exit42 : same => DONE
+cdLibft/ => bash: cdLibft/: No such file or directory
+exportOK=OK : Rien (continue) => DONE
+
+*/
 
 char	**is_char_ok(char **args)
 {
@@ -109,6 +117,8 @@ void	builtin_exit(char **args, t_minishell *exit_code, t_minishell *minishell)
 		if (exit_status >= 0 && exit_status <= 255)
 			exit(exit_status);
 	}
+	else if (ft_strcmp(args[0], "exit") != 0)
+		printf("%s: command not found\n", args[0]);
 	else
 	{
 		exit_code->last_exit_status = 0;
@@ -180,6 +190,8 @@ void	builtin_unset(char **var, t_minishell *minishell)
 			j++;
 		}
 	}
+	else if (ft_strcmp(var[0], "unset") != 0)
+		printf("%s: command not found\n", var[0]);
 	// if (is_unset == 0)
 	// 	perror("Can't find the var. to remove from the env.\n");
 	return ;

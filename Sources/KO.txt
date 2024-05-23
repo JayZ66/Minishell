@@ -107,7 +107,7 @@ CD : DONE
 
 ----------------------------------------------------------------------------------------------------------
 
-- $VAR.ENV.:
+- $VAR.ENV.: DONE => TO TEST
 Check dans la tokenisation > Checker dans la string : 
 1. tant que str & que pas $
 2. puis que pas autre $
@@ -119,6 +119,16 @@ Check dans la tokenisation > Checker dans la string :
 => Need to put things inside quotes in a node (like option)
 & not creating different nodes.
 - Absolute path => Check how to manage it
+
+Quotes & Var. d'env : 
+- D'abord on gere les quotes et ensuite la var. d'env.
+=> Par contre il faut gerer les quotes avant et donc reconnaitre
+le type de quotes :
+- Si simple > c'est une phrase litterale > On garde le texte.
+- Si double ou rien > c'est une variable > On change par sa valeur.
+Var. Env. : 
+- Si entre double quote ou tout seul => On met la valeur de la variable d'env.
+- Si entre si;ple quote => On laisse tel quel et on envoie a echo.
 
 ---------------------------
 
@@ -155,21 +165,6 @@ Important => Les quotes doivent être gérés dès le début avant de split la l
 => Par contre il retire le $.
 + Gerer les quotes avant echo.
 
-Attention : Si en input j'ai export HOLA=ok le parsing ne me
-met pas d'espace !! => mettre espace dans les built_in
-
----------------------------
-
-Quotes & Var. d'env : 
-- D'abord on gere les quotes et ensuite la var. d'env.
-=> Par contre il faut gerer les quotes avant et donc reconnaitre
-le type de quotes :
-- Si simple > c'est une phrase litterale > On garde le texte.
-- Si double ou rien > c'est une variable > On change par sa valeur.
-Var. Env. : 
-- Si entre double quote ou tout seul => On met la valeur de la variable d'env.
-- Si entre si;ple quote => On laisse tel quel et on envoie a echo.
-
 ---------------------------
 
 Code de sortie : DONE
@@ -183,28 +178,33 @@ Free les listes, envoyer minishell en param a exit.
 
 ---------------------------
 
-export :
+export : DONE
 - Ne pas afficher la derniere ligne de l'env. => OK
 - CHECK : if export value > Then export if the var. is in the env. => OK
-- Ne modifie pas une variable qu'on vient de creer avec une nouvelle value.
-
-CD : DONE
-- TO CHECK : cd puis env => Update env pc école ?
-1. Récupèrer le new path.
-2. Modifier le pwd dand l'env.
-3. Modifier le oldpwd
-=> Update le pwd mais pas l'env !
+- Ne modifie pas une variable qu'on vient de creer avec une nouvelle value. => OK
+- LEAKS !! => OK
 
 /bin/ls | /bin/cat 
 /bin/ls | cat
-=> => Probleme parsing des que j'ai une cmd avec chemin absolu au debut
+=> Probleme parsing des que j'ai une cmd avec chemin absolu au debut
 puis un pipe la j'ai un espace a la fin sur le premier node clean content.
 
-echo : 
+echo : TO CHECK
 Avec variable d'env. n'affiche rien.
++ If var. d'env. pas trouve on i++ et on affiche le mot suivant.
 
-EXIT : NE MARCHE PLUS => Marche donc à tester.
+echoSALUTTOI : Message d'erreur : command not found => DONE
+unsetPWD : same => DONE
+exit42 : same => DONE
+cdLibft/ => bash: cdLibft/: No such file or directory => DONE
+exportOK=OK => Rien (continue) => DONE
+
+EXIT : NE MARCHE PLUS => DONE
 exit | ls
 
-echo SALUT TOI > ok | cat | cat ok => Fonctionne pas
+echo SALUT TOI > ok | cat | cat ok => DONE
 Because dernier cat a besoin du file ok
+
+Attention : Si en input j'ai export HOLA=ok le parsing ne me => OK
+met pas d'espace !! => mettre espace dans les built_in
+=> GERER CA DANS MES BUILT_IN

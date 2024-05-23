@@ -110,26 +110,49 @@ void execute_commands_with_pipes_and_redirections(t_final_token **lst, t_minishe
 int	how_many_output(t_final_token **current)
 {
 	t_final_token	*tmp;
+    char            *file;
 
 	tmp = *current;
 	while (tmp)
 	{
-		if (tmp->type == OUTPUT && (tmp->next && tmp->next->type == PIPE)
-			&& (tmp->next->next && tmp->next->next->type == INPUT))
-		{
-			if (ft_strcmp(tmp->content, tmp->next->next->content) == 0)
-				return (1);
-		}
-		else if (tmp->type == OUTPUT && (tmp->next && tmp->next->type == PIPE)
-			&& (tmp->next->next && tmp->next->next->type == CMD))
-			{
-				if (ft_strschr(tmp->next->next->content, tmp->content) == 0)
-					return (1);
-			}
+		// if (tmp->type == OUTPUT && (tmp->next && tmp->next->type == PIPE)
+		// 	&& (tmp->next->next && tmp->next->next->type == INPUT))
+		// {
+		// 	if (ft_strcmp(tmp->content, tmp->next->next->content) == 0)
+		// 		return (1);
+		// }
+		// else if (tmp->type == OUTPUT && (tmp->next && tmp->next->type == PIPE)
+		// 	&& (tmp->next->next && tmp->next->next->type == CMD))
+		// 	{
+		// 		if (ft_strschr(tmp->next->next->content, tmp->content) == 0)
+		// 			return (1);
+		// 	}
+        if (tmp->type == OUTPUT)
+        {
+            file = tmp->content;
+            while (tmp)
+            {
+                if (tmp->type == CMD && ft_strschr(tmp->content, file) == 0)
+                    return (1);
+                else if (tmp->type == INPUT && ft_strcmp(file, tmp->content) == 0)
+                    return (1);
+                tmp = tmp->next;
+            }
+            break ;
+        }
 		tmp = tmp->next;
 	}
 	return (0);
 }
+
+// echo SALUT TOI > ok | cat | cat ok
+/*
+- J'itere sur ma ligne de cmd.
+- Si j'ai un output puis un input 
+- Si le contenu est le meme (same file)
+- Alors on passe a l'autre exec.
+
+*/
 
 int	manage_pipe_output(t_final_token **current, t_minishell *minishell, t_minishell *exit_code)
 {
