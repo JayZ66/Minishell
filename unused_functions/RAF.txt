@@ -18,9 +18,9 @@ on close et on avance tant qu'on est pas sur le dernier output du bloc.
 
 - Gérer le fait d'avoir $? => Qu'est-ce qu'on en fait du coup ?
 - Gérer la redirection vers la sortie d'erreur.
-- Regrouper parsing + exécution
+- Regrouper parsing + exécution => DONE
 - Finaliser la norme => IN PROGRESS
-- Check how to manage & update ENV (modification) !
+- Check how to manage & update ENV (modification) ! => DONE
 
 Today : 
 - Gérer si les guillemets sont pairs => OK
@@ -31,12 +31,12 @@ Today :
 
 TOMORROW : 
 - Norme => OK
-- TESTS EXECUTION !! => IN PROGRESS
+- TESTS EXECUTION !! => OK
 - Multiple input/output ?? => OK
 - Split fonctions => OK
 
 Mercredi - 01/05 :
-- Manage quotes : simple rentrent pas dans la condition. => DONE MORE TESTS TO DO
+- Manage quotes : simple rentrent pas dans la condition. => DONE 
 - EXPORT : Check when multiple var. to modify or create. => DONE
 - export MY_VAR="value with spaces" => KO : Take quotes into account ? => In progress
 Manage_quotes => Removing quotes. => DONE

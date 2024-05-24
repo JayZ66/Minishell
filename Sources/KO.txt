@@ -105,6 +105,18 @@ CD : DONE
 - cd leaks > OK
 - Re-check cd / function. => DONE
 
+export : DONE
+- Ne pas afficher la derniere ligne de l'env. => OK
+- CHECK : if export value > Then export if the var. is in the env. => OK
+- Ne modifie pas une variable qu'on vient de creer avec une nouvelle value. => OK
+- LEAKS !! => OK
+
+echoSALUTTOI : Message d'erreur : command not found => DONE
+unsetPWD : same => DONE
+exit42 : same => DONE
+cdLibft/ => bash: cdLibft/: No such file or directory => DONE
+exportOK=OK => Rien (continue) => DONE
+
 ----------------------------------------------------------------------------------------------------------
 
 - $VAR.ENV.: DONE => TO TEST
@@ -178,12 +190,6 @@ Free les listes, envoyer minishell en param a exit.
 
 ---------------------------
 
-export : DONE
-- Ne pas afficher la derniere ligne de l'env. => OK
-- CHECK : if export value > Then export if the var. is in the env. => OK
-- Ne modifie pas une variable qu'on vient de creer avec une nouvelle value. => OK
-- LEAKS !! => OK
-
 /bin/ls | /bin/cat 
 /bin/ls | cat
 => Probleme parsing des que j'ai une cmd avec chemin absolu au debut
@@ -193,18 +199,26 @@ echo : TO CHECK
 Avec variable d'env. n'affiche rien.
 + If var. d'env. pas trouve on i++ et on affiche le mot suivant.
 
-echoSALUTTOI : Message d'erreur : command not found => DONE
-unsetPWD : same => DONE
-exit42 : same => DONE
-cdLibft/ => bash: cdLibft/: No such file or directory => DONE
-exportOK=OK => Rien (continue) => DONE
-
 EXIT : NE MARCHE PLUS => DONE
 exit | ls
 
 echo SALUT TOI > ok | cat | cat ok => DONE
 Because dernier cat a besoin du file ok
 
+-------------------------------------------------
+
 Attention : Si en input j'ai export HOLA=ok le parsing ne me => OK
 met pas d'espace !! => mettre espace dans les built_in
 => GERER CA DANS MES BUILT_IN
+
+RAF - LAST WEEK : 
+- Norme
+- leaks
+- Skip l'espace du premier bloc reçu ! => Where ?
+- Gérer la redirection vers la sortie d'erreur. => HOW ?
+- Refaire tests excel
+- Finir de gérer les quotes
+- Tester la variable d'environnement !
+- RETEST cd ! + // Checker si / file sinon cmd not found !
+- RETEST Echo -n for modifications !
+- RETEST export for modifications

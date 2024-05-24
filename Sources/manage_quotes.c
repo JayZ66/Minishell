@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:51:22 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/21 15:58:31 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/24 11:31:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,4 +250,32 @@ char	*handle_quotes(char *cmd, t_minishell *minishell)
 	if (pair_of_quotes == 0)
 		str = check_quotes(cmd, multiple_quotes);
 	return (str);
+}
+
+char *clean_quote2(char *input)
+{
+    int i;
+    int tmp;
+
+    i = 0;
+    tmp = 0;
+    while (input[i])
+    {
+        if (input[i] == '"' && ft_strnchr(input + i + 1, '"'))
+        {
+            tmp = i + 1 + ft_strnchr(input + i + 1, '"');
+            input = ft_strjoin(ft_strjoin(ft_substr(input, 0, i), ft_substr(input, i + 1, ft_strnchr(input + i + 1, '"'))),
+            ft_substr(input + 1, ft_strnchr(input + i + 1, '"') + i + 1, ft_strlen(input)));
+            i = tmp - 2;
+        }
+        else if (input[i] == 39 && ft_strnchr(input + i + 1, 39))
+        {
+            tmp = i + 1 + ft_strnchr(input + i + 1, 39);
+            input = ft_strjoin(ft_strjoin(ft_substr(input, 0, i), ft_substr(input, i + 1, ft_strnchr(input + i + 1, 39))),
+            ft_substr(input + 1, ft_strnchr(input + i + 1, 39) + i + 1, ft_strlen(input)));
+            i = tmp - 2;
+        }
+        i++;
+    }
+    return (input);
 }

@@ -44,7 +44,6 @@ void	free_tab(char **tab)
 	free(tab);
 }
 
-
 int	ft_strlen_tab(char **cmd_line)
 {
 	size_t	i;
@@ -68,4 +67,13 @@ int	ft_lstsize_content(t_token *token)
 		temp = temp->next;
 	}
 	return (total_length);
+}
+
+char	**split_cmd(char *var_env)
+{
+	char	**args;
+
+	args = NULL;
+	args = ft_split(var_env, ' ');
+	return (args);
 }

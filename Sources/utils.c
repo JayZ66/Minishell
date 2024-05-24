@@ -87,3 +87,17 @@ void	add_back(t_token **token, t_token *new)
 		last->next = new;
 	}
 }
+
+void	print_env(t_minishell *minishell)
+{
+	size_t	i;
+
+	i = 0;
+	sort_tab(minishell);
+	while (minishell->env[i])
+	{
+		printf("declare -x %s\n", minishell->env[i]);
+		i++;
+	}
+	return ;
+}
