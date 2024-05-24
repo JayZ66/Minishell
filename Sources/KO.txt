@@ -219,6 +219,10 @@ RAF - LAST WEEK :
 - Refaire tests excel
 - Finir de gérer les quotes
 - Tester la variable d'environnement !
-- RETEST cd ! + // Checker si / file sinon cmd not found !
+- RETEST cd ! + // Checker si / file sinon cmd not found ! => DONE
 - RETEST Echo -n for modifications !
-- RETEST export for modifications
+Tarpin_de_Minishell>echo -ndgs COUCOU
+Chaque node clean content : echo -ndgs COUCOU
+Chaque node clean type content : 0
+COUCOUTarpin_de_Minishell
+- RETEST export for modifications => OK

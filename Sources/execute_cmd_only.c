@@ -32,7 +32,8 @@ int	is_one_cmd(char *cmd)
 	return (is_option);
 }
 
-void	exec_cmd_with_fork(char *cmd, t_minishell *minishell, t_minishell *exit_code)
+void	exec_cmd_with_fork(char *cmd, t_minishell *minishell,
+	t_minishell *exit_code)
 {
 	char	**cmd_line;
 	int		pid;

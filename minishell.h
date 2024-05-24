@@ -51,27 +51,27 @@ typedef struct s_clean_token
 	char					*content;
 	Token_type				type;
 	struct s_clean_token	*next;
-} t_clean_token;
+}	t_clean_token;
 
 typedef struct s_final_token
 {
 	char					*content;
 	Token_type				type;
 	struct s_final_token	*next;
-} t_final_token;
+}	t_final_token;
 
 typedef struct s_minishell
 {
 	t_token			*token;
 	t_clean_token	*clean_token;
 	t_final_token	*final_token;
-	int		last_exit_status;
-	char	**env;
+	int				last_exit_status;
+	char			**env;
 }	t_minishell;
 
 // MANDATORY PART
-char	*read_input(t_minishell *minishell);
-void	shell_level(t_minishell *minishell);
+char			*read_input(t_minishell *minishell);
+void			shell_level(t_minishell *minishell);
 
 // void	execute_pipe(int nb_args, char **cmd_line, char **env);
 // void	do_pipes(char *cmd, char **env);
@@ -80,140 +80,154 @@ void	shell_level(t_minishell *minishell);
 // char	*check_line_cmd(t_token *token);
 
 // Var. env.
-char	*get_the_var_of_env(t_final_token *node, t_minishell *minishell);
+char			*get_the_var_of_env(t_final_token *node, t_minishell *minishell);
 
 // Utils
-void	print_tab(char **cmd_line);
-int		lst_size(t_token *token);
-void	free_tab(char **tab);
+void			print_tab(char **cmd_line);
+int				lst_size(t_token *token);
+void			free_tab(char **tab);
 
-char	*ft_strndup(const char *s, size_t n);
-char	*ft_strcat(char *dst, const char *src, size_t size);
+char			*ft_strndup(const char *s, size_t n);
+char			*ft_strcat(char *dst, const char *src, size_t size);
 // void	print_lst(t_token *token);
-void	print_new_env(t_minishell *minishell);
-int		ft_strlen_tab(char **cmd_line);
-int		ft_lstsize_content(t_token *token);
-void	free_that_lst(t_token **token);
-char	**realloc_env(char **env);
-size_t	ft_size_env(char **env);
-int		ft_strncmp_limiter(const char *s1, const char *s2, size_t n);
-void	print_export_env(t_minishell *minishell);
+void			print_new_env(t_minishell *minishell);
+int				ft_strlen_tab(char **cmd_line);
+int				ft_lstsize_content(t_token *token);
+void			free_that_lst(t_token **token);
+char			**realloc_env(char **env);
+size_t			ft_size_env(char **env);
+int				ft_strncmp_limiter(const char *s1, const char *s2, size_t n);
+void			print_export_env(t_minishell *minishell);
 
 // Built_in
-void	builtin_exit(char **args, t_minishell *exit_code, t_minishell *minishell);
-char	**is_char_ok(char **args);
-void	builtin_pwd(void);
-int		check_pwd_option(char *str);
-void	builtin_unset(char **var, t_minishell *minishell);
-void	builtin_env(t_minishell *minishell);
-void	builtin_export(char **args, t_minishell *minishell);
-char	**create_var_env(t_minishell *minishell, char *var);
-// char	**modify_value_env(t_minishell *minishell, char *var, char *new_value);
-void modify_value_env(char ***env, const char *var, const char *value, t_minishell *minishell);
-void	modify_or_create(char **args, t_minishell *minishell, size_t i, size_t j);
-int		identifier_errors(char *args);
-int		check_char_unset(char c);
-int		check_char_export(char c);
-int		identifier_errors_unset(char *args);
-int		identifier_errors_export(char *args);
-char	*check_value(char *var);
-char	**manage_quote_export(char *input);
-int		if_quote(char *var_env);
-int		is_something_after_equal(char *str);
-char	**clean_spaces(char **args);
-char *copy_new_value(const char *var, const char *new_value, t_minishell *minishell);
-int		is_var_in_env(char *var, t_minishell *minishell);
-int		is_var_env(const char c);
-void	update_env(char **env, char *var);
-void	sort_tab(t_minishell *minishell);
-void	print_env(t_minishell *minishell);
-// void	builtin_cd(t_minishell *minishell, char **cmd);
-// int		check_cd_errors(char **cmd, char **new_env, t_minishell *minishell);
-// char	**alloc_newenv(t_minishell *minishell);
-int		is_relative_path(char **cmd);
-char	*relative_to_absolute_path(char **cmd, t_minishell *minishell);
-// char	**go_back_home(char **new_env, t_minishell *minishell);
-// char	**env_with_new_pwd(char **new_env, t_minishell *minishell, char *new_pwd);
-// char	**get_new_pwd(t_minishell *minishell, char **new_env, char **cmd);
-// char	**change_pwd_env(t_minishell *minishell, char **new_env, char *cwd, char *old_cwd);
-void env_with_new_var(char ***env, const char *var, const char *value);
-void change_pwd_env(t_minishell *minishell, const char *cwd, const char *old_cwd);
-void get_new_pwd(t_minishell *minishell, char **cmd);
-void builtin_cd(t_minishell *minishell, char **cmd);
-void go_back_home(t_minishell *minishell);
-int	check_cd_errors(char **cmd, t_minishell *minishell);
+void			builtin_exit(char **args, t_minishell *exit_code,
+	t_minishell *minishell);
+char			**is_char_ok(char **args, t_minishell *minishell);
+void			builtin_pwd(void);
+int				check_pwd_option(char *str);
+void			builtin_unset(char **var, t_minishell *minishell);
+void			builtin_env(t_minishell *minishell);
+void			builtin_export(char **args, t_minishell *minishell);
+char			**create_var_env(t_minishell *minishell, char *var);
+void 			modify_value_env(char ***env, const char *var, const char *value,
+	t_minishell *minishell);
+void			modify_or_create(char **args, t_minishell *minishell,
+	size_t i, size_t j);
+int				identifier_errors(char *args);
+int				check_char_unset(char c);
+int				check_char_export(char c);
+int				identifier_errors_unset(char *args);
+int				identifier_errors_export(char *args);
+char			*check_value(char *var);
+char			**manage_quote_export(char *input);
+int				if_quote(char *var_env);
+int				is_something_after_equal(char *str);
+char			**clean_spaces(char **args);
+char 			*copy_new_value(const char *var, const char *new_value,
+	t_minishell *minishell);
+int				is_var_in_env(char *var, t_minishell *minishell);
+int				is_var_env(const char c);
+void			update_env(char **env, char *var);
+void			sort_tab(t_minishell *minishell);
+void			print_env(t_minishell *minishell);
+int				is_relative_path(char **cmd);
+char			*relative_to_absolute_path(char **cmd, t_minishell *minishell);
+void 			env_with_new_var(char ***env, const char *var, const char *value);
+void 			change_pwd_env(t_minishell *minishell, const char *cwd,
+	const char *old_cwd);
+void 			get_new_pwd(t_minishell *minishell, char **cmd);
+void 			builtin_cd(t_minishell *minishell, char **cmd);
+void 			go_back_home(t_minishell *minishell);
+int				check_cd_errors(char **cmd, t_minishell *minishell);
 
-void	builtin_echo(char *str, t_minishell *exit_code);
-void	how_many_back_slash(char *cmd);
-void	handle_echo_with_n(char **cmd);
-size_t	count_sign(char **cmd);
-char	*clean_quote(char *str);
-char	*handle_quotes(char *cmd, t_minishell *minishell);
-char	*copy_string_without_char(const char *source, char exclude_char);
-int		is_there_something_after_quote(char *str);
-char	*copy_str_without_first_quote(char *source);
-int		is_space(char c);
-char	*check_quotes(char *cmd, int multiple_quotes);
-char	*check_multiple_quotes(char *cmd);
-char	*check_initial_quote(char *cmd);
-char	*removing_one_level_of_quote(char *cmd, char c, size_t i);
-int		is_there_multiple_quotes(char *cmd);
+void			builtin_echo(char *str, t_minishell *exit_code);
+void			how_many_back_slash(char *cmd);
+void			handle_echo_with_n(char **cmd);
+size_t			count_sign(char **cmd);
+char			*clean_quote(char *str);
+char			*handle_quotes(char *cmd, t_minishell *minishell);
+char			*copy_string_without_char(const char *source,
+	char exclude_char);
+int				is_there_something_after_quote(char *str);
+char			*copy_str_without_first_quote(char *source);
+int				is_space(char c);
+char			*check_quotes(char *cmd, int multiple_quotes);
+char			*check_multiple_quotes(char *cmd);
+char			*check_initial_quote(char *cmd);
+char			*removing_one_level_of_quote(char *cmd, char c, size_t i);
+int				is_there_multiple_quotes(char *cmd);
 
 // Execution
-char	**select_path(t_minishell *minishell);
-char	*get_path(char *cmd, t_minishell *minishell);
-void	exec_cmd_with_fork(char *cmd, t_minishell *minishell, t_minishell *exit_code);
-void	child_cmd_only(char **cmd_line, t_minishell *minishell, char *cmd);
-void	parent_cmd_only(int pid, t_minishell *exit_code);
-void	exec_cmd(char *cmd, t_minishell *minishell);
-void	parent_process(int *pfd, char *cmd, t_minishell *exit_code);
-void	child_process(int *pfd, char *cmd, t_minishell *minishell, int output);
-void	create_pipes(char *cmd, t_minishell *minishell, t_minishell *exit_code, int output);
-void	parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code);
-void	child_here_doc(int *pfd, char *cmd, int alone, t_minishell *exit_code);
-void	handle_here_doc(char *cmd, t_minishell *exit_code, int alone);
-void	manage_here_doc(t_final_token **current, t_minishell *exit_code, char *content, int alone);
-void	check_line(t_final_token **lst, t_minishell *minishell, t_minishell *exit_code);
-void	redir_builtin(char *cmd, t_minishell *exit_code, t_minishell *minishell, int out);
-void	parent_builtin(int *fd, t_minishell *exit_code);
-// void	parent_builtin(int *fd, t_minishell *exit_code, t_minishell *minishell, char *cmd);
-void	print_exec_list(t_token *head);
-void	display_lst(t_token *line);
-int	manage_output_redirection(char *node_content, int last_file, t_minishell *minishell);
-int	manage_input_redirection(t_final_token **current, char *node_content, int first_file, t_minishell *exit_code);
-int	manage_append_redirection(char *node_content, int last_file, t_minishell *minishell);
-int	manage_redirection_input(t_final_token **current, t_minishell *exit_code, int first_file);
-int	manage_redirection_output(t_final_token **current, int last_file, t_minishell *minishell);
-int	manage_cmd_pipe(t_final_token **current, t_minishell *exit_code, int last_file, t_minishell *minishell);
-void	exec_simple_cmd(t_final_token **current, t_minishell *exit_code, t_minishell *minishell);
-// void 	execute_commands_with_pipes(t_clean_token **lst);
-// void 	check_line2(t_clean_token **lst, char **env, t_minishell *exit_code);
-// void 	exec_cmd_with_pipe2(t_clean_token **current, t_minishell *exit_code, int *pid_array, int index, char **env);
-void 	execute_commands_with_pipes_and_redirections(t_final_token **lst, t_minishell *minishell, t_minishell *exit_code);
-int	manage_solo_append_redirection(char *node_content, int last_file, t_minishell *minishell);
-int	manage_solo_output_redirection(char *node_content, int last_file, t_minishell *minishell);
-int	manage_solo_input_redirection(t_final_token **current, char *node_content, int first_file, t_minishell *exit_code);
-void	exec_pipe_simple_cmd(t_clean_token **current, t_minishell *exit_code, char **env);
-void	exec_cmd_with_pipe(t_final_token **current, t_minishell *exit_code, int last_file, t_minishell *minishell);
-int	manage_pipe_output(t_final_token **current, t_minishell *minishell, t_minishell *exit_code);
-int		how_many_output(t_final_token **current);
+char			**select_path(t_minishell *minishell);
+char			*get_path(char *cmd, t_minishell *minishell);
+void			exec_cmd_with_fork(char *cmd, t_minishell *minishell,
+	t_minishell *exit_code);
+void			child_cmd_only(char **cmd_line, t_minishell *minishell, char *cmd);
+void			parent_cmd_only(int pid, t_minishell *exit_code);
+void			exec_cmd(char *cmd, t_minishell *minishell);
+void			parent_process(int *pfd, char *cmd, t_minishell *exit_code);
+void			child_process(int *pfd, char *cmd, t_minishell *minishell,
+	int output);
+void			create_pipes(char *cmd, t_minishell *minishell,
+	t_minishell *exit_code, int output);
+void			parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code);
+void			child_here_doc(int *pfd, char *cmd, int alone, t_minishell *exit_code);
+void			handle_here_doc(char *cmd, t_minishell *exit_code, int alone);
+void			manage_here_doc(t_final_token **current, t_minishell *exit_code,
+	char *content, int alone);
+void			check_line(t_final_token **lst, t_minishell *minishell,
+	t_minishell *exit_code);
+void			redir_builtin(char *cmd, t_minishell *exit_code,
+	t_minishell *minishell, int out);
+void			parent_builtin(int *fd, t_minishell *exit_code);
+void			print_exec_list(t_token *head);
+void			display_lst(t_token *line);
+int				manage_output_redirection(char *node_content, int last_file,
+	t_minishell *minishell);
+int				manage_input_redirection(t_final_token **current, char *node_content,
+	int first_file, t_minishell *exit_code);
+int				manage_append_redirection(char *node_content, int last_file,
+	t_minishell *minishell);
+int				manage_redirection_input(t_final_token **current,
+	t_minishell *exit_code, int first_file);
+int				manage_redirection_output(t_final_token **current, int last_file,
+	t_minishell *minishell);
+int				manage_cmd_pipe(t_final_token **current, t_minishell *exit_code,
+	int last_file, t_minishell *minishell);
+void			exec_simple_cmd(t_final_token **current, t_minishell *exit_code,
+	t_minishell *minishell);
+void 			execute_commands_with_pipes_and_redirections(t_final_token **lst,
+	t_minishell *minishell, t_minishell *exit_code);
+int				manage_solo_append_redirection(char *node_content, int last_file,
+	t_minishell *minishell);
+int				manage_solo_output_redirection(char *node_content, int last_file,
+	t_minishell *minishell);
+int				manage_solo_input_redirection(t_final_token **current, char *node_content,
+	int first_file, t_minishell *exit_code);
+void			exec_pipe_simple_cmd(t_clean_token **current, t_minishell *exit_code, char **env);
+void			exec_cmd_with_pipe(t_final_token **current, t_minishell *exit_code,
+	int last_file, t_minishell *minishell);
+int				manage_pipe_output(t_final_token **current, t_minishell *minishell,
+	t_minishell *exit_code);
+int				how_many_output(t_final_token **current);
 
 // SIGNAL
-void	sigint_handler(int sig);
-void	manage_signals(t_minishell *minishell);
-void	sigquit_handler(int sig);
+void			sigint_handler(int sig);
+void			manage_signals(t_minishell *minishell);
+void			sigquit_handler(int sig);
 
 // EXPANSER
-int	check_var(t_final_token *node);
-int	handle_quote_errors(char *cmd, t_minishell *minishell);
-int		builtin_or_not_builtin(char *str, t_minishell *minishell, t_minishell *exit_code);
-int		is_built_in(char *str);
-char	*managing_quotes(char *input, t_minishell *minishell);
-char	*manage_simple_quotes(char *input, int i);
-char	*manage_double_quotes(char *input, int i);
-char	**split_cmd(char *var_env);
-int		is_absolute_path(char **cmd);
-void	remove_quotes_cmd_line(t_final_token *node, t_minishell *minishell);
+int				check_var(t_final_token *node);
+int				handle_quote_errors(char *cmd, t_minishell *minishell);
+int				builtin_or_not_builtin(char *str, t_minishell *minishell,
+	t_minishell *exit_code);
+int				is_built_in(char *str);
+char			*managing_quotes(char *input, t_minishell *minishell);
+char			*manage_simple_quotes(char *input, int i);
+char			*manage_double_quotes(char *input, int i);
+char			**split_cmd(char *var_env);
+int				is_absolute_path(char **cmd);
+void			remove_quotes_cmd_line(t_final_token *node, t_minishell *minishell);
 
 //COPY_LIST
 t_clean_token	*copy_lst(t_token *token);

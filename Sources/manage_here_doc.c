@@ -46,9 +46,9 @@ void	child_here_doc(int *pfd, char *cmd, int alone, t_minishell *exit_code)
 	limiter = ft_split(cmd, ' ');
 	if (alone == 0)
 	{
-	close(pfd[0]);
-	dup2(pfd[1], STDOUT_FILENO);
-	close(pfd[1]);
+		close(pfd[0]);
+		dup2(pfd[1], STDOUT_FILENO);
+		close(pfd[1]);
 	}
 	while (limiter[i + 1] != NULL)
 		i++;
@@ -77,5 +77,4 @@ void	parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code)
 	waitpid(-1, &exit_status, 0);
 	if (WIFEXITED(exit_status))
 		exit_code->last_exit_status = WEXITSTATUS(exit_status);
-	// printf("exit_code->last_exit_status = %d\n", exit_code->last_exit_status);
 }

@@ -12,7 +12,8 @@
 
 #include "../minishell.h"
 
-void	create_pipes(char *cmd, t_minishell *minishell, t_minishell *exit_code, int output)
+void	create_pipes(char *cmd, t_minishell *minishell,
+	t_minishell *exit_code, int output)
 {
 	int	fd[2];
 	int	pid;
