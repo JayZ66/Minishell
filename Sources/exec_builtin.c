@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:49:09 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/24 14:50:20 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/26 18:04:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,23 @@ void	redir_builtin(char *cmd, t_minishell *exit_code, t_minishell *minishell,
 	}
 	if (pid == 0)
 	{
-		if (out == 0)
-		{
-			close(fd[0]);
-			dup2(fd[1], STDOUT_FILENO);
-			close(fd[1]);
-		}
+		child_builtin(fd, out);
 		builtin_or_not_builtin(cmd, minishell, exit_code);
 		minishell->last_exit_status = EXIT_SUCCESS;
 		exit(EXIT_SUCCESS);
 	}
 	else
 		parent_builtin(fd, exit_code);
+}
+
+void	child_builtin(int *fd, int out)
+{
+	if (out == 0)
+	{
+		close(fd[0]);
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+	}
 }
 
 void	parent_builtin(int *fd, t_minishell *exit_code)

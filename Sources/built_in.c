@@ -38,13 +38,40 @@ void	exit_special_char(char **args, t_minishell *minishell)
 {
 	printf("bash: exit: %s: numeric argument required\n", args[1]);
 	minishell->last_exit_status = EXIT_FAILURE;
-	exit(EXIT_FAILURE); // Code exit !
+	exit(EXIT_FAILURE);
+}
+
+char	**getting_exit_code(char **args, t_minishell *minishell)
+{
+	size_t	i;
+	size_t	j;
+	char	*temp;
+
+	i = -1;
+	j = 0;
+	temp = malloc(strlen(args[1]) + 1);
+	if (!temp)
+	{
+		minishell->last_exit_status = EXIT_FAILURE;
+		exit(EXIT_FAILURE);
+	}
+	while (args[1][++i])
+	{
+		if (args[1][i] != '-' && args[1][i] != '+')
+		{
+			temp[j] = args[1][i];
+			j++;
+		}
+	}
+	temp[j] = '\0';
+	free(args[1]);
+	args[1] = ft_strdup(temp);
+	free(temp);
+	return (args);
 }
 
 char	**is_char_ok(char **args, t_minishell *minishell)
 {
-	size_t	i;
-	size_t	j;
 	size_t	count_char;
 
 	count_char = 0;
@@ -53,59 +80,52 @@ char	**is_char_ok(char **args, t_minishell *minishell)
 	if (count_char > 1)
 		exit_special_char(args, minishell);
 	else
-	{
-		i = -1;
-		j = 1;
-		while (args[1][++i])
-		{
-			if (args[1][i] != '-' && args[1][i] != '+')
-			{
-				args[1][j] = args[1][i];
-				j++;
-			}
-		}
-	}
+		args = getting_exit_code(args, minishell);
 	return (args);
 }
 
-void	builtin_exit(char **args, t_minishell *exit_code,
+void	if_not_digit(char *args, size_t i, t_minishell *exit_code)
+{
+	if (ft_isdigit(args[i]) == 0)
+	{
+		printf("bash: exit: %s: numeric argument required\n", args);
+		exit_code->last_exit_status = 255;
+		exit(255);
+	}
+}
+
+void	manage_exit_with_code(char **args, t_minishell *exit_code,
 	t_minishell *minishell)
 {
 	size_t	i;
 	int		exit_status;
 
-	(void) minishell;
 	i = 0;
+	(void)minishell;
 	exit_status = 0;
-	if (args[1] != NULL)
+	args = is_char_ok(args, minishell);
+	if (args[2] != NULL)
 	{
-		args = is_char_ok(args, minishell);
-		if (args == NULL)
-			return ;
-		if (args[2] != NULL)
-		{
-			printf("-bash: exit: too many arguments\n");
-			return ;
-		}
-		while (args[1][i])
-		{
-			if (ft_isdigit(args[1][i]) == 0)
-			{
-				printf("bash: exit: %s: numeric argument required\n", args[1]);
-				exit_code->last_exit_status = 255;
-				printf("exit\n");
-				exit(255);
-			}
-			i++;
-		}
-		exit_status = ft_atoi(args[1]);
-		exit_code->last_exit_status = exit_status;
-		if (exit_status >= 0 && exit_status <= 255)
-		{
-			printf("exit\n");
-			exit(exit_status);
-		}
+		printf("-bash: exit: too many arguments\n");
+		return ;
 	}
+	while (args[1][i])
+	{
+		if_not_digit(args[1], i, exit_code);
+		i++;
+	}
+	exit_status = ft_atoi(args[1]);
+	exit_status = exit_status % 256;
+	exit_code->last_exit_status = exit_status;
+	printf("exit\n");
+	exit(exit_status);
+}
+
+void	builtin_exit(char **args, t_minishell *exit_code,
+	t_minishell *minishell)
+{
+	if (args[1] != NULL)
+		manage_exit_with_code(args, exit_code, minishell);
 	else if (ft_strcmp(args[0], "exit") != 0)
 		printf("%s: command not found\n", args[0]);
 	else

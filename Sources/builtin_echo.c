@@ -23,7 +23,7 @@ void	builtin_echo(char *str, t_minishell *exit_code)
 	{
 		if (((ft_strschr(cmd_with_options[1], "-n") == 0
 					|| ft_strschr(cmd_with_options[0], "-n") == 0)
-				&& count_sign(cmd_with_options) > 1))
+				&& echo_option(cmd_with_options) == 0))
 			handle_echo_with_n(cmd_with_options);
 		else if (cmd_with_options[1]
 			&& (ft_strcmp(cmd_with_options[1], "-n") != 0)
@@ -65,9 +65,10 @@ void	handle_echo_with_n(char **cmd)
 	while (cmd[i])
 	{
 		if (cmd[i + 1] == NULL)
-			ft_putstr_fd(cmd[i], 1);
+			printf("%s", cmd[i]);
+		// ft_putstr_fd(cmd[i], 1);
 		else
-			ft_putstr_fd(cmd[i], 1);
+			printf("%s ", cmd[i]);
 		i++;
 	}
 }

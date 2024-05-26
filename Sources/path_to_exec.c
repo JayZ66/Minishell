@@ -32,9 +32,7 @@ char	*get_path(char *cmd, t_minishell *minishell)
 		final_path = ft_strjoin(tmp_path, cmd);
 		free(tmp_path);
 		if (access(final_path, X_OK) == 0)
-		{
 			return (free_tab(path), final_path);
-		}
 		free(final_path);
 		i++;
 	}
@@ -48,21 +46,19 @@ char	**select_path(t_minishell *minishell)
 	size_t	i;
 	size_t	j;
 	char	**all_path;
-	char	**env;
 
-	env = minishell->env;
 	i = 0;
-	while (env[i])
+	while (minishell->env[i])
 	{
 		j = 0;
-		while (env[i][j])
+		while (minishell->env[i][j])
 		{
-			if (env[i][j] == '=')
+			if (minishell->env[i][j] == '=')
 			{
-				if (ft_strncmp(env[i], "PATH", 4) == 0)
+				if (ft_strncmp(minishell->env[i], "PATH", 4) == 0)
 				{
 					j++;
-					all_path = ft_split(env[i] + j, ':');
+					all_path = ft_split(minishell->env[i] + j, ':');
 					return (all_path);
 				}
 			}
@@ -70,6 +66,5 @@ char	**select_path(t_minishell *minishell)
 		}
 		i++;
 	}
-	perror("Can't find the var. path in env.\n");
-	return (NULL);
+	return (perror("Can't find the var. path in env.\n"), NULL);
 }

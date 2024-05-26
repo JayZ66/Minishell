@@ -160,7 +160,5 @@ int	manage_pipe_output(t_final_token **current, t_minishell *minishell,
 		return (1);
 	}
 	else
-	{
 		return (0);
-	}
 }

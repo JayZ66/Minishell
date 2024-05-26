@@ -222,7 +222,27 @@ RAF - LAST WEEK :
 - RETEST cd ! + // Checker si / file sinon cmd not found ! => DONE
 - RETEST Echo -n for modifications !
 Tarpin_de_Minishell>echo -ndgs COUCOU
-Chaque node clean content : echo -ndgs COUCOU
-Chaque node clean type content : 0
-COUCOUTarpin_de_Minishell
+Chaque node clean content : echo -ndgs COUCOU => DONE
 - RETEST export for modifications => OK
+
+NORME FONCTIONS : 
+
+- Execute_cmd_only => Line 92 > DONE
+- Path_to_exec => 
+=> Line 44 > DONE
+=> Line 75 > DONE
+- Exec_builtin => line 46 > DONE
+- Execution => Line 119 > NOT NECESSARY IF NOT USED !
+- Builtin_export 
+=> Line 102
+=> Line 155 > DONE
+- Builtin_cd => Line 76
+- Cd_utils => line 78
+- Manage_here_doc => Line 67 > DONE
+- Main => Line 100
+- Built_in => 
+=> Line 117 > DONE
+=> Line 191
+- Echo_utils => Line 52
+- New_exec => Line 98 & Line 166
+- Bultin_echo => Line 58

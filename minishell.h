@@ -103,6 +103,8 @@ void			print_export_env(t_minishell *minishell);
 void			builtin_exit(char **args, t_minishell *exit_code,
 	t_minishell *minishell);
 char			**is_char_ok(char **args, t_minishell *minishell);
+void			if_not_digit(char *args, size_t i, t_minishell *exit_code);
+char			**getting_exit_code(char **args, t_minishell *minishell);
 void			builtin_pwd(void);
 int				check_pwd_option(char *str);
 void			builtin_unset(char **var, t_minishell *minishell);
@@ -143,6 +145,7 @@ int				check_cd_errors(char **cmd, t_minishell *minishell);
 void			builtin_echo(char *str, t_minishell *exit_code);
 void			how_many_back_slash(char *cmd);
 void			handle_echo_with_n(char **cmd);
+int				echo_option(char *cmd);
 size_t			count_sign(char **cmd);
 char			*clean_quote(char *str);
 char			*handle_quotes(char *cmd, t_minishell *minishell);
@@ -164,6 +167,8 @@ void			exec_cmd_with_fork(char *cmd, t_minishell *minishell,
 	t_minishell *exit_code);
 void			child_cmd_only(char **cmd_line, t_minishell *minishell, char *cmd);
 void			parent_cmd_only(int pid, t_minishell *exit_code);
+void			exec_absolute_path(char **cmd_line, char *cmd, t_minishell *minishell);
+void			exec_relative_path(char **cmd_line, t_minishell *minishell);
 void			exec_cmd(char *cmd, t_minishell *minishell);
 void			parent_process(int *pfd, char *cmd, t_minishell *exit_code);
 void			child_process(int *pfd, char *cmd, t_minishell *minishell,
@@ -172,6 +177,7 @@ void			create_pipes(char *cmd, t_minishell *minishell,
 	t_minishell *exit_code, int output);
 void			parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code);
 void			child_here_doc(int *pfd, char *cmd, int alone, t_minishell *exit_code);
+void			read_on_terminal(size_t i, char **limiter, t_minishell *exit_code);
 void			handle_here_doc(char *cmd, t_minishell *exit_code, int alone);
 void			manage_here_doc(t_final_token **current, t_minishell *exit_code,
 	char *content, int alone);
@@ -180,6 +186,7 @@ void			check_line(t_final_token **lst, t_minishell *minishell,
 void			redir_builtin(char *cmd, t_minishell *exit_code,
 	t_minishell *minishell, int out);
 void			parent_builtin(int *fd, t_minishell *exit_code);
+void			child_builtin(int *fd, int out);
 void			print_exec_list(t_token *head);
 void			display_lst(t_token *line);
 int				manage_output_redirection(char *node_content, int last_file,

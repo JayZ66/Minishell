@@ -59,15 +59,23 @@ void	exec_cmd_with_fork(char *cmd, t_minishell *minishell,
 	free_tab(cmd_line);
 }
 
-void	child_cmd_only(char **cmd_line, t_minishell *minishell, char *cmd)
+void	exec_absolute_path(char **cmd_line, char *cmd, t_minishell *minishell)
+{
+	if (execve(cmd, cmd_line, minishell->env) == -1)
+	{
+		free_tab(cmd_line);
+		minishell->last_exit_status = EXIT_FAILURE;
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	exec_relative_path(char **cmd_line, t_minishell *minishell)
 {
 	char	*final_path;
 
-	if (is_absolute_path(cmd_line) == 0)
+	final_path = get_path(cmd_line[0], minishell);
+	if (!final_path)
 	{
-		final_path = get_path(cmd_line[0], minishell);
-		if (!final_path)
-		{
 			free_tab(cmd_line);
 			minishell->last_exit_status = EXIT_FAILURE;
 			exit(EXIT_FAILURE);
@@ -79,16 +87,14 @@ void	child_cmd_only(char **cmd_line, t_minishell *minishell, char *cmd)
 			minishell->last_exit_status = EXIT_FAILURE;
 			exit(EXIT_FAILURE);
 		}
-	}
+}
+
+void	child_cmd_only(char **cmd_line, t_minishell *minishell, char *cmd)
+{
+	if (is_absolute_path(cmd_line) == 0)
+		exec_relative_path(cmd_line, minishell);
 	else if (is_absolute_path(cmd_line) == 1)
-	{
-		if (execve(cmd, cmd_line, minishell->env) == -1)
-		{
-			free_tab(cmd_line);
-			minishell->last_exit_status = EXIT_FAILURE;
-			exit(EXIT_FAILURE);
-		}
-	}
+		exec_absolute_path(cmd_line, cmd, minishell);
 }
 
 void	parent_cmd_only(int pid, t_minishell *exit_code)

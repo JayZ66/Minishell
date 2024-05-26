@@ -118,38 +118,40 @@ int	identifier_errors_unset(char *args)
 	return (0);
 }
 
-void	builtin_export(char **args, t_minishell *minishell)
+void	manage_export_modification(char **args, t_minishell *minishell)
 {
 	size_t	i;
 	size_t	j;
 
 	i = 0;
-	if (args[1] != NULL)
+	while (args[++i])
 	{
-		while (args[++i])
+		j = 0;
+		if (identifier_errors_export(args[i]) == 1)
 		{
-			j = 0;
-			if (identifier_errors_export(args[i]) == 1)
+			if (args[i + 1] == NULL)
+				break ;
+			i++;
+		}
+		while (args[i][j])
+		{
+			if (args[i][j] == '=')
 			{
+				modify_or_create(args, minishell, i, j);
 				if (args[i + 1] == NULL)
 					break ;
-				i++;
 			}
-			while (args[i][j])
-			{
-				if (args[i][j] == '=')
-				{
-					modify_or_create(args, minishell, i, j);
-					if (args[i + 1] == NULL)
-						break ;
-				}
-				j++;
-			}
+			j++;
 		}
 	}
+}
+
+void	builtin_export(char **args, t_minishell *minishell)
+{
+	if (args[1] != NULL)
+		manage_export_modification(args, minishell);
 	else if (ft_strcmp(args[0], "export") != 0)
 		return ;
 	else
 		print_export_env(minishell);
-	return ;
 }

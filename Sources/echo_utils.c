@@ -51,6 +51,25 @@ void	how_many_back_slash(char *cmd)
 		printf("\\");
 }
 
+int	echo_option(char *cmd)
+{
+	size_t	i;
+
+	i = 0;
+	// if (ft_strncmp(cmd, "echo", 4) == 0)
+	// 	return (0)
+	while (cmd[i])
+	{
+		if (ft_strschr(cmd, "-n") == 0)
+		{
+			if (cmd[i] != '-' && cmd[i] != 'n')
+				return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 size_t	count_sign(char **cmd)
 {
 	size_t	i;
@@ -64,6 +83,8 @@ size_t	count_sign(char **cmd)
 	{
 		j = 0;
 		count_sign = 0;
+		if (echo_option(cmd[i]) == 1)
+			break ;
 		while (cmd[i][j])
 		{
 			if (cmd[i][j] == '-')

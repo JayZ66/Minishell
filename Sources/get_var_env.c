@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_var_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:35:20 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/24 15:36:12 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/25 18:11:20 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ char	*get_the_var_of_env(t_final_token *node, t_minishell *minishell)
 	tmp = node;
 	if (check_var(node) == 1)
 	{
-		perror("Can't get var. of env bce of quotes\n");
 		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
@@ -84,7 +83,7 @@ char	*get_the_var_of_env(t_final_token *node, t_minishell *minishell)
 		i = -1;
 		while (tmp->content[++i])
 		{
-			while (tmp->content[i] == ' ')
+			while (tmp->content[i++] == ' ')
 				i++;
 			var = extract_var(tmp->content + i);
 			if (!var)
