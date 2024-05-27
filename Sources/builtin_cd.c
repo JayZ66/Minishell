@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 10:04:14 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/26 18:12:11 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/27 09:45:07 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,36 @@ void	go_back_home(t_minishell *minishell)
 	env_with_new_var(&(minishell->env), "PWD", cwd);
 }
 
+char	*create_new_var(const char *var, const char *value)
+{
+	size_t	var_len;
+	char	*new_var;
+
+	var_len = ft_strlen(var);
+	new_var = (char *)malloc(var_len + ft_strlen(value) + 2);
+	if (!new_var)
+		exit(EXIT_FAILURE);
+	ft_string_cpy(new_var, var);
+	ft_strcat(new_var, "=", 1);
+	ft_strcat(new_var, value, ft_strlen(value));
+	return (new_var);
+}
+
+char	**alloc_new_env(size_t i, char *new_var, char ***env)
+{
+	char	**new_env;
+
+	new_env = realloc(*env, sizeof(char *) * (i + 2));
+	if (!new_env)
+	{
+		free(new_var);
+		exit(EXIT_FAILURE); // Code de sortie !!
+	}
+	new_env[i] = new_var;
+	new_env[i + 1] = NULL;
+	return (new_env);
+}
+
 void	env_with_new_var(char ***env, const char *var, const char *value)
 {
 	size_t	i;
@@ -48,30 +78,17 @@ void	env_with_new_var(char ***env, const char *var, const char *value)
 
 	var_len = ft_strlen(var);
 	i = -1;
-	new_var = (char *)malloc(var_len + ft_strlen(value) + 2);
-	if (!new_var)
-		exit(EXIT_FAILURE);
-	ft_string_cpy(new_var, var);
-	ft_strcat(new_var, "=", 1);
-	ft_strcat(new_var, value, ft_strlen(value));
+	new_var = create_new_var(var, value);
 	while ((*env)[++i])
 	{
 		if (strncmp((*env)[i], var, var_len) == 0 && (*env)[i][var_len] == '=')
 		{
-			if ((*env)[i] != NULL)
-				free((*env)[i]);
+			free((*env)[i]);
 			(*env)[i] = new_var;
 			return ;
 		}
 	}
-	new_env = realloc(*env, sizeof(char *) * (i + 2));
-	if (!new_env)
-	{
-		free(new_var);
-		exit(EXIT_FAILURE); // Code de sortie !!
-	}
-	new_env[i] = new_var;
-	new_env[i + 1] = NULL;
+	new_env = alloc_new_env(i, new_var, env);
 	*env = new_env;
 }
 

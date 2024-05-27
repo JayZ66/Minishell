@@ -25,7 +25,7 @@ int	is_absolute_path(char **cmd)
 	i = 0;
 	while (cmd[0][i])
 	{
-		if (cmd[0][0] == '/')
+		if (cmd[0][0] == '/' || cmd[0][0] == '.')
 		{
 			is_absolute = 1;
 			break ;

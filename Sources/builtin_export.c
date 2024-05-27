@@ -55,15 +55,12 @@ char	*copy_new_value(const char *var, const char *new_value,
 	return (new_env);
 }
 
-char	**create_var_env(t_minishell *minishell, char *var)
+char	**new_export_env(t_minishell *minishell, size_t size_env)
 {
-	size_t	size_env;
 	size_t	i;
-	size_t	j;
 	char	**new_env;
 
 	i = -1;
-	size_env = ft_size_env(minishell->env);
 	new_env = (char **)malloc(sizeof(char *) * (size_env + 2));
 	if (!new_env)
 	{
@@ -77,14 +74,22 @@ char	**create_var_env(t_minishell *minishell, char *var)
 		if (!new_env[i])
 		{
 			perror("Can't copy environment variable.\n");
-			j = -1;
-			while (++j < i)
-				free(new_env[j]);
-			free(new_env);
+			free_tab(new_env);
 			minishell->last_exit_status = EXIT_FAILURE;
 			exit(EXIT_FAILURE);
 		}
 	}
+	return (new_env);
+}
+
+char	**create_var_env(t_minishell *minishell, char *var)
+{
+	size_t	size_env;
+	size_t	i;
+	char	**new_env;
+
+	size_env = ft_size_env(minishell->env);
+	new_env = new_export_env(minishell, size_env);
 	new_env[size_env] = ft_strdup(var);
 	if (!new_env[size_env])
 	{
@@ -97,8 +102,7 @@ char	**create_var_env(t_minishell *minishell, char *var)
 		exit(EXIT_FAILURE);
 	}
 	new_env[size_env + 1] = NULL;
-	free_tab(minishell->env);
-	return (new_env);
+	return (free_tab(minishell->env), new_env);
 }
 
 int	identifier_errors_unset(char *args)

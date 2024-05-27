@@ -38,6 +38,20 @@ int	check_slash(char *cmd)
 	return (0);
 }
 
+int	cd_errors(char **cmd, size_t i, size_t j, t_minishell *minishell)
+{
+	if (cmd[i][j + 1] && ft_isalpha(cmd[i][j]) == 1
+		&& (cmd[i][j + 1] == '.' || cmd[i][j + 1] == '?'))
+		return (printf("Command '%s' not found\n", cmd[i]), 1);
+	else if (cmd[i][j + 1] && (cmd[i][j] == '.'
+		&& cmd[i][j + 1] == '/'))
+		return (1);
+	else if (cmd[1][j] == '/')
+		if (check_slash(cmd[i]) == 1)
+			return (go_back_home(minishell), 1);
+	return (0);
+}
+
 int	check_cd_errors(char **cmd, t_minishell *minishell)
 {
 	size_t	i;
@@ -51,23 +65,8 @@ int	check_cd_errors(char **cmd, t_minishell *minishell)
 		j = -1;
 		while (cmd[i][++j])
 		{
-			if (cmd[i][j + 1] && ft_isalpha(cmd[i][j]) == 1
-				&& (cmd[i][j + 1] == '.' || cmd[i][j + 1] == '?'))
-			{
-				printf("Command '%s' not found\n", cmd[i]);
+			if (cd_errors(cmd, i, j, minishell) == 1)
 				return (1);
-			}
-			else if (cmd[i][j + 1] && (cmd[i][j] == '.'
-				&& cmd[i][j + 1] == '/'))
-				return (1);
-			else if (cmd[1][j] == '/')
-			{
-				if (check_slash(cmd[i]) == 1)
-				{
-					go_back_home(minishell);
-					return (1);
-				}
-			}
 			else if (cmd[1] && (cmd[1][j] == '.' || cmd[i][j] == '/'))
 				one_point++;
 		}

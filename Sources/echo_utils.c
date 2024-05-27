@@ -12,12 +12,36 @@
 
 #include "../minishell.h"
 
+size_t	manage_echo_slash(size_t slash_count, char *cmd, size_t i)
+{
+	size_t	to_print;
+	size_t	j;
+
+	if (cmd[i] == 'n' && slash_count > 0)
+	{
+		to_print = slash_count / 2;
+		j = -1;
+		while (++j < to_print)
+			printf("\\");
+		printf("n ");
+		slash_count = 0;
+	}
+	else
+	{
+		j = -1;
+		while (++j < slash_count)
+			printf("\\");
+		slash_count = 0;
+		printf("%c", cmd[i]);
+	}
+	return (slash_count);
+}
+
 void	how_many_back_slash(char *cmd)
 {
 	size_t	i;
 	size_t	j;
 	size_t	slash_count;
-	size_t	to_print;
 
 	i = -1;
 	slash_count = 0;
@@ -27,23 +51,7 @@ void	how_many_back_slash(char *cmd)
 			slash_count++;
 		else
 		{
-			if (cmd[i] == 'n' && slash_count > 0)
-			{
-				to_print = slash_count / 2;
-				j = -1;
-				while (++j < to_print)
-					printf("\\");
-				printf("n ");
-				slash_count = 0;
-			}
-			else
-			{
-				j = -1;
-				while (++j < slash_count)
-					printf("\\");
-				slash_count = 0;
-				printf("%c", cmd[i]);
-			}
+			slash_count = manage_echo_slash(slash_count, cmd, i);
 		}
 	}
 	j = -1;
@@ -56,8 +64,6 @@ int	echo_option(char *cmd)
 	size_t	i;
 
 	i = 0;
-	// if (ft_strncmp(cmd, "echo", 4) == 0)
-	// 	return (0)
 	while (cmd[i])
 	{
 		if (ft_strschr(cmd, "-n") == 0)

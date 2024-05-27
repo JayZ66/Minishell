@@ -12,43 +12,46 @@
 
 #include "../minishell.h"
 
+void	print_echo_arg(char **cmd_with_options, t_minishell *exit_code)
+{
+	size_t	i;
+
+	i = -1;
+	while (cmd_with_options[++i])
+	{
+		if (ft_strcmp(cmd_with_options[i], "echo") == 0)
+			i++;
+		if (ft_strschr(cmd_with_options[i], "$?") == 0
+			|| ft_strschr(cmd_with_options[i], "$?$") == 0)
+		{
+			printf("%d\n", exit_code->last_exit_status);
+			break ;
+		}
+		if (ft_strschr(cmd_with_options[i], "\\n") == 0)
+		{
+			how_many_back_slash(cmd_with_options[i]);
+			i++;
+		}
+		printf("%s ", cmd_with_options[i]);
+		if (cmd_with_options[i + 1] == NULL)
+			printf("\n");
+	}
+}
+
 void	builtin_echo(char *str, t_minishell *exit_code)
 {
 	char	**cmd_with_options;
-	size_t	i;
 
 	cmd_with_options = ft_split(str, ' ');
-	i = -1;
 	if (cmd_with_options[1])
 	{
-		if (((ft_strschr(cmd_with_options[1], "-n") == 0
-					|| ft_strschr(cmd_with_options[0], "-n") == 0)
-				&& echo_option(cmd_with_options) == 0))
+		if ((ft_strschr(cmd_with_options[1], "-n") == 0
+				|| ft_strschr(cmd_with_options[0], "-n") == 0))
 			handle_echo_with_n(cmd_with_options);
 		else if (cmd_with_options[1]
 			&& (ft_strcmp(cmd_with_options[1], "-n") != 0)
 			&& (ft_strcmp(cmd_with_options[0], "-n") != 0))
-		{
-			while (cmd_with_options[++i])
-			{
-				if (ft_strcmp(cmd_with_options[i], "echo") == 0)
-					i++;
-				if (ft_strschr(cmd_with_options[i], "$?") == 0
-					|| ft_strschr(cmd_with_options[i], "$?$") == 0)
-				{
-					printf("%d\n", exit_code->last_exit_status);
-					break ;
-				}
-				if (ft_strschr(cmd_with_options[i], "\\n") == 0)
-				{
-					how_many_back_slash(cmd_with_options[i]);
-					i++;
-				}
-				printf("%s ", cmd_with_options[i]);
-				if (cmd_with_options[i + 1] == NULL)
-					printf("\n");
-			}
-		}
+			print_echo_arg(cmd_with_options, exit_code);
 	}
 	else if (ft_strcmp(cmd_with_options[0], "echo") != 0)
 		printf("%s: command not found\n", cmd_with_options[0]);
@@ -66,7 +69,6 @@ void	handle_echo_with_n(char **cmd)
 	{
 		if (cmd[i + 1] == NULL)
 			printf("%s", cmd[i]);
-		// ft_putstr_fd(cmd[i], 1);
 		else
 			printf("%s ", cmd[i]);
 		i++;

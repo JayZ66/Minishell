@@ -157,36 +157,39 @@ void	check_unset_errors(char **var)
 		printf("%s: command not found\n", var[0]);
 }
 
-void	builtin_unset(char **var, t_minishell *minishell)
+void	unset_variable(char **var, t_minishell *minishell)
 {
 	size_t	i;
 	size_t	j;
 
 	j = 0;
-	if (var[1])
+	while (var[++j])
 	{
-		while (var[++j])
+		i = -1;
+		if (identifier_errors_unset(var[j]) == 1)
+			if (var[j + 1] == NULL)
+				break ;
+		while (minishell->env[++i])
 		{
-			i = -1;
-			if (identifier_errors_unset(var[j]) == 1)
-				if (var[j + 1] == NULL)
-					break ;
-			while (minishell->env[++i])
+			if (ft_strncmp(minishell->env[i], var[j],
+					ft_strlen(var[j])) == 0
+				&& minishell->env[i][ft_strlen(var[j])] == '=')
 			{
-				if (ft_strncmp(minishell->env[i], var[j],
-						ft_strlen(var[j])) == 0
-					&& minishell->env[i][ft_strlen(var[j])] == '=')
+				while (minishell->env[i + 1])
 				{
-					while (minishell->env[i + 1])
-					{
-						minishell->env[i] = minishell->env[i + 1];
-						i++;
-					}
-					minishell->env[i] = NULL;
+					minishell->env[i] = minishell->env[i + 1];
+					i++;
 				}
+				minishell->env[i] = NULL;
 			}
 		}
 	}
+}
+
+void	builtin_unset(char **var, t_minishell *minishell)
+{
+	if (var[1])
+		unset_variable(var, minishell);
 	check_unset_errors(var);
 }
 

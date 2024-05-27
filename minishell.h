@@ -141,7 +141,8 @@ void 			get_new_pwd(t_minishell *minishell, char **cmd);
 void 			builtin_cd(t_minishell *minishell, char **cmd);
 void 			go_back_home(t_minishell *minishell);
 int				check_cd_errors(char **cmd, t_minishell *minishell);
-
+char			*create_new_var(const char *var, const char *value);
+char			**alloc_new_env(size_t i, char *new_var, char ***env);
 void			builtin_echo(char *str, t_minishell *exit_code);
 void			how_many_back_slash(char *cmd);
 void			handle_echo_with_n(char **cmd);

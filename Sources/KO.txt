@@ -224,6 +224,11 @@ RAF - LAST WEEK :
 Tarpin_de_Minishell>echo -ndgs COUCOU
 Chaque node clean content : echo -ndgs COUCOU => DONE
 - RETEST export for modifications => OK
+- UNSET :
+Pouvoir unset une variable quand on met = derriere !!!
+- EXEC : 
+Verifier avec access quand absolute path !
+
 
 NORME FONCTIONS : 
 
@@ -234,15 +239,17 @@ NORME FONCTIONS :
 - Exec_builtin => line 46 > DONE
 - Execution => Line 119 > NOT NECESSARY IF NOT USED !
 - Builtin_export 
-=> Line 102
+=> Line 102 > DONE
 => Line 155 > DONE
-- Builtin_cd => Line 76
-- Cd_utils => line 78
+- Builtin_cd => Line 76 > DONE
+- Cd_utils => line 78 > DONE
 - Manage_here_doc => Line 67 > DONE
 - Main => Line 100
 - Built_in => 
 => Line 117 > DONE
-=> Line 191
-- Echo_utils => Line 52
-- New_exec => Line 98 & Line 166
-- Bultin_echo => Line 58
+=> Line 191 > DONE
+- Echo_utils => Line 52 > DONE
+- New_exec => 
+=> Line 98
+=> Line 166
+- Bultin_echo => Line 58 > DONE
