@@ -212,25 +212,25 @@ met pas d'espace !! => mettre espace dans les built_in
 => GERER CA DANS MES BUILT_IN
 
 RAF - LAST WEEK : 
-- Norme
+- Norme => DONE
 - leaks
-- Skip l'espace du premier bloc reçu ! => Where ?
-- Gérer la redirection vers la sortie d'erreur. => HOW ?
+- Skip l'espace du premier bloc reçu ! => Where ? BEFORE EXECVE !
 - Refaire tests excel
-- Finir de gérer les quotes
+- Finir de gérer les quotes => IN PROGRESS
 - Tester la variable d'environnement !
 - RETEST cd ! + // Checker si / file sinon cmd not found ! => DONE
-- RETEST Echo -n for modifications !
+- RETEST Echo -n for modifications ! => DONE
 Tarpin_de_Minishell>echo -ndgs COUCOU
-Chaque node clean content : echo -ndgs COUCOU => DONE
-- RETEST export for modifications => OK
+- RETEST export for modifications => DONE
 - UNSET :
 Pouvoir unset une variable quand on met = derriere !!!
 - EXEC : 
-Verifier avec access quand absolute path !
+Verifier avec access quand absolute path ! => NOT WORKING !
+- TO FIX : 
+* Absolute path built_in => Modify builtin_or_not_buitin() + builtin !
 
 
-NORME FONCTIONS : 
+NORME FONCTIONS : DONE
 
 - Execute_cmd_only => Line 92 > DONE
 - Path_to_exec => 
@@ -250,6 +250,6 @@ NORME FONCTIONS :
 => Line 191 > DONE
 - Echo_utils => Line 52 > DONE
 - New_exec => 
-=> Line 98
-=> Line 166
+=> Line 98 > DONE
+=> Line 166 > DONE
 - Bultin_echo => Line 58 > DONE

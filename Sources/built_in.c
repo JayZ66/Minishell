@@ -143,7 +143,7 @@ void	builtin_pwd(void)
 
 	absolute_path = getcwd(buffer, sizeof(buffer));
 	if (absolute_path != NULL)
-		printf("The absolute path is : %s\n", absolute_path);
+		printf("%s\n", absolute_path);
 	else
 	{
 		perror("Can't get the absolute path\n");

@@ -73,8 +73,7 @@ int	identifier_errors_export(char *args)
 		}
 		i++;
 	}
-	if (args[i] == '=' && ((!args[i - 1]) || (args[i - 1] >= 9
-				&& args[i - 1] <= 13)))
+	if (args[i] == '=' && (i == 0 || (args[i - 1] >= 9 && args[i - 1] <= 13)))
 		return (printf("bash: export: '%s': not a valid identifier\n",
 				args), 1);
 	return (0);

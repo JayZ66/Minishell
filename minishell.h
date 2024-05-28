@@ -130,7 +130,7 @@ char 			*copy_new_value(const char *var, const char *new_value,
 int				is_var_in_env(char *var, t_minishell *minishell);
 int				is_var_env(const char c);
 void			update_env(char **env, char *var);
-void			sort_tab(t_minishell *minishell);
+void			sort_tab(char **env);
 void			print_env(t_minishell *minishell);
 int				is_relative_path(char **cmd);
 char			*relative_to_absolute_path(char **cmd, t_minishell *minishell);
@@ -162,7 +162,7 @@ char			*removing_one_level_of_quote(char *cmd, char c, size_t i);
 int				is_there_multiple_quotes(char *cmd);
 
 // Execution
-char			**select_path(t_minishell *minishell);
+char			**select_path(t_minishell *minishell, char *cmd);
 char			*get_path(char *cmd, t_minishell *minishell);
 void			exec_cmd_with_fork(char *cmd, t_minishell *minishell,
 	t_minishell *exit_code);

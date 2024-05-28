@@ -6,7 +6,7 @@
 #    By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/05/24 17:21:03 by jeguerin         ###   ########.fr        #
+#    Updated: 2024/05/28 14:32:03 by jeguerin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRCS = 	Sources/main.c Sources/utils.c \
 		Sources/utils2.c Sources/path_to_exec.c Sources/manage_pipes.c \
 		Sources/manage_here_doc.c Sources/cd_utils.c \
 		Sources/export_utils.c Sources/execute_cmd_only.c Sources/export_utils2.c \
-		Sources/builtin_echo.c Sources/expanser.c Sources/manage_quotes.c \
+		Sources/builtin_echo.c Sources/expanser.c \
 		Sources/expanser2.c Sources/utils3.c Sources/new_exec.c \
 		Sources/exec_builtin.c Sources/manage_input.c Sources/manage_output.c \
 		Sources/get_var_env.c \

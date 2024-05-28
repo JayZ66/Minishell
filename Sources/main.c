@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/24 17:08:38 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:14:26 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char	*read_input(t_minishell *minishell)
 	if (input == NULL)
 	{
 		free(input);
+		printf("exit\n");
 		// free_tab(minishell->env);
 		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
@@ -90,8 +91,10 @@ int	main(int argc, char **argv, char **env)
 		execute_commands_with_pipes_and_redirections(&final_token,
 			minishell, &exit_code);
 		free_that_lst(&token);
-		free_that_clean_lst(&clean_token);
-		free_that_final_lst(&final_token);
+		if (clean_token)
+			free_that_clean_lst(&clean_token);
+		if (final_token)
+			free_that_final_lst(&final_token);
 		free(input);
 	}
 	free_tab(minishell->env);

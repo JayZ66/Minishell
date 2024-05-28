@@ -19,7 +19,7 @@ char	*get_path(char *cmd, t_minishell *minishell)
 	char	**path;
 	size_t	i;
 
-	path = select_path(minishell);
+	path = select_path(minishell, cmd);
 	i = 0;
 	if (!path)
 	{
@@ -41,7 +41,7 @@ char	*get_path(char *cmd, t_minishell *minishell)
 	return (NULL);
 }
 
-char	**select_path(t_minishell *minishell)
+char	**select_path(t_minishell *minishell, char *cmd)
 {
 	size_t	i;
 	size_t	j;
@@ -66,5 +66,5 @@ char	**select_path(t_minishell *minishell)
 		}
 		i++;
 	}
-	return (perror("Can't find the var. path in env.\n"), NULL);
+	return (printf("bash: %s: command not found\n", cmd), NULL);
 }

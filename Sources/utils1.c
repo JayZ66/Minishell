@@ -75,12 +75,16 @@ void	print_tab(char **cmd_line)
 void	print_export_env(t_minishell *minishell)
 {
 	size_t	i;
+	char	**env_cpy;
 
+	env_cpy = realloc_env(minishell->env);
 	i = 0;
-	while (minishell->env[i + 1])
+	sort_tab(env_cpy);
+	while (env_cpy[i + 1])
 	{
-		printf("declare -x %s\n", minishell->env[i]);
+		printf("declare -x %s\n", env_cpy[i]);
 		i++;
 	}
+	free_tab(env_cpy);
 	return ;
 }

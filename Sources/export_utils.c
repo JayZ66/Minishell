@@ -41,14 +41,14 @@ size_t	ft_size_env(char **env)
 	return (i);
 }
 
-void	sort_tab(t_minishell *minishell)
+void	sort_tab(char **env)
 {
 	size_t	i;
 	char	*temp;
-	char	**env;
+	// char	**env;
 
 	i = 0;
-	env = minishell->env;
+	// env = minishell->env;
 	while (env[i + 1])
 	{
 		if (env[i][0] > env[i + 1][0]
