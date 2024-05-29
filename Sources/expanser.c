@@ -23,17 +23,20 @@ int	is_absolute_path(char **cmd)
 
 	is_absolute = 0;
 	i = 0;
-	while (cmd[0][i])
-	{
-		if (cmd[0][0] == '/' || cmd[0][0] == '.')
-		{
-			is_absolute = 1;
-			break ;
-		}
-		else
-			break ;
-		i++;
-	}
+    if (cmd[0])
+    {
+        while (cmd[0][i])
+        {
+            if (cmd[0][0] == '/' || cmd[0][0] == '.')
+            {
+                is_absolute = 1;
+                break ;
+            }
+            else
+                break ;
+            i++;
+        }
+    }
 	return (is_absolute);
 }
 

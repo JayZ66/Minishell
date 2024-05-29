@@ -215,8 +215,8 @@ RAF - LAST WEEK :
 - Norme => DONE
 - leaks
 - Skip l'espace du premier bloc reçu ! => Where ? BEFORE EXECVE !
-- Refaire tests excel
-- Finir de gérer les quotes => IN PROGRESS
+- Refaire tests excel => DONE
+- Finir de gérer les quotes => DONE
 - Tester la variable d'environnement !
 - RETEST cd ! + // Checker si / file sinon cmd not found ! => DONE
 - RETEST Echo -n for modifications ! => DONE
@@ -225,7 +225,7 @@ Tarpin_de_Minishell>echo -ndgs COUCOU
 - UNSET :
 Pouvoir unset une variable quand on met = derriere !!!
 - EXEC : 
-Verifier avec access quand absolute path ! => NOT WORKING !
+Verifier avec access quand absolute path ! => DONE
 - TO FIX : 
 * Absolute path built_in => Modify builtin_or_not_buitin() + builtin !
 
@@ -253,3 +253,10 @@ NORME FONCTIONS : DONE
 => Line 98 > DONE
 => Line 166 > DONE
 - Bultin_echo => Line 58 > DONE
+
+
+POUR ROMAIN : 
+
+void	get_var_of_env(t_final_token *node)
+
+=> Utiliser minishell->env et non get_env !!!

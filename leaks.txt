@@ -76,6 +76,42 @@ bash: ls: command not found
 ==1846865==    by 0x10969F: main (main.c:56)
 
 
+Chaque node clean content : grep PWD
+Chaque node clean type content : 0
+OLDPWD=/home/jeguerin/Documents/42_projects/Minishell
+==1793636== 
+==1793636== HEAP SUMMARY:
+==1793636==     in use at exit: 211,674 bytes in 334 blocks
+==1793636==   total heap usage: 728 allocs, 394 frees, 236,534 bytes allocated
+==1793636== 
+==1793636== 2 bytes in 1 blocks are definitely lost in loss record 2 of 86
+==1793636==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1793636==    by 0x111B9C: ft_strdup (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1793636==    by 0x110032: init_final_node (copy_list.c:161)
+==1793636==    by 0x10FF94: final_clean_node (copy_list.c:140)
+==1793636==    by 0x109884: main (main.c:89)
+==1793636== 
+==1793636== 24 bytes in 1 blocks are definitely lost in loss record 22 of 86
+==1793636==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1793636==    by 0x1096F5: main (main.c:52)
+==1793636== 
+==1793636== 24 bytes in 1 blocks are definitely lost in loss record 23 of 86
+==1793636==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1793636==    by 0x109703: main (main.c:53)
+==1793636== 
+==1793636== 51 bytes in 1 blocks are definitely lost in loss record 32 of 86
+==1793636==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1793636==    by 0x111B9C: ft_strdup (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1793636==    by 0x10A658: new_export_env (builtin_export.c:73)
+==1793636==    by 0x10A6FC: create_var_env (builtin_export.c:92)
+==1793636==    by 0x10C7F5: modify_or_create (export_utils.c:83)
+==1793636==    by 0x10A904: manage_export_modification (builtin_export.c:144)
+==1793636==    by 0x10A9B3: builtin_export (builtin_export.c:156)
+==1793636==    by 0x10DF49: builtin_or_not_builtin (expanser2.c:59)
+==1793636==    by 0x10AABC: exec_simple_cmd (execution.c:40)
+==1793636==    by 0x10E820: exec_loop (new_exec.c:130)
+==1793636==    by 0x10E8E2: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1793636==    by 0x1098B7: main (main.c:93)
 
 
 
@@ -170,3 +206,178 @@ bash: hello: command not found
 ==1854391==    by 0x10E1EC: exec_loop (new_exec.c:128)
 ==1854391==    by 0x10E2AE: execute_commands_with_pipes_and_redirections (new_exec.c:147)
 ==1854391==    by 0x1097FF: main (main.c:91)
+
+
+Tarpin_de_Minishell>echo $HOME9
+Chaque node clean content : echo $HOME9
+Chaque node clean type content : 0
+==1787744== Invalid read of size 1
+==1787744==    at 0x10DD10: get_var_of_env (expanser.c:181)
+==1787744==    by 0x109894: main (main.c:90)
+==1787744==  Address 0x4b638c6 is 0 bytes after a block of size 6 alloc'd
+==1787744==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1787744==    by 0x10DC76: get_var_of_env (expanser.c:206)
+==1787744==    by 0x109894: main (main.c:90)
+
+
+Tarpin_de_Minishell>$
+Chaque node clean content : $
+Chaque node clean type content : 0
+==1789672== Invalid read of size 1
+==1789672==    at 0x10D608: is_absolute_path (expanser.c:26)
+==1789672==    by 0x10CB8E: child_cmd_only (execute_cmd_only.c:101)
+==1789672==    by 0x10CA2E: exec_cmd_with_fork (execute_cmd_only.c:56)
+==1789672==    by 0x10AADD: exec_simple_cmd (execution.c:43)
+==1789672==    by 0x10E812: exec_loop (new_exec.c:130)
+==1789672==    by 0x10E8D4: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1789672==    by 0x1098B7: main (main.c:93)
+==1789672==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==1789672== 
+==1789672== 
+==1789672== Process terminating with default action of signal 11 (SIGSEGV)
+==1789672==  Access not within mapped region at address 0x0
+==1789672==    at 0x10D608: is_absolute_path (expanser.c:26)
+==1789672==    by 0x10CB8E: child_cmd_only (execute_cmd_only.c:101)
+==1789672==    by 0x10CA2E: exec_cmd_with_fork (execute_cmd_only.c:56)
+==1789672==    by 0x10AADD: exec_simple_cmd (execution.c:43)
+==1789672==    by 0x10E812: exec_loop (new_exec.c:130)
+==1789672==    by 0x10E8D4: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1789672==    by 0x1098B7: main (main.c:93)
+==1789672==  If you believe this happened as a result of a stack
+==1789672==  overflow in your program's main thread (unlikely but
+==1789672==  possible), you can try to increase the size of the
+==1789672==  main thread stack using the --main-stacksize= flag.
+==1789672==  The main thread stack size used in this run was 8388608.
+
+
+----------------------------------------------------------------------------------------------------
+=> ATTENTION : Si tu trouves qu'un dollar meme avec un mot derriere mais espace, il faut retirer le mot 
+mais m'envoyer le $. MAIS si tu as $hdgsdf il faut trouver un moyen pour return et passer au 
+prompt suivant.
+
+Tarpin_de_Minishell>$ HOME
+Chaque node clean content : $ HOME
+Chaque node clean type content : 0
+==1789860== Invalid read of size 1
+==1789860==    at 0x111C22: ft_strlen (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1789860==    by 0x112016: ft_strjoin (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1789860==    by 0x10BAE0: get_path (path_to_exec.c:32)
+==1789860==    by 0x10CAEE: exec_relative_path (execute_cmd_only.c:83)
+==1789860==    by 0x10CBA5: child_cmd_only (execute_cmd_only.c:102)
+==1789860==    by 0x10CA2E: exec_cmd_with_fork (execute_cmd_only.c:56)
+==1789860==    by 0x10AADD: exec_simple_cmd (execution.c:43)
+==1789860==    by 0x10E820: exec_loop (new_exec.c:130)
+==1789860==    by 0x10E8E2: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1789860==    by 0x1098B7: main (main.c:93)
+==1789860==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==1789860== 
+==1789860== 
+==1789860== Process terminating with default action of signal 11 (SIGSEGV)
+==1789860==  Access not within mapped region at address 0x0
+==1789860==    at 0x111C22: ft_strlen (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1789860==    by 0x112016: ft_strjoin (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1789860==    by 0x10BAE0: get_path (path_to_exec.c:32)
+==1789860==    by 0x10CAEE: exec_relative_path (execute_cmd_only.c:83)
+==1789860==    by 0x10CBA5: child_cmd_only (execute_cmd_only.c:102)
+==1789860==    by 0x10CA2E: exec_cmd_with_fork (execute_cmd_only.c:56)
+==1789860==    by 0x10AADD: exec_simple_cmd (execution.c:43)
+==1789860==    by 0x10E820: exec_loop (new_exec.c:130)
+==1789860==    by 0x10E8E2: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1789860==    by 0x1098B7: main (main.c:93)
+==1789860==  If you believe this happened as a result of a stack
+==1789860==  overflow in your program's main thread (unlikely but
+==1789860==  possible), you can try to increase the size of the
+==1789860==  main thread stack using the --main-stacksize= flag.
+==1789860==  The main thread stack size used in this run was 8388608.
+
+
+-----------------------------------------------------------------------------------------------------
+
+Tarpin_de_Minishell>export HOLA=$HOMEbonjour
+Chaque node clean content : export HOLA=$HOMEbonjour
+Chaque node clean type content : 0
+==1790793== Invalid read of size 1
+==1790793==    at 0x10DD1E: get_var_of_env (expanser.c:184)
+==1790793==    by 0x109894: main (main.c:90)
+==1790793==  Address 0x4b62f1d is 0 bytes after a block of size 13 alloc'd
+==1790793==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1790793==    by 0x10DC84: get_var_of_env (expanser.c:209)
+==1790793==    by 0x109894: main (main.c:90)
+==1790793== 
+
+
+
+Tarpin_de_Minishell>unset $HOLA
+Chaque node clean content : unset $HOLA
+Chaque node clean type content : 0
+==1793679== Invalid read of size 1
+==1793679==    at 0x10DD1E: get_var_of_env (expanser.c:184)
+==1793679==    by 0x109894: main (main.c:90)
+==1793679==  Address 0x4b65be7 is 0 bytes after a block of size 7 alloc'd
+==1793679==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1793679==    by 0x10DC84: get_var_of_env (expanser.c:209)
+==1793679==    by 0x109894: main (main.c:90)
+==1793679== 
+
+
+
+
+------------------------------------------------------------------------------------------------------
+
+Tarpin_de_Minishell><< $"$hola"$$"b"
+Chaque node clean content : $"$hola"$$"b"
+Chaque node clean type content : 6
+==1795603== Invalid read of size 8
+==1795603==    at 0x10C083: child_here_doc (manage_here_doc.c:70)
+==1795603==    by 0x10BF0F: handle_here_doc (manage_here_doc.c:34)
+==1795603==    by 0x10F0CF: manage_here_doc (manage_input.c:77)
+==1795603==    by 0x10F099: manage_redirection_input (manage_input.c:69)
+==1795603==    by 0x10E4D5: handle_redirections (new_exec.c:57)
+==1795603==    by 0x10E75C: exec_loop (new_exec.c:117)
+==1795603==    by 0x10E8E2: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1795603==    by 0x1098B7: main (main.c:93)
+==1795603==  Address 0x4b645e8 is 0 bytes after a block of size 8 alloc'd
+==1795603==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1795603==    by 0x112388: ft_split (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1795603==    by 0x10C026: child_here_doc (manage_here_doc.c:63)
+==1795603==    by 0x10BF0F: handle_here_doc (manage_here_doc.c:34)
+==1795603==    by 0x10F0CF: manage_here_doc (manage_input.c:77)
+==1795603==    by 0x10F099: manage_redirection_input (manage_input.c:69)
+==1795603==    by 0x10E4D5: handle_redirections (new_exec.c:57)
+==1795603==    by 0x10E75C: exec_loop (new_exec.c:117)
+==1795603==    by 0x10E8E2: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1795603==    by 0x1098B7: main (main.c:93)
+==1795603== 
+ok
+==1795603== Invalid read of size 1
+==1795603==    at 0x111C22: ft_strlen (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1795603==    by 0x10BF83: read_on_terminal (manage_here_doc.c:46)
+==1795603==    by 0x10C0A1: child_here_doc (manage_here_doc.c:72)
+==1795603==    by 0x10BF0F: handle_here_doc (manage_here_doc.c:34)
+==1795603==    by 0x10F0CF: manage_here_doc (manage_input.c:77)
+==1795603==    by 0x10F099: manage_redirection_input (manage_input.c:69)
+==1795603==    by 0x10E4D5: handle_redirections (new_exec.c:57)
+==1795603==    by 0x10E75C: exec_loop (new_exec.c:117)
+==1795603==    by 0x10E8E2: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1795603==    by 0x1098B7: main (main.c:93)
+==1795603==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==1795603== 
+==1795603== 
+==1795603== Process terminating with default action of signal 11 (SIGSEGV)
+==1795603==  Access not within mapped region at address 0x0
+==1795603==    at 0x111C22: ft_strlen (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1795603==    by 0x10BF83: read_on_terminal (manage_here_doc.c:46)
+==1795603==    by 0x10C0A1: child_here_doc (manage_here_doc.c:72)
+==1795603==    by 0x10BF0F: handle_here_doc (manage_here_doc.c:34)
+==1795603==    by 0x10F0CF: manage_here_doc (manage_input.c:77)
+==1795603==    by 0x10F099: manage_redirection_input (manage_input.c:69)
+==1795603==    by 0x10E4D5: handle_redirections (new_exec.c:57)
+==1795603==    by 0x10E75C: exec_loop (new_exec.c:117)
+==1795603==    by 0x10E8E2: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1795603==    by 0x1098B7: main (main.c:93)
+==1795603==  If you believe this happened as a result of a stack
+==1795603==  overflow in your program's main thread (unlikely but
+==1795603==  possible), you can try to increase the size of the
+==1795603==  main thread stack using the --main-stacksize= flag.
+==1795603==  The main thread stack size used in this run was 8388608.
+==1795603== 
