@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/28 16:14:26 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:41:18 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	main(int argc, char **argv, char **env)
 			free(input);
 			continue ;
 		}
-		token = extract_cmd(&token, input); // condition si input vide
+		token = extract_cmd(&token, input);
 		t_token	*head = token;
 		clean_chevron(token);
 		clean_spaces1(token);
@@ -87,6 +87,8 @@ int	main(int argc, char **argv, char **env)
 		print_clean_lst(clean_token);
 		test_redirection_input(clean_token);
 		final_token = final_clean_node(clean_token);
+		get_var_of_env(final_token);
+		remove_quote(final_token);
 		// check_line(&final_token, minishell, &exit_code);
 		execute_commands_with_pipes_and_redirections(&final_token,
 			minishell, &exit_code);

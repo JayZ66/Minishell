@@ -90,35 +90,131 @@ char	*relative_to_absolute_path(char **cmd, t_minishell *minishell)
 Expanser
 */
 
-// int main()
-// {
-//   char  *str;
+void	replace_var_of_env(char *content, char *var, int i)
+{
+	//gerer le cas des quotes ou non avec l'enum 
 
-// //   str = "echo """"pourquoi'''' \"''toi''\"";
-// //   str = "echo '\"""pourquoi\"""' \"''toi''\"";
-//   // str = "echo";
-//   // echo(str);
-//   str = "echo -n \"""cat'''' \"'cat'\" 'cat'";
-// //   str = "echo '-n' 'cat' cat cat";
-//   // echo(str);
-// //   str = "echo cat cat \"''''cat''''\"";
-//   // echo(str);
-// //   str = "echo \"''''Hello' 'World''''\' \"'''cat'''\" cat";
-// //   str = "echo cat";
-// //   builtin_echo(str);
-// // str = "\"''cat\"'' ok";
-// //   str = clean_quote(str);
-//   str = handle_quotes(str);
-//   printf("new_str : %s\n", str);
-//   return (0);
-// }
+	// while (content[i] || content[i] != ' ')
+	// 	i++;
+	if (content[i] == 0)
+		content = ft_strdup(var);
+	else
+		content = ft_strjoin(var, content + i);
+	printf("var d'env changee :%s \n", content);
 
-/*
-GESTION DES GUILLEMETS : 
-- Sans guillemets : echo hello world
-La commande est interprétée comme trois tokens distincts : echo, Hello, World.
-- Avec simple quotes : echo 'Hello World'
-La commande est interprétée comme deux tokens : echo et Hello World.
-- Avec double quotes : echo "Hello World"
-La commande est également interprétée comme deux tokens : echo et Hello World.
-*/
+}
+
+// // Enlever le niveau de quote 
+
+char   *remove_first_level_quote(char *content)
+{
+    int     i;
+    int     j;
+    int     single_quote;
+    int     double_quote;
+    char    *temp;
+
+    i = 0;
+    j = 0;
+    single_quote = 0;
+    double_quote = 0;
+    temp = (char *)malloc(ft_strlen(content) + 1);
+    if (!temp)
+    {
+        perror("malloc");
+        return NULL;
+    }
+    while (content[i])
+    {
+        if (content[i] == '\'' && !double_quote)
+            single_quote = !single_quote;
+        else if (content[i] == '"' && !single_quote)
+            double_quote = !double_quote;
+        else
+            temp[j++] = content[i];
+        i++;
+    }
+    temp[j] = 0;
+    return (temp);
+}
+
+void    remove_quote(t_final_token *token)
+{
+    while(token)
+    {
+        token->content = remove_first_level_quote(token->content);
+        token = token->next;
+    }
+}
+
+int len_of_var_of_env(char *str) {
+    int len = 0;
+    while (str[len] && (isalnum(str[len]) || str[len] == '_')) {
+        len++;
+    }
+    return len;
+}
+
+char *extract_of_the_var(char *str) {
+    size_t len = len_of_var_of_env(str + 1);
+    char *var = (char *)malloc(len + 2);
+    if (var == NULL) {
+        return NULL;
+    }
+    strncpy(var, str, len + 1);
+    var[len + 1] = '\0';
+    return var;
+}
+
+void	get_var_of_env(t_final_token *node) {
+    t_final_token *tmp = node;
+    char *var;
+    size_t i;
+    int len;
+    char *temp;
+    char *final;
+    int in_single_quote = 0;
+    int in_double_quote = 0;
+
+    while (tmp) {
+        i = 0;
+        while (tmp->content[i]) {
+            if (tmp->content[i] == '\'' && !in_double_quote) {
+                in_single_quote = !in_single_quote;
+            } else if (tmp->content[i] == '\"' && !in_single_quote) {
+                in_double_quote = !in_double_quote;
+            }
+
+            if (tmp->content[i] == '$' && !in_single_quote) {
+                len = len_of_var_of_env(tmp->content + i + 1);
+                var = extract_of_the_var(tmp->content + i);
+                if (var == NULL) {
+                    return;
+                }
+                
+                char *env_value = getenv(var + 1); // skip the '$' character
+                if (!env_value) {
+                    env_value = ""; // treat undefined variables as empty
+                }
+
+                if (i == 0) {
+                    final = strdup(env_value);
+                    tmp->content = realloc(tmp->content, strlen(final) + 1);
+                    strcpy(tmp->content, final);
+                } else {
+                    temp = strndup(tmp->content, i);
+                    final = malloc(strlen(temp) + strlen(env_value) + strlen(tmp->content + i + len + 1) + 1);
+                    strcpy(final, temp);
+                    strcat(final, env_value);
+                    strcat(final, tmp->content + i + len + 1);
+                    free(tmp->content);
+                    tmp->content = final;
+                    free(temp);
+                }
+                free(var);
+            }
+            i++;
+        }
+        tmp = tmp->next;
+    }
+}

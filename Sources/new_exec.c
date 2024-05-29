@@ -55,6 +55,8 @@ int	handle_redirections(t_final_token **current, t_minishell *minishell,
 	if (manage_pipe_output(current, minishell, exit_code) == 1)
 		return (-1);
 	first_file = manage_redirection_input(current, exit_code, first_file);
+	if (first_file == -1)
+		return (-1);
 	last_file = manage_redirection_output(current, last_file, minishell);
 	return (0);
 }

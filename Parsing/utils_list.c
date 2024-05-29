@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:04:26 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/22 14:09:01 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/29 16:33:19 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,30 +68,6 @@ int	string_is_space(char *token)
 	return (1);
 }
 
-
-// char	**realloc_env(char **env)
-// {
-// 	char	**new_env;
-// 	size_t	size_env;
-// 	size_t	i;
-
-// 	size_env = ft_size_env(env);
-// 	i = 0;
-// 	new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
-// 	if (!new_env)
-// 	{
-// 		perror("Can't create the new env.\n");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	while (env[i])
-// 	{
-// 		new_env[i] = env[i]; // ADD FT_STRDUP SUR MAC ECOLE !!
-// 		i++;
-// 	}
-// 	new_env[size_env] = NULL;
-// 	return (new_env);
-// }
-
 char	**realloc_env(char **env)
 {
 	char	**new_env;
@@ -145,4 +121,31 @@ void    free_that_final_lst(t_final_token **token)
 		*token = tmp;
 	}
 	*token = NULL;
+}
+
+//gerer l'espace si par exemple "/// | //././"
+// finir correctement la ft pour "/...   -> ca n'existe pas"
+void	check_directory(t_token	*node)
+{
+	while(node)
+	{
+		if (node->type == CMD && only_slash(node->content) == 1)
+			printf("bash: %s: Is a directory\n", node->content);
+		node = node->next;
+	}
+}
+
+int	only_slash(char *content)
+{
+	int	i;
+
+	i = 0;
+	while (content[i])
+	{
+		if (content[i] == '/' || content[i] == '.')
+			i++;
+		else
+			return (0);
+	}
+	return (1);
 }

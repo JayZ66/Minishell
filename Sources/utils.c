@@ -93,7 +93,7 @@ void	print_env(t_minishell *minishell)
 	size_t	i;
 
 	i = 0;
-	sort_tab(minishell);
+	sort_tab(minishell->env);
 	while (minishell->env[i])
 	{
 		printf("declare -x %s\n", minishell->env[i]);

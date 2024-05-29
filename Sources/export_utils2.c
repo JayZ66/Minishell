@@ -61,12 +61,12 @@ int	identifier_errors_export(char *args)
 	i = 0;
 	while (args[i] && args[i] != '=')
 	{
-		if (ft_isalpha(args[0]) == 0)
+		if (check_char_export(args[i]) == 1)
 		{
 			printf("bash: export: '%s': not a valid identifier\n", args);
 			return (1);
 		}
-		else if (check_char_export(args[i]) == 1)
+		else if (ft_isalpha(args[0]) == 0)
 		{
 			printf("bash: export: '%s': not a valid identifier\n", args);
 			return (1);

@@ -28,6 +28,11 @@
 # include <fcntl.h>
 # include <signal.h>
 
+typedef enum e_state_machine
+{
+	reg, quote, dquote
+}	t_sm;
+
 typedef enum
 {
 	CMD,
@@ -266,7 +271,7 @@ int				tokenize_input(t_token **token, char *input, int i);
 
 // TOKENIZER ARG PIPE
 int				tokenize_pipe(t_token **token, int i);
-int				tokenize_arg(t_token **token, char *input, int i);
+int				tokenize_arg(t_token **token, char *input, int i, t_sm handle_quote);
 
 // EXTRACT CMD
 t_token			*extract_cmd(t_token **token, char *input);
@@ -280,10 +285,13 @@ void			manage_node(t_token *token);
 
 // REDIRECTION
 void			test_redirection_input(t_clean_token *clean_node);
-void			redirection_input(t_clean_token *clean_node);
+int				redirection_input(t_clean_token *clean_node);
 void			redirection_output(t_clean_token *clean_node);
 void			redirection_append(t_clean_token *clean_node);
 int				input_in_bloc(t_clean_token *token, int i);
+void			redirection_here_doc(t_clean_token *clean_node, int i);
+void			read_here_doc(size_t i, char **limiter);
+
 
 // INIT FINAL NODE
 t_final_token	*final_clean_node(t_clean_token *token);
@@ -293,9 +301,25 @@ void			add_final_back(t_final_token **token, t_final_token *new);
 void			print_final_lst(t_final_token *token);
 
 // VERIF PIPE CHEVRONS
-int		verif_pipe(t_token *token);
+int				verif_pipe(t_token *token);
 
-char *clean_quote(char *input);
+char 			*clean_quote(char *input);
 // void	echo(char *str);
+
+// VARIABLE D'ENVIRONNEMENT
+void			replace_var_of_env(char *content, char *var, int i);
+int				len_of_var_of_env(char *content);
+void			get_var_of_env(t_final_token *node);
+
+// CHECK DIRECTORY 
+
+int				only_slash(char *content);
+void			check_directory(t_token	*node);
+
+// QUOTE
+void			set_quotes_state(char *curr_char, int i, t_sm *handle_quote);
+char    		*remove_first_level_quote(char *content);
+void    		remove_quote(t_final_token *token);
+char 			*extract_of_the_var(char *str);
 
 #endif
