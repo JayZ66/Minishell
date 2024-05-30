@@ -150,7 +150,8 @@ void    remove_quote(t_final_token *token)
     }
 }
 
-int len_of_var_of_env(char *str) {
+int len_of_var_of_env(char *str) 
+{
     int len = 0;
     while (str[len] && (isalnum(str[len]) || str[len] == '_')) {
         len++;
@@ -158,7 +159,8 @@ int len_of_var_of_env(char *str) {
     return len;
 }
 
-char *extract_of_the_var(char *str) {
+char *extract_of_the_var(char *str)
+{
     size_t len = len_of_var_of_env(str + 1);
     char *var = (char *)malloc(len + 2);
     if (var == NULL) {
@@ -169,7 +171,8 @@ char *extract_of_the_var(char *str) {
     return var;
 }
 
-void	get_var_of_env(t_final_token *node) {
+void	get_var_of_env(t_final_token *node, t_minishell *minishell) 
+{
     t_final_token *tmp = node;
     char *var;
     size_t i;
@@ -195,15 +198,18 @@ void	get_var_of_env(t_final_token *node) {
                     return;
                 }
                 
-                char *env_value = getenv(var + 1); // skip the '$' character
-                if (!env_value) {
-                    env_value = ""; // treat undefined variables as empty
+                char *env_value = select_var_of_env(minishell, var + 1); // skip the '$' character
+                if (!env_value) 
+                {
+                    free(var);
+                    return ;
                 }
-
+                free(var);
                 if (i == 0) {
                     final = strdup(env_value);
                     tmp->content = realloc(tmp->content, strlen(final) + 1);
                     strcpy(tmp->content, final);
+                    free(final);
                 } else {
                     temp = strndup(tmp->content, i);
                     final = malloc(strlen(temp) + strlen(env_value) + strlen(tmp->content + i + len + 1) + 1);
@@ -212,12 +218,43 @@ void	get_var_of_env(t_final_token *node) {
                     strcat(final, tmp->content + i + len + 1);
                     free(tmp->content);
                     tmp->content = final;
+                    free(final);
                     free(temp);
                 }
-                free(var);
+
             }
             i++;
         }
         tmp = tmp->next;
     }
+}
+
+//gerer les msg d'erreur-> 2 msg (voir ou ce situe le second)
+char	*select_var_of_env(t_minishell *minishell, char *cmd)
+{
+	size_t	i;
+	size_t	j;
+	char	*all_path;
+
+	i = 0;
+	while (minishell->env[i])
+	{
+		j = 0;
+		while (minishell->env[i][j])
+		{
+			if (minishell->env[i][j] == '=')
+			{
+				if (ft_strncmp(minishell->env[i], cmd, ft_strlen(cmd)) == 0)
+				{
+					j++;
+					all_path = ft_strdup(minishell->env[i] + j);
+					return (all_path);
+				}
+			}
+			j++;
+		}
+		i++;
+	}
+    
+	return (printf("bash: %s: command not found\n", cmd),NULL);
 }

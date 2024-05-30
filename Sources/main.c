@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/29 16:41:18 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/30 11:22:14 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ int	main(int argc, char **argv, char **env)
 	minishell = (t_minishell *)malloc(sizeof(t_minishell));
 	manage_signals(minishell);
 	exit_code.last_exit_status = 0;
-	clean_token = (t_clean_token *)malloc(sizeof(t_clean_token));
-	final_token = (t_final_token *)malloc(sizeof(t_final_token));
+	// clean_token = (t_clean_token *)malloc(sizeof(t_clean_token));
+	// final_token = (t_final_token *)malloc(sizeof(t_final_token));
 	if (argc != 1 || argv[1])
 		return (perror("Wrong nb of args\n"), 1);
 	minishell->env = realloc_env(env);
-	if (env == NULL)
+	if (minishell->env == NULL)
 		return (perror("Realloc env. failed\n"), 1);
 	while (1)
 	{
@@ -84,10 +84,10 @@ int	main(int argc, char **argv, char **env)
 		}
 		token = head;
 		clean_token = copy_lst(token);
-		print_clean_lst(clean_token);
+		// print_clean_lst(clean_token);
 		test_redirection_input(clean_token);
 		final_token = final_clean_node(clean_token);
-		get_var_of_env(final_token);
+		get_var_of_env(final_token, minishell);
 		remove_quote(final_token);
 		// check_line(&final_token, minishell, &exit_code);
 		execute_commands_with_pipes_and_redirections(&final_token,

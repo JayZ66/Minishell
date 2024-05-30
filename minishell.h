@@ -309,7 +309,8 @@ char 			*clean_quote(char *input);
 // VARIABLE D'ENVIRONNEMENT
 void			replace_var_of_env(char *content, char *var, int i);
 int				len_of_var_of_env(char *content);
-void			get_var_of_env(t_final_token *node);
+void			get_var_of_env(t_final_token *node, t_minishell *minishell);
+char			*select_var_of_env(t_minishell *minishell, char *cmd);
 
 // CHECK DIRECTORY 
 
