@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:04:26 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/29 16:33:19 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:54:00 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,8 @@ void    free_that_final_lst(t_final_token **token)
 	while(*token)
 	{
 		tmp = (*token)->next;
-		free((*token)->content);
+		if ((*token)->content)
+			free((*token)->content);
 		free(*token);
 		*token = tmp;
 	}

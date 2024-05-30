@@ -56,7 +56,7 @@
 
 
 
-
+//OK\\
 Tarpin_de_Minishell>unset PATH
 Chaque node clean content : unset PATH
 Chaque node clean type content : 0
@@ -75,7 +75,7 @@ bash: ls: command not found
 ==1846865==    by 0x110944: realloc_env (utils_list.c:114)
 ==1846865==    by 0x10969F: main (main.c:56)
 
-
+//OK\\
 Chaque node clean content : grep PWD
 Chaque node clean type content : 0
 OLDPWD=/home/jeguerin/Documents/42_projects/Minishell

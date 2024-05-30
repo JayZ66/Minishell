@@ -194,10 +194,12 @@ void	get_var_of_env(t_final_token *node, t_minishell *minishell)
             if (tmp->content[i] == '$' && !in_single_quote) {
                 len = len_of_var_of_env(tmp->content + i + 1);
                 var = extract_of_the_var(tmp->content + i);
-                if (var == NULL) {
+                if (var == NULL || *var == '$') 
+                {
+                    if (*var == '$')
+                        free (var);
                     return;
                 }
-                
                 char *env_value = select_var_of_env(minishell, var + 1); // skip the '$' character
                 if (!env_value) 
                 {
@@ -206,21 +208,44 @@ void	get_var_of_env(t_final_token *node, t_minishell *minishell)
                 }
                 free(var);
                 if (i == 0) {
-                    final = strdup(env_value);
-                    tmp->content = realloc(tmp->content, strlen(final) + 1);
-                    strcpy(tmp->content, final);
-                    free(final);
+                    // final = strdup(env_value);
+                    // if (!final)
+                    // {
+                    //     free(env_value);
+                    //     return ;
+                    // }
+                    tmp->content = realloc(tmp->content, strlen(env_value) + 1);
+                    if (!tmp->content)
+                    {
+                        // free(final);
+                        free(env_value);
+                        return ;
+                    }
+                    strcpy(tmp->content, env_value);
+                    // free(final);
                 } else {
                     temp = strndup(tmp->content, i);
+                    if (!temp)
+                    {
+                        free(env_value);
+                        return ;
+                    }
                     final = malloc(strlen(temp) + strlen(env_value) + strlen(tmp->content + i + len + 1) + 1);
+                    if (!final)
+                    {
+                        free(temp);
+                        free(env_value);
+                        return ;
+                    }
                     strcpy(final, temp);
                     strcat(final, env_value);
                     strcat(final, tmp->content + i + len + 1);
                     free(tmp->content);
                     tmp->content = final;
-                    free(final);
+                    // free(final);
                     free(temp);
                 }
+                free(env_value);
 
             }
             i++;
