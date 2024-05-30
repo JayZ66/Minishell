@@ -103,7 +103,7 @@ void	replace_var_of_env(char *content, char *var, int i)
 		content = ft_strdup(var);
 	else
 		content = ft_strjoin(var, content + i);
-	printf("var d'env changee :%s \n", content);
+	// printf("var d'env changee :%s \n", content);
 
 }
 
@@ -182,6 +182,7 @@ void	get_var_of_env(t_final_token *node, t_minishell *minishell)
     int in_single_quote = 0;
     int in_double_quote = 0;
 
+    
     while (tmp) {
         i = 0;
         while (tmp->content[i]) {
@@ -194,7 +195,7 @@ void	get_var_of_env(t_final_token *node, t_minishell *minishell)
             if (tmp->content[i] == '$' && !in_single_quote) {
                 len = len_of_var_of_env(tmp->content + i + 1);
                 var = extract_of_the_var(tmp->content + i);
-                if (var == NULL || *var == '$') 
+                if (var == NULL) 
                 {
                     if (*var == '$')
                         free (var);
@@ -281,5 +282,5 @@ char	*select_var_of_env(t_minishell *minishell, char *cmd)
 		i++;
 	}
     
-	return (printf("bash: %s: command not found\n", cmd),NULL);
+	return (NULL);
 }

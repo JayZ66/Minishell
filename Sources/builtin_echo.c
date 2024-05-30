@@ -19,7 +19,8 @@ void	print_echo_arg(char **cmd_with_options, t_minishell *exit_code)
 	i = -1;
 	while (cmd_with_options[++i])
 	{
-		if (ft_strcmp(cmd_with_options[i], "echo") == 0)
+		if (ft_strcmp(cmd_with_options[i], "echo") == 0
+			|| ft_strcmp(cmd_with_options[i], "/bin/echo") == 0)
 			i++;
 		if (ft_strschr(cmd_with_options[i], "$?") == 0
 			|| ft_strschr(cmd_with_options[i], "$?$") == 0)
@@ -38,6 +39,20 @@ void	print_echo_arg(char **cmd_with_options, t_minishell *exit_code)
 	}
 }
 
+int	is_there_something_after_n(char *cmd)
+{
+	size_t	i;
+	while (cmd[i])
+	{
+		if (cmd[i] == '-' && (cmd[i + 1] && cmd[i + 1] == 'n'))
+			i+=2;
+		if (cmd[i] != 'n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	builtin_echo(char *str, t_minishell *exit_code)
 {
 	char	**cmd_with_options;
@@ -45,15 +60,16 @@ void	builtin_echo(char *str, t_minishell *exit_code)
 	cmd_with_options = ft_split(str, ' ');
 	if (cmd_with_options[1])
 	{
-		if ((ft_strschr(cmd_with_options[1], "-n") == 0
-				|| ft_strschr(cmd_with_options[0], "-n") == 0))
+		if (ft_strncmp(cmd_with_options[1], "-n", 2) == 0
+			&& is_there_something_after_n(cmd_with_options[1]) == 0)
 			handle_echo_with_n(cmd_with_options);
 		else if (cmd_with_options[1]
 			&& (ft_strcmp(cmd_with_options[1], "-n") != 0)
 			&& (ft_strcmp(cmd_with_options[0], "-n") != 0))
 			print_echo_arg(cmd_with_options, exit_code);
 	}
-	else if (ft_strcmp(cmd_with_options[0], "echo") != 0)
+	else if (ft_strcmp(cmd_with_options[0], "echo") != 0
+		&& ft_strcmp(cmd_with_options[0], "/bin/echo") != 0)
 		printf("%s: command not found\n", cmd_with_options[0]);
 	else
 		printf("\n");

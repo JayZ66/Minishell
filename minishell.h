@@ -110,7 +110,7 @@ void			builtin_exit(char **args, t_minishell *exit_code,
 char			**is_char_ok(char **args, t_minishell *minishell);
 void			if_not_digit(char *args, size_t i, t_minishell *exit_code);
 char			**getting_exit_code(char **args, t_minishell *minishell);
-void			builtin_pwd(void);
+void			builtin_pwd(char *str, t_minishell *minishell);
 int				check_pwd_option(char *str);
 void			builtin_unset(char **var, t_minishell *minishell);
 void			builtin_env(t_minishell *minishell);
@@ -139,15 +139,16 @@ void			sort_tab(char **env);
 void			print_env(t_minishell *minishell);
 int				is_relative_path(char **cmd);
 char			*relative_to_absolute_path(char **cmd, t_minishell *minishell);
-void 			env_with_new_var(char ***env, const char *var, const char *value);
+void 			env_with_new_var(char **env, const char *var, const char *value);
 void 			change_pwd_env(t_minishell *minishell, const char *cwd,
 	const char *old_cwd);
 void 			get_new_pwd(t_minishell *minishell, char **cmd);
 void 			builtin_cd(t_minishell *minishell, char **cmd);
+void			go_back_user(t_minishell *minishell);
 void 			go_back_home(t_minishell *minishell);
 int				check_cd_errors(char **cmd, t_minishell *minishell);
 char			*create_new_var(const char *var, const char *value);
-char			**alloc_new_env(size_t i, char *new_var, char ***env);
+char			**alloc_new_env(size_t i, char *new_var, char **env);
 void			builtin_echo(char *str, t_minishell *exit_code);
 void			how_many_back_slash(char *cmd);
 void			handle_echo_with_n(char **cmd);

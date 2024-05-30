@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:55:48 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/24 15:42:42 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:56:52 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,20 @@ int	check_pwd_option(char *str)
 			printf("bash: pwd: %s: invalid option\n", str + i);
 			return (1);
 		}
+		if (str[i] != 'p' && str[i] != 'w' && str[i] != 'd')
+		{
+			printf("bash: pwd: Command '%s' not found\n", str);
+			return (1);
+		}
 		i++;
 	}
 	return (0);
 }
+
+// int	built_in_or_not_builtin_second()
+// {
+	
+// }
 
 // Check si built_in dans mon execution => Si oui on redirige
 // le résultat (dup2) et on n'envoie pas dans execve.
@@ -38,25 +48,24 @@ int	builtin_or_not_builtin(char *str, t_minishell *minishell,
 {
 	char	**cmd;
 
-	(void)exit_code;
 	cmd = ft_split(str, ' ');
-	if (ft_strncmp(str, "pwd", 3) == 0)
-	{
-		if (check_pwd_option(str) == 0)
-			builtin_pwd();
-	}
-	else if (ft_strncmp(str, "env", 4) == 0)
+	if (ft_strncmp(str, "pwd", 3) == 0
+		|| ft_strncmp(str, "/bin/pwd", 8) == 0)
+			builtin_pwd(str, minishell);
+	else if (ft_strncmp(str, "env", 4) == 0
+		|| ft_strncmp(str, "/bin/env", 8) == 0)
 		builtin_env(minishell);
 	else if (ft_strncmp(str, "exit", 4) == 0)
-		builtin_exit(cmd, exit_code, minishell);
+		builtin_exit(cmd, exit_code, minishell); // Free cmd
 	else if (ft_strncmp(str, "unset", 5) == 0)
-		builtin_unset(cmd, minishell);
+		builtin_unset(cmd, minishell); // Free cmd
 	else if (ft_strncmp(str, "cd", 2) == 0)
 		builtin_cd(minishell, cmd);
-	else if (ft_strncmp(str, "echo", 4) == 0)
+	else if (ft_strncmp(str, "echo", 4) == 0
+		|| ft_strncmp(str, "/bin/echo", 9) == 0)
 		builtin_echo(str, exit_code);
 	else if (ft_strncmp(str, "export", 6) == 0)
-		builtin_export(cmd, minishell);
+		builtin_export(cmd, minishell); // Free cmd
 	else
 		return (free_tab(cmd), 1);
 	free_tab(cmd);

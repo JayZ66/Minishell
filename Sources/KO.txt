@@ -213,21 +213,38 @@ met pas d'espace !! => mettre espace dans les built_in
 
 RAF - LAST WEEK : 
 - Norme => DONE
-- leaks
-- Skip l'espace du premier bloc reçu ! => Where ? BEFORE EXECVE !
 - Refaire tests excel => DONE
 - Finir de gérer les quotes => DONE
-- Tester la variable d'environnement !
+- Tester la variable d'environnement ! => DONE
 - RETEST cd ! + // Checker si / file sinon cmd not found ! => DONE
 - RETEST Echo -n for modifications ! => DONE
 Tarpin_de_Minishell>echo -ndgs COUCOU
 - RETEST export for modifications => DONE
-- UNSET :
-Pouvoir unset une variable quand on met = derriere !!!
 - EXEC : 
 Verifier avec access quand absolute path ! => DONE
-- TO FIX : 
-* Absolute path built_in => Modify builtin_or_not_buitin() + builtin !
+- TO FIX : DONE
+* Absolute path built_in
+=> cd / export / exit / unset : Can't be executed 
+=> env / pwd / echo : Must be executed
+
+- Skip l'espace du premier bloc reçu ! => Where ? BEFORE EXECVE ! => DONE
+- UNSET :
+Pouvoir unset une variable quand on met = derriere !!! => DONE
+- exit_code function
+- Gestion redirection
+> Si input n'existe pas on met un message d'erreur puis on arrete l'execution. (on relance prompt)
+Par contre il faut regarder les redirections dans l'ordre de leur apparition.
+- echo -nHola => Print tout mais retire le retour a la ligne => DONE
+- echo -----------n => Ok but remove the \n ! => DONE
+- export Hola => Should be in the env ! => DONE
+- pwd + autres caracteres => DONE
+- cd / => Ne doit rien print ! Moi je print / => OK
+- cd : Si cd only go back to user ! + change pwd. => DONE
+- cd : Gerer s'il y a un / apres le nom d'un file => DONE
+- RETEST CD !
+- TEST VAR OF MY ENV.
+- Leaks
+
 
 
 NORME FONCTIONS : DONE
@@ -255,7 +272,7 @@ NORME FONCTIONS : DONE
 - Bultin_echo => Line 58 > DONE
 
 
-POUR ROMAIN : 
+POUR ROMAIN : DONE
 
 void	get_var_of_env(t_final_token *node)
 

@@ -49,7 +49,7 @@ char	**getting_exit_code(char **args, t_minishell *minishell)
 
 	i = -1;
 	j = 0;
-	temp = malloc(strlen(args[1]) + 1);
+	temp = malloc(ft_strlen(args[1]) + 1);
 	if (!temp)
 	{
 		minishell->last_exit_status = EXIT_FAILURE;
@@ -126,27 +126,33 @@ void	builtin_exit(char **args, t_minishell *exit_code,
 {
 	if (args[1] != NULL)
 		manage_exit_with_code(args, exit_code, minishell);
-	else if (ft_strcmp(args[0], "exit") != 0)
+	else if (ft_strncmp(args[0], "exit", 4) != 0)
 		printf("%s: command not found\n", args[0]);
 	else
 	{
 		exit_code->last_exit_status = 0;
+		// free_tab(args);
 		printf("exit\n");
 		exit(0);
 	}
 }
 
-void	builtin_pwd(void)
+
+
+void	builtin_pwd(char *str, t_minishell *minishell)
 {
 	char	buffer[1024];
 	char	*absolute_path;
 
+	if (check_pwd_option(str) == 1)
+		return ;
 	absolute_path = getcwd(buffer, sizeof(buffer));
 	if (absolute_path != NULL)
 		printf("%s\n", absolute_path);
 	else
 	{
 		perror("Can't get the absolute path\n");
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 }
@@ -166,14 +172,25 @@ void	unset_variable(char **var, t_minishell *minishell)
 	while (var[++j])
 	{
 		i = -1;
-		if (identifier_errors_unset(var[j]) == 1)
-			if (var[j + 1] == NULL)
-				break ;
+		// if (identifier_errors_unset(var[j]) == 1)
+		// 	if (var[j + 1] == NULL)
+		// 		break ;
 		while (minishell->env[++i])
 		{
 			if (ft_strncmp(minishell->env[i], var[j],
 					ft_strlen(var[j])) == 0
 				&& minishell->env[i][ft_strlen(var[j])] == '=')
+			{
+				while (minishell->env[i + 1])
+				{
+					minishell->env[i] = minishell->env[i + 1];
+					i++;
+				}
+				minishell->env[i] = NULL;
+			}
+			else if (ft_strncmp(minishell->env[i], var[j],
+					ft_strlen(var[j])) == 0
+				&& minishell->env[i][ft_strlen(var[j]) - 1] == '=')
 			{
 				while (minishell->env[i + 1])
 				{

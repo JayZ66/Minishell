@@ -83,7 +83,8 @@ size_t	count_sign(char **cmd)
 	size_t	count_sign;
 
 	i = 0;
-	if (ft_strncmp(cmd[i], "echo", 4) == 0)
+	if (ft_strncmp(cmd[i], "echo", 4) == 0
+		|| ft_strncmp(cmd[i], "/bin/echo", 8) == 0)
 		i++;
 	while (cmd[i])
 	{

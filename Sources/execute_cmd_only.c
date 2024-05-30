@@ -61,15 +61,27 @@ void	exec_cmd_with_fork(char *cmd, t_minishell *minishell,
 
 void	exec_absolute_path(char **cmd_line, char *cmd, t_minishell *minishell)
 {
-	// if (access(cmd, F_OK) == 0)
-	// {
-	// 	printf("bash: %s: command not found\n", cmd);
-	// 	minishell->last_exit_status = EXIT_FAILURE;
-	// 	exit(EXIT_FAILURE);
-	// }
-	if (execve(cmd, cmd_line, minishell->env) == -1)
+	char	*new_cmd;
+	size_t	j;
+	size_t	i;
+
+	new_cmd = (char *)malloc(sizeof(char) * (ft_strlen(cmd) + 1));
+	i = 0;
+	j = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] != ' ')
+		{
+			new_cmd[j] = cmd[i];
+			j++;
+		}
+		i++;
+	}
+	new_cmd[j] = '\0';
+	if (execve(new_cmd, cmd_line, minishell->env) == -1)
 	{
 		free_tab(cmd_line);
+		free(new_cmd);
 		printf("bash: %s: command not found\n", cmd);
 		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);

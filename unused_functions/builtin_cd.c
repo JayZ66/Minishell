@@ -347,7 +347,7 @@
 // 	{
 // 		if (chdir(cmd[1]) != 0)
 // 		{
-// 			printf("bash: cd: No such file or directory\n");
+// 			printf("bash: cd: or directory\n");
 // 			return (NULL);
 // 		}
 // 		if (getcwd(cwd, sizeof(cwd)) == NULL)
