@@ -6,223 +6,124 @@
 /*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:09:29 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/30 17:41:42 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:09:37 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_clean_token *copy_lst(t_token *token)
+t_clean_token	*handle_inputs(t_token **token)
 {
-    // t_token *head = token;
-    t_clean_token *clean_list = NULL;
-    char *content = NULL;
+	char			*content;
+	t_clean_token	*clean_list;
+	t_clean_token	*new;
 
-    while (token != NULL)
-    {
-        t_token *block_start = token; // Pointeur de départ pour le bloc actuel
-
-        while (token != NULL && token->type != PIPE)
-        {
-            if (token->type == INPUT || token->type == HERE_DOC)
-            {
-				if (!token || string_is_space(token->content) == 1)
-				{
-					printf("syntax error \n");
-					return (NULL);
-				}
-                content = ft_strdup(token->content);
-                t_clean_token *new = init_clean_node(content, token->type);
-                add_clean_back(&clean_list, new);
-                free(content);
-            }
-            token = token->next;
-        }
-
-        // Ajouter les arguments pour ce bloc
-        token = block_start;
-        while (token != NULL && token->type != PIPE)
-        {
-            if (token->type == CMD)
-            {
-				if (ft_strncmp(token->content, "&&", 2) == 0)
-				{
-					printf("syntax error &&\n");
-					return (NULL);
-				}
-                content = ft_strdup(token->content);
-                t_clean_token *new = init_clean_node(content, token->type);
-                add_clean_back(&clean_list, new);
-                free(content);
-            }
-            token = token->next;
-        }
-
-        // Ajouter les sorties pour ce bloc
-        token = block_start;
-        while (token != NULL && token->type != PIPE)
-        {
-            if (token->type == OUTPUT || token->type == APPEND)
-            {
-				if (!token || string_is_space(token->content) == 1)
-				{
-					printf ("syntax error\n");
-					return (NULL);
-				}
-                content = ft_strdup(token->content);
-                t_clean_token *new = init_clean_node(content, token->type);
-                add_clean_back(&clean_list, new);
-                free(content);
-            }
-            token = token->next;
-        }
-
-        // Passer au prochain bloc s'il y en a un
-        if (token!= NULL)
-        {
-			if (token->type == PIPE)
+	clean_list = NULL;
+	while (*token != NULL && (*token)->type != PIPE)
+	{
+		if ((*token)->type == INPUT || (*token)->type == HERE_DOC)
+		{
+			if (!*token || string_is_space((*token)->content) == 1)
 			{
-				content = ft_strdup("|");
-                t_clean_token *new = init_clean_node(content, token->type);
-                add_clean_back(&clean_list, new);
-                free(content);
+				printf("syntax error \n");
+				return (NULL);
 			}
-            token = token->next; // Avancer pour sauter le pipe
-        }
-    }
-    return (clean_list);
+			content = ft_strdup((*token)->content);
+			new = init_clean_node(content, (*token)->type);
+			add_clean_back(&clean_list, new);
+			free(content);
+		}
+		*token = (*token)->next;
+	}
+	return (clean_list);
 }
 
-
-t_final_token *final_clean_node(t_clean_token *token)
+t_clean_token	*handle_commands(t_token **token)
 {
-    t_final_token *final_token = NULL;
-    char *content = NULL;
+	char			*content;
+	t_clean_token	*clean_list;
+	t_clean_token	*new;
 
-    while (token)
-    {
-        while (token && (token->type == INPUT || token->type == HERE_DOC))
-        {
-			if (!token->next || (token->next->type != INPUT && token->next->type != HERE_DOC))
+	clean_list = NULL;
+	while (*token != NULL && (*token)->type != PIPE)
+	{
+		if ((*token)->type == CMD)
+		{
+			if (ft_strncmp((*token)->content, "&&", 2) == 0)
 			{
-            	content = ft_strdup(token->content);
-                if (!content)
-                {
-                    free_that_final_lst(&final_token); 
-                    return (NULL);
-                }
-            	t_final_token *new = init_final_node(content, token->type);
-            	add_final_back(&final_token, new);
-            	free(content);
+				printf("syntax error &&\n");
+				return (NULL);
 			}
-            token = token->next;
-        }
-
-        while (token && token->type == CMD)
-        {
-            content = ft_strdup(token->content);
-            if (!content)
-            {
-                free_that_final_lst(&final_token); 
-                return (NULL);
-            }
-            t_final_token *new = init_final_node(content, token->type);
-            add_final_back(&final_token, new);
-            free(content);
-            token = token->next;
-        }
-
-        while (token && (token->type == OUTPUT || token->type == APPEND))
-        {
-            if (!token->next || token->next->type == PIPE)
-            {
-                content = ft_strdup(token->content);
-                if (!content)
-                {
-                    free_that_final_lst(&final_token); 
-                    return (NULL);
-                }
-                t_final_token *new = init_final_node(content, token->type);
-                add_final_back(&final_token, new);
-                free(content);
-            }
-            token = token->next;
-        }
-
-        if (token && token->type == PIPE)
-        {
-            content = ft_strdup("|");
-            if (!content)
-            {
-                free_that_final_lst(&final_token); 
-                return (NULL);
-            }
-            t_final_token *new = init_final_node(content, token->type);
-            add_final_back(&final_token, new);
-            free(content);
-            token = token->next;
-        }
-    }
-    return (final_token);
+			content = ft_strdup((*token)->content);
+			new = init_clean_node(content, (*token)->type);
+			add_clean_back(&clean_list, new);
+			free(content);
+		}
+		*token = (*token)->next;
+	}
+	return (clean_list);
 }
 
-
-
-t_final_token	*init_final_node(char *content, Token_type type)
+t_clean_token	*handle_outputs(t_token **token)
 {
-	t_final_token *token;
+	char			*content;
+	t_clean_token	*clean_list;
+	t_clean_token	*new;
 
-	token = (t_final_token *)malloc(sizeof(t_final_token));
-	if (token == NULL)
+	clean_list = NULL;
+	while (*token != NULL && (*token)->type != PIPE)
 	{
-		perror("List has not been created\n");
-		exit(EXIT_FAILURE);
+		if ((*token)->type == OUTPUT || (*token)->type == APPEND)
+		{
+			if (!*token || string_is_space((*token)->content) == 1)
+			{
+				printf("syntax error \n");
+				return (NULL);
+			}
+			content = ft_strdup((*token)->content);
+			new = init_clean_node(content, (*token)->type);
+			add_clean_back(&clean_list, new);
+			free(content);
+		}
+		*token = (*token)->next;
 	}
-	token->content = ft_strdup(content);
-	if (token->content == NULL)
-	{
-		perror ("Memory allocation failed\n");
-		exit (EXIT_FAILURE);
-	}
-    // free(content);
-	token->type = type;
-	token->next = NULL;
-	return (token);
+	return (clean_list);
 }
 
-t_final_token	*lst_final_last(t_final_token	*token)
+void	handle_pipe(t_token **token, t_clean_token **clean_list)
 {
-	if (token == NULL)
-	{
-		perror ("Token node is empty\n");
-		exit(EXIT_FAILURE);
-	}
-	while (token->next)
-		token = token->next;
-	return (token);
-}
+	char			*content;
+	t_clean_token	*new;
 
-void	add_final_back(t_final_token **token, t_final_token *new)
-{
-	t_final_token	*last;
-	if (!(*token))
-		*token = new;
-	else
+	if (*token != NULL && (*token)->type == PIPE)
 	{
-		last = lst_final_last(*token);
-		last->next = new;
+		content = ft_strdup("|");
+		new = init_clean_node(content, (*token)->type);
+		add_clean_back(clean_list, new);
+		free(content);
+		*token = (*token)->next;
 	}
 }
 
-void	print_final_lst(t_final_token *token)
+t_clean_token	*copy_lst(t_token *token)
 {
-	t_final_token	*tmp;
+	t_clean_token	*clean_list;
+	t_clean_token	*temp_list;
+	t_token			*block_start;
 
-	tmp = token;
-	while (tmp)
+	clean_list = NULL;
+	while (token != NULL)
 	{
-		printf("Chaque node finale content : %s\n", tmp->content);
-		printf("Chaque node finale type content : %u\n", tmp->type);
-		tmp = tmp->next;
+		block_start = token;
+		temp_list = handle_inputs(&token);
+		add_clean_back(&clean_list, temp_list);
+		token = block_start;
+		temp_list = handle_commands(&token);
+		add_clean_back(&clean_list, temp_list);
+		token = block_start;
+		temp_list = handle_outputs(&token);
+		add_clean_back(&clean_list, temp_list);
+		handle_pipe(&token, &clean_list);
 	}
+	return (clean_list);
 }

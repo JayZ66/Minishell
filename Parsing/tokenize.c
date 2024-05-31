@@ -6,7 +6,7 @@
 /*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:06:45 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/24 09:36:32 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/05/31 10:54:50 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ int	tokenize_append(t_token **token, char *input, int i)
 	new = NULL;
 	temp = NULL;
 	flag = 0;
-	while (input[end]!= 0 && input[end] != '<' && input[end] != '|')
+	while (input[end] != 0 && input[end] != '<' && input[end] != '|')
 	{
 		if (input[end] == '>')
 			flag++;
 		if (flag > 2)
-			break;
+			break ;
 		end++;
 	}
 	temp = ft_strndup(input + start, end - start);
@@ -57,7 +57,7 @@ int	tokenize_output(t_token **token, char *input, int i)
 		if (input[end] == '>')
 			flag++;
 		if (flag > 1)
-			break;
+			break ;
 		end++;
 	}
 	temp = ft_strndup(input + start, end - start);
@@ -84,7 +84,7 @@ int	tokenize_here_doc(t_token **token, char *input, int i)
 		if (input[end] == '<')
 			flag++;
 		if (flag > 2)
-			break;
+			break ;
 		end++;
 	}
 	temp = ft_strndup(input + start, end - start);
@@ -111,7 +111,7 @@ int	tokenize_input(t_token **token, char *input, int i)
 		if (input[end] == '<')
 			flag++;
 		if (flag > 1)
-			break;
+			break ;
 		end++;
 	}
 	temp = ft_strndup(input + start, end - start);
@@ -120,54 +120,3 @@ int	tokenize_input(t_token **token, char *input, int i)
 	i = end;
 	return (i);
 }
-
-// TOKENIZER ARG PIPE //
-
-int	tokenize_pipe(t_token **token, int i)
-{
-	t_token	*new;
-
-	new = init_node_separator(PIPE);
-	add_back(token, new);
-	i++;
-	return (i);
-}
-
-int tokenize_arg(t_token **token, char *input, int i, t_sm handle_quote)
-{
-	int start;
-	int end;
-	char *arg;
-	t_token *new;
-	start = i;
-	end = i;
-	// int flag = 0;
-	// printf("taille de start %d\n", start);
-	// printf("taille de end avant: %d\n", end);
-	// if (input[end] == '"')
-	// {
-	// 	end++;
-	// 	while (input[end] || input[end] == '"')
-	// 		end++;
-	// // }
-	// else
-	// set_quotes_state(input, i, handle_quote);
-	while((input[end]))
-	{
-		set_quotes_state(input, end, &handle_quote);
-		if (handle_quote == reg && (input[end] == '>' || input[end] == '<' || input[end] == '|'))
-			break;
-		end++;
-	}
-	arg = ft_strndup(input + start, end - start);
-	// printf("arg: %s\n", arg);
-	new = init_node(arg, CMD);
-	add_back(token, new);
-	free(arg);
-	return (end);
-	// if (input[end] == 0)
-	// 	return (end);
-	// else
-	// 	return (end);
-}
-

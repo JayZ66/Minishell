@@ -1,0 +1,47 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenize2.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/31 10:53:50 by romlambe          #+#    #+#             */
+/*   Updated: 2024/05/31 10:55:03 by romlambe         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../minishell.h"
+
+int	tokenize_pipe(t_token **token, int i)
+{
+	t_token	*new;
+
+	new = init_node_separator(PIPE);
+	add_back(token, new);
+	i++;
+	return (i);
+}
+
+int	tokenize_arg(t_token **token, char *input, int i, t_sm handle_quote)
+{
+	int		start;
+	int		end;
+	char	*arg;
+	t_token	*new;
+
+	start = i;
+	end = i;
+	while (input[end])
+	{
+		set_quotes_state(input, end, &handle_quote);
+		if (handle_quote == reg && (input[end] == '>'
+				|| input[end] == '<' || input[end] == '|'))
+			break ;
+		end++;
+	}
+	arg = ft_strndup(input + start, end - start);
+	new = init_node(arg, CMD);
+	add_back(token, new);
+	free(arg);
+	return (end);
+}

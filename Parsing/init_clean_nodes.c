@@ -3,34 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   init_clean_nodes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:14:00 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/20 13:21:49 by marvin           ###   ########.fr       */
+/*   Updated: 2024/05/31 14:41:09 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_clean_token    *init_clean_node(char *content, Token_type type)
+t_clean_token	*init_clean_node(char *content, Token_type type)
 {
-    t_clean_token    *token;
+	t_clean_token	*token;
 
-    token = (t_clean_token *)malloc(sizeof(t_clean_token));
-    if (token == NULL)
-    {
-        perror("List has not been created\n");
-        exit(EXIT_FAILURE);
-    }
-    token->content = ft_strdup(content); // Add token function here !
-    if (token->content == NULL)
-    {
-        perror("Memory allocation failde\n");
-        exit(EXIT_FAILURE);
-    }
+	token = (t_clean_token *)malloc(sizeof(t_clean_token));
+	if (token == NULL)
+	{
+		perror("List has not been created\n");
+		exit(EXIT_FAILURE);
+	}
+	token->content = ft_strdup(content);
+	if (token->content == NULL)
+	{
+		perror("Memory allocation failde\n");
+		exit(EXIT_FAILURE);
+	}
 	token->type = type;
-    token->next = NULL;
-    return (token);
+	token->next = NULL;
+	return (token);
 }
 
 t_clean_token	*lst_clean_last(t_clean_token *token)
@@ -49,12 +49,7 @@ void	add_clean_back(t_clean_token **token, t_clean_token *new)
 {
 	t_clean_token	*last;
 
-	// if (!(token))
-	// {
-	// 	perror("List is empty\n");
-	// 	EXIT_FAILURE;
-	// }
-	if (!(*token)) // To check !
+	if (!(*token))
 		*token = new;
 	else
 	{
@@ -76,7 +71,7 @@ void	print_clean_lst(t_clean_token *token)
 	}
 }
 
-void    free_that_clean_lst(t_clean_token **token)
+void	free_that_clean_lst(t_clean_token **token)
 {
 	t_clean_token	*tmp;
 
@@ -85,10 +80,10 @@ void    free_that_clean_lst(t_clean_token **token)
 		perror("Clean lst is empty, can't free\n");
 		exit(EXIT_FAILURE);
 	}
-	while(*token)
+	while (*token)
 	{
 		tmp = (*token)->next;
-		 if ((*token)->content)
+		if ((*token)->content)
 			free((*token)->content);
 		free(*token);
 		*token = tmp;
