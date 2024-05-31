@@ -100,6 +100,7 @@ int				ft_strlen_tab(char **cmd_line);
 int				ft_lstsize_content(t_token *token);
 void			free_that_lst(t_token **token);
 char			**realloc_env(char **env);
+char 			**allocate_new_env(size_t size_env);
 size_t			ft_size_env(char **env);
 int				ft_strncmp_limiter(const char *s1, const char *s2, size_t n);
 void			print_export_env(t_minishell *minishell);
@@ -245,6 +246,10 @@ void			remove_quotes_cmd_line(t_final_token *node, t_minishell *minishell);
 
 //COPY_LIST
 t_clean_token	*copy_lst(t_token *token);
+t_clean_token *handle_inputs(t_token **token);
+t_clean_token *handle_commands(t_token **token);
+t_clean_token *handle_outputs(t_token **token);
+void handle_pipe(t_token **token, t_clean_token **clean_list);
 
 // INIT_CLEAN_NODES
 t_clean_token	*init_clean_node(char *content, Token_type type);
@@ -276,16 +281,25 @@ int				tokenize_arg(t_token **token, char *input, int i, t_sm handle_quote);
 
 // EXTRACT CMD
 t_token			*extract_cmd(t_token **token, char *input);
+size_t	process_token(t_token **token, char *input, size_t i, t_sm handle_quote);
 
 // CLEAN NODES
+void			clean_spaces_in_content(char *content);
 void			clean_spaces1(t_token *token);
 void			clean_spaces2(t_token *token);
-void			clean_chevron(t_token *token);
+int	clean_token_content(t_token *token);
+int				clean_chevron(t_token *token);
+void			create_new_token(t_token *token, int i);
 void			cut_node(t_token *token);
 void			manage_node(t_token *token);
 
 // REDIRECTION
-void			test_redirection_input(t_clean_token *clean_node);
+int				test_redirection_input(t_clean_token *clean_node);
+int				handle_input_redirection(t_clean_token *clean_node);
+void			handle_output_redirection(t_clean_token *clean_node);
+void			handle_append_redirection(t_clean_token *clean_node);
+void			handle_here_doc_redirection(t_clean_token *clean_node, int *i);
+
 int				redirection_input(t_clean_token *clean_node);
 void			redirection_output(t_clean_token *clean_node);
 void			redirection_append(t_clean_token *clean_node);
@@ -296,6 +310,7 @@ void			read_here_doc(size_t i, char **limiter);
 
 // INIT FINAL NODE
 t_final_token	*final_clean_node(t_clean_token *token);
+void   handle_input(t_clean_token *token, t_final_token *final_token, t_final_token *new, char *content);
 t_final_token	*init_final_node(char *content, Token_type type);
 t_final_token	*lst_final_last(t_final_token	*token);
 void			add_final_back(t_final_token **token, t_final_token *new);

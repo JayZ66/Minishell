@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/30 15:42:57 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:20:25 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,14 @@ int	main(int argc, char **argv, char **env)
 		}
 		token = extract_cmd(&token, input);
 		t_token	*head = token;
-		clean_chevron(token);
+		if (clean_chevron(token) == 1)
+		{
+			printf("bash: %s error\n", input);
+			rl_on_new_line();
+			free(input);
+			free_that_lst(&token);
+			continue;
+		}
 		clean_spaces1(token);
 		manage_node(token);
 		clean_spaces2(token);

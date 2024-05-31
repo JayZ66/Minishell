@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+         #
+#    By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/05/29 16:45:50 by jeguerin         ###   ########.fr        #
+#    Updated: 2024/05/31 14:59:53 by romlambe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,9 +32,10 @@ SRCS = 	Sources/main.c Sources/utils.c \
 		Sources/exec_builtin.c Sources/manage_input.c Sources/manage_output.c \
 		Sources/get_var_env.c \
 		Parsing/clean_nodes.c Parsing/copy_list.c Parsing/extract_cmd.c \
-		Parsing/init_clean_nodes.c Parsing/init_nodes.c \
+		Parsing/init_clean_nodes.c Parsing/clean_nodes2.c Parsing/init_nodes.c \
 		Parsing/redirection.c Parsing/tokenize.c Parsing/utils_list.c \
-		Sources/echo_utils.c \
+		Sources/echo_utils.c  Parsing/realloc_env.c Parsing/tokenize2.c \
+		Parsing/handle_redirection.c Parsing/redirection_utils.c Parsing/copy_final_list.c\
 
 GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 LIBFT = Libft/libft.a
