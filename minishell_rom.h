@@ -22,9 +22,9 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <time.h>
-# include <errno.h>
-# include <unistd.h>
-# include <sys/wait.h>
+# include <errno.h> // perror - strerror
+# include <unistd.h> // access - dup2 - execve - fork - pipe - waitpid
+# include <sys/wait.h> // Wait
 # include <fcntl.h>
 # include <signal.h>
 
@@ -78,6 +78,12 @@ typedef struct s_minishell
 char			*read_input(t_minishell *minishell);
 void			shell_level(t_minishell *minishell);
 
+// void	execute_pipe(int nb_args, char **cmd_line, char **env);
+// void	do_pipes(char *cmd, char **env);
+
+// int		manage_file(int nb_args, char **cmd_line, int flag);
+// char	*check_line_cmd(t_token *token);
+
 // Var. env.
 char			*get_the_var_of_env(t_final_token *node, t_minishell *minishell);
 
@@ -94,6 +100,7 @@ int				ft_strlen_tab(char **cmd_line);
 int				ft_lstsize_content(t_token *token);
 void			free_that_lst(t_token **token);
 char			**realloc_env(char **env);
+char 			**allocate_new_env(size_t size_env);
 size_t			ft_size_env(char **env);
 int				ft_strncmp_limiter(const char *s1, const char *s2, size_t n);
 void			print_export_env(t_minishell *minishell);
@@ -136,7 +143,7 @@ char			*relative_to_absolute_path(char **cmd, t_minishell *minishell);
 void 			env_with_new_var(char **env, const char *var, const char *value);
 void 			change_pwd_env(t_minishell *minishell, const char *cwd,
 	const char *old_cwd);
-void 			get_new_pwd(t_minishell *minishell, char *cmd);
+void 			get_new_pwd(t_minishell *minishell, char **cmd);
 void 			builtin_cd(t_minishell *minishell, char **cmd);
 void			go_back_user(t_minishell *minishell);
 void 			go_back_home(t_minishell *minishell);

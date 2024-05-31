@@ -241,10 +241,15 @@ Par contre il faut regarder les redirections dans l'ordre de leur apparition.
 - cd / => Ne doit rien print ! Moi je print / => OK
 - cd : Si cd only go back to user ! + change pwd. => DONE
 - cd : Gerer s'il y a un / apres le nom d'un file => DONE
-- RETEST CD !
-- TEST VAR OF MY ENV.
+- RETEST CD ! => DONE
+- TEST VAR OF MY ENV. => DONE
 - Leaks
+- Export : Split with spaces but is a problem when value of var. with spaces & quotes.
+- Export : Si tu mets un vr. sans valeur mais avec egal et quelle existe alors tu la vide.
+- Echo : echo -n dggd => MARCHE PAS !!!!
 
+- LEAKS : 
+TESTER LE LEAK BUILTIN OR NOT BUILTIN ou je dois free(args).
 
 
 NORME FONCTIONS : DONE
@@ -277,3 +282,5 @@ POUR ROMAIN : DONE
 void	get_var_of_env(t_final_token *node)
 
 => Utiliser minishell->env et non get_env !!!
+
+- Ne pas exit quand un file n'est pas bon !

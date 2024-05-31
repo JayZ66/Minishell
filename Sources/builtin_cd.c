@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 10:04:14 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/30 19:12:02 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/31 18:28:30 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,16 +118,39 @@ void	env_with_new_var(char **env, const char *var, const char *value)
 	}
 	new_env = alloc_new_env(i, new_var, env);
 	env = new_env;
+	free_tab(new_env);
+}
+
+int	is_var_existing(t_minishell *minishell)
+{
+	size_t	i;
+
+	i = 0;
+	while (minishell->env[i])
+	{
+		if (ft_strncmp(minishell->env[i], "PWD", 3) == 0)
+			return (1);
+		else if (ft_strncmp(minishell->env[i], "OLDPWD", 6) == 0)
+			return (2);
+		i++;
+	}
+	return (0);
 }
 
 void	change_pwd_env(t_minishell *minishell, const char *cwd,
 	const char *old_cwd)
 {
-	env_with_new_var(minishell->env, "PWD", cwd);
-	env_with_new_var(minishell->env, "OLDPWD", old_cwd);
+	if (is_var_existing(minishell) == 1)
+	{
+		env_with_new_var(minishell->env, "PWD", cwd);
+	}
+	if (is_var_existing(minishell) == 2)
+	{
+		env_with_new_var(minishell->env, "OLDPWD", old_cwd);
+	}
 }
 
-void	get_new_pwd(t_minishell *minishell, char **cmd)
+void	get_new_pwd(t_minishell *minishell, char *cmd)
 {
 	char	cwd[1024];
 	char	old_cwd[1024];
@@ -137,11 +160,10 @@ void	get_new_pwd(t_minishell *minishell, char **cmd)
 		perror("getcwd");
 		return ;
 	}
-	if (cmd[1] != NULL)
+	if (cmd != NULL)
 	{
-		if (chdir(cmd[1]) != 0)
+		if (chdir(cmd) != 0)
 		{
-			// printf("cmd1 : %s\n", cmd[1]);
 			printf("bash: cd: No such file or directory\n");
 			return ;
 		}
@@ -156,11 +178,19 @@ void	get_new_pwd(t_minishell *minishell, char **cmd)
 
 void	builtin_cd(t_minishell *minishell, char **cmd)
 {
+	char	*path;
+
+	path = NULL;
 	if (cmd[1] == NULL)
 	{
 		if (ft_strcmp(cmd[0], "cd") != 0)
 			printf("bash: %s: No such file or directory\n", cmd[0]);
 		go_back_user(minishell);
+		return ;
+	}
+	if (cmd[2])
+	{
+		printf("bash: cd: too many arguments\n");
 		return ;
 	}
 	if (check_cd_errors(cmd, minishell) == 1)
@@ -170,9 +200,10 @@ void	builtin_cd(t_minishell *minishell, char **cmd)
 	}
 	if (cmd[1] != NULL && is_relative_path(cmd) == 0)
 	{
-		cmd[1] = relative_to_absolute_path(cmd, minishell);
-		if (!cmd[1])
+		path = relative_to_absolute_path(cmd, minishell);
+		if (!path)
 			return ;
 	}
-	get_new_pwd(minishell, cmd);
+	get_new_pwd(minishell, path);
+	free(path);
 }

@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:55:48 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/30 15:56:52 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:21:53 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,20 @@ int	builtin_or_not_builtin(char *str, t_minishell *minishell,
 	char	**cmd;
 
 	cmd = ft_split(str, ' ');
-	if (ft_strncmp(str, "pwd", 3) == 0
-		|| ft_strncmp(str, "/bin/pwd", 8) == 0)
+	if (ft_strncmp(str, "pwd", 3) == 0)
 			builtin_pwd(str, minishell);
-	else if (ft_strncmp(str, "env", 4) == 0
-		|| ft_strncmp(str, "/bin/env", 8) == 0)
+	else if (ft_strncmp(str, "env", 4) == 0)
 		builtin_env(minishell);
 	else if (ft_strncmp(str, "exit", 4) == 0)
-		builtin_exit(cmd, exit_code, minishell); // Free cmd
+		builtin_exit(cmd, exit_code, minishell);
 	else if (ft_strncmp(str, "unset", 5) == 0)
-		builtin_unset(cmd, minishell); // Free cmd
+		builtin_unset(cmd, minishell);
 	else if (ft_strncmp(str, "cd", 2) == 0)
 		builtin_cd(minishell, cmd);
-	else if (ft_strncmp(str, "echo", 4) == 0
-		|| ft_strncmp(str, "/bin/echo", 9) == 0)
+	else if (ft_strncmp(str, "echo", 4) == 0)
 		builtin_echo(str, exit_code);
 	else if (ft_strncmp(str, "export", 6) == 0)
-		builtin_export(cmd, minishell); // Free cmd
+		builtin_export(cmd, minishell);
 	else
 		return (free_tab(cmd), 1);
 	free_tab(cmd);

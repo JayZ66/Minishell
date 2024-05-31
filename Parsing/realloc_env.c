@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   realloc_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:37:36 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/31 10:49:41 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/05/31 18:52:35 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	**realloc_env(char **env)
 	i = 0;
 	while (i < size_env)
 	{
-		new_env[i] = strdup(env[i]);
+		new_env[i] = ft_strdup(env[i]);
 		if (!new_env[i])
 		{
 			perror("Can't duplicate env string.\n");

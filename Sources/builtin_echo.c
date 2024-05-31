@@ -42,6 +42,8 @@ void	print_echo_arg(char **cmd_with_options, t_minishell *exit_code)
 int	is_there_something_after_n(char *cmd)
 {
 	size_t	i;
+
+	i = 0;
 	while (cmd[i])
 	{
 		if (cmd[i] == '-' && (cmd[i + 1] && cmd[i + 1] == 'n'))

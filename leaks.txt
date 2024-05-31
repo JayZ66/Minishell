@@ -114,7 +114,7 @@ OLDPWD=/home/jeguerin/Documents/42_projects/Minishell
 ==1793636==    by 0x1098B7: main (main.c:93)
 
 
-
+=> DONE
 Tarpin_de_Minishell>cd ..
 Chaque node clean content : cd ..
 Chaque node clean type content : 0
@@ -144,7 +144,7 @@ exit
 je ne free pas le tableau de tableau envoye en param.
 
 
-
+=> DONE
 Tarpin_de_Minishell>unset HOME
 Chaque node clean content : unset HOME
 Chaque node clean type content : 0
@@ -174,6 +174,113 @@ exit
 ==1850135==    by 0x1097FF: main (main.c:91)
 
 
+
+
+
+
+
+
+Tarpin_de_Minishell>cat Makefile | grep pr | head -n 5 | hello
+bash: hello: command not found
+==1662346== 
+==1662346== HEAP SUMMARY:
+==1662346==     in use at exit: 211,670 bytes in 329 blocks
+==1662346==   total heap usage: 590 allocs, 261 frees, 232,685 bytes allocated
+==1662346== 
+==1662342== 
+==1662342== HEAP SUMMARY:
+==1662342==     in use at exit: 211,670 bytes in 329 blocks
+==1662342==   total heap usage: 561 allocs, 232 frees, 232,203 bytes allocated
+==1662342== 
+==1662346== 6 bytes in 3 blocks are definitely lost in loss record 2 of 82
+==1662346==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1662346==    by 0x1120BA: ft_strdup (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1662346==    by 0x110513: init_final_node (copy_list.c:181)
+==1662346==    by 0x110475: final_clean_node (copy_list.c:160)
+==1662346==    by 0x109878: main (main.c:100)
+==1662346== 
+==1662342== 6 bytes in 3 blocks are definitely lost in loss record 2 of 82
+==1662342==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1662342==    by 0x1120BA: ft_strdup (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1662342==    by 0x110513: init_final_node (copy_list.c:181)
+==1662342==    by 0x110475: final_clean_node (copy_list.c:160)
+==1662342==    by 0x109878: main (main.c:100)
+==1662346== 40 bytes in 4 blocks are definitely lost in loss record 20 of 82
+==1662342== 
+==1662346==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1662346==    by 0x1120BA: ft_strdup (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1662346==    by 0x110513: init_final_node (copy_list.c:181)
+==1662346==    by 0x11031D: final_clean_node (copy_list.c:129)
+==1662346==    by 0x109878: main (main.c:100)
+==1662346== 
+==1662342== 40 bytes in 4 blocks are definitely lost in loss record 20 of 82
+==1662342==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1662342==    by 0x1120BA: ft_strdup (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1662342==    by 0x110513: init_final_node (copy_list.c:181)
+==1662342==    by 0x11031D: final_clean_node (copy_list.c:129)
+==1662342==    by 0x109878: main (main.c:100)
+==1662342== 
+==1662346== LEAK SUMMARY:
+==1662346==    definitely lost: 46 bytes in 7 blocks
+==1662346==    indirectly lost: 0 bytes in 0 blocks
+==1662346==      possibly lost: 0 bytes in 0 blocks
+==1662346==    still reachable: 211,624 bytes in 322 blocks
+==1662346==         suppressed: 0 bytes in 0 blocks
+==1662346== Reachable blocks (those to which a pointer was found) are not shown.
+==1662346== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==1662346== 
+==1662346== For lists of detected and suppressed errors, rerun with: -s
+==1662346== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==1662342== LEAK SUMMARY:
+==1662342==    definitely lost: 46 bytes in 7 blocks
+==1662342==    indirectly lost: 0 bytes in 0 blocks
+==1662342==      possibly lost: 0 bytes in 0 blocks
+==1662342==    still reachable: 211,624 bytes in 322 blocks
+==1662342==         suppressed: 0 bytes in 0 blocks
+==1662342== Reachable blocks (those to which a pointer was found) are not shown.
+==1662342== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==1662342== 
+==1662342== For lists of detected and suppressed errors, rerun with: -s
+==1662342== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==1662344== 
+==1662343== 
+==1662343== HEAP SUMMARY:
+==1662343==     in use at exit: 211,670 bytes in 329 blocks
+==1662343==   total heap usage: 561 allocs, 232 frees, 232,193 bytes allocated
+==1662343== 
+==1662344== HEAP SUMMARY:
+==1662344==     in use at exit: 211,670 bytes in 329 blocks
+==1662344==   total heap usage: 563 allocs, 234 frees, 232,213 bytes allocated
+==1662344== 
+==1662344== 6 bytes in 3 blocks are definitely lost in loss record 2 of 82
+==1662343== 6 bytes in 3 blocks are definitely lost in loss record 2 of 82
+==1662344==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1662343==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1662344==    by 0x1120BA: ft_strdup (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1662343==    by 0x1120BA: ft_strdup (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1662344==    by 0x110513: init_final_node (copy_list.c:181)
+==1662343==    by 0x110513: init_final_node (copy_list.c:181)
+==1662344==    by 0x110475: final_clean_node (copy_list.c:160)
+==1662343==    by 0x110475: final_clean_node (copy_list.c:160)
+==1662344==    by 0x109878: main (main.c:100)
+==1662343==    by 0x109878: main (main.c:100)
+==1662344== 
+==1662343== 
+==1662343== 40 bytes in 4 blocks are definitely lost in loss record 20 of 82
+==1662344== 40 bytes in 4 blocks are definitely lost in loss record 20 of 82
+==1662343==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1662344==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1662343==    by 0x1120BA: ft_strdup (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1662344==    by 0x1120BA: ft_strdup (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1662343==    by 0x110513: init_final_node (copy_list.c:181)
+==1662344==    by 0x110513: init_final_node (copy_list.c:181)
+==1662343==    by 0x11031D: final_clean_node (copy_list.c:129)
+==1662344==    by 0x11031D: final_clean_node (copy_list.c:129)
+==1662343==    by 0x109878: main (main.c:100)
+==1662344==    by 0x109878: main (main.c:100)
+
+
+=> DONE BUT OTHER LEAKS !
 
 Tarpin_de_Minishell>cat Makefile | grep pr | head -n 5 | hello
 Chaque node clean content : cat Makefile 
@@ -220,6 +327,7 @@ Chaque node clean type content : 0
 ==1787744==    by 0x109894: main (main.c:90)
 
 
+=> DONE BUT not the right cmd sent.
 Tarpin_de_Minishell>$
 Chaque node clean content : $
 Chaque node clean type content : 0
@@ -255,6 +363,7 @@ Chaque node clean type content : 0
 mais m'envoyer le $. MAIS si tu as $hdgsdf il faut trouver un moyen pour return et passer au 
 prompt suivant.
 
+=>DONE but the cmd sent is not right.
 Tarpin_de_Minishell>$ HOME
 Chaque node clean content : $ HOME
 Chaque node clean type content : 0
@@ -381,3 +490,205 @@ ok
 ==1795603==  main thread stack using the --main-stacksize= flag.
 ==1795603==  The main thread stack size used in this run was 8388608.
 ==1795603== 
+
+
+
+--------------------------------------------------------------------------------------------------------
+
+Tarpin_de_Minishell><< $"hola"$"b"
+gg
+gg
+holab
+holab
+hola
+hola
+$hola$b
+$hola$b
+==1642334== Invalid read of size 1
+==1642334==    at 0x10B965: ft_strncmp_limiter (utils1.c:55)
+==1642334==    by 0x10C1C9: read_on_terminal (manage_here_doc.c:46)
+==1642334==    by 0x10C2BF: child_here_doc (manage_here_doc.c:72)
+==1642334==    by 0x10C12D: handle_here_doc (manage_here_doc.c:34)
+==1642334==    by 0x10F625: manage_here_doc (manage_input.c:77)
+==1642334==    by 0x10F5EF: manage_redirection_input (manage_input.c:69)
+==1642334==    by 0x10EA2B: handle_redirections (new_exec.c:57)
+==1642334==    by 0x10ECB2: exec_loop (new_exec.c:117)
+==1642334==    by 0x10EE38: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1642334==    by 0x10989C: main (main.c:89)
+==1642334==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==1642334== 
+==1642334== 
+==1642334== Process terminating with default action of signal 11 (SIGSEGV)
+==1642334==  Access not within mapped region at address 0x0
+==1642334==    at 0x10B965: ft_strncmp_limiter (utils1.c:55)
+==1642334==    by 0x10C1C9: read_on_terminal (manage_here_doc.c:46)
+==1642334==    by 0x10C2BF: child_here_doc (manage_here_doc.c:72)
+==1642334==    by 0x10C12D: handle_here_doc (manage_here_doc.c:34)
+==1642334==    by 0x10F625: manage_here_doc (manage_input.c:77)
+==1642334==    by 0x10F5EF: manage_redirection_input (manage_input.c:69)
+==1642334==    by 0x10EA2B: handle_redirections (new_exec.c:57)
+==1642334==    by 0x10ECB2: exec_loop (new_exec.c:117)
+==1642334==    by 0x10EE38: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1642334==    by 0x10989C: main (main.c:89)
+==1642334==  If you believe this happened as a result of a stack
+==1642334==  overflow in your program's main thread (unlikely but
+==1642334==  possible), you can try to increase the size of the
+==1642334==  main thread stack using the --main-stacksize= flag.
+==1642334==  The main thread stack size used in this run was 8388608.
+==1642334== 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Tarpin_de_Minishell><< $"$hola"$$"b"
+$hola$$b
+$hola$$b
+holab
+holab
+hola
+hola
+^C
+Tarpin_de_Minishell>==1642408== Invalid write of size 1
+==1642408==    at 0x11372F: get_next_line (get_next_line.c:76)
+==1642408==    by 0x10C17F: read_on_terminal (manage_here_doc.c:45)
+==1642408==    by 0x10C2BF: child_here_doc (manage_here_doc.c:72)
+==1642408==    by 0x10C12D: handle_here_doc (manage_here_doc.c:34)
+==1642408==    by 0x10F625: manage_here_doc (manage_input.c:77)
+==1642408==    by 0x10F5EF: manage_redirection_input (manage_input.c:69)
+==1642408==    by 0x10EA2B: handle_redirections (new_exec.c:57)
+==1642408==    by 0x10ECB2: exec_loop (new_exec.c:117)
+==1642408==    by 0x10EE38: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1642408==    by 0x10989C: main (main.c:89)
+==1642408==  Address 0x4b67d1f is 1 bytes before a block of size 101 alloc'd
+==1642408==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+
+==1642408==    by 0x1136F3: get_next_line (get_next_line.c:70)
+==1642408==    by 0x10C17F: read_on_terminal (manage_here_doc.c:45)
+==1642408==    by 0x10C2BF: child_here_doc (manage_here_doc.c:72)
+==1642408==    by 0x10C12D: handle_here_doc (manage_here_doc.c:34)
+==1642408==    by 0x10F625: manage_here_doc (manage_input.c:77)
+==1642408==    by 0x10F5EF: manage_redirection_input (manage_input.c:69)
+==1642408==    by 0x10EA2B: handle_redirections (new_exec.c:57)
+==1642408==    by 0x10ECB2: exec_loop (new_exec.c:117)
+==1642408==    by 0x10EE38: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1642408==    by 0x10989C: main (main.c:89)
+==1642408== 
+==1642408== Conditional jump or move depends on uninitialised value(s)
+==1642408==    at 0x1137D7: ft_strlen_gnl (get_next_line_utils.c:20)
+==1642408==    by 0x11391E: ft_join (get_next_line_utils.c:72)
+==1642408==    by 0x113747: get_next_line (get_next_line.c:77)
+==1642408==    by 0x10C17F: read_on_terminal (manage_here_doc.c:45)
+==1642408==    by 0x10C2BF: child_here_doc (manage_here_doc.c:72)
+==1642408==    by 0x10C12D: handle_here_doc (manage_here_doc.c:34)
+==1642408==    by 0x10F625: manage_here_doc (manage_input.c:77)
+==1642408==    by 0x10F5EF: manage_redirection_input (manage_input.c:69)
+==1642408==    by 0x10EA2B: handle_redirections (new_exec.c:57)
+==1642408==    by 0x10ECB2: exec_loop (new_exec.c:117)
+==1642408==    by 0x10EE38: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1642408==    by 0x10989C: main (main.c:89)
+==1642408== 
+Tarpin_de_Minishell>==1641765== Conditional jump or move depends on uninitialised value(s)
+==1641765==    at 0x10C338: parent_here_doc (manage_here_doc.c:84)
+==1641765==    by 0x10C146: handle_here_doc (manage_here_doc.c:36)
+==1641765==    by 0x10F625: manage_here_doc (manage_input.c:77)
+==1641765==    by 0x10F5EF: manage_redirection_input (manage_input.c:69)
+==1641765==    by 0x10EA2B: handle_redirections (new_exec.c:57)
+==1641765==    by 0x10ECB2: exec_loop (new_exec.c:117)
+==1641765==    by 0x10EE38: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1641765==    by 0x10989C: main (main.c:89)
+
+
+DONE !
+
+Tarpin_de_Minishell>export HOLA=-n
+String : export HOLA=-n
+Tarpin_de_Minishell>"echo $HOLA" hey
+String : echo -n hey
+==1644055== Use of uninitialised value of size 8
+==1644055==    at 0x10D462: is_there_something_after_n (builtin_echo.c:45)
+==1644055==    by 0x10D4E2: builtin_echo (builtin_echo.c:64)
+==1644055==    by 0x10E489: builtin_or_not_builtin (expanser2.c:66)
+==1644055==    by 0x10ABA2: exec_simple_cmd (execution.c:40)
+==1644055==    by 0x10ED91: exec_loop (new_exec.c:130)
+==1644055==    by 0x10EE53: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1644055==    by 0x10989C: main (main.c:89)
+==1644055== 
+==1644055== Use of uninitialised value of size 8
+==1644055==    at 0x10D401: is_there_something_after_n (builtin_echo.c:47)
+==1644055==    by 0x10D4E2: builtin_echo (builtin_echo.c:64)
+==1644055==    by 0x10E489: builtin_or_not_builtin (expanser2.c:66)
+==1644055==    by 0x10ABA2: exec_simple_cmd (execution.c:40)
+==1644055==    by 0x10ED91: exec_loop (new_exec.c:130)
+==1644055==    by 0x10EE53: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1644055==    by 0x10989C: main (main.c:89)
+==1644055== 
+==1644055== Use of uninitialised value of size 8
+==1644055==    at 0x10D444: is_there_something_after_n (builtin_echo.c:49)
+==1644055==    by 0x10D4E2: builtin_echo (builtin_echo.c:64)
+==1644055==    by 0x10E489: builtin_or_not_builtin (expanser2.c:66)
+==1644055==    by 0x10ABA2: exec_simple_cmd (execution.c:40)
+==1644055==    by 0x10ED91: exec_loop (new_exec.c:130)
+==1644055==    by 0x10EE53: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1644055==    by 0x10989C: main (main.c:89)
+
+
+
+
+
+
+
+
+
+DONE !!!!!
+
+Tarpin_de_Minishell>export HOLA=-n
+Tarpin_de_Minishell>"echo $HOLA" hey
+Tarpin_de_Minishell>export A=1 B=2 C=3 D=4 E=5 F=6 G=7 H=8
+Tarpin_de_Minishell>echo "$A'$B"'$C"$D'$E'"$F'"'$G'$H"
+1'2$C"$D5"$F'gail:atk-bridge'/home/jeguerin 
+Tarpin_de_Minishell>unset PATH
+Tarpin_de_Minishell>echo $PATH
+$PATH 
+Tarpin_de_Minishell>exit
+exit
+==1644717== 
+==1644717== HEAP SUMMARY:
+==1644717==     in use at exit: 211,628 bytes in 325 blocks
+==1644717==   total heap usage: 1,242 allocs, 917 frees, 259,082 bytes allocated
+==1644717== 
+==1644717== 71 bytes in 2 blocks are definitely lost in loss record 27 of 82
+==1644717==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1644717==    by 0x10DFFB: get_var_of_env (expanser.c:234)
+==1644717==    by 0x109879: main (main.c:87)
+==1644717== 
+==1644717== 81 bytes in 5 blocks are definitely lost in loss record 29 of 82
+==1644717==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1644717==    by 0x1121B3: ft_strdup (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1644717==    by 0x11060C: init_final_node (copy_list.c:181)
+==1644717==    by 0x110416: final_clean_node (copy_list.c:129)
+==1644717==    by 0x109862: main (main.c:86)
+==1644717== 
+==1644717== 123 bytes in 1 blocks are definitely lost in loss record 34 of 82
+==1644717==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1644717==    by 0x1121B3: ft_strdup (in /home/jeguerin/Documents/42_projects/Minishell/minishell)
+==1644717==    by 0x10A73E: new_export_env (builtin_export.c:73)
+==1644717==    by 0x10A7E2: create_var_env (builtin_export.c:92)
+==1644717==    by 0x10C9BC: modify_or_create (export_utils.c:84)
+==1644717==    by 0x10A9EA: manage_export_modification (builtin_export.c:144)
+==1644717==    by 0x10AA99: builtin_export (builtin_export.c:156)
+==1644717==    by 0x10E4A7: builtin_or_not_builtin (expanser2.c:68)
+==1644717==    by 0x10ABA2: exec_simple_cmd (execution.c:40)
+==1644717==    by 0x10ED7E: exec_loop (new_exec.c:130)
+==1644717==    by 0x10EE40: execute_commands_with_pipes_and_redirections (new_exec.c:149)
+==1644717==    by 0x10989C: main (main.c:89)
+==1644717== 

@@ -75,6 +75,8 @@ void	exec_absolute_path(char **cmd_line, char *cmd, t_minishell *minishell)
 			new_cmd[j] = cmd[i];
 			j++;
 		}
+		else
+			break ;
 		i++;
 	}
 	new_cmd[j] = '\0';

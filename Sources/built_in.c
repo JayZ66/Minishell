@@ -118,6 +118,7 @@ void	manage_exit_with_code(char **args, t_minishell *exit_code,
 	exit_status = exit_status % 256;
 	exit_code->last_exit_status = exit_status;
 	printf("exit\n");
+	free_tab(args);
 	exit(exit_status);
 }
 
@@ -131,8 +132,8 @@ void	builtin_exit(char **args, t_minishell *exit_code,
 	else
 	{
 		exit_code->last_exit_status = 0;
-		// free_tab(args);
 		printf("exit\n");
+		free_tab(args);
 		exit(0);
 	}
 }
@@ -163,44 +164,73 @@ void	check_unset_errors(char **var)
 		printf("%s: command not found\n", var[0]);
 }
 
-void	unset_variable(char **var, t_minishell *minishell)
-{
-	size_t	i;
-	size_t	j;
+// void	unset_variable(char **var, t_minishell *minishell)
+// {
+// 	size_t	i;
+// 	size_t	j;
 
-	j = 0;
-	while (var[++j])
-	{
-		i = -1;
-		// if (identifier_errors_unset(var[j]) == 1)
-		// 	if (var[j + 1] == NULL)
-		// 		break ;
-		while (minishell->env[++i])
-		{
-			if (ft_strncmp(minishell->env[i], var[j],
-					ft_strlen(var[j])) == 0
-				&& minishell->env[i][ft_strlen(var[j])] == '=')
-			{
-				while (minishell->env[i + 1])
-				{
-					minishell->env[i] = minishell->env[i + 1];
-					i++;
-				}
-				minishell->env[i] = NULL;
-			}
-			else if (ft_strncmp(minishell->env[i], var[j],
-					ft_strlen(var[j])) == 0
-				&& minishell->env[i][ft_strlen(var[j]) - 1] == '=')
-			{
-				while (minishell->env[i + 1])
-				{
-					minishell->env[i] = minishell->env[i + 1];
-					i++;
-				}
-				minishell->env[i] = NULL;
-			}
-		}
-	}
+// 	j = 0;
+// 	while (var[++j])
+// 	{
+// 		i = -1;
+// 		// if (identifier_errors_unset(var[j]) == 1)
+// 		// 	if (var[j + 1] == NULL)
+// 		// 		break ;
+// 		while (minishell->env[++i])
+// 		{
+// 			if (ft_strncmp(minishell->env[i], var[j],
+// 					ft_strlen(var[j])) == 0
+// 				&& minishell->env[i][ft_strlen(var[j])] == '=')
+// 			{
+// 				while (minishell->env[i + 1])
+// 				{
+// 					minishell->env[i] = ft_strdup(minishell->env[i + 1]);
+// 					free(minishell->env[i + 1]);
+// 					i++;
+// 				}
+// 				minishell->env[i] = NULL;
+// 			}
+// 			else if (ft_strncmp(minishell->env[i], var[j],
+// 					ft_strlen(var[j])) == 0
+// 				&& minishell->env[i][ft_strlen(var[j]) - 1] == '=')
+// 			{
+// 				while (minishell->env[i + 1])
+// 				{
+// 					minishell->env[i] = minishell->env[i + 1];
+// 					i++;
+// 				}
+// 				minishell->env[i] = NULL;
+// 			}
+// 		}
+// 	}
+// }
+
+void unset_variable(char **var, t_minishell *minishell)
+{
+    size_t i, j, k;
+
+    j = 0;
+    while (var[++j])
+    {
+        i = 0;
+        while (minishell->env[i])
+        {
+            if (ft_strncmp(minishell->env[i], var[j], ft_strlen(var[j])) == 0
+                && minishell->env[i][ft_strlen(var[j])] == '=')
+            {
+                free(minishell->env[i]);
+                k = i;
+                while (minishell->env[k + 1])
+                {
+                    minishell->env[k] = minishell->env[k + 1];
+                    k++;
+                }
+                minishell->env[k] = NULL;
+                break;
+            }
+            i++;
+        }
+    }
 }
 
 void	builtin_unset(char **var, t_minishell *minishell)
