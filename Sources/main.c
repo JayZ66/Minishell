@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/31 19:24:11 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:20:25 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ int	main(int argc, char **argv, char **env)
 		final_token = final_clean_node(clean_token);
 		get_var_of_env(final_token, minishell);
 		remove_quote(final_token);
-		print_final_lst(final_token);
 		execute_commands_with_pipes_and_redirections(&final_token,
 			minishell, &exit_code);
 		free_that_lst(&token);

@@ -66,18 +66,14 @@ void	exec_absolute_path(char **cmd_line, char *cmd, t_minishell *minishell)
 	size_t	i;
 
 	new_cmd = (char *)malloc(sizeof(char) * (ft_strlen(cmd) + 1));
-	i = 0;
-	j = 0;
-	while (cmd[i])
+	i = -1;
+	j = -1;
+	while (cmd[++i])
 	{
 		if (cmd[i] != ' ')
-		{
-			new_cmd[j] = cmd[i];
-			j++;
-		}
+			new_cmd[++j] = cmd[i]; // To test bce of norm
 		else
 			break ;
-		i++;
 	}
 	new_cmd[j] = '\0';
 	if (execve(new_cmd, cmd_line, minishell->env) == -1)

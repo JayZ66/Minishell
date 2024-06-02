@@ -47,7 +47,7 @@ int	is_there_something_after_n(char *cmd)
 	while (cmd[i])
 	{
 		if (cmd[i] == '-' && (cmd[i + 1] && cmd[i + 1] == 'n'))
-			i+=2;
+			i += 2;
 		if (cmd[i] != 'n')
 			return (1);
 		i++;

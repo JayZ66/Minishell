@@ -12,11 +12,6 @@
 
 #include "../minishell.h"
 
-/*
-Check if the var. is in the
-existing environment.
-*/
-
 int	is_var_in_env(char *var, t_minishell *minishell)
 {
 	size_t	i;
@@ -45,10 +40,8 @@ void	sort_tab(char **env)
 {
 	size_t	i;
 	char	*temp;
-	// char	**env;
 
 	i = 0;
-	// env = minishell->env;
 	while (env[i + 1])
 	{
 		if (env[i][0] > env[i + 1][0]

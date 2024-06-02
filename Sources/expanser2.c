@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanser2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:55:48 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/31 17:21:53 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/02 17:26:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,6 @@ int	check_pwd_option(char *str)
 	return (0);
 }
 
-// int	built_in_or_not_builtin_second()
-// {
-	
-// }
-
-// Check si built_in dans mon execution => Si oui on redirige
-// le résultat (dup2) et on n'envoie pas dans execve.
-// Check how to manage the new env !
-// Need to change the return ? unset - cd - export ??
 int	builtin_or_not_builtin(char *str, t_minishell *minishell,
 	t_minishell *exit_code)
 {
@@ -50,7 +41,7 @@ int	builtin_or_not_builtin(char *str, t_minishell *minishell,
 
 	cmd = ft_split(str, ' ');
 	if (ft_strncmp(str, "pwd", 3) == 0)
-			builtin_pwd(str, minishell);
+		builtin_pwd(str, minishell);
 	else if (ft_strncmp(str, "env", 4) == 0)
 		builtin_env(minishell);
 	else if (ft_strncmp(str, "exit", 4) == 0)

@@ -12,10 +12,6 @@
 
 #include "../minishell.h"
 
-/*
-ConvertPathToAbsolute
-*/
-
 int	is_absolute_path(char **cmd)
 {
 	size_t	i;
@@ -23,20 +19,20 @@ int	is_absolute_path(char **cmd)
 
 	is_absolute = 0;
 	i = 0;
-    if (cmd[0])
-    {
-        while (cmd[0][i])
-        {
-            if (cmd[0][0] == '/' || cmd[0][0] == '.')
-            {
-                is_absolute = 1;
-                break ;
-            }
-            else
-                break ;
-            i++;
-        }
-    }
+	if (cmd[0])
+	{
+		while (cmd[0][i])
+		{
+			if (cmd[0][0] == '/' || cmd[0][0] == '.')
+			{
+				is_absolute = 1;
+				break ;
+			}
+			else
+				break ;
+			i++;
+		}
+	}
 	return (is_absolute);
 }
 
@@ -87,200 +83,4 @@ char	*relative_to_absolute_path(char **cmd, t_minishell *minishell)
 	final_path = ft_strjoin(partial_path, cmd[1]);
 	free(partial_path);
 	return (final_path);
-}
-
-/*
-Expanser
-*/
-
-void	replace_var_of_env(char *content, char *var, int i)
-{
-	//gerer le cas des quotes ou non avec l'enum 
-
-	// while (content[i] || content[i] != ' ')
-	// 	i++;
-	if (content[i] == 0)
-		content = ft_strdup(var);
-	else
-		content = ft_strjoin(var, content + i);
-	// printf("var d'env changee :%s \n", content);
-
-}
-
-// // Enlever le niveau de quote 
-
-char   *remove_first_level_quote(char *content)
-{
-    int     i;
-    int     j;
-    int     single_quote;
-    int     double_quote;
-    char    *temp;
-
-    i = 0;
-    j = 0;
-    single_quote = 0;
-    double_quote = 0;
-    temp = (char *)malloc(ft_strlen(content) + 1);
-    if (!temp)
-    {
-        perror("malloc");
-        return NULL;
-    }
-    while (content[i])
-    {
-        if (content[i] == '\'' && !double_quote)
-            single_quote = !single_quote;
-        else if (content[i] == '"' && !single_quote)
-            double_quote = !double_quote;
-        else
-            temp[j++] = content[i];
-        i++;
-    }
-    temp[j] = 0;
-    return (temp);
-}
-
-void    remove_quote(t_final_token *token)
-{
-    while(token)
-    {
-        token->content = remove_first_level_quote(token->content);
-        token = token->next;
-    }
-}
-
-int len_of_var_of_env(char *str) 
-{
-    int len = 0;
-    while (str[len] && (isalnum(str[len]) || str[len] == '_')) {
-        len++;
-    }
-    return len;
-}
-
-char *extract_of_the_var(char *str)
-{
-    size_t len = len_of_var_of_env(str + 1);
-    char *var = (char *)malloc(len + 2);
-    if (var == NULL) {
-        return NULL;
-    }
-    strncpy(var, str, len + 1);
-    var[len + 1] = '\0';
-    return var;
-}
-
-void	get_var_of_env(t_final_token *node, t_minishell *minishell) 
-{
-    t_final_token *tmp = node;
-    char *var;
-    size_t i;
-    int len;
-    char *temp;
-    char *final;
-    int in_single_quote = 0;
-    int in_double_quote = 0;
-
-    
-    while (tmp) {
-        i = 0;
-        while (tmp->content[i]) {
-            if (tmp->content[i] == '\'' && !in_double_quote) {
-                in_single_quote = !in_single_quote;
-            } else if (tmp->content[i] == '\"' && !in_single_quote) {
-                in_double_quote = !in_double_quote;
-            }
-
-            if (tmp->content[i] == '$' && !in_single_quote) {
-                len = len_of_var_of_env(tmp->content + i + 1);
-                var = extract_of_the_var(tmp->content + i);
-                if (var == NULL) 
-                {
-                    if (*var == '$')
-                        free (var);
-                    return;
-                }
-                char *env_value = select_var_of_env(minishell, var + 1); // skip the '$' character
-                if (!env_value) 
-                {
-                    free(var);
-                    return ;
-                }
-                free(var);
-                if (i == 0) {
-                    // final = strdup(env_value);
-                    // if (!final)
-                    // {
-                    //     free(env_value);
-                    //     return ;
-                    // }
-                    tmp->content = realloc(tmp->content, strlen(env_value) + 1);
-                    if (!tmp->content)
-                    {
-                        // free(final);
-                        free(env_value);
-                        return ;
-                    }
-                    strcpy(tmp->content, env_value);
-                    // free(final);
-                } else {
-                    temp = strndup(tmp->content, i);
-                    if (!temp)
-                    {
-                        free(env_value);
-                        return ;
-                    }
-                    final = malloc(strlen(temp) + strlen(env_value) + strlen(tmp->content + i + len + 1) + 1);
-                    if (!final)
-                    {
-                        free(temp);
-                        free(env_value);
-                        return ;
-                    }
-                    strcpy(final, temp);
-                    strcat(final, env_value);
-                    strcat(final, tmp->content + i + len + 1);
-                    free(tmp->content);
-                    tmp->content = final;
-                    // free(final);
-                    free(temp);
-                }
-                free(env_value);
-
-            }
-            i++;
-        }
-        tmp = tmp->next;
-    }
-}
-
-//gerer les msg d'erreur-> 2 msg (voir ou ce situe le second)
-char	*select_var_of_env(t_minishell *minishell, char *cmd)
-{
-	size_t	i;
-	size_t	j;
-	char	*all_path;
-
-	i = 0;
-	while (minishell->env[i])
-	{
-		j = 0;
-		while (minishell->env[i][j])
-		{
-			if (minishell->env[i][j] == '=')
-			{
-				if (ft_strncmp(minishell->env[i], cmd, ft_strlen(cmd)) == 0)
-				{
-					j++;
-					all_path = ft_strdup(minishell->env[i] + j);
-					return (all_path);
-				}
-			}
-			j++;
-		}
-		i++;
-	}
-    
-	return (NULL);
 }

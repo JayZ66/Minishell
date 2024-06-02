@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:08:38 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/31 14:38:46 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/01 15:06:54 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	redirection_input(t_clean_token *clean_node)
 	filein = 0;
 	filein = open(clean_node->content, O_RDONLY, 0644);
 	if (filein == -1)
-	{		
+	{
 		printf("bash: %s No such file or directory\n", clean_node->content);
 		return (1);
 	}

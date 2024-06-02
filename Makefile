@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/05/31 14:59:53 by romlambe         ###   ########.fr        #
+#    Updated: 2024/06/02 17:14:27 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,8 @@ SRCS = 	Sources/main.c Sources/utils.c \
 		Parsing/redirection.c Parsing/tokenize.c Parsing/utils_list.c \
 		Sources/echo_utils.c  Parsing/realloc_env.c Parsing/tokenize2.c \
 		Parsing/handle_redirection.c Parsing/redirection_utils.c Parsing/copy_final_list.c\
+		Parsing/init_final_nodes.c Parsing/manage_final_nodes.c\
+		Sources/var_env.c Sources/var_env_utils.c Sources/quotes.c
 
 GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 LIBFT = Libft/libft.a

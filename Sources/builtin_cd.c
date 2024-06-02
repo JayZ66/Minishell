@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 10:04:14 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/31 18:28:30 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/02 17:29:20 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	go_back_user(t_minishell *minishell)
 	env_with_new_var(minishell->env, "PWD", cwd);
 }
 
-
 char	*create_new_var(const char *var, const char *value)
 {
 	size_t	var_len;
@@ -90,7 +89,7 @@ char	**alloc_new_env(size_t i, char *new_var, char **env)
 	if (!new_env)
 	{
 		free(new_var);
-		exit(EXIT_FAILURE); // Code de sortie !!
+		exit(EXIT_FAILURE);
 	}
 	new_env[i] = new_var;
 	new_env[i + 1] = NULL;
