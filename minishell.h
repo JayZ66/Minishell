@@ -77,7 +77,7 @@ typedef struct s_minishell
 }	t_minishell;
 
 // MANDATORY PART
-char			*read_input(t_minishell *minishell);
+char	*read_input(t_minishell *minishell, t_token *lst, t_clean_token *lst_clean, t_final_token *lst_final);
 void			shell_level(t_minishell *minishell);
 
 // void	execute_pipe(int nb_args, char **cmd_line, char **env);
@@ -388,6 +388,7 @@ void			update_quotes(char c, int *in_single_quote,
 					int *in_double_quote);
 
 char			*select_var_of_env(t_minishell *minishell, char *cmd);
+int	get_exit_code(char *str, t_minishell *minishell);
 
 // CHECK DIRECTORY
 

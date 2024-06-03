@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:03:05 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/01 16:05:09 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:28:31 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ void	get_var_of_env(t_final_token *node, t_minishell *minishell)
 	in_double_quote = 0;
 	while (tmp)
 	{
-		process_token_content(tmp, minishell, &in_single_quote,
-			&in_double_quote);
+		if (get_exit_code(tmp->content, minishell) == 0)
+			process_token_content(tmp, minishell, &in_single_quote,
+				&in_double_quote);
 		tmp = tmp->next;
 	}
 }
@@ -46,7 +47,10 @@ int	handle_env_var(t_final_token *tmp, t_minishell *minishell, size_t *i)
 	env_value = select_var_of_env(minishell, var + 1);
 	free(var);
 	if (!env_value)
+	{
+		tmp->content = ft_strdup("");
 		return (0);
+	}
 	if (*i == 0)
 	{
 		if (!replace_content_start(tmp, env_value))

@@ -3,24 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/03 15:11:28 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/03 15:43:39 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*read_input(t_minishell *minishell)
+char	*read_input(t_minishell *minishell, t_token *lst, t_clean_token *lst_clean, t_final_token *lst_final)
 {
 	char	*input;
-
 	(void)minishell;
 	input = readline("Tarpin_de_Minishell>");
 	if (input == NULL)
 	{
 		free(input);
+		if (lst)
+			free_that_lst(&lst);
+		if (lst_clean)
+			free_that_clean_lst(&lst_clean);
+		if (lst_final)
+			free_that_final_lst(&lst_final);
 		printf("exit\n");
 		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
@@ -56,7 +61,7 @@ int	main(int argc, char **argv, char **env)
 		return (perror("Realloc env. failed\n"), 1);
 	while (1)
 	{
-		input = read_input(minishell);
+		input = read_input(minishell, token, clean_token, final_token);
 		if (ft_strlen(input) == 0 || ft_isspace(input) == 1)
 		{
 			rl_on_new_line();
