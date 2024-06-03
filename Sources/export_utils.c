@@ -67,6 +67,8 @@ void	modify_or_create(char **args, t_minishell *minishell,
 	if (is_var_in_env(new_var, minishell) == 1)
 	{
 		var = check_value(args[i]);
+		if (ft_strcmp(args[i], var) != 0)
+			free(var);
 		modify_value_env(&minishell->env, new_var, args[i] + j + 1, minishell);
 		free(new_var);
 	}
@@ -74,6 +76,8 @@ void	modify_or_create(char **args, t_minishell *minishell,
 	{
 		var = check_value(args[i]);
 		minishell->env = create_var_env(minishell, var);
+		if (ft_strcmp(args[i], var) != 0)
+			free(var);
 		free(new_var);
 	}
 }
@@ -99,28 +103,3 @@ char	*check_value(char *var)
 	}
 	return (var);
 }
-
-// int	main(int argc, char **argv, char **env)
-// {
-// 	char	*str;
-// 	// char	*result;
-// 	(void)argc;
-// 	(void)argv;
-// 	char	**new_env;
-// 	new_env = realloc_env(env);
-// 	// str = "'''\"Salut\"''' \"tu\" 'vas' \"''bien''\"";
-// 	// str = "'\"'\"'\"OK\"'\"'\"'";
-// 	// char *args[] = {"export", "LS_COLORS=OK", "PATH=KO", NULL};
-// 	// char *args[] = {"export", "LOL=osef", NULL};
-// 	// char *args[] = {"export", NULL};
-// 	// str = "export LS_COLORS=OK PATH=KO";
-// 	// str = "export";
-// 	// str = "export MDR=COOL PWD=PAS.DE.COULEURS MOI=PAS_OUF OH=YOHAN";
-// 	// str = "export MY_VAR=\"value with spaces\" OK=\"KO\" PATH=COOL";
-// 	// result = managing_quotes(str);
-// 	// result = handle_quotes(str);
-// 	new_env = builtin_export(str, new_env);
-// 	print_new_env(new_env);
-// 	// printf("Clean string : %s\n", result);
-// 	return(0);
-// }

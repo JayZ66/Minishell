@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 10:01:14 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/19 17:22:35 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/03 15:16:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	ft_strschr(const char *str, char *ligne)
 	{
 		if (str[i] == ligne[j] && str[i + 1] == ligne[j + 1])
 			return (0);
-		else if (str[i] == ligne[j] && str[i + 1] == ligne[j + 1] 
+		else if (str[i] == ligne[j] && str[i + 1] == ligne[j + 1]
 			&& str[i + 2] == ligne[j + 2])
 			return (0);
 		i++;

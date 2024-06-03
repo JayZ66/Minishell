@@ -69,3 +69,34 @@ int	check_cd_errors(char **cmd, t_minishell *minishell)
 	}
 	return (0);
 }
+
+int	is_var_existing(t_minishell *minishell)
+{
+	size_t	i;
+
+	i = 0;
+	while (minishell->env[i])
+	{
+		if (ft_strncmp(minishell->env[i], "PWD", 3) == 0)
+			return (1);
+		else if (ft_strncmp(minishell->env[i], "OLDPWD", 6) == 0)
+			return (2);
+		i++;
+	}
+	return (0);
+}
+
+char	**alloc_new_env(size_t i, char *new_var, char **env)
+{
+	char	**new_env;
+
+	new_env = realloc(env, sizeof(char *) * (i + 2));
+	if (!new_env)
+	{
+		free(new_var);
+		exit(EXIT_FAILURE);
+	}
+	new_env[i] = new_var;
+	new_env[i + 1] = NULL;
+	return (new_env);
+}

@@ -12,30 +12,6 @@
 
 #include "../minishell.h"
 
-char	**manage_quote_export(char *input)
-{
-	char	**args;
-	size_t	i;
-
-	if (ft_strnstr(input, "export", 7) != NULL)
-		input += 7;
-	args = ft_split(input, '"');
-	i = 0;
-	args = clean_spaces(args);
-	while (args[i])
-	{
-		if (is_something_after_equal(args[i]) == 1)
-			args[i] = args[i];
-		else if (ft_strnchr(args[i], '=') != 0
-			&& is_something_after_equal(args[i]) == 0)
-			args[i] = ft_strjoin(args[i], args[i + 1]);
-		i++;
-	}
-	args[i] = '\0';
-	print_tab(args);
-	return (args);
-}
-
 int	check_char_unset(char c)
 {
 	if ((c >= 33 && c <= 35) || (c >= 37 && c <= 47) || (c >= 58 && c <= 64)
@@ -76,5 +52,37 @@ int	identifier_errors_export(char *args)
 	if (args[i] == '=' && (i == 0 || (args[i - 1] >= 9 && args[i - 1] <= 13)))
 		return (printf("bash: export: '%s': not a valid identifier\n",
 				args), 1);
+	return (0);
+}
+
+int	is_there_something_after_equal(const char *var, t_minishell *minishell)
+{
+	size_t	i;
+
+	(void)minishell;
+	i = 0;
+	while (var[i])
+	{
+		if (var[i] == '=' && var[i + 1] != '\0')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	identifier_errors_unset(char *args)
+{
+	size_t	i;
+
+	i = 0;
+	while (args[i])
+	{
+		if (check_char_unset(args[i]) == 1)
+		{
+			printf("bash: export: '%s': not a valid identifier\n", args);
+			return (1);
+		}
+		i++;
+	}
 	return (0);
 }

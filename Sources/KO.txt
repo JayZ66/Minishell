@@ -162,14 +162,14 @@ Par contre, si ne trouve pas => Retire le bout.
 - Si tu trouves double quotes & 
 
 
-- Quotes : 
+- Quotes : DONE
 Important => Les quotes doivent être gérés dès le début avant de split la ligne de commande.
 1. Mettre la gestion des quotes au début, pour gérer directement l'input.
 2. Lui envoyer une string au lieu d'un tableau de tableau !
 
 ---------------------------
 
-- Echo : 
+- Echo : DONE
 1. Gérer tous les cas d'erreurs qui n'ont pas été fait (fonction error) => OK
 2. Voir comment gérer la var. d'env au parsing (?) => Si existe pas > Retiré de la ligne de cmd.
 3. Problème du split à voir => Parce que si var. d'env géré avant + $ > Pas besoin.
@@ -189,7 +189,7 @@ exit : => Tests non concluants.
 Free les listes, envoyer minishell en param a exit.
 
 ---------------------------
-
+=> DONE
 /bin/ls | /bin/cat 
 /bin/ls | cat
 => Probleme parsing des que j'ai une cmd avec chemin absolu au debut
@@ -231,7 +231,7 @@ Verifier avec access quand absolute path ! => DONE
 - UNSET :
 Pouvoir unset une variable quand on met = derriere !!! => DONE
 - exit_code function
-- Gestion redirection
+- Gestion redirection => DONE
 > Si input n'existe pas on met un message d'erreur puis on arrete l'execution. (on relance prompt)
 Par contre il faut regarder les redirections dans l'ordre de leur apparition.
 - echo -nHola => Print tout mais retire le retour a la ligne => DONE
@@ -243,10 +243,10 @@ Par contre il faut regarder les redirections dans l'ordre de leur apparition.
 - cd : Gerer s'il y a un / apres le nom d'un file => DONE
 - RETEST CD ! => DONE
 - TEST VAR OF MY ENV. => DONE
-- Leaks
+- Leaks => DONE
 - Export : Split with spaces but is a problem when value of var. with spaces & quotes.
-- Export : Si tu mets un vr. sans valeur mais avec egal et quelle existe alors tu la vide.
-- Echo : echo -n dggd => MARCHE PAS !!!!
+- Export : Si tu mets une var. sans valeur mais avec egal et quelle existe alors tu la vide. => OK
+- Echo : echo -n dggd => DONE
 
 - LEAKS : 
 TESTER LE LEAK BUILTIN OR NOT BUILTIN ou je dois free(args).

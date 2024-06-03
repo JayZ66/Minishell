@@ -6,65 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 10:04:14 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/02 17:29:20 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/03 15:09:25 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	go_back_home(t_minishell *minishell)
-{
-	char	cwd[1024];
-	char	old_cwd[1024];
-
-	if (getcwd(old_cwd, sizeof(old_cwd)) == NULL)
-	{
-		perror("getcwd");
-		minishell->last_exit_status = EXIT_FAILURE;
-		return ;
-	}
-	if (chdir("/") != 0)
-	{
-		perror("Can't change directory\n");
-		minishell->last_exit_status = EXIT_FAILURE;
-		return ;
-	}
-	if (getcwd(cwd, sizeof(cwd)) == NULL)
-	{
-		perror("Can't get the new path\n");
-		minishell->last_exit_status = EXIT_FAILURE;
-		return ;
-	}
-	env_with_new_var(minishell->env, "OLDPWD", old_cwd);
-	env_with_new_var(minishell->env, "PWD", cwd);
-}
-
-void	go_back_user(t_minishell *minishell)
-{
-	char	cwd[1024];
-	char	old_cwd[1024];
-
-	if (getcwd(old_cwd, sizeof(old_cwd)) == NULL)
-	{
-		perror("getcwd");
-		minishell->last_exit_status = EXIT_FAILURE;
-		return ;
-	}
-	if (chdir("/home/jeguerin/") != 0)
-	{
-		perror("Can't change directory\n");
-		minishell->last_exit_status = EXIT_FAILURE;
-		return ;
-	}
-	if (getcwd(cwd, sizeof(cwd)) == NULL)
-	{
-		perror("Can't get the new path\n");
-		minishell->last_exit_status = EXIT_FAILURE;
-		return ;
-	}
-	env_with_new_var(minishell->env, "OLDPWD", old_cwd);
-	env_with_new_var(minishell->env, "PWD", cwd);
-}
 
 char	*create_new_var(const char *var, const char *value)
 {
@@ -79,21 +25,6 @@ char	*create_new_var(const char *var, const char *value)
 	ft_strcat(new_var, "=", 1);
 	ft_strcat(new_var, value, ft_strlen(value));
 	return (new_var);
-}
-
-char	**alloc_new_env(size_t i, char *new_var, char **env)
-{
-	char	**new_env;
-
-	new_env = realloc(env, sizeof(char *) * (i + 2));
-	if (!new_env)
-	{
-		free(new_var);
-		exit(EXIT_FAILURE);
-	}
-	new_env[i] = new_var;
-	new_env[i + 1] = NULL;
-	return (new_env);
 }
 
 void	env_with_new_var(char **env, const char *var, const char *value)
@@ -118,22 +49,6 @@ void	env_with_new_var(char **env, const char *var, const char *value)
 	new_env = alloc_new_env(i, new_var, env);
 	env = new_env;
 	free_tab(new_env);
-}
-
-int	is_var_existing(t_minishell *minishell)
-{
-	size_t	i;
-
-	i = 0;
-	while (minishell->env[i])
-	{
-		if (ft_strncmp(minishell->env[i], "PWD", 3) == 0)
-			return (1);
-		else if (ft_strncmp(minishell->env[i], "OLDPWD", 6) == 0)
-			return (2);
-		i++;
-	}
-	return (0);
 }
 
 void	change_pwd_env(t_minishell *minishell, const char *cwd,
@@ -187,16 +102,8 @@ void	builtin_cd(t_minishell *minishell, char **cmd)
 		go_back_user(minishell);
 		return ;
 	}
-	if (cmd[2])
-	{
-		printf("bash: cd: too many arguments\n");
+	if (check_cd(cmd, minishell) == 1)
 		return ;
-	}
-	if (check_cd_errors(cmd, minishell) == 1)
-	{
-		go_back_home(minishell);
-		return ;
-	}
 	if (cmd[1] != NULL && is_relative_path(cmd) == 0)
 	{
 		path = relative_to_absolute_path(cmd, minishell);

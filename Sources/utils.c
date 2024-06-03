@@ -37,27 +37,6 @@ void	free_that_lst(t_token **token)
 	*token = NULL;
 }
 
-// t_token	*init_node(char *content, Token_type type)
-// {
-// 	t_token	*token;
-
-// 	token = (t_token *)malloc(sizeof(t_token));
-// 	if (token == NULL)
-// 	{
-// 		perror("List has not been created\n");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	token->content = ft_strdup(content);
-// 	if (token->content == NULL)
-// 	{
-// 		perror("Memory allocation failde\n");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	token->type = type;
-// 	token->next = NULL;
-// 	return (token);
-// }
-
 t_token	*lst_last(t_token *token)
 {
 	if (token == NULL)
@@ -100,4 +79,24 @@ void	print_env(t_minishell *minishell)
 		i++;
 	}
 	return ;
+}
+
+int	is_one_cmd(char *cmd)
+{
+	size_t	i;
+	int		is_option;
+
+	i = 0;
+	is_option = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == ' ' && ((cmd[i + 1] >= 65 && cmd[i + 1] <= 90)
+				|| (cmd[i + 1] >= 97 && cmd[i + 1] <= 122)))
+		{
+			is_option = 1;
+			return (is_option);
+		}
+		i++;
+	}
+	return (is_option);
 }

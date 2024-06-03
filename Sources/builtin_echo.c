@@ -12,33 +12,6 @@
 
 #include "../minishell.h"
 
-void	print_echo_arg(char **cmd_with_options, t_minishell *exit_code)
-{
-	size_t	i;
-
-	i = -1;
-	while (cmd_with_options[++i])
-	{
-		if (ft_strcmp(cmd_with_options[i], "echo") == 0
-			|| ft_strcmp(cmd_with_options[i], "/bin/echo") == 0)
-			i++;
-		if (ft_strschr(cmd_with_options[i], "$?") == 0
-			|| ft_strschr(cmd_with_options[i], "$?$") == 0)
-		{
-			printf("%d\n", exit_code->last_exit_status);
-			break ;
-		}
-		if (ft_strschr(cmd_with_options[i], "\\n") == 0)
-		{
-			how_many_back_slash(cmd_with_options[i]);
-			i++;
-		}
-		printf("%s ", cmd_with_options[i]);
-		if (cmd_with_options[i + 1] == NULL)
-			printf("\n");
-	}
-}
-
 int	is_there_something_after_n(char *cmd)
 {
 	size_t	i;
@@ -48,6 +21,8 @@ int	is_there_something_after_n(char *cmd)
 	{
 		if (cmd[i] == '-' && (cmd[i + 1] && cmd[i + 1] == 'n'))
 			i += 2;
+		if (cmd[i] == '\0')
+			break ;
 		if (cmd[i] != 'n')
 			return (1);
 		i++;

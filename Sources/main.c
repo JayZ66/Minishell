@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/31 14:20:25 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:11:28 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ char	*read_input(t_minishell *minishell)
 	{
 		free(input);
 		printf("exit\n");
-		// free_tab(minishell->env);
 		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
@@ -40,6 +39,7 @@ int	main(int argc, char **argv, char **env)
 	char			*input;
 	t_minishell		exit_code;
 	t_token			*token;
+	t_token			*head;
 	t_clean_token	*clean_token;
 	t_final_token	*final_token;
 	t_minishell		*minishell;
@@ -64,14 +64,14 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		token = extract_cmd(&token, input);
-		t_token	*head = token;
+		head = token;
 		if (clean_chevron(token) == 1)
 		{
 			printf("bash: %s error\n", input);
 			rl_on_new_line();
 			free(input);
 			free_that_lst(&token);
-			continue;
+			continue ;
 		}
 		clean_spaces1(token);
 		manage_node(token);

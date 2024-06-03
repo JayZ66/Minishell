@@ -20,6 +20,8 @@ void	modify_value_env(char ***env, const char *var, const char *value,
 	char	*new_entry;
 
 	i = 0;
+	if (reset_existing_value(var, value, minishell, env) == 1)
+		return ;
 	while ((*env)[i])
 	{
 		j = 0;
@@ -34,25 +36,6 @@ void	modify_value_env(char ***env, const char *var, const char *value,
 		}
 		i++;
 	}
-}
-
-char	*copy_new_value(const char *var, const char *new_value,
-	t_minishell *minishell)
-{
-	size_t	new_var_len;
-	char	*new_env;
-
-	new_var_len = ft_strlen(var) + 1 + ft_strlen(new_value);
-	new_env = (char *)malloc(new_var_len + 1);
-	if (!new_env)
-	{
-		perror("Memory allocation for new var. failed");
-		minishell->last_exit_status = EXIT_FAILURE;
-		exit(EXIT_FAILURE);
-	}
-	ft_string_cpy(new_env, var);
-	ft_strcat(new_env, new_value, ft_strlen(new_value));
-	return (new_env);
 }
 
 char	**new_export_env(t_minishell *minishell, size_t size_env)
@@ -103,23 +86,6 @@ char	**create_var_env(t_minishell *minishell, char *var)
 	}
 	new_env[size_env + 1] = NULL;
 	return (free_tab(minishell->env), new_env);
-}
-
-int	identifier_errors_unset(char *args)
-{
-	size_t	i;
-
-	i = 0;
-	while (args[i])
-	{
-		if (check_char_unset(args[i]) == 1)
-		{
-			printf("bash: export: '%s': not a valid identifier\n", args);
-			return (1);
-		}
-		i++;
-	}
-	return (0);
 }
 
 void	manage_export_modification(char **args, t_minishell *minishell)

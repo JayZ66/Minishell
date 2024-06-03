@@ -12,26 +12,6 @@
 
 #include "../minishell.h"
 
-int	is_one_cmd(char *cmd)
-{
-	size_t	i;
-	int		is_option;
-
-	i = 0;
-	is_option = 0;
-	while (cmd[i])
-	{
-		if (cmd[i] == ' ' && ((cmd[i + 1] >= 65 && cmd[i + 1] <= 90)
-				|| (cmd[i + 1] >= 97 && cmd[i + 1] <= 122)))
-		{
-			is_option = 1;
-			return (is_option);
-		}
-		i++;
-	}
-	return (is_option);
-}
-
 void	exec_cmd_with_fork(char *cmd, t_minishell *minishell,
 	t_minishell *exit_code)
 {
@@ -67,11 +47,11 @@ void	exec_absolute_path(char **cmd_line, char *cmd, t_minishell *minishell)
 
 	new_cmd = (char *)malloc(sizeof(char) * (ft_strlen(cmd) + 1));
 	i = -1;
-	j = -1;
+	j = 0;
 	while (cmd[++i])
 	{
 		if (cmd[i] != ' ')
-			new_cmd[++j] = cmd[i]; // To test bce of norm
+			new_cmd[j++] = cmd[i];
 		else
 			break ;
 	}
