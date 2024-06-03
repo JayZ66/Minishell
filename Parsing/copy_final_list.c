@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   copy_final_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:58:56 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/01 15:16:03 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:41:57 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_final_token	*handle_nodes(t_clean_token *token,
 	content = ft_strdup(token->content);
 	if (!content)
 	{
-		free_that_final_lst(&final_token);
+		free_that_final_lst(final_token);
 		return (NULL);
 	}
 	new = init_final_node(content, token->type);
@@ -52,7 +52,7 @@ t_final_token	*handle_final_pipe(t_clean_token *token,
 	content = ft_strdup("|");
 	if (!content)
 	{
-		free_that_final_lst(&final_token);
+		free_that_final_lst(final_token);
 		return (NULL);
 	}
 	new = init_final_node(content, token->type);

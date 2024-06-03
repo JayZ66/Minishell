@@ -287,7 +287,7 @@ t_clean_token	*lst_clean_last(t_clean_token *token);
 void			add_clean_back(t_clean_token **token, t_clean_token *new);
 void			print_clean_lst(t_clean_token *token);
 void			free_that_clean_lst(t_clean_token **token);
-void			free_that_final_lst(t_final_token **token);
+void			free_that_final_lst(t_final_token *token);
 
 // INIT_NODES
 t_token			*init_node(char *content, Token_type type);
