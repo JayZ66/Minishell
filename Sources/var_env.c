@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:03:05 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 16:05:27 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:51:10 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	get_var_of_env(t_final_token *node, t_minishell *minishell)
 		{
 			nb = ft_itoa(minishell->last_exit_status);
 			tmp->content = nb;
+			free(nb);
 		}
 		else
 			process_token_content(tmp, minishell, &in_single_quote,
@@ -111,7 +112,6 @@ int	replace_content_middle(t_final_token *tmp,
 	// free(tmp->content);
 	tmp->content = final;
 	free(final);
-	// free(temp);
 	return (1);
 }
 

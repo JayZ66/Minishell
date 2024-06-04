@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:05:34 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 15:50:23 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/04 17:30:22 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ char	*remove_first_level_quote(char *content)
 		i++;
 	}
 	temp[j] = 0;
-	// if (content)
-	// 	free(content);
 	return (temp);
 }
 
