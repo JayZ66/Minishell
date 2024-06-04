@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 10:01:14 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/03 15:16:21 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/04 14:29:59 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,46 @@ int	ft_strnchr(const char *str, int c)
 	return (0);
 }
 
-int	ft_strschr(const char *str, char *ligne)
-{
-	int		i;
-	size_t	j;
+// int	ft_strschr(const char *str, char *ligne)
+// {
+// 	int		i;
+// 	size_t	j;
 
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (str[i] == ligne[j] && str[i + 1] == ligne[j + 1])
-			return (0);
-		else if (str[i] == ligne[j] && str[i + 1] == ligne[j + 1]
-			&& str[i + 2] == ligne[j + 2])
-			return (0);
-		i++;
-	}
-	return (i);
+// 	i = 0;
+// 	j = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] == ligne[j] && str[i + 1] == ligne[j + 1])
+// 			return (0);
+// 		else if (str[i] == ligne[j] && str[i + 1] == ligne[j + 1]
+// 			&& str[i + 2] == ligne[j + 2])
+// 			return (0);
+// 		i++;
+// 	}
+// 	return (i);
+// }
+
+int ft_strschr(const char *str, char *ligne)
+{
+    int i;
+    // int j;	
+    int len_str;
+    int len_ligne;
+
+    i = 0;
+    // j = 0;
+    len_str = strlen(str);
+    len_ligne = strlen(ligne);
+
+    while (i < len_str)
+    {
+        // Check if the remaining part of 'str' is long enough for 'ligne'
+        if (i + len_ligne <= len_str)
+        {
+            if (strncmp(&str[i], ligne, len_ligne) == 0)
+                return (0);
+        }
+        i++;
+    }
+    return (i);
 }

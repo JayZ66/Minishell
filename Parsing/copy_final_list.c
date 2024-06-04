@@ -6,7 +6,7 @@
 /*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:58:56 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 12:00:46 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:31:52 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ t_final_token	*handle_nodes(t_clean_token *token,
 		return (NULL);
 	}
 	new = init_final_node(content, token->type);
-	if (!new)
-	{
-		free(content);
-		free_that_final_lst(&final_token);
-		return (NULL);
-	}
+	// if (!new)
+	// {
+	// 	free(content);
+	// 	free_that_final_lst(&final_token);
+	// 	return (NULL);
+	// }
 	add_final_back(&final_token, new);
 	// free(content);
 	return (final_token);
@@ -63,6 +63,7 @@ t_final_token	*handle_final_pipe(t_clean_token *token,
 	}
 	new = init_final_node(content, token->type);
 	add_final_back(&final_token, new);
-	free(content);
+	// free(content);
 	return (final_token);
 }
+ 

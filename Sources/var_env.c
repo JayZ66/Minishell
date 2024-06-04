@@ -6,7 +6,7 @@
 /*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:03:05 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 12:04:32 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:15:16 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,16 @@ int	replace_content_middle(t_final_token *tmp,
 			+ strlen(tmp->content + i + len + 1) + 1);
 	if (!final)
 	{
-		free(temp);
+		// free(temp);
 		return (0);
 	}
 	strcpy(final, temp);
 	strcat(final, env_value);
 	strcat(final, tmp->content + i + len + 1);
-	free(tmp->content);
+	// free(tmp->content);
 	tmp->content = final;
-	free(temp);
+	// free(final);
+	// free(temp);
 	return (1);
 }
 
