@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:03:05 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 14:15:16 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:05:27 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,19 @@ void	get_var_of_env(t_final_token *node, t_minishell *minishell)
 	t_final_token	*tmp;
 	int				in_single_quote;
 	int				in_double_quote;
+	char			*nb;
 
 	tmp = node;
 	in_single_quote = 0;
 	in_double_quote = 0;
 	while (tmp)
 	{
-		if (get_exit_code(tmp->content, minishell) == 0)
+		if (get_exit_code(tmp->content, minishell) == 1)
+		{
+			nb = ft_itoa(minishell->last_exit_status);
+			tmp->content = nb;
+		}
+		else
 			process_token_content(tmp, minishell, &in_single_quote,
 				&in_double_quote);
 		tmp = tmp->next;
@@ -89,7 +95,7 @@ int	replace_content_middle(t_final_token *tmp,
 	char	*temp;
 	char	*final;
 
-	temp = strndup(tmp->content, i);
+	temp = tmp->content + i;
 	if (!temp)
 		return (0);
 	final = malloc(strlen(temp) + strlen(env_value)
@@ -104,7 +110,7 @@ int	replace_content_middle(t_final_token *tmp,
 	strcat(final, tmp->content + i + len + 1);
 	// free(tmp->content);
 	tmp->content = final;
-	// free(final);
+	free(final);
 	// free(temp);
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/04 12:13:23 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:22:52 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ char	*read_input(t_minishell *minishell, t_token *lst, t_clean_token *lst_clean,
 			free_that_final_lst(&lst_final);
 		printf("exit\n");
 		minishell->last_exit_status = EXIT_FAILURE;
+		free_tab(minishell->env);
+		free(minishell);
 		exit(EXIT_FAILURE);
 	}
 	if (ft_strncmp(input, ":", 1) == 0 || ft_strncmp(input, "!", 1) == 0)

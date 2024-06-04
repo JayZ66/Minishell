@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   copy_final_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:58:56 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 14:31:52 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:58:08 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_final_token	*handle_nodes(t_clean_token *token,
 t_final_token	*handle_final_pipe(t_clean_token *token,
 	t_final_token *final_token, t_final_token *new, char *content)
 {
-	content = ft_strdup("|");
+	content = "|";
 	if (!content)
 	{
 		free_that_final_lst(&final_token);

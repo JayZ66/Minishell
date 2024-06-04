@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_clean_nodes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:14:00 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 14:04:50 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:49:53 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_clean_token	*init_clean_node(char *content, Token_type type)
 		perror("List has not been created\n");
 		exit(EXIT_FAILURE);
 	}
-	token->content = ft_strdup(content);
+	token->content = content;
 	if (token->content == NULL)
 	{
 		perror("Memory allocation failde\n");

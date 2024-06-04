@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:06:47 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 10:48:14 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:13:31 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,12 @@ int	len_of_var_of_env(char *str)
 
 int	get_exit_code(char *str, t_minishell *minishell)
 {
+	(void)minishell;
 	if (!str)
 		return (-1);
 	if (ft_strschr(str, "$?") == 0)
 	{
-		printf("%d", minishell->last_exit_status);
+		// printf("%d", minishell->last_exit_status);
 		return (1);
 	}
 	return (0);

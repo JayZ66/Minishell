@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   copy_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:09:29 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/31 15:09:37 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:00:03 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_clean_token	*handle_inputs(t_token **token)
 			content = ft_strdup((*token)->content);
 			new = init_clean_node(content, (*token)->type);
 			add_clean_back(&clean_list, new);
-			free(content);
+			// free(content);
 		}
 		*token = (*token)->next;
 	}
@@ -57,7 +57,7 @@ t_clean_token	*handle_commands(t_token **token)
 			content = ft_strdup((*token)->content);
 			new = init_clean_node(content, (*token)->type);
 			add_clean_back(&clean_list, new);
-			free(content);
+			// free(content);
 		}
 		*token = (*token)->next;
 	}
@@ -83,7 +83,7 @@ t_clean_token	*handle_outputs(t_token **token)
 			content = ft_strdup((*token)->content);
 			new = init_clean_node(content, (*token)->type);
 			add_clean_back(&clean_list, new);
-			free(content);
+			// free(content);
 		}
 		*token = (*token)->next;
 	}
@@ -100,7 +100,7 @@ void	handle_pipe(t_token **token, t_clean_token **clean_list)
 		content = ft_strdup("|");
 		new = init_clean_node(content, (*token)->type);
 		add_clean_back(clean_list, new);
-		free(content);
+		// free(content);
 		*token = (*token)->next;
 	}
 }
