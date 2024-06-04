@@ -40,7 +40,7 @@ void	exec_simple_cmd(t_final_token **current, t_minishell *exit_code,
 	if (builtin_or_not_builtin((*current)->content, minishell, exit_code) == 0)
 		;
 	else
-		exec_cmd_with_fork((*current)->content, minishell, exit_code);
+		exec_cmd_with_fork((*current)->content, minishell);
 }
 
 int	manage_redirection_output(t_final_token **current, int last_file,
