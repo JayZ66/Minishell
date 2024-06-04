@@ -12,8 +12,7 @@
 
 #include "../minishell.h"
 
-void	exec_cmd_with_fork(char *cmd, t_minishell *minishell,
-	t_minishell *exit_code)
+void	exec_cmd_with_fork(char *cmd, t_minishell *minishell)
 {
 	char	**cmd_line;
 	int		pid;
@@ -21,7 +20,7 @@ void	exec_cmd_with_fork(char *cmd, t_minishell *minishell,
 	cmd_line = ft_split(cmd, ' ');
 	if (!cmd_line)
 	{
-		exit_code->last_exit_status = EXIT_FAILURE;
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	pid = fork();
@@ -29,13 +28,13 @@ void	exec_cmd_with_fork(char *cmd, t_minishell *minishell,
 	{
 		perror("Can't fork\n");
 		free_tab(cmd_line);
-		exit_code->last_exit_status = EXIT_FAILURE;
+		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	else if (pid == 0)
 		child_cmd_only(cmd_line, minishell, cmd);
 	else
-		parent_cmd_only(pid, exit_code);
+		parent_cmd_only(pid, minishell);
 	free_tab(cmd_line);
 }
 
@@ -94,14 +93,14 @@ void	child_cmd_only(char **cmd_line, t_minishell *minishell, char *cmd)
 		exec_absolute_path(cmd_line, cmd, minishell);
 }
 
-void	parent_cmd_only(int pid, t_minishell *exit_code)
+void	parent_cmd_only(int pid, t_minishell *minishell)
 {
 	int	status;
 
 	status = 0;
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
-		exit_code->last_exit_status = WEXITSTATUS(status);
+		minishell->last_exit_status = WEXITSTATUS(status);
 	else
-		exit_code->last_exit_status = -1;
+		minishell->last_exit_status = -1;
 }

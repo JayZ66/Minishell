@@ -185,11 +185,10 @@ int				is_there_multiple_quotes(char *cmd);
 // Execution
 char			**select_path(t_minishell *minishell, char *cmd);
 char			*get_path(char *cmd, t_minishell *minishell);
-void			exec_cmd_with_fork(char *cmd, t_minishell *minishell,
-					t_minishell *exit_code);
+void			exec_cmd_with_fork(char *cmd, t_minishell *minishell);
 void			child_cmd_only(char **cmd_line, t_minishell *minishell,
 					char *cmd);
-void			parent_cmd_only(int pid, t_minishell *exit_code);
+void			parent_cmd_only(int pid, t_minishell *minishell);
 void			exec_absolute_path(char **cmd_line, char *cmd,
 					t_minishell *minishell);
 void			exec_relative_path(char **cmd_line, t_minishell *minishell);

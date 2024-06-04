@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/03 17:41:39 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/04 10:58:58 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,12 @@ int	main(int argc, char **argv, char **env)
 	t_minishell		*minishell;
 
 	token = NULL;
+	clean_token = NULL;
+	final_token = NULL;
 	(void)env;
 	minishell = (t_minishell *)malloc(sizeof(t_minishell));
 	manage_signals(minishell);
-	exit_code.last_exit_status = 0;
+	minishell->last_exit_status = 0;
 	if (argc != 1 || argv[1])
 		return (perror("Wrong nb of args\n"), 1);
 	minishell->env = realloc_env(env);
