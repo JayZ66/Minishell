@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_final_nodes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:00:44 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/01 15:01:35 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/04 11:59:35 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_final_token	*init_final_node(char *content, Token_type type)
 		perror("List has not been created\n");
 		exit(EXIT_FAILURE);
 	}
-	token->content = ft_strdup(content);
+	token->content = content;
 	if (token->content == NULL)
 	{
 		perror ("Memory allocation failed\n");

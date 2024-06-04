@@ -6,7 +6,7 @@
 /*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:03:05 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/03 17:28:31 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/04 12:04:32 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	handle_env_var(t_final_token *tmp, t_minishell *minishell, size_t *i)
 	free(var);
 	if (!env_value)
 	{
-		tmp->content = ft_strdup("");
+		tmp->content = "";
 		return (0);
 	}
 	if (*i == 0)

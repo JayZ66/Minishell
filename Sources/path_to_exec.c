@@ -19,6 +19,8 @@ char	*get_path(char *cmd, t_minishell *minishell)
 	char	**path;
 	size_t	i;
 
+	if (cmd == NULL)
+		return NULL;
 	path = select_path(minishell, cmd);
 	i = 0;
 	if (!path)

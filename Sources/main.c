@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/04 10:58:58 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/04 12:13:23 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*read_input(t_minishell *minishell, t_token *lst, t_clean_token *lst_clean,
 		if (lst_clean)
 			free_that_clean_lst(&lst_clean);
 		if (lst_final)
-			free_that_final_lst(lst_final);
+			free_that_final_lst(&lst_final);
 		printf("exit\n");
 		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
@@ -106,7 +106,7 @@ int	main(int argc, char **argv, char **env)
 		if (clean_token)
 			free_that_clean_lst(&clean_token);
 		if (final_token)
-			free_that_final_lst(final_token);
+			free_that_final_lst(&final_token);
 		free(input);
 	}
 	free_tab(minishell->env);

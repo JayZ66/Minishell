@@ -6,7 +6,7 @@
 /*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:04:26 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/03 17:39:45 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/04 11:56:55 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,24 @@ int	string_is_space(char *token)
 	return (1);
 }
 
-void	free_that_final_lst(t_final_token *token)
+void	free_that_final_lst(t_final_token **token)
 {
-    t_final_token *temp;
+	t_final_token	*tmp;
 
-    while (token)
-    {
-        temp = token;
-        token = token->next;
-        free(temp->content);
-        free(temp);
+	if (!(*token))
+	{
+		perror("Clean lst is empty, can't free\n");
+		exit(EXIT_FAILURE);
 	}
+	while (*token)
+	{
+		tmp = (*token)->next;
+		if ((*token)->content)
+			free((*token)->content);
+		free(*token);
+		*token = tmp;
+	}
+	*token = NULL;
 }
 
 void	check_directory(t_token	*node)
