@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 10:04:14 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/03 15:09:25 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/06 15:20:37 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*create_new_var(const char *var, const char *value)
 	char	*new_var;
 
 	var_len = ft_strlen(var);
-	new_var = (char *)malloc(var_len + ft_strlen(value) + 2);
+	new_var = (char *)ft_malloc(var_len + ft_strlen(value) + 2);
 	if (!new_var)
 		exit(EXIT_FAILURE);
 	ft_string_cpy(new_var, var);
@@ -41,14 +41,14 @@ void	env_with_new_var(char **env, const char *var, const char *value)
 	{
 		if (strncmp(env[i], var, var_len) == 0 && env[i][var_len] == '=')
 		{
-			free(env[i]);
+			ft_free(env[i]);
 			env[i] = new_var;
 			return ;
 		}
 	}
 	new_env = alloc_new_env(i, new_var, env);
 	env = new_env;
-	free_tab(new_env);
+	ft_free(new_env);
 }
 
 void	change_pwd_env(t_minishell *minishell, const char *cwd,
@@ -111,5 +111,5 @@ void	builtin_cd(t_minishell *minishell, char **cmd)
 			return ;
 	}
 	get_new_pwd(minishell, path);
-	free(path);
+	ft_free(path);
 }

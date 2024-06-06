@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/06/03 14:51:05 by marvin           ###   ########.fr        #
+#    Updated: 2024/06/06 10:54:55 by jeguerin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,8 +41,8 @@ SRCS = 	Sources/main.c Sources/utils.c \
 		Sources/exec_multiple_cmd.c Sources/exec_process_by_process.c Sources/cd_utils2.c \
 		Sources/export_utils3.c Sources/builtin_exit.c Sources/builtin_unset.c \
 
-GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 LIBFT = Libft/libft.a
+GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 PRINTF = ft_printf/libftprintf.a
 
 OBJS = $(SRCS:.c=.o)
@@ -68,7 +68,7 @@ $(PRINTF):
 # 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(PRINTF) $(GETNEXTLINE_OBJ) -o $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(PRINTF) $(GETNEXTLINE_OBJ)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(PRINTF) $(GETNEXTLINE_OBJ) -o $(NAME) -lreadline
+	$(CC) $(CFLAGS) $(OBJS) $(GETNEXTLINE_OBJ) $(LIBFT) $(PRINTF) -o $(NAME) -lreadline
 
 # Regle pour nettoyer les fichiers objets.
 clean:

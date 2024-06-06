@@ -30,8 +30,8 @@ void	free_that_lst(t_token **token)
 	while (*token)
 	{
 		tmp = (*token)->next;
-		free((*token)->content);
-		free(*token);
+		ft_free((*token)->content);
+		ft_free(*token);
 		*token = tmp;
 	}
 	*token = NULL;

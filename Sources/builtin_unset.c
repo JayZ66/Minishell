@@ -33,7 +33,7 @@ void	unset_variable(char **var, t_minishell *minishell)
 			if (ft_strncmp(minishell->env[i], var[j], ft_strlen(var[j])) == 0
 				&& minishell->env[i][ft_strlen(var[j])] == '=')
 			{
-				free(minishell->env[i]);
+				ft_free(minishell->env[i]);
 				k = i;
 				while (minishell->env[k + 1])
 				{

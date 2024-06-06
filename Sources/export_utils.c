@@ -68,17 +68,17 @@ void	modify_or_create(char **args, t_minishell *minishell,
 	{
 		var = check_value(args[i]);
 		if (ft_strcmp(args[i], var) != 0)
-			free(var);
+			ft_free(new_var);
 		modify_value_env(&minishell->env, new_var, args[i] + j + 1, minishell);
-		free(new_var);
+		ft_free(new_var);
 	}
 	else
 	{
 		var = check_value(args[i]);
 		minishell->env = create_var_env(minishell, var);
 		if (ft_strcmp(args[i], var) != 0)
-			free(var);
-		free(new_var);
+			ft_free(var);
+		ft_free(new_var);
 	}
 }
 

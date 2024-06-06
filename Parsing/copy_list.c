@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:09:29 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 16:00:03 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:09:29 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ t_clean_token	*handle_inputs(t_token **token)
 				printf("syntax error \n");
 				return (NULL);
 			}
-			content = ft_strdup((*token)->content);
+			content = (*token)->content;
 			new = init_clean_node(content, (*token)->type);
 			add_clean_back(&clean_list, new);
-			// free(content);
+			// ft_free(content);
 		}
 		*token = (*token)->next;
 	}
@@ -54,10 +54,10 @@ t_clean_token	*handle_commands(t_token **token)
 				printf("syntax error &&\n");
 				return (NULL);
 			}
-			content = ft_strdup((*token)->content);
+			content = (*token)->content;
 			new = init_clean_node(content, (*token)->type);
 			add_clean_back(&clean_list, new);
-			// free(content);
+			// ft_free(content);
 		}
 		*token = (*token)->next;
 	}
@@ -80,10 +80,10 @@ t_clean_token	*handle_outputs(t_token **token)
 				printf("syntax error \n");
 				return (NULL);
 			}
-			content = ft_strdup((*token)->content);
+			content = (*token)->content;
 			new = init_clean_node(content, (*token)->type);
 			add_clean_back(&clean_list, new);
-			// free(content);
+			// ft_free(content);
 		}
 		*token = (*token)->next;
 	}
@@ -100,7 +100,7 @@ void	handle_pipe(t_token **token, t_clean_token **clean_list)
 		content = ft_strdup("|");
 		new = init_clean_node(content, (*token)->type);
 		add_clean_back(clean_list, new);
-		// free(content);
+		// ft_free(content);
 		*token = (*token)->next;
 	}
 }

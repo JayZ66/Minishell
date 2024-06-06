@@ -45,12 +45,12 @@ void	read_on_terminal(size_t i, char **limiter, t_minishell *exit_code)
 		line = get_next_line(0);
 		if (ft_strncmp_limiter(line, limiter[i], ft_strlen(limiter[i])) == 0)
 		{
-			free(line);
+			ft_free(line);
 			exit_code->last_exit_status = EXIT_SUCCESS;
 			exit(EXIT_SUCCESS);
 		}
 		ft_putstr_fd(line, 1);
-		free(line);
+		ft_free(line);
 	}
 }
 
@@ -70,6 +70,7 @@ void	child_here_doc(int *pfd, char *cmd, int alone, t_minishell *exit_code)
 	while (limiter[i + 1] != NULL)
 		i++;
 	read_on_terminal(i, limiter, exit_code);
+	ft_free(limiter);
 }
 
 void	parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code)

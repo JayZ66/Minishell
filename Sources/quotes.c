@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:05:34 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 17:30:22 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/06 19:29:53 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*remove_first_level_quote(char *content)
 	j = 0;
 	single_quote = 0;
 	double_quote = 0;
-	temp = (char *)malloc(ft_strlen(content) + 1);
+	temp = (char *)ft_malloc(ft_strlen(content) + 1);
 	if (!temp)
 	{
 		perror("malloc");
@@ -40,7 +40,7 @@ char	*remove_first_level_quote(char *content)
 			temp[j++] = content[i];
 		i++;
 	}
-	temp[j] = 0;
+	temp[j] = '\0';
 	return (temp);
 }
 
@@ -56,6 +56,7 @@ void	remove_quote(t_final_token *token)
 {
 	while (token)
 	{
+		printf("%s\n", token->content);
 		token->content = remove_first_level_quote(token->content);
 		token = token->next;
 	}

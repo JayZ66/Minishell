@@ -62,10 +62,10 @@ void	shell_level(t_minishell *minishell)
 // 					if (env[i][j] == '1')
 // 					{
 // 						j++;
-// 						return (free(str), env);
+// 						return (ft_free(str), env);
 // 					}
 // 				}
-// 				free(str);
+// 				ft_free(str);
 // 			}
 // 			j++;
 // 		}
@@ -73,20 +73,3 @@ void	shell_level(t_minishell *minishell)
 // 	}
 // 	return (perror("Can't modify shell level in env.\n"), NULL);
 // }
-
-/*
-La variable d'environnement "SHLVL" est utilisée pour suivre 
-le niveau de profondeur des shells 
-(interpréteurs de commandes) dans un système UNIX. Lorsque vous 
-exécutez un nouveau shell 
-(comme bash, zsh, etc.), la valeur de "SHLVL" est augmentée de 
-1. Cela permet de savoir combien 
-de shells sont empilés les uns sur les autres.
-
-Maintenant, en modifiant "SHLVL" de 1 à 2 dans votre environnement, 
-vous indiquez essentiellement 
-que vous avez lancé un nouveau shell à l'intérieur d'un shell existant. 
-Cela peut se produire, 
-par exemple, lorsque vous lancez votre minishell depuis un autre shell 
-déjà ouvert sur votre système.
-*/

@@ -19,7 +19,7 @@ void	reset_var_value(char *var, t_minishell *minishell, char **env)
 	char	*new_env;
 
 	var_len = ft_strlen(var);
-	new_env = (char *)malloc(var_len + 1);
+	new_env = (char *)ft_malloc(var_len + 1);
 	if (!new_env)
 	{
 		perror("Memory allocation for new var. failed");
@@ -32,7 +32,7 @@ void	reset_var_value(char *var, t_minishell *minishell, char **env)
 	{
 		if (ft_strncmp(env[i], new_env, var_len) == 0)
 		{
-			free(env[i]);
+			ft_free(env[i]);
 			env[i] = new_env;
 			return ;
 		}
@@ -48,7 +48,7 @@ char	*copy_new_value(const char *var, const char *new_value,
 	char	*new_env;
 
 	new_var_len = ft_strlen(var) + 1 + ft_strlen(new_value);
-	new_env = (char *)malloc(new_var_len + 1);
+	new_env = (char *)ft_malloc(new_var_len + 1);
 	if (!new_env)
 	{
 		perror("Memory allocation for new var. failed");
@@ -93,16 +93,16 @@ int	reset_existing_value(const char *var, const char *value,
 {
 	char	*new_entry;
 
-	new_entry = (char *)malloc(ft_strlen(var) + ft_strlen(value) + 1);
+	new_entry = (char *)ft_malloc(ft_strlen(var) + ft_strlen(value) + 1);
 	ft_string_cpy(new_entry, var);
 	if (ft_strlen(value) != 0)
 		ft_strcat(new_entry, value, ft_strlen(value));
 	if (is_there_something_after_equal(new_entry, minishell) == 0)
 	{
 		reset_var_value((char *)var, minishell, (*env));
-		free(new_entry);
+		ft_free(new_entry);
 		return (1);
 	}
-	free(new_entry);
+	ft_free(new_entry);
 	return (0);
 }

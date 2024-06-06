@@ -44,7 +44,7 @@ void	exec_absolute_path(char **cmd_line, char *cmd, t_minishell *minishell)
 	size_t	j;
 	size_t	i;
 
-	new_cmd = (char *)malloc(sizeof(char) * (ft_strlen(cmd) + 1));
+	new_cmd = (char *)ft_malloc(sizeof(char) * (ft_strlen(cmd) + 1));
 	i = -1;
 	j = 0;
 	while (cmd[++i])
@@ -55,10 +55,12 @@ void	exec_absolute_path(char **cmd_line, char *cmd, t_minishell *minishell)
 			break ;
 	}
 	new_cmd[j] = '\0';
+	if (ft_strncmp(new_cmd, "./minishell", 11) == 0)
+		shell_level(minishell);
 	if (execve(new_cmd, cmd_line, minishell->env) == -1)
 	{
 		free_tab(cmd_line);
-		free(new_cmd);
+		ft_free(new_cmd);
 		printf("bash: %s: command not found\n", cmd);
 		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
@@ -79,7 +81,7 @@ void	exec_relative_path(char **cmd_line, t_minishell *minishell)
 	if (execve(final_path, cmd_line, minishell->env) == -1)
 	{
 		free_tab(cmd_line);
-		free(final_path);
+		ft_free(final_path);
 		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}

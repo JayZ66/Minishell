@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:06:47 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 15:13:31 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/06 17:34:23 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ char	*extract_of_the_var(char *str)
 	char	*var;
 
 	len = len_of_var_of_env(str + 1);
-	var = (char *)malloc(len + 2);
+	var = (char *)ft_malloc(len + 2);
 	if (var == NULL)
 		return (NULL);
-	strncpy(var, str, len + 1);
+	ft_strlcpy(var, str, len + 2);
 	var[len + 1] = '\0';
 	return (var);
 }

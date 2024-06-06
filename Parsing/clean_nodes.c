@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_nodes.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:08:10 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/31 14:17:25 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/06 11:44:57 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,18 @@ void	create_new_token(t_token *token, int i)
 		i++;
 	if (!token->content[i])
 		return ;
-	new = (t_token *)malloc(sizeof(t_token));
+	new = (t_token *)ft_malloc(sizeof(t_token));
 	if (new == NULL)
 	{
 		perror("Erreur d'allocation de mémoire");
 		exit(EXIT_FAILURE);
 	}
 	new->content = ft_strdup(token->content + i);
+	ft_free(token->content);
 	new->type = CMD;
 	new->next = token->next;
 	token->next = new;
+	// ft_free(token->content);
 }
 
 void	cut_node(t_token *token)
@@ -44,8 +46,8 @@ void	cut_node(t_token *token)
 	if (string_is_space(token->content + i) == 0)
 	{
 		create_new_token(token, i);
-		free(token->content);
-		token->content = ft_strdup(temp);
+		// free(token->content);
+		token->content = temp;
 	}
 	free(temp);
 }

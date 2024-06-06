@@ -19,8 +19,8 @@ char	*ft_strcat(char *dst, const char *src, size_t size)
 
 	i = 0;
 	j = 0;
-	if (size <= 0)
-		return (perror("Can't concatenate\n"), NULL);
+	// if (size <= 0)
+	// 	return (perror("Can't concatenate\n"), NULL);
 	while (dst[i])
 		i++;
 	while (src[j] && j < size)
@@ -85,6 +85,6 @@ void	print_export_env(t_minishell *minishell)
 		printf("declare -x %s\n", env_cpy[i]);
 		i++;
 	}
-	free_tab(env_cpy);
+	ft_free(env_cpy);
 	return ;
 }

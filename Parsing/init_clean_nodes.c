@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:14:00 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 15:49:53 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:12:17 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,18 @@ t_clean_token	*init_clean_node(char *content, Token_type type)
 {
 	t_clean_token	*token;
 
-	token = (t_clean_token *)malloc(sizeof(t_clean_token));
+	token = (t_clean_token *)ft_malloc(sizeof(t_clean_token));
 	if (token == NULL)
 	{
 		perror("List has not been created\n");
 		exit(EXIT_FAILURE);
 	}
-	token->content = content;
+	token->content = ft_strdup(content);
+	ft_free(content);
 	if (token->content == NULL)
 	{
-		perror("Memory allocation failde\n");
+		ft_free(token);
+		perror("Memory allocation failed\n");
 		exit(EXIT_FAILURE);
 	}
 	token->type = type;
@@ -77,6 +79,7 @@ void	free_that_clean_lst(t_clean_token **token)
 
 	if (!(*token))
 	{
+		ft_free(token);
 		perror("Clean lst is empty, can't free\n");
 		exit(EXIT_FAILURE);
 	}
@@ -84,8 +87,8 @@ void	free_that_clean_lst(t_clean_token **token)
 	{
 		tmp = (*token)->next;
 		if ((*token)->content)
-			free((*token)->content);
-		free(*token);
+			ft_free((*token)->content);
+		ft_free(*token);
 		*token = tmp;
 	}
 	*token = NULL;

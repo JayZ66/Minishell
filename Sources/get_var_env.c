@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_var_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:35:20 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/25 18:11:20 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/06 14:55:41 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ char	*extract_var(char *str)
 		result = getenv(var_env);
 		if (result == NULL)
 			return (perror("This var. is not existing in the env.\n"),
-				free(var_env), NULL);
-		return (free(var_env), result);
+				ft_free(var_env), NULL);
+		return (ft_free(var_env), result);
 	}
 	perror("Can't get the var. of env.");
 	return (NULL);

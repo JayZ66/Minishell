@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 13:28:36 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/04/10 18:36:42 by marvin           ###   ########.fr       */
+/*   Created: 2024/06/06 10:35:18 by jeguerin          #+#    #+#             */
+/*   Updated: 2024/06/06 10:37:57 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../Libft/libft.h"
 #include "get_next_line.h"
 
 char	*update_stash(char *stash)
@@ -32,7 +33,7 @@ char	*update_stash(char *stash)
 	}
 	else
 		next_line = ft_strndup_gnl(stash + i, ft_strlen_gnl(stash + i));
-	free(stash);
+	ft_free(stash);
 	return (next_line);
 }
 
@@ -65,9 +66,9 @@ char	*get_next_line(int fd)
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) == -1)
-		return (free(stash), stash = NULL, NULL);
+		return (ft_free(stash), stash = NULL, NULL);
 	rd = 1;
-	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buffer = (char *)ft_malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
 	while (rd != 0)
@@ -78,7 +79,7 @@ char	*get_next_line(int fd)
 		if (ft_strchr_gnl(stash, '\n') == 1)
 			break ;
 	}
-	free(buffer);
+	ft_free(buffer);
 	line = extract_line(stash);
 	stash = update_stash(stash);
 	return (line);
@@ -96,7 +97,7 @@ char	*get_next_line(int fd)
 // 	while (line)
 // 	{
 // 		printf("%s", line);
-// 		free(line);
+// 		ft_free(line);
 // 		line = get_next_line(fd);
 // 	}
 // 	return 0;

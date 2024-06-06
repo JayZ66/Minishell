@@ -90,10 +90,10 @@ char	**alloc_new_env(size_t i, char *new_var, char **env)
 {
 	char	**new_env;
 
-	new_env = realloc(env, sizeof(char *) * (i + 2));
+	new_env = ft_realloc(env, sizeof(char *) * (i + 2));
 	if (!new_env)
 	{
-		free(new_var);
+		ft_free(new_var);
 		exit(EXIT_FAILURE);
 	}
 	new_env[i] = new_var;

@@ -2,6 +2,7 @@
     "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
         "libft.h": "c",
-        "minishell.h": "c"
+        "minishell.h": "c",
+        "get_next_line.h": "c"
     }
 }

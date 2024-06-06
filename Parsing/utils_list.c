@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:04:26 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 11:56:55 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:13:43 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,15 @@ void	free_that_final_lst(t_final_token **token)
 
 	if (!(*token))
 	{
-		perror("Clean lst is empty, can't free\n");
+		// ft_free(token);
+		perror("Final lst is empty, can't free\n");
 		exit(EXIT_FAILURE);
 	}
 	while (*token)
 	{
 		tmp = (*token)->next;
-		if ((*token)->content)
-			free((*token)->content);
-		free(*token);
+		ft_free((*token)->content);
+		ft_free(*token);
 		*token = tmp;
 	}
 	*token = NULL;

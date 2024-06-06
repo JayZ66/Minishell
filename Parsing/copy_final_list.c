@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:58:56 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 14:58:08 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/06 11:15:19 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ t_final_token	*handle_nodes(t_clean_token *token,
 	t_final_token *final_token, t_final_token *new, char *content)
 {
 	content = token->content;
-	if (!content)
-	{
-		free_that_final_lst(&final_token);
-		return (NULL);
-	}
+	// if (!content)
+	// {
+	// 	free_that_final_lst(&final_token);
+	// 	return (NULL);
+	// }
 	new = init_final_node(content, token->type);
 	// if (!new)
 	// {
@@ -48,7 +48,7 @@ t_final_token	*handle_nodes(t_clean_token *token,
 	// 	return (NULL);
 	// }
 	add_final_back(&final_token, new);
-	// free(content);
+	// ft_free(content);
 	return (final_token);
 }
 
@@ -63,7 +63,7 @@ t_final_token	*handle_final_pipe(t_clean_token *token,
 	}
 	new = init_final_node(content, token->type);
 	add_final_back(&final_token, new);
-	// free(content);
+	// ft_free(content);
 	return (final_token);
 }
  

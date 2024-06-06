@@ -50,7 +50,7 @@ void	builtin_echo(char *str, t_minishell *exit_code)
 		printf("%s: command not found\n", cmd_with_options[0]);
 	else
 		printf("\n");
-	free_tab(cmd_with_options);
+	ft_free(cmd_with_options);
 }
 
 void	handle_echo_with_n(char **cmd)
@@ -78,7 +78,7 @@ char	*copy_str_without_first_quote(char *source)
 	source_length = strlen(source);
 	j = 0;
 	i = -1;
-	result = (char *)malloc(source_length + 1);
+	result = (char *)ft_malloc(source_length + 1);
 	if (result == NULL || source == NULL)
 		return (NULL);
 	while (source[++i] && i < source_length)
@@ -107,7 +107,7 @@ char	*copy_string_without_char(const char *source, char exclude_char)
 	i = 0;
 	if (source == NULL)
 		return (NULL);
-	result = (char *)malloc(source_length + 1);
+	result = (char *)ft_malloc(source_length + 1);
 	if (result == NULL)
 		return (NULL);
 	while (source[i] && i < source_length)

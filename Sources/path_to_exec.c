@@ -32,13 +32,13 @@ char	*get_path(char *cmd, t_minishell *minishell)
 	{
 		tmp_path = ft_strjoin(path[i], "/");
 		final_path = ft_strjoin(tmp_path, cmd);
-		free(tmp_path);
+		ft_free(tmp_path);
 		if (access(final_path, X_OK) == 0)
-			return (free_tab(path), final_path);
-		free(final_path);
+			return (ft_free(path), final_path);
+		ft_free(final_path);
 		i++;
 	}
-	free_tab(path);
+	ft_free(path);
 	printf("bash: %s: command not found\n", cmd);
 	return (NULL);
 }

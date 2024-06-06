@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:37:09 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/31 14:38:59 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/06 11:29:01 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	read_here_doc(size_t i, char **limiter)
 		line = get_next_line(0);
 		if (ft_strncmp_limiter(line, limiter[i], ft_strlen(limiter[i])) == 0)
 		{
-			free(line);
+			ft_free(line);
 			return ;
 		}
 		ft_putstr_fd(line, 1);
-		free (line);
+		ft_free(line);
 	}
 }
 

@@ -40,11 +40,10 @@ void	free_tab(char **tab)
 	while (tab[i])
 	{
 		if (tab[i] != NULL)
-			free(tab[i]);
+			ft_free(tab[i]);
 		i++;
 	}
-	if (tab != NULL)
-		free(tab);
+	ft_free(tab);
 }
 
 int	ft_strlen_tab(char **cmd_line)

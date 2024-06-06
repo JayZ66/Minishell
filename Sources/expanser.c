@@ -81,6 +81,6 @@ char	*relative_to_absolute_path(char **cmd, t_minishell *minishell)
 		return (perror("Can't go higher than the root\n"), NULL);
 	partial_path = ft_strjoin(cwd, "/");
 	final_path = ft_strjoin(partial_path, cmd[1]);
-	free(partial_path);
+	ft_free(partial_path);
 	return (final_path);
 }

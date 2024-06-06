@@ -27,6 +27,7 @@ int	check_char_exit(char **args)
 			&& args[1][i] != '+'))
 		{
 			printf("bash: exit: %s: numeric argument required\n", args[1]);
+			ft_free_all();
 			exit(EXIT_FAILURE);
 		}
 		i++;
@@ -38,6 +39,9 @@ void	exit_special_char(char **args, t_minishell *minishell)
 {
 	printf("bash: exit: %s: numeric argument required\n", args[1]);
 	minishell->last_exit_status = EXIT_FAILURE;
+	free_tab(minishell->env);
+	ft_free(minishell);
+	ft_free_all();
 	exit(EXIT_FAILURE);
 }
 
@@ -49,7 +53,7 @@ char	**getting_exit_code(char **args, t_minishell *minishell)
 
 	i = -1;
 	j = 0;
-	temp = malloc(ft_strlen(args[1]) + 1);
+	temp = ft_malloc(ft_strlen(args[1]) + 1);
 	if (!temp)
 	{
 		minishell->last_exit_status = EXIT_FAILURE;
@@ -64,9 +68,9 @@ char	**getting_exit_code(char **args, t_minishell *minishell)
 		}
 	}
 	temp[j] = '\0';
-	free(args[1]);
+	ft_free(args[1]);
 	args[1] = ft_strdup(temp);
-	free(temp);
+	ft_free(temp);
 	return (args);
 }
 
@@ -94,7 +98,10 @@ void	manage_exit_with_code(char **args, t_minishell *exit_code,
 	exit_status = exit_status % 256;
 	exit_code->last_exit_status = exit_status;
 	printf("exit\n");
-	free_tab(args);
+	ft_free(args);
+	free_tab(minishell->env);
+	ft_free(minishell);
+	ft_free_all();
 	exit(exit_status);
 }
 
@@ -109,7 +116,10 @@ void	builtin_exit(char **args, t_minishell *exit_code,
 	{
 		exit_code->last_exit_status = 0;
 		printf("exit\n");
-		free_tab(args);
+		ft_free(args);
+		free_tab(minishell->env);
+		ft_free(minishell);
+		ft_free_all();
 		exit(0);
 	}
 }

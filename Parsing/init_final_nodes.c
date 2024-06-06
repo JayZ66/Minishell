@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_final_nodes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:00:44 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 11:59:35 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/06 11:45:25 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_final_token	*init_final_node(char *content, Token_type type)
 {
 	t_final_token	*token;
 
-	token = (t_final_token *)malloc(sizeof(t_final_token));
+	token = (t_final_token *)ft_malloc(sizeof(t_final_token));
 	if (token == NULL)
 	{
 		perror("List has not been created\n");

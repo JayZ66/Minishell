@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 18:17:19 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/03 16:40:48 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/06 17:01:40 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	lens1 = ft_strlen(s1);
 	lens2 = ft_strlen(s2);
-	dest = (char *)malloc(sizeof(char) * (lens1 + lens2 + 1));
+	dest = (char *)ft_malloc(sizeof(char) * (lens1 + lens2 + 1));
 	if (dest == 0)
 		return (NULL);
 	ft_strcpy(dest, s1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   realloc_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:37:36 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/31 10:49:41 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/06 11:41:45 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	**allocate_new_env(size_t size_env)
 {
 	char	**new_env;
 
-	new_env = (char **)malloc(sizeof(char *) * (size_env + 1));
+	new_env = (char **)ft_malloc(sizeof(char *) * (size_env + 1));
 	if (!new_env)
 	{
 		perror("Can't create new env\n");
@@ -38,13 +38,13 @@ char	**realloc_env(char **env)
 	i = 0;
 	while (i < size_env)
 	{
-		new_env[i] = strdup(env[i]);
+		new_env[i] = ft_strdup(env[i]);
 		if (!new_env[i])
 		{
 			perror("Can't duplicate env string.\n");
 			while (i > 0)
-				free(new_env[--i]);
-			free(new_env);
+				ft_free(new_env[--i]);
+			ft_free(new_env);
 			exit(EXIT_FAILURE);
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:53:50 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/04 15:57:57 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/06 11:37:29 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ int	tokenize_arg(t_token **token, char *input, int i, t_sm handle_quote)
 	arg = ft_strndup(input + start, end - start);
 	new = init_node(arg, CMD);
 	add_back(token, new);
-	free(arg);
+	// ft_free(arg);
 	return (end);
 }

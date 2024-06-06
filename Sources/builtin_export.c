@@ -30,7 +30,7 @@ void	modify_value_env(char ***env, const char *var, const char *value,
 		if (var[j] == '\0' && (*env)[i][j - 1] == '=')
 		{
 			new_entry = copy_new_value(var, value, minishell);
-			free((*env)[i]);
+			ft_free((*env)[i]);
 			(*env)[i] = new_entry;
 			return ;
 		}
@@ -44,7 +44,7 @@ char	**new_export_env(t_minishell *minishell, size_t size_env)
 	char	**new_env;
 
 	i = -1;
-	new_env = (char **)malloc(sizeof(char *) * (size_env + 2));
+	new_env = (char **)ft_malloc(sizeof(char *) * (size_env + 2));
 	if (!new_env)
 	{
 		perror("Can't create the new env.\n");
@@ -57,7 +57,7 @@ char	**new_export_env(t_minishell *minishell, size_t size_env)
 		if (!new_env[i])
 		{
 			perror("Can't copy environment variable.\n");
-			free_tab(new_env);
+			ft_free(new_env);
 			minishell->last_exit_status = EXIT_FAILURE;
 			exit(EXIT_FAILURE);
 		}
@@ -79,13 +79,13 @@ char	**create_var_env(t_minishell *minishell, char *var)
 		perror("Can't copy new environment variable.\n");
 		i = -1;
 		while (++i < size_env)
-			free(new_env[i]);
-		free(new_env);
+			ft_free(new_env[i]);
+		ft_free(new_env);
 		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	new_env[size_env + 1] = NULL;
-	return (free_tab(minishell->env), new_env);
+	return (ft_free(minishell->env), new_env);
 }
 
 void	manage_export_modification(char **args, t_minishell *minishell)

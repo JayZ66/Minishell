@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 14:26:56 by jeguerin          #+#    #+#             */
-/*   Updated: 2023/10/13 15:16:22 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/06 17:02:28 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (ft_strdup(""));
 	if (len > lens - start)
 		len = lens - start;
-	tosearch = (char *)malloc(sizeof(char) * (len + 1));
+	tosearch = (char *)ft_malloc(sizeof(char) * (len + 1));
 	if (!tosearch)
 		return (NULL);
 	while (s[++i])

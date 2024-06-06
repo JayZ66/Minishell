@@ -6,30 +6,73 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/04 15:22:52 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/06 19:25:54 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	free_lst_not_content(t_token **token)
+{
+	t_token	*tmp;
+
+	if (!(*token))
+	{
+		perror("Lst is empty, can't free\n");
+		exit(EXIT_FAILURE);
+	}
+	while (*token)
+	{
+		tmp = (*token)->next;
+		//ft_free((*token)->content);
+		ft_free(*token);
+		*token = tmp;
+	}
+	*token = NULL;
+}
+
+void	free_lst_not_content_clean(t_clean_token **token)
+{
+	t_clean_token	*tmp;
+
+	if (!(*token))
+	{
+		perror("Lst is empty, can't free\n");
+		exit(EXIT_FAILURE);
+	}
+	while (*token)
+	{
+		tmp = (*token)->next;
+		//ft_free((*token)->content);
+		ft_free(*token);
+		*token = tmp;
+	}
+	*token = NULL;
+}
+
 char	*read_input(t_minishell *minishell, t_token *lst, t_clean_token *lst_clean, t_final_token *lst_final)
 {
 	char	*input;
+	
 	(void)minishell;
+	(void)lst;
+	(void)lst_clean;
+	(void)lst_final;
 	input = readline("Tarpin_de_Minishell>");
 	if (input == NULL)
 	{
 		free(input);
-		if (lst)
-			free_that_lst(&lst);
-		if (lst_clean)
-			free_that_clean_lst(&lst_clean);
+		// if (lst)
+		// 	free_that_lst(&lst);
+		// if (lst_clean)
+		// 	free_that_clean_lst(&lst_clean);
 		if (lst_final)
 			free_that_final_lst(&lst_final);
 		printf("exit\n");
 		minishell->last_exit_status = EXIT_FAILURE;
 		free_tab(minishell->env);
-		free(minishell);
+		ft_free(minishell);
+		ft_free_all();
 		exit(EXIT_FAILURE);
 	}
 	if (ft_strncmp(input, ":", 1) == 0 || ft_strncmp(input, "!", 1) == 0)
@@ -52,10 +95,10 @@ int	main(int argc, char **argv, char **env)
 	t_minishell		*minishell;
 
 	token = NULL;
-	clean_token = NULL;
 	final_token = NULL;
+	clean_token = NULL;
 	(void)env;
-	minishell = (t_minishell *)malloc(sizeof(t_minishell));
+	minishell = (t_minishell *)ft_malloc(sizeof(t_minishell));
 	manage_signals(minishell);
 	minishell->last_exit_status = 0;
 	if (argc != 1 || argv[1])
@@ -74,14 +117,14 @@ int	main(int argc, char **argv, char **env)
 		}
 		token = extract_cmd(&token, input);
 		head = token;
-		if (clean_chevron(token) == 1)
-		{
-			printf("bash: %s error\n", input);
-			rl_on_new_line();
-			free(input);
-			free_that_lst(&token);
-			continue ;
-		}
+		// if (clean_chevron(token) == 1)
+		// {
+		// 	printf("bash: %s error\n", input);
+		// 	rl_on_new_line();
+		// 	ft_free(input);
+		// 	free_that_lst(&token);
+		// 	continue ;
+		// }
 		clean_spaces1(token);
 		manage_node(token);
 		clean_spaces2(token);
@@ -91,27 +134,29 @@ int	main(int argc, char **argv, char **env)
 			free(input);
 			while (token)
 			{
-				free(token->content);
+				ft_free(token->content);
 				token = token->next;
 			}
 			continue ;
 		}
 		token = head;
 		clean_token = copy_lst(token);
+		free_lst_not_content(&token);
+		token = NULL;
 		test_redirection_input(clean_token);
 		final_token = final_clean_node(clean_token);
+		free_lst_not_content_clean(&clean_token);
 		get_var_of_env(final_token, minishell);
+		// clean_token = NULL;
 		remove_quote(final_token);
+		print_final_lst(final_token);
 		execute_commands_with_pipes_and_redirections(&final_token,
 			minishell, &exit_code);
-		free_that_lst(&token);
-		if (clean_token)
-			free_that_clean_lst(&clean_token);
-		if (final_token)
-			free_that_final_lst(&final_token);
+		free_that_final_lst(&final_token);
 		free(input);
 	}
 	free_tab(minishell->env);
-	free(minishell);
+	ft_free(minishell);
+	ft_free_all();
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:49:09 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/05/26 18:04:26 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/06 15:21:32 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,14 +76,14 @@ void	exec_cmd(char *cmd, t_minishell *minishell)
 	final_path = get_path(cmd_line[0], minishell);
 	if (!final_path)
 	{
-		free_tab(cmd_line);
+		ft_free(cmd_line);
 		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
 	if (execve(final_path, cmd_line, minishell->env) == -1)
 	{
-		free_tab(cmd_line);
-		free(final_path);
+		ft_free(cmd_line);
+		ft_free(final_path);
 		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}

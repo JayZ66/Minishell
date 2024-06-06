@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_nodes2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:23:17 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/31 14:32:12 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:56:44 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	clean_token_content(t_token *token)
 			token->content[j++] = token->content[i++];
 	}
 	token->content[j] = '\0';
-	return (*token->content == '\0');
+	return (0);
 }
 
 int	clean_chevron(t_token *token)

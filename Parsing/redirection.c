@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:08:38 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/01 15:06:54 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/06 15:20:19 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	redirection_here_doc(t_clean_token *clean_node, int i)
 
 	limiter = ft_split(clean_node->content, ' ');
 	read_here_doc(i, limiter);
+	ft_free(limiter);
 }
 
 int	redirection_input(t_clean_token *clean_node)

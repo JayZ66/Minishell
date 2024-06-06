@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 16:22:31 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/04/10 18:36:37 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/06 10:40:49 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,10 @@ char	*ft_strndup_gnl(const char *str, int size);
 char	*ft_join(char *s1, char *s2);
 char	*update_stash(char *stash);
 char	*extract_line(char *stash);
+void	*ft_calloc(size_t nmemb, size_t size);
+void    ft_free_all(void);
+void	*ft_malloc(size_t size);
+void	ft_free(void *ptr);
+void    *ft_realloc(void *ptr, size_t size);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/06 12:18:38 by jeguerin          #+#    #+#             */
-/*   Updated: 2023/10/17 18:28:37 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/06 17:02:22 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	while (check_char(set, s1[lens1 - 1]))
 		lens1--;
 	lentrim = lens1 - i;
-	dest = (char *)malloc(sizeof(char) * (lentrim + 1));
+	dest = (char *)ft_malloc(sizeof(char) * (lentrim + 1));
 	if (dest == NULL)
 		return (NULL);
 	ft_memcpy(dest, &s1[i], lentrim);
