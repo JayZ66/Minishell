@@ -15,9 +15,7 @@
 void	child_pipe(int *pipefd, t_minishell *minishell, t_minishell *exit_code,
 	t_final_token **current)
 {
-	close(pipefd[0]);
-	dup2(pipefd[1], STDOUT_FILENO);
-	close(pipefd[1]);
+	(void)pipefd;
 	exec_simple_cmd(current, exit_code, minishell);
 	exit_code->last_exit_status = EXIT_SUCCESS;
 	exit(EXIT_SUCCESS);
@@ -31,7 +29,7 @@ void	parent_pipe(int *pipefd)
 }
 
 pid_t	manage_fork(t_minishell *minishell, t_minishell *exit_code,
-	t_final_token **current)
+	t_final_token **current, int file)
 {
 	int		pipefd[2];
 	pid_t	pid;
@@ -42,7 +40,15 @@ pid_t	manage_fork(t_minishell *minishell, t_minishell *exit_code,
 	if (pid == -1)
 		fork_error(exit_code);
 	else if (pid == 0)
+	{
+		if (file == 0)
+		{
+			close(pipefd[0]);
+			dup2(pipefd[1], STDOUT_FILENO);
+			close(pipefd[1]);
+		}
 		child_pipe(pipefd, minishell, exit_code, current);
+	}
 	else
 		parent_pipe(pipefd);
 	return (pid);

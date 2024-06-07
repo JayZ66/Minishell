@@ -44,28 +44,28 @@ typedef enum e_token
 	OUTPUT,
 	APPEND,
 	HERE_DOC
-}	Token_type;
+}	t_type;
 
 typedef struct s_token
 {
 	char			*content;
-	Token_type		type;
+	t_type			type;
 	struct s_token	*next;
-}	t_token;
+}					t_token;
 
 typedef struct s_clean_token
 {
 	char					*content;
-	Token_type				type;
+	t_type					type;
 	struct s_clean_token	*next;
-}	t_clean_token;
+}							t_clean_token;
 
 typedef struct s_final_token
 {
 	char					*content;
-	Token_type				type;
+	t_type					type;
 	struct s_final_token	*next;
-}	t_final_token;
+}							t_final_token;
 
 typedef struct s_minishell
 {
@@ -74,10 +74,11 @@ typedef struct s_minishell
 	t_final_token	*final_token;
 	int				last_exit_status;
 	char			**env;
-}	t_minishell;
+}					t_minishell;
 
 // MANDATORY PART
-char	*read_input(t_minishell *minishell, t_token *lst, t_clean_token *lst_clean, t_final_token *lst_final);
+char			*read_input(t_minishell *minishell, t_token *lst,
+					t_clean_token *lst_clean, t_final_token *lst_final);
 void			shell_level(t_minishell *minishell);
 
 // void	execute_pipe(int nb_args, char **cmd_line, char **env);
@@ -198,7 +199,8 @@ void			child_process(int *pfd, char *cmd, t_minishell *minishell,
 					int output);
 void			create_pipes(char *cmd, t_minishell *minishell,
 					t_minishell *exit_code, int output);
-void			parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code);
+void			parent_here_doc(int *pfd, char *cmd, t_minishell *exit_code,
+					int alone);
 void			child_here_doc(int *pfd, char *cmd, int alone,
 					t_minishell *exit_code);
 void			read_on_terminal(size_t i, char **limiter,
@@ -249,10 +251,11 @@ int				how_many_output(t_final_token **current);
 int				handle_redirections(t_final_token **current,
 					t_minishell *minishell, t_minishell *exit_code);
 int				is_pipe_command(t_final_token **current);
-pid_t			manage_fork(t_minishell *minishell,
-					t_minishell *exit_code, t_final_token **current);
+pid_t			manage_fork(t_minishell *minishell, t_minishell *exit_code,
+					t_final_token **current, int file);
 void			pipe_error(t_minishell *exit_code);
 void			fork_error(t_minishell *exit_code);
+void			reset_stdin(t_minishell *exit_code);
 
 // SIGNAL
 void			sigint_handler(int sig);
@@ -281,7 +284,7 @@ t_clean_token	*handle_outputs(t_token **token);
 void			handle_pipe(t_token **token, t_clean_token **clean_list);
 
 // INIT_CLEAN_NODES
-t_clean_token	*init_clean_node(char *content, Token_type type);
+t_clean_token	*init_clean_node(char *content, t_type type);
 t_clean_token	*lst_clean_last(t_clean_token *token);
 void			add_clean_back(t_clean_token **token, t_clean_token *new);
 void			print_clean_lst(t_clean_token *token);
@@ -289,8 +292,8 @@ void			free_that_clean_lst(t_clean_token **token);
 void			free_that_final_lst(t_final_token **token);
 
 // INIT_NODES
-t_token			*init_node(char *content, Token_type type);
-t_token			*init_node_separator(Token_type type);
+t_token			*init_node(char *content, t_type type);
+t_token			*init_node_separator(t_type type);
 
 // LEXER_PARSER
 t_token			*lst_last(t_token *token);
@@ -358,7 +361,7 @@ t_final_token	*handle_nodes(t_clean_token *token,
 t_final_token	*handle_final_pipe(t_clean_token *token,
 					t_final_token *final_token,
 					t_final_token *new, char *content);
-t_final_token	*init_final_node(char *content, Token_type type);
+t_final_token	*init_final_node(char *content, t_type type);
 t_final_token	*lst_final_last(t_final_token	*token);
 void			add_final_back(t_final_token **token, t_final_token *new);
 void			print_final_lst(t_final_token *token);
@@ -387,7 +390,7 @@ void			update_quotes(char c, int *in_single_quote,
 					int *in_double_quote);
 
 char			*select_var_of_env(t_minishell *minishell, char *cmd);
-int	get_exit_code(char *str, t_minishell *minishell);
+int				get_exit_code(char *str, t_minishell *minishell);
 
 // CHECK DIRECTORY
 

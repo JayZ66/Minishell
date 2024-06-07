@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:04:26 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/06 16:13:43 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/07 11:23:08 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	free_that_final_lst(t_final_token **token)
 
 	if (!(*token))
 	{
-		// ft_free(token);
+		ft_free(token);
 		perror("Final lst is empty, can't free\n");
 		exit(EXIT_FAILURE);
 	}

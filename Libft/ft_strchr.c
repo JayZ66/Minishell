@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 10:01:14 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/04 14:29:59 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/07 09:20:00 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,27 +65,23 @@ int	ft_strnchr(const char *str, int c)
 // 	return (i);
 // }
 
-int ft_strschr(const char *str, char *ligne)
+int	ft_strschr(const char *str, char *ligne)
 {
-    int i;
-    // int j;	
-    int len_str;
-    int len_ligne;
+	int	i;
+	int	len_str;
+	int	len_ligne;
 
-    i = 0;
-    // j = 0;
-    len_str = strlen(str);
-    len_ligne = strlen(ligne);
-
-    while (i < len_str)
-    {
-        // Check if the remaining part of 'str' is long enough for 'ligne'
-        if (i + len_ligne <= len_str)
-        {
-            if (strncmp(&str[i], ligne, len_ligne) == 0)
-                return (0);
-        }
-        i++;
-    }
-    return (i);
+	i = 0;
+	len_str = ft_strlen(str);
+	len_ligne = ft_strlen(ligne);
+	while (i < len_str)
+	{
+		if (i + len_ligne <= len_str)
+		{
+			if (ft_strncmp(&str[i], ligne, len_ligne) == 0)
+				return (0);
+		}
+		i++;
+	}
+	return (i);
 }

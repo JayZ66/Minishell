@@ -6,13 +6,13 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 15:00:44 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/06 11:45:25 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/07 09:10:36 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_final_token	*init_final_node(char *content, Token_type type)
+t_final_token	*init_final_node(char *content, t_type type)
 {
 	t_final_token	*token;
 

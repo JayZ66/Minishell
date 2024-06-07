@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:03:05 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/06 19:30:13 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/07 11:05:41 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	get_var_of_env(t_final_token *node, t_minishell *minishell)
 		{
 			nb = ft_itoa(minishell->last_exit_status);
 			tmp->content = nb;
-			// ft_free(nb);
 		}
 		else
 			process_token_content(tmp, minishell, &in_single_quote,
@@ -43,51 +42,34 @@ int	handle_env_var(t_final_token *tmp, t_minishell *minishell, size_t *i)
 	char	*env_value;
 	int		len;
 
-	printf("%s\n", tmp->content);
-	printf("%ld\n", *i);
 	len = len_of_var_of_env(tmp->content + *i + 1);
 	var = extract_of_the_var(tmp->content + *i);
 	if (var == NULL)
 	{
-		// if (*var == '$')
-		// 	ft_free(var);
+		if (*var == '$')
+			ft_free(var);
 		return (0);
 	}
 	env_value = select_var_of_env(minishell, var + 1);
 	ft_free(var);
 	if (!env_value)
-	{
-		tmp->content = "";
-		return (0);
-	}
+		return (tmp->content = "", 0);
 	if (*i == 0)
 	{
 		if (!replace_content_start(tmp, env_value))
-		{
-			ft_free(env_value);
-			return (0);
-		}
+			return (ft_free(env_value), 0);
 	}
 	else
-	{
 		if (!replace_content_middle(tmp, env_value, *i, len))
-		{
-			ft_free(env_value);
-			return (0);
-		}
-	}
-	ft_free(env_value);
-	return (1);
+			return (ft_free(env_value), 0);
+	return (ft_free(env_value), 1);
 }
 
 int	replace_content_start(t_final_token *tmp, char *env_value)
 {
-	// char	*new_content;
-
 	tmp->content = ft_realloc(tmp->content, ft_strlen(env_value) + 1);
 	if (!tmp->content)
 		return (0);
-	// tmp->content = new_content;
 	ft_string_cpy(tmp->content, env_value);
 	return (1);
 }
@@ -104,17 +86,13 @@ int	replace_content_middle(t_final_token *tmp,
 	final = ft_malloc(strlen(temp) + ft_strlen(env_value)
 			+ ft_strlen(tmp->content + i + len + 1) + 1);
 	if (!final)
-	{
-		// ft_free(temp);
 		return (0);
-	}
 	ft_string_cpy(final, temp);
 	ft_strcat(final, env_value, ft_strlen(env_value));
-	// ft_string_cpy(final, env_value);
-	ft_strcat(final, tmp->content + i + len + 1, ft_strlen(tmp->content + i + len + 1));
+	ft_strcat(final, tmp->content + i + len + 1,
+		ft_strlen(tmp->content + i + len + 1));
 	ft_free(tmp->content);
 	tmp->content = final;
-	// ft_free(final);
 	return (1);
 }
 
@@ -124,7 +102,6 @@ void	process_token_content(t_final_token *tmp, t_minishell *minishell,
 	size_t	i;
 
 	i = 0;
-	printf("%s\n", tmp->content);
 	while (tmp->content[i])
 	{
 		update_quotes(tmp->content[i], in_single_quote, in_double_quote);
@@ -162,29 +139,30 @@ void	process_token_content(t_final_token *tmp, t_minishell *minishell,
 //             } else if (tmp->content[i] == '\"' && !in_single_quote) {
 //                 in_double_quote = !in_double_quote;
 //             }
-
 //             if (tmp->content[i] == '$' && !in_single_quote) {
 //                 len = len_of_var_of_env(tmp->content + i + 1);
 //                 var = extract_of_the_var(tmp->content + i);
 //                 if (var == NULL) {
 //                     return;
 //                 }
-                
-//                 char *env_value = select_var_of_env(minishell, var + 1);; // skip the nn'$' character
+//                 char *env_value = select_var_of_env(minishell, var + 1);
 //                 if (!env_value) {
 //                     env_value = ""; // treat undefined variables as empty
 //                 }
 
 //                 if (i == 0) {
 //                     final = ft_strdup(env_value);
-//                     tmp->content = ft_realloc(tmp->content, strlen(final) + 1);
+//                     tmp->content = ft_realloc(tmp->content,
+//						strlen(final) + 1);
 //                     strcpy(tmp->content, final);
 //                 } else {
 //                     temp = ft_strndup(tmp->content, i);
-//                     final = ft_malloc(ft_strlen(temp) + ft_strlen(env_value) + ft_strlen(tmp->content + i + len + 1) + 1);
+//                     final = ft_malloc(ft_strlen(temp) + ft_strlen(env_value)
+//							+ ft_strlen(tmp->content + i + len + 1) + 1);
 //                     ft_string_cpy(final, temp);
 //                     ft_strcat(final, env_value, ft_strlen(env_value));
-//                     ft_strcat(final, tmp->content + i + len + 1, ft_strlen(tmp->content + i + len + 1));
+//                     ft_strcat(final, tmp->content + i + len + 1,
+//							ft_strlen(tmp->content + i + len + 1));
 //                     ft_free(tmp->content);
 //                     tmp->content = final;
 //                     // ft_free(temp);

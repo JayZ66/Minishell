@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:08:10 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/06 11:44:57 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/07 11:41:44 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	create_new_token(t_token *token, int i)
 	new->type = CMD;
 	new->next = token->next;
 	token->next = new;
-	// ft_free(token->content);
 }
 
 void	cut_node(t_token *token)
@@ -46,10 +45,9 @@ void	cut_node(t_token *token)
 	if (string_is_space(token->content + i) == 0)
 	{
 		create_new_token(token, i);
-		// free(token->content);
 		token->content = temp;
 	}
-	free(temp);
+	// free(temp);
 }
 
 void	manage_node(t_token *token)

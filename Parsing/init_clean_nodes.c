@@ -6,13 +6,13 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:14:00 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/06 16:12:17 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/07 09:09:49 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_clean_token	*init_clean_node(char *content, Token_type type)
+t_clean_token	*init_clean_node(char *content, t_type type)
 {
 	t_clean_token	*token;
 

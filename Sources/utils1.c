@@ -19,8 +19,6 @@ char	*ft_strcat(char *dst, const char *src, size_t size)
 
 	i = 0;
 	j = 0;
-	// if (size <= 0)
-	// 	return (perror("Can't concatenate\n"), NULL);
 	while (dst[i])
 		i++;
 	while (src[j] && j < size)

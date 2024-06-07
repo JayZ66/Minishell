@@ -41,12 +41,16 @@ int	exec_loop(t_final_token **current, t_minishell *minishell,
 {
 	int				pid_array[1024];
 	int				index;
+	int				file;
 	pid_t			pid;
+	// int				saved_stdout;
 
+	// saved_stdout = dup(STDOUT_FILENO);
 	index = 0;
 	while (*current)
 	{
-		if (handle_redirections(current, minishell, exit_code) == -1)
+		file = handle_redirections(current, minishell, exit_code);
+		if (file == -1)
 			break ;
 		if (is_pipe_command(current))
 		{
@@ -54,16 +58,16 @@ int	exec_loop(t_final_token **current, t_minishell *minishell,
 				should_exit = 1;
 			else
 			{
-				pid = manage_fork(minishell, exit_code, current);
+				pid = manage_fork(minishell, exit_code, current, file);
 				pid_array[index++] = pid;
 			}
 		}
 		else if ((*current)->type == CMD)
 			exec_simple_cmd(current, exit_code, minishell);
+		// dup2(saved_stdout, STDOUT_FILENO);
 		moove_to_next_token(current);
 	}
-	wait_processes(pid_array, index);
-	return (should_exit);
+	return (wait_processes(pid_array, index), should_exit);
 }
 
 void	execute_commands_with_pipes_and_redirections(t_final_token **lst,
@@ -83,4 +87,6 @@ void	execute_commands_with_pipes_and_redirections(t_final_token **lst,
 	dup2(saved_stdout, STDOUT_FILENO);
 	if (should_exit)
 		builtin_or_not_builtin("exit", minishell, exit_code);
+	close(saved_stdin);
+	close(saved_stdout);
 }

@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:06:47 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/06 17:34:23 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/07 11:06:13 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,6 @@ int	get_exit_code(char *str, t_minishell *minishell)
 	if (!str)
 		return (-1);
 	if (ft_strschr(str, "$?") == 0)
-	{
-		// printf("%d", minishell->last_exit_status);
 		return (1);
-	}
 	return (0);
 }

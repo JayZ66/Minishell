@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:06:45 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/06 16:04:47 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/07 11:22:37 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	tokenize_append(t_token **token, char *input, int i)
 	temp = ft_strndup(input + start, end - start);
 	new = init_node(temp, APPEND);
 	add_back(token, new);
-	// ft_free(temp);
 	return (end);
 }
 
@@ -64,7 +63,6 @@ int	tokenize_output(t_token **token, char *input, int i)
 	temp = ft_strndup(input + start, end - start);
 	new = init_node(temp, OUTPUT);
 	add_back(token, new);
-	// ft_free(temp);
 	return (end);
 }
 
@@ -92,7 +90,6 @@ int	tokenize_here_doc(t_token **token, char *input, int i)
 	temp = ft_strndup(input + start, end - start);
 	new = init_node(temp, HERE_DOC);
 	add_back(token, new);
-	// ft_free(temp);
 	return (end);
 }
 
@@ -121,6 +118,5 @@ int	tokenize_input(t_token **token, char *input, int i)
 	new = init_node(temp, INPUT);
 	add_back(token, new);
 	i = end;
-	// ft_free(temp);
 	return (i);
 }

@@ -6,13 +6,13 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:05:31 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/06 16:07:40 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/07 09:10:44 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_token	*init_node(char *content, Token_type type)
+t_token	*init_node(char *content, t_type type)
 {
 	t_token	*token;
 
@@ -34,7 +34,7 @@ t_token	*init_node(char *content, Token_type type)
 	return (token);
 }
 
-t_token	*init_node_separator(Token_type type)
+t_token	*init_node_separator(t_type type)
 {
 	t_token	*token;
 

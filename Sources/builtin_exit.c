@@ -80,7 +80,7 @@ void	manage_exit_with_code(char **args, t_minishell *exit_code,
 	size_t	i;
 	int		exit_status;
 
-	i = 0;
+	i = -1;
 	(void)minishell;
 	exit_status = 0;
 	args = is_char_ok(args, minishell);
@@ -89,11 +89,8 @@ void	manage_exit_with_code(char **args, t_minishell *exit_code,
 		printf("-bash: exit: too many arguments\n");
 		return ;
 	}
-	while (args[1][i])
-	{
+	while (args[1][++i])
 		if_not_digit(args[1], i, exit_code);
-		i++;
-	}
 	exit_status = ft_atoi(args[1]);
 	exit_status = exit_status % 256;
 	exit_code->last_exit_status = exit_status;

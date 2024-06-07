@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:55:48 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/06 16:11:12 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:13:32 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	check_pwd_option(char *str)
 			printf("bash: pwd: %s: invalid option\n", str + i);
 			return (1);
 		}
-		if (str[i] != 'p' && str[i] != 'w' && str[i] != 'd')
+		if (str[i] != 'p' && str[i] != 'w' && str[i] != 'd' && str[i] != 32)
 		{
 			printf("bash: pwd: Command '%s' not found\n", str);
 			return (1);

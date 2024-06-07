@@ -20,15 +20,15 @@ char	*get_path(char *cmd, t_minishell *minishell)
 	size_t	i;
 
 	if (cmd == NULL)
-		return NULL;
+		return (NULL);
 	path = select_path(minishell, cmd);
-	i = 0;
+	i = -1;
 	if (!path)
 	{
 		minishell->last_exit_status = EXIT_FAILURE;
 		exit(EXIT_FAILURE);
 	}
-	while (path[i])
+	while (path[++i])
 	{
 		tmp_path = ft_strjoin(path[i], "/");
 		final_path = ft_strjoin(tmp_path, cmd);
@@ -36,11 +36,9 @@ char	*get_path(char *cmd, t_minishell *minishell)
 		if (access(final_path, X_OK) == 0)
 			return (ft_free(path), final_path);
 		ft_free(final_path);
-		i++;
 	}
 	ft_free(path);
-	printf("bash: %s: command not found\n", cmd);
-	return (NULL);
+	return (printf("bash: %s: command not found\n", cmd), NULL);
 }
 
 char	**select_path(t_minishell *minishell, char *cmd)

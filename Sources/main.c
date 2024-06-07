@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/06 19:25:54 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/07 18:30:08 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	free_lst_not_content(t_token **token)
 	while (*token)
 	{
 		tmp = (*token)->next;
-		//ft_free((*token)->content);
 		ft_free(*token);
 		*token = tmp;
 	}
@@ -43,29 +42,25 @@ void	free_lst_not_content_clean(t_clean_token **token)
 	while (*token)
 	{
 		tmp = (*token)->next;
-		//ft_free((*token)->content);
 		ft_free(*token);
 		*token = tmp;
 	}
 	*token = NULL;
 }
 
-char	*read_input(t_minishell *minishell, t_token *lst, t_clean_token *lst_clean, t_final_token *lst_final)
+char	*read_input(t_minishell *minishell, t_token *lst,
+			t_clean_token *lst_clean, t_final_token *lst_final)
 {
 	char	*input;
-	
-	(void)minishell;
-	(void)lst;
-	(void)lst_clean;
-	(void)lst_final;
+
 	input = readline("Tarpin_de_Minishell>");
 	if (input == NULL)
 	{
 		free(input);
-		// if (lst)
-		// 	free_that_lst(&lst);
-		// if (lst_clean)
-		// 	free_that_clean_lst(&lst_clean);
+		if (lst)
+			free_lst_not_content(&lst);
+		if (lst_clean)
+			free_lst_not_content_clean(&lst_clean);
 		if (lst_final)
 			free_that_final_lst(&lst_final);
 		printf("exit\n");
@@ -76,10 +71,7 @@ char	*read_input(t_minishell *minishell, t_token *lst, t_clean_token *lst_clean,
 		exit(EXIT_FAILURE);
 	}
 	if (ft_strncmp(input, ":", 1) == 0 || ft_strncmp(input, "!", 1) == 0)
-	{
-		input = ft_strdup("");
-		return (input);
-	}
+		return (input = ft_strdup(""), input);
 	add_history(input);
 	return (input);
 }
@@ -111,17 +103,17 @@ int	main(int argc, char **argv, char **env)
 		input = read_input(minishell, token, clean_token, final_token);
 		if (ft_strlen(input) == 0 || ft_isspace(input) == 1)
 		{
-			rl_on_new_line();
+			// rl_on_new_line();
 			free(input);
 			continue ;
 		}
 		token = extract_cmd(&token, input);
 		head = token;
-		// if (clean_chevron(token) == 1)
+		// if (clean_chevron(token) == 1) // Pb bce always send 0 so if < alone => SEGFAULT !!!
 		// {
 		// 	printf("bash: %s error\n", input);
 		// 	rl_on_new_line();
-		// 	ft_free(input);
+		// 	free(input);
 		// 	free_that_lst(&token);
 		// 	continue ;
 		// }
@@ -142,14 +134,12 @@ int	main(int argc, char **argv, char **env)
 		token = head;
 		clean_token = copy_lst(token);
 		free_lst_not_content(&token);
-		token = NULL;
 		test_redirection_input(clean_token);
 		final_token = final_clean_node(clean_token);
 		free_lst_not_content_clean(&clean_token);
 		get_var_of_env(final_token, minishell);
-		// clean_token = NULL;
 		remove_quote(final_token);
-		print_final_lst(final_token);
+		// print_lst(final_token);
 		execute_commands_with_pipes_and_redirections(&final_token,
 			minishell, &exit_code);
 		free_that_final_lst(&final_token);

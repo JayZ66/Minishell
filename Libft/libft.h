@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 12:56:56 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/06 10:25:25 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/07 09:20:31 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ typedef struct s_list
 }	t_list;
 
 void	*ft_calloc(size_t nmemb, size_t size);
-void    ft_free_all(void);
+void	ft_free_all(void);
 void	*ft_malloc(size_t size);
 void	ft_free(void *ptr);
-void    *ft_realloc(void *ptr, size_t size);
+void	*ft_realloc(void *ptr, size_t size);
 
 int		ft_atoi(const char *nptr);
 void	ft_bzero(void *s, size_t n);
