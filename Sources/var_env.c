@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:03:05 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/07 11:05:41 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/09 17:26:16 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,9 @@ void	process_token_content(t_final_token *tmp, t_minishell *minishell,
 	while (tmp->content[i])
 	{
 		update_quotes(tmp->content[i], in_single_quote, in_double_quote);
+		if (tmp->content[i] == '$' && (tmp->content[i + 1] == ' '
+			||  tmp->content[i + 1] == '\0' || tmp->content[i + 1] == '$'))
+			return ;
 		if (tmp->content[i] == '$' && !(*in_single_quote))
 		{
 			if (!handle_env_var(tmp, minishell, &i))

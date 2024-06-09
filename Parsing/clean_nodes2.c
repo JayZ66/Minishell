@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_nodes2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:23:17 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/07 11:31:59 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/09 17:10:13 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	clean_spaces2(t_token *token)
 			while (token->content[i] && token->content[i] != ' '
 				&& token->content[i] != '\t')
 				i++;
-			token->content = ft_strndup(token->content, i);
+			token->content = ft_strndup(token->content, i);//pas sur du strndup -> peut etre un strcpy
 		}
 		token = token->next;
 	}
@@ -81,7 +81,11 @@ int	clean_token_content(t_token *token)
 	{
 		if (token->content[i] == '<' || token->content[i] == '>'
 			|| token->content[i] == '|')
+		{
+			if (token->content[i + 1] == '\0' || string_is_space(token->content + i + 1) == 1)//voir pk si "<   " segfault
+				return (1);
 			i++;
+		}
 		else
 			token->content[j++] = token->content[i++];
 	}

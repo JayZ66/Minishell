@@ -61,7 +61,7 @@ void	builtin_env(t_minishell *minishell)
 	i = 0;
 	while (minishell->env[i])
 	{
-		ft_printf("%s\n", minishell->env[i]);
+		printf("%s\n", minishell->env[i]);
 		i++;
 	}
 }

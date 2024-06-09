@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:14:33 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/07 18:30:08 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/09 17:04:36 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,14 +109,14 @@ int	main(int argc, char **argv, char **env)
 		}
 		token = extract_cmd(&token, input);
 		head = token;
-		// if (clean_chevron(token) == 1) // Pb bce always send 0 so if < alone => SEGFAULT !!!
-		// {
-		// 	printf("bash: %s error\n", input);
-		// 	rl_on_new_line();
-		// 	free(input);
-		// 	free_that_lst(&token);
-		// 	continue ;
-		// }
+		if (clean_chevron(token) == 1) // Pb bce always send 0 so if < alone => SEGFAULT !!!
+		{
+			printf("bash: %s error\n", input);
+			rl_on_new_line();
+			free(input);
+			free_that_lst(&token);
+			continue ;
+		}
 		clean_spaces1(token);
 		manage_node(token);
 		clean_spaces2(token);
