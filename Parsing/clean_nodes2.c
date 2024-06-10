@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_nodes2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:23:17 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/09 17:10:13 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/10 17:27:29 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,29 @@ void	clean_spaces1(t_token *token)
 	}
 }
 
-void	clean_spaces2(t_token *token)
+int	clean_spaces2(t_token *token)
 {
 	int	i;
 
 	while (token)
 	{
 		i = 0;
+		if (token->content == NULL && token->type != PIPE)
+		{
+			printf("bash: syntax error\n");
+			return (1);
+		}
 		if (token->type == INPUT || token->type == OUTPUT
 			|| token->type == APPEND || token->type == HERE_DOC)
 		{
 			while (token->content[i] && token->content[i] != ' '
 				&& token->content[i] != '\t')
 				i++;
-			token->content = ft_strndup(token->content, i);//pas sur du strndup -> peut etre un strcpy
+			token->content = ft_strndup(token->content, i);
 		}
 		token = token->next;
 	}
+	return (0);
 }
 
 int	clean_token_content(t_token *token)

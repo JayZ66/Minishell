@@ -34,10 +34,9 @@ void	exec_cmd_with_pipe(t_final_token **current, t_minishell *exit_code,
 		*current = (*current)->next;
 }
 
-void	exec_simple_cmd(t_final_token **current, t_minishell *exit_code,
-	t_minishell *minishell)
+void	exec_simple_cmd(t_final_token **current, t_minishell *minishell)
 {
-	if (builtin_or_not_builtin((*current)->content, minishell, exit_code) == 0)
+	if (builtin_or_not_builtin((*current)->content, minishell) == 0)
 		;
 	else
 		exec_cmd_with_fork((*current)->content, minishell);

@@ -20,19 +20,16 @@ void	go_back_home(t_minishell *minishell)
 	if (getcwd(old_cwd, sizeof(old_cwd)) == NULL)
 	{
 		perror("getcwd");
-		minishell->last_exit_status = EXIT_FAILURE;
 		return ;
 	}
 	if (chdir("/") != 0)
 	{
 		perror("Can't change directory\n");
-		minishell->last_exit_status = EXIT_FAILURE;
 		return ;
 	}
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 	{
 		perror("Can't get the new path\n");
-		minishell->last_exit_status = EXIT_FAILURE;
 		return ;
 	}
 	env_with_new_var(minishell->env, "OLDPWD", old_cwd);
@@ -47,19 +44,16 @@ void	go_back_user(t_minishell *minishell)
 	if (getcwd(old_cwd, sizeof(old_cwd)) == NULL)
 	{
 		perror("getcwd");
-		minishell->last_exit_status = EXIT_FAILURE;
 		return ;
 	}
 	if (chdir("/home/jeguerin/") != 0)
 	{
 		perror("Can't change directory\n");
-		minishell->last_exit_status = EXIT_FAILURE;
 		return ;
 	}
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 	{
 		perror("Can't get the new path\n");
-		minishell->last_exit_status = EXIT_FAILURE;
 		return ;
 	}
 	env_with_new_var(minishell->env, "OLDPWD", old_cwd);

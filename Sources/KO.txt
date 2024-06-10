@@ -127,12 +127,12 @@ Check dans la tokenisation > Checker dans la string :
 4. On modifie
 => Check AVANT la gestion des quotes !
 
-- Try a command like : echo "cat lol.c | cat > lol.c"
+- Try a command like : echo "cat lol.c | cat > lol.c" => DONE
 => Need to put things inside quotes in a node (like option)
 & not creating different nodes.
 - Absolute path => Check how to manage it
 
-Quotes & Var. d'env : 
+Quotes & Var. d'env : DONE
 - D'abord on gere les quotes et ensuite la var. d'env.
 => Par contre il faut gerer les quotes avant et donc reconnaitre
 le type de quotes :
@@ -249,7 +249,7 @@ Par contre il faut regarder les redirections dans l'ordre de leur apparition.
 - Echo : echo -n dggd => DONE
 
 - LEAKS : 
-TESTER LE LEAK BUILTIN OR NOT BUILTIN ou je dois free(args).
+TESTER LE LEAK BUILTIN OR NOT BUILTIN ou je dois free(args). => DONE
 
 
 NORME FONCTIONS : DONE
@@ -284,3 +284,40 @@ void	get_var_of_env(t_final_token *node)
 => Utiliser minishell->env et non get_env !!!
 
 - Ne pas exit quand un file n'est pas bon !
+
+
+-------------------------------------------------------------
+
+Modification du pwd + caractères => DONE
+[18:42]
+check cd alone => DONE
+[18:42]
+check errors excel => DONE (i think)
+[18:42]
+Check why exit code is manage as a cmd => DONE
+[18:43]
+Check files : ne pas mettre de EXIT_FAILURE but Return ! => DONE
+Export : NO char errors after = !
++ check de quel côté du pipe le exit se fait
+
+- Norme => DONE
+
+NE PAS ENVOYER A L'EXEC : => DONE
+Tarpin_de_Minishell>< reheg < rdhr < rehrg cat
+bash: reheg No such file or directory
+bash: rehrg: No such file or directory
+ff
+ff
+ff
+ff
+f
+f
+
+
+
+-----------------
+Tarpin_de_Minishell>< a > b cat > hey >> d => DONE
+
+=> Cree pas file 2 !!
+
+cat << ok << lol << ko => DONE

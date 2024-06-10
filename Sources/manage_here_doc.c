@@ -12,22 +12,24 @@
 
 #include "../minishell.h"
 
-void reset_stdin(t_minishell *exit_code)
+void	reset_stdin(t_minishell *exit_code)
 {
-    int tty_fd = open("/dev/tty", O_RDONLY);
-    if (tty_fd == -1)
+	int	tty_fd;
+
+	tty_fd = open("/dev/tty", O_RDONLY);
+	if (tty_fd == -1)
 	{
-        perror("open /dev/tty");
+		perror("open /dev/tty");
 		exit_code->last_exit_status = EXIT_FAILURE;
-        exit(EXIT_FAILURE);
-    }
-    if (dup2(tty_fd, STDIN_FILENO) == -1)
+		exit(EXIT_FAILURE);
+	}
+	if (dup2(tty_fd, STDIN_FILENO) == -1)
 	{
-        perror("dup2");
+		perror("dup2");
 		exit_code->last_exit_status = EXIT_FAILURE;
-        exit(EXIT_FAILURE);
-    }
-    close(tty_fd);
+		exit(EXIT_FAILURE);
+	}
+	close(tty_fd);
 }
 
 void	handle_here_doc(char *cmd, t_minishell *exit_code, int alone)

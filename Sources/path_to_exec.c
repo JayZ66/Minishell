@@ -37,8 +37,8 @@ char	*get_path(char *cmd, t_minishell *minishell)
 			return (ft_free(path), final_path);
 		ft_free(final_path);
 	}
-	ft_free(path);
-	return (printf("bash: %s: command not found\n", cmd), NULL);
+	return (ft_free(path), minishell->last_exit_status = 127,
+		printf("bash: %s: command not found\n", cmd), NULL);
 }
 
 char	**select_path(t_minishell *minishell, char *cmd)
@@ -66,5 +66,6 @@ char	**select_path(t_minishell *minishell, char *cmd)
 		}
 		i++;
 	}
-	return (printf("bash: %s: command not found\n", cmd), NULL);
+	return (minishell->last_exit_status = 127,
+		printf("bash: %s: command not found\n", cmd), NULL);
 }

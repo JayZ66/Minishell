@@ -81,15 +81,8 @@ char			*read_input(t_minishell *minishell, t_token *lst,
 					t_clean_token *lst_clean, t_final_token *lst_final);
 void			shell_level(t_minishell *minishell);
 
-// void	execute_pipe(int nb_args, char **cmd_line, char **env);
-// void	do_pipes(char *cmd, char **env);
-
-// int		manage_file(int nb_args, char **cmd_line, int flag);
-// char	*check_line_cmd(t_token *token);
-
 // Var. env.
-char			*get_the_var_of_env(t_final_token *node,
-					t_minishell *minishell);
+char			*get_the_var_of_env(t_final_token *node);
 
 // Utils
 void			print_tab(char **cmd_line);
@@ -110,7 +103,7 @@ int				ft_strncmp_limiter(const char *s1, const char *s2, size_t n);
 void			print_export_env(t_minishell *minishell);
 
 // Built_in
-void			builtin_exit(char **args, t_minishell *exit_code,
+void			builtin_exit(char **args,
 					t_minishell *minishell);
 int				check_char_exit(char **args);
 void			exit_special_char(char **args, t_minishell *minishell);
@@ -118,7 +111,7 @@ char			**is_char_ok(char **args, t_minishell *minishell);
 void			if_not_digit(char *args, size_t i, t_minishell *exit_code);
 char			**getting_exit_code(char **args, t_minishell *minishell);
 void			builtin_pwd(char *str, t_minishell *minishell);
-int				check_pwd_option(char *str);
+int				check_pwd_option(char *str, t_minishell *minishell);
 void			builtin_unset(char **var, t_minishell *minishell);
 void			builtin_env(t_minishell *minishell);
 void			builtin_export(char **args, t_minishell *minishell);
@@ -135,7 +128,7 @@ int				check_char_unset(char c);
 int				check_char_export(char c);
 int				identifier_errors_unset(char *args);
 int				identifier_errors_export(char *args);
-char			*check_value(char *var);
+char			*check_value(char *var, t_minishell *minishell);
 int				reset_existing_value(const char *var, const char *value,
 					t_minishell *minishell, char ***env);
 int				if_quote(char *var_env);
@@ -163,7 +156,7 @@ int				check_cd_errors(char **cmd, t_minishell *minishell);
 int				check_cd(char **cmd, t_minishell *minishell);
 char			*create_new_var(const char *var, const char *value);
 char			**alloc_new_env(size_t i, char *new_var, char **env);
-void			builtin_echo(char *str, t_minishell *exit_code);
+void			builtin_echo(char *str, t_minishell *minishell);
 void			how_many_back_slash(char *cmd);
 void			print_echo_arg(char **cmd_with_options,
 					t_minishell *exit_code);
@@ -229,8 +222,7 @@ int				manage_redirection_output(t_final_token **current,
 					int last_file, t_minishell *minishell);
 int				manage_cmd_pipe(t_final_token **current, t_minishell *exit_code,
 					int last_file, t_minishell *minishell);
-void			exec_simple_cmd(t_final_token **current, t_minishell *exit_code,
-					t_minishell *minishell);
+void			exec_simple_cmd(t_final_token **current, t_minishell *minishell);
 void			execute_commands_with_pipes_and_redirections(
 					t_final_token **lst,
 					t_minishell *minishell, t_minishell *exit_code);
@@ -265,8 +257,7 @@ void			sigquit_handler(int sig);
 // EXPANSER
 int				check_var(t_final_token *node);
 int				handle_quote_errors(char *cmd, t_minishell *minishell);
-int				builtin_or_not_builtin(char *str, t_minishell *minishell,
-					t_minishell *exit_code);
+int				builtin_or_not_builtin(char *str, t_minishell *minishell);
 int				is_built_in(char *str);
 char			*managing_quotes(char *input, t_minishell *minishell);
 char			*manage_simple_quotes(char *input, int i);
@@ -320,7 +311,7 @@ size_t			process_token(t_token **token, char *input, size_t i,
 // CLEAN NODES
 void			clean_spaces_in_content(char *content);
 void			clean_spaces1(t_token *token);
-void			clean_spaces2(t_token *token);
+int				clean_spaces2(t_token *token);
 int				clean_token_content(t_token *token);
 int				clean_chevron(t_token *token);
 void			create_new_token(t_token *token, int i);
@@ -332,7 +323,7 @@ int				test_redirection_input(t_clean_token *clean_node);
 int				handle_input_redirection(t_clean_token *clean_node);
 void			handle_output_redirection(t_clean_token *clean_node);
 void			handle_append_redirection(t_clean_token *clean_node);
-void			handle_here_doc_redirection(t_clean_token *clean_node, int *i);
+void			handle_here_doc_redirection(t_clean_token *clean_node, int i);
 
 int				redirection_input(t_clean_token *clean_node);
 void			redirection_output(t_clean_token *clean_node);

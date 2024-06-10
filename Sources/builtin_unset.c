@@ -12,10 +12,13 @@
 
 #include "../minishell.h"
 
-void	check_unset_errors(char **var)
+void	check_unset_errors(char **var, t_minishell *minishell)
 {
 	if (ft_strcmp(var[0], "unset") != 0)
+	{
+		minishell->last_exit_status = 127;
 		printf("%s: command not found\n", var[0]);
+	}
 }
 
 void	unset_variable(char **var, t_minishell *minishell)
@@ -51,5 +54,5 @@ void	builtin_unset(char **var, t_minishell *minishell)
 {
 	if (var[1])
 		unset_variable(var, minishell);
-	check_unset_errors(var);
+	check_unset_errors(var, minishell);
 }

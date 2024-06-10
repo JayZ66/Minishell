@@ -3,21 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   var_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:03:05 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/09 17:26:16 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:30:49 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	rebuild_cmd_line(t_final_token *tmp, t_minishell *minishell)
+{
+	char	*nb;
+	char	**cmd;
+
+	cmd = ft_split(tmp->content, ' ');
+	nb = ft_itoa(minishell->last_exit_status);
+	if (cmd[1])
+	{
+		ft_string_cpy(tmp->content, cmd[0]);
+		ft_strcat(tmp->content, " ", 1);
+		ft_strcat(tmp->content, nb, ft_strlen(nb));
+	}
+	else if (!cmd[1])
+	{
+		tmp->content = nb;
+	}
+	free_tab(cmd);
+}
 
 void	get_var_of_env(t_final_token *node, t_minishell *minishell)
 {
 	t_final_token	*tmp;
 	int				in_single_quote;
 	int				in_double_quote;
-	char			*nb;
 
 	tmp = node;
 	in_single_quote = 0;
@@ -25,10 +44,7 @@ void	get_var_of_env(t_final_token *node, t_minishell *minishell)
 	while (tmp)
 	{
 		if (get_exit_code(tmp->content, minishell) == 1)
-		{
-			nb = ft_itoa(minishell->last_exit_status);
-			tmp->content = nb;
-		}
+			rebuild_cmd_line(tmp, minishell);
 		else
 			process_token_content(tmp, minishell, &in_single_quote,
 				&in_double_quote);
@@ -106,7 +122,7 @@ void	process_token_content(t_final_token *tmp, t_minishell *minishell,
 	{
 		update_quotes(tmp->content[i], in_single_quote, in_double_quote);
 		if (tmp->content[i] == '$' && (tmp->content[i + 1] == ' '
-			||  tmp->content[i + 1] == '\0' || tmp->content[i + 1] == '$'))
+				|| tmp->content[i + 1] == '\0' || tmp->content[i + 1] == '$'))
 			return ;
 		if (tmp->content[i] == '$' && !(*in_single_quote))
 		{

@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:49:09 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/06 15:21:32 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:40:41 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	redir_builtin(char *cmd, t_minishell *exit_code, t_minishell *minishell,
 	if (pid == 0)
 	{
 		child_builtin(fd, out);
-		builtin_or_not_builtin(cmd, minishell, exit_code);
+		builtin_or_not_builtin(cmd, minishell);
 		minishell->last_exit_status = EXIT_SUCCESS;
 		exit(EXIT_SUCCESS);
 	}

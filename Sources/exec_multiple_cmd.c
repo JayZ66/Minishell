@@ -16,7 +16,7 @@ void	child_pipe(int *pipefd, t_minishell *minishell, t_minishell *exit_code,
 	t_final_token **current)
 {
 	(void)pipefd;
-	exec_simple_cmd(current, exit_code, minishell);
+	exec_simple_cmd(current, minishell);
 	exit_code->last_exit_status = EXIT_SUCCESS;
 	exit(EXIT_SUCCESS);
 }

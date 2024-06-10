@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:08:10 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/07 11:41:44 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/10 15:40:37 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	cut_node(t_token *token)
 		create_new_token(token, i);
 		token->content = temp;
 	}
-	// free(temp);
 }
 
 void	manage_node(t_token *token)

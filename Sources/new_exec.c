@@ -43,10 +43,9 @@ int	exec_loop(t_final_token **current, t_minishell *minishell,
 	int				index;
 	int				file;
 	pid_t			pid;
-	// int				saved_stdout;
 
-	// saved_stdout = dup(STDOUT_FILENO);
 	index = 0;
+	(void)should_exit;
 	while (*current)
 	{
 		file = handle_redirections(current, minishell, exit_code);
@@ -54,20 +53,14 @@ int	exec_loop(t_final_token **current, t_minishell *minishell,
 			break ;
 		if (is_pipe_command(current))
 		{
-			if (ft_strncmp((*current)->content, "exit", 4) == 0)
-				should_exit = 1;
-			else
-			{
-				pid = manage_fork(minishell, exit_code, current, file);
-				pid_array[index++] = pid;
-			}
+			pid = manage_fork(minishell, exit_code, current, file);
+			pid_array[index++] = pid;
 		}
 		else if ((*current)->type == CMD)
-			exec_simple_cmd(current, exit_code, minishell);
-		// dup2(saved_stdout, STDOUT_FILENO);
+			exec_simple_cmd(current, minishell);
 		moove_to_next_token(current);
 	}
-	return (wait_processes(pid_array, index), should_exit);
+	return (wait_processes(pid_array, index), 0);
 }
 
 void	execute_commands_with_pipes_and_redirections(t_final_token **lst,
@@ -86,7 +79,7 @@ void	execute_commands_with_pipes_and_redirections(t_final_token **lst,
 	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);
 	if (should_exit)
-		builtin_or_not_builtin("exit", minishell, exit_code);
+		builtin_or_not_builtin("exit", minishell);
 	close(saved_stdin);
 	close(saved_stdout);
 }

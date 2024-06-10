@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 10:25:35 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/07 10:06:41 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:38:22 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,12 @@ void	ft_free(void *ptr)
 		if (reg->ptrs[i] == ptr)
 		{
 			free(ptr);
-			j = i - 1;
-			while (++j < reg->size - 1)
+			j = i;
+			while (j < reg->size - 1)
+			{
 				reg->ptrs[j] = reg->ptrs[j + 1];
+				j++;
+			}
 			reg->ptrs = realloc(reg->ptrs, (reg->size - 1) * sizeof(void *));
 			reg->size--;
 			return ;

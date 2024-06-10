@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 15:35:20 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/06 14:55:41 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/10 14:19:45 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ ReplaceEnvVars
 // Should we send the node->content ?
 // How do we change the value of the node->content ?
 
-char	*extract_var(char *str)
+char	*extract_var(char *str, t_minishell *minishell)
 {
 	size_t	i;
 	char	*var_env;
@@ -30,7 +30,7 @@ char	*extract_var(char *str)
 	{
 		i++;
 		var_env = ft_substr(str + i, 0, ft_strlen(str + i));
-		result = getenv(var_env);
+		result = select_var_of_env(minishell, str + 1);
 		if (result == NULL)
 			return (perror("This var. is not existing in the env.\n"),
 				ft_free(var_env), NULL);
@@ -66,31 +66,32 @@ int	check_var(t_final_token *node)
 	return (1);
 }
 
-char	*get_the_var_of_env(t_final_token *node, t_minishell *minishell)
-{
-	t_final_token	*tmp;
-	char			*var;
-	size_t			i;
+// char	*get_the_var_of_env(t_final_token *node)
+// {
+// 	t_final_token	*tmp;
+// 	char			*var;
+// 	size_t			i;
 
-	tmp = node;
-	if (check_var(node) == 1)
-	{
-		minishell->last_exit_status = EXIT_FAILURE;
-		exit(EXIT_FAILURE);
-	}
-	while (tmp)
-	{
-		i = -1;
-		while (tmp->content[++i])
-		{
-			while (tmp->content[i++] == ' ')
-				i++;
-			var = extract_var(tmp->content + i);
-			if (!var)
-				return (NULL);
-			return (var);
-		}
-		tmp = tmp->next;
-	}
-	return (perror("Can't get this var.\n"), NULL);
-}
+// 	tmp = node;
+// 	if (check_var(node) == 1)
+// 	{
+// 		// minishell->last_exit_status = EXIT_FAILURE;
+// 		// exit(EXIT_FAILURE);
+// 		return (NULL);
+// 	}
+// 	while (tmp)
+// 	{
+// 		i = -1;
+// 		while (tmp->content[++i])
+// 		{
+// 			while (tmp->content[i++] == ' ')
+// 				i++;
+// 			var = extract_var(tmp->content + i);
+// 			if (!var)
+// 				return (NULL);
+// 			return (var);
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	return (perror("Can't get this var.\n"), NULL);
+// }

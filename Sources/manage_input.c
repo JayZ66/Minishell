@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 14:51:19 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/07 16:53:11 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/10 14:55:36 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	manage_input_redirection(t_final_token **current, char *node_content,
 		printf("bash: %s: No such file or directory\n", node_content);
 		return (first_file);
 	}
-	// reset_stdin(exit_code);
 	dup2(first_file, STDIN_FILENO);
 	close(first_file);
 	if ((*current)->next)

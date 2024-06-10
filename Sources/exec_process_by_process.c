@@ -51,7 +51,7 @@ void	type_of_cmd(t_final_token **current, t_minishell *minishell,
 		;
 	else if ((*current)->type == CMD)
 	{
-		exec_simple_cmd(current, exit_code, minishell);
+		exec_simple_cmd(current, minishell);
 		dup2(saved_stdin, STDIN_FILENO);
 		dup2(saved_stdout, STDOUT_FILENO);
 	}
@@ -98,10 +98,8 @@ int	handle_redirections(t_final_token **current, t_minishell *minishell,
 	if (manage_pipe_output(current, minishell, exit_code) == 1)
 		return (-1);
 	first_file = manage_redirection_input(current, exit_code, first_file);
-	if (first_file != 0)
-		return (0);
 	last_file = manage_redirection_output(current, last_file, minishell);
-	if (last_file != 0)
+	if (first_file != 0 || last_file != 0)
 		return (last_file);
 	return (0);
 }

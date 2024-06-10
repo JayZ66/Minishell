@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 14:35:13 by romlambe          #+#    #+#             */
-/*   Updated: 2024/05/31 15:21:07 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:12:05 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,12 @@ void	handle_append_redirection(t_clean_token *clean_node)
 	}
 }
 
-void	handle_here_doc_redirection(t_clean_token *clean_node, int *i)
+void	handle_here_doc_redirection(t_clean_token *clean_node, int i)
 {
 	if ((clean_node->type == HERE_DOC && clean_node->next->type == HERE_DOC)
 		|| (clean_node->type == HERE_DOC && clean_node->next->type == INPUT))
 	{
-		redirection_here_doc(clean_node, *i);
-		(*i)++;
+		redirection_here_doc(clean_node, i);
 	}
 }
 
@@ -62,7 +61,7 @@ int	test_redirection_input(t_clean_token *clean_node)
 			return (1);
 		handle_output_redirection(clean_node);
 		handle_append_redirection(clean_node);
-		handle_here_doc_redirection(clean_node, &i);
+		handle_here_doc_redirection(clean_node, i);
 		clean_node = clean_node->next;
 	}
 	return (0);

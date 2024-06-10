@@ -47,7 +47,10 @@ void	builtin_echo(char *str, t_minishell *exit_code)
 	}
 	else if (ft_strcmp(cmd_with_options[0], "echo") != 0
 		&& ft_strcmp(cmd_with_options[0], "/bin/echo") != 0)
+	{
+		exit_code->last_exit_status = 127;
 		printf("%s: command not found\n", cmd_with_options[0]);
+	}
 	else
 		printf("\n");
 	ft_free(cmd_with_options);

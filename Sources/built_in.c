@@ -41,7 +41,7 @@ void	builtin_pwd(char *str, t_minishell *minishell)
 	char	buffer[1024];
 	char	*absolute_path;
 
-	if (check_pwd_option(str) == 1)
+	if (check_pwd_option(str, minishell) == 1)
 		return ;
 	absolute_path = getcwd(buffer, sizeof(buffer));
 	if (absolute_path != NULL)
@@ -50,7 +50,7 @@ void	builtin_pwd(char *str, t_minishell *minishell)
 	{
 		perror("Can't get the absolute path\n");
 		minishell->last_exit_status = EXIT_FAILURE;
-		exit(EXIT_FAILURE);
+		return ;
 	}
 }
 

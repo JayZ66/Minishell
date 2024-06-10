@@ -66,7 +66,7 @@ void	modify_or_create(char **args, t_minishell *minishell,
 	new_var = ft_substr(args[i], 0, j + 1);
 	if (is_var_in_env(new_var, minishell) == 1)
 	{
-		var = check_value(args[i]);
+		var = check_value(args[i], minishell);
 		if (ft_strcmp(args[i], var) != 0)
 			ft_free(new_var);
 		modify_value_env(&minishell->env, new_var, args[i] + j + 1, minishell);
@@ -74,7 +74,7 @@ void	modify_or_create(char **args, t_minishell *minishell,
 	}
 	else
 	{
-		var = check_value(args[i]);
+		var = check_value(args[i], minishell);
 		minishell->env = create_var_env(minishell, var);
 		if (ft_strcmp(args[i], var) != 0)
 			ft_free(var);
@@ -82,7 +82,7 @@ void	modify_or_create(char **args, t_minishell *minishell,
 	}
 }
 
-char	*check_value(char *var)
+char	*check_value(char *var, t_minishell *minishell)
 {
 	size_t	i;
 
@@ -96,6 +96,7 @@ char	*check_value(char *var)
 		}
 		else if (var[i] == ';')
 		{
+			minishell->last_exit_status = 127;
 			printf("bash: %s: command not found\n", var + i);
 			return (ft_substr(var, 0, i));
 		}

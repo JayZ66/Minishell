@@ -62,7 +62,7 @@ void	exec_absolute_path(char **cmd_line, char *cmd, t_minishell *minishell)
 		free_tab(cmd_line);
 		ft_free(new_cmd);
 		printf("bash: %s: command not found\n", cmd);
-		minishell->last_exit_status = EXIT_FAILURE;
+		minishell->last_exit_status = 127;
 		exit(EXIT_FAILURE);
 	}
 }

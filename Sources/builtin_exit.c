@@ -74,8 +74,7 @@ char	**getting_exit_code(char **args, t_minishell *minishell)
 	return (args);
 }
 
-void	manage_exit_with_code(char **args, t_minishell *exit_code,
-	t_minishell *minishell)
+void	manage_exit_with_code(char **args, t_minishell *minishell)
 {
 	size_t	i;
 	int		exit_status;
@@ -90,10 +89,10 @@ void	manage_exit_with_code(char **args, t_minishell *exit_code,
 		return ;
 	}
 	while (args[1][++i])
-		if_not_digit(args[1], i, exit_code);
+		if_not_digit(args[1], i, minishell);
 	exit_status = ft_atoi(args[1]);
 	exit_status = exit_status % 256;
-	exit_code->last_exit_status = exit_status;
+	minishell->last_exit_status = exit_status;
 	printf("exit\n");
 	ft_free(args);
 	free_tab(minishell->env);
@@ -102,16 +101,18 @@ void	manage_exit_with_code(char **args, t_minishell *exit_code,
 	exit(exit_status);
 }
 
-void	builtin_exit(char **args, t_minishell *exit_code,
-	t_minishell *minishell)
+void	builtin_exit(char **args, t_minishell *minishell)
 {
 	if (args[1] != NULL)
-		manage_exit_with_code(args, exit_code, minishell);
+		manage_exit_with_code(args, minishell);
 	else if (ft_strncmp(args[0], "exit", 4) != 0)
+	{
+		minishell->last_exit_status = 127;
 		printf("%s: command not found\n", args[0]);
+	}
 	else
 	{
-		exit_code->last_exit_status = 0;
+		minishell->last_exit_status = 0;
 		printf("exit\n");
 		ft_free(args);
 		free_tab(minishell->env);
