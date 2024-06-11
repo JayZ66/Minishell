@@ -77,8 +77,7 @@ typedef struct s_minishell
 }					t_minishell;
 
 // MANDATORY PART
-char			*read_input(t_minishell *minishell, t_token *lst,
-					t_clean_token *lst_clean, t_final_token *lst_final);
+char			*read_input(t_minishell *minishell);
 void			shell_level(t_minishell *minishell);
 
 // Var. env.
@@ -396,5 +395,16 @@ void			set_quotes_state(char *curr_char, int i, t_sm *handle_quote);
 char			*remove_first_level_quote(char *content);
 void			remove_quote(t_final_token *token);
 char			*extract_of_the_var(char *str);
+
+// MAIN UTILS
+
+int				read_and_extract(char **input, t_minishell *minishell);
+int				handle_chevrons_and_spaces(t_minishell *minishell, char *input);
+int				handle_redirections_main(t_minishell *minishell, char *input);
+void			execute_and_cleanup(t_minishell *minishell,
+					t_minishell *exit_code);
+void			free_resources(t_minishell *minishell);
+void			free_lst_not_content(t_token **token);
+void			free_lst_not_content_clean(t_clean_token **token);
 
 #endif

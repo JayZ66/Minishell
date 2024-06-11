@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+         #
+#    By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/03 18:59:35 by jeza              #+#    #+#              #
-#    Updated: 2024/06/11 14:21:53 by jeguerin         ###   ########.fr        #
+#    Updated: 2024/06/11 16:54:24 by romlambe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ SRCS = 	Sources/main.c Sources/utils.c \
 		Sources/var_env.c Sources/var_env_utils.c Sources/quotes.c \
 		Sources/exec_multiple_cmd.c Sources/exec_process_by_process.c Sources/cd_utils2.c \
 		Sources/export_utils3.c Sources/builtin_exit.c Sources/builtin_unset.c \
-		Sources/var_env2.c \
+		Sources/var_env2.c Sources/main_utils.c Sources/free_lst.c\
 
 LIBFT = Libft/libft.a
 GETNEXTLINE = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
