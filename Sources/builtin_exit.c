@@ -115,7 +115,7 @@ void	builtin_exit(char **args, t_minishell *minishell)
 		minishell->last_exit_status = 0;
 		printf("exit\n");
 		ft_free(args);
-		free_tab(minishell->env);
+		// free_tab(minishell->env);
 		ft_free(minishell);
 		ft_free_all();
 		exit(0);

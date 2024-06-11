@@ -222,7 +222,8 @@ int				manage_redirection_output(t_final_token **current,
 					int last_file, t_minishell *minishell);
 int				manage_cmd_pipe(t_final_token **current, t_minishell *exit_code,
 					int last_file, t_minishell *minishell);
-void			exec_simple_cmd(t_final_token **current, t_minishell *minishell);
+void			exec_simple_cmd(t_final_token **current,
+					t_minishell *minishell);
 void			execute_commands_with_pipes_and_redirections(
 					t_final_token **lst,
 					t_minishell *minishell, t_minishell *exit_code);
@@ -382,6 +383,8 @@ void			update_quotes(char c, int *in_single_quote,
 
 char			*select_var_of_env(t_minishell *minishell, char *cmd);
 int				get_exit_code(char *str, t_minishell *minishell);
+void			rebuild_cmd_line(t_final_token *tmp, t_minishell *minishell);
+char			*erase_dollar(char *content, int i);
 
 // CHECK DIRECTORY
 

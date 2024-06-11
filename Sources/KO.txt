@@ -297,8 +297,8 @@ check errors excel => DONE (i think)
 Check why exit code is manage as a cmd => DONE
 [18:43]
 Check files : ne pas mettre de EXIT_FAILURE but Return ! => DONE
-Export : NO char errors after = !
-+ check de quel côté du pipe le exit se fait
+Export : NO char errors after = ! => DONE
++ Check de quel côté du pipe le exit se fait
 
 - Norme => DONE
 

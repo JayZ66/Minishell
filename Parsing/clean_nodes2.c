@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 10:23:17 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/10 17:27:29 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/11 14:23:41 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ int	clean_token_content(t_token *token)
 		if (token->content[i] == '<' || token->content[i] == '>'
 			|| token->content[i] == '|')
 		{
-			if (token->content[i + 1] == '\0' || string_is_space(token->content + i + 1) == 1)//voir pk si "<   " segfault
+			if (token->content[i + 1] == '\0'
+				|| string_is_space(token->content + i + 1) == 1)
 				return (1);
 			i++;
 		}

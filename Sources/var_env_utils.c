@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/01 16:06:47 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/10 14:17:02 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/11 14:27:51 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ char	*extract_of_the_var(char *str)
 	return (var);
 }
 
-//gerer les msg d'erreur-> 2 msg (voir ou ce situe le second)
 char	*select_var_of_env(t_minishell *minishell, char *cmd)
 {
 	size_t	i;
@@ -62,16 +61,6 @@ void	replace_var_of_env(char *content, char *var, int i)
 		content = ft_strdup(var);
 	else
 		content = ft_strjoin(var, content + i);
-}
-
-int	len_of_var_of_env(char *str)
-{
-	int	len;
-
-	len = 0;
-	while (str[len] && (isalnum(str[len]) || str[len] == '_'))
-		len++;
-	return (len);
 }
 
 int	get_exit_code(char *str, t_minishell *minishell)

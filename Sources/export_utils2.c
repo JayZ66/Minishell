@@ -30,6 +30,20 @@ int	check_char_export(char c)
 		return (0);
 }
 
+int	is_there_equal(char *args)
+{
+	size_t	i;
+
+	i = 0;
+	while(args[i])
+	{
+		if (args[i] == '=')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	identifier_errors_export(char *args)
 {
 	size_t	i;
@@ -37,7 +51,9 @@ int	identifier_errors_export(char *args)
 	i = 0;
 	while (args[i] && args[i] != '=')
 	{
-		if (check_char_export(args[i]) == 1)
+		if (args[i] == '=' || is_there_equal(args) == 0)
+			break ;
+		else if (check_char_export(args[i]) == 1)
 		{
 			printf("bash: export: '%s': not a valid identifier\n", args);
 			return (1);

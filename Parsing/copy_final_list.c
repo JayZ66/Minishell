@@ -6,7 +6,7 @@
 /*   By: jeguerin <jeguerin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/07 11:19:54 by jeguerin          #+#    #+#             */
-/*   Updated: 2024/06/07 11:21:23 by jeguerin         ###   ########.fr       */
+/*   Updated: 2024/06/11 14:24:22 by jeguerin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,6 @@ t_final_token	*handle_nodes(t_clean_token *token,
 	if (!content)
 		return (NULL);
 	new = init_final_node(content, token->type);
-	// if (!new)
-	// {
-	// 	free(content);
-	// 	free_that_final_lst(&final_token);
-	// 	return (NULL);
-	// }
 	add_final_back(&final_token, new);
 	return (final_token);
 }

@@ -21,8 +21,6 @@ No need to do a copy of env because we use the one from our main.
 And we don't use getenv() who get env. var. from the "real" env.
 */
 
-//strcmp de SHLVL=
-// atoi, puis itoa puis strcpy.
 void	shell_level(t_minishell *minishell)
 {
 	size_t	i;
@@ -41,35 +39,12 @@ void	shell_level(t_minishell *minishell)
 	}
 }
 
-// char	**change_shell_level(char **env)
-// {
-// 	size_t	i;
-// 	size_t	j;
-// 	char	*str;
+int	len_of_var_of_env(char *str)
+{
+	int	len;
 
-// 	i = 0;
-// 	while (env[i])
-// 	{
-// 		j = 0;
-// 		while (env[i][j])
-// 		{
-// 			if (env[i][j] == '=')
-// 			{
-// 				str = ft_substr(env[i], 0, j);
-// 				if (ft_strcmp(str, "SHLVL") == 0)
-// 				{
-// 					j++;
-// 					if (env[i][j] == '1')
-// 					{
-// 						j++;
-// 						return (ft_free(str), env);
-// 					}
-// 				}
-// 				ft_free(str);
-// 			}
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	return (perror("Can't modify shell level in env.\n"), NULL);
-// }
+	len = 0;
+	while (str[len] && (isalnum(str[len]) || str[len] == '_'))
+		len++;
+	return (len);
+}
