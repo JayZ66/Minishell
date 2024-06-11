@@ -35,7 +35,7 @@ int	is_there_equal(char *args)
 	size_t	i;
 
 	i = 0;
-	while(args[i])
+	while (args[i])
 	{
 		if (args[i] == '=')
 			return (1);
@@ -81,23 +81,6 @@ int	is_there_something_after_equal(const char *var, t_minishell *minishell)
 	{
 		if (var[i] == '=' && var[i + 1] != '\0')
 			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	identifier_errors_unset(char *args)
-{
-	size_t	i;
-
-	i = 0;
-	while (args[i])
-	{
-		if (check_char_unset(args[i]) == 1)
-		{
-			printf("bash: export: '%s': not a valid identifier\n", args);
-			return (1);
-		}
 		i++;
 	}
 	return (0);

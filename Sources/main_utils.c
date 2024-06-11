@@ -6,13 +6,13 @@
 /*   By: romlambe <romlambe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:48:31 by romlambe          #+#    #+#             */
-/*   Updated: 2024/06/11 17:35:39 by romlambe         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:37:24 by romlambe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	read_and_extract	(char **input, t_minishell *minishell)
+int	read_and_extract(char **input, t_minishell *minishell)
 {
 	*input = read_input(minishell);
 	if (ft_strlen(*input) == 0 || ft_isspace(*input) == 1)
